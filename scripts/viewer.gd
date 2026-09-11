@@ -773,7 +773,17 @@ func _capture_shaman_showcase() -> void:
 	await get_tree().create_timer(0.48).timeout
 	_save_shot("shaman_anim_hex.png")
 	
-	# 7. Stunned - Dazed leaning on staff crutch, feet firmly on ground
+	# 7. Hurt - Elastic shockwave recoil, zero clipping
+	m_shaman.play_anim("hurt")
+	yaw = 25.0
+	pitch = -6.0
+	camera_distance = 3.0
+	camera_pivot.position = Vector3(0.0, 0.58, 0.0)
+	_update_camera_transform()
+	await get_tree().create_timer(0.25).timeout
+	_save_shot("shaman_anim_hurt.png")
+	
+	# 8. Stunned - Dazed leaning on staff crutch, feet firmly on ground
 	m_shaman.play_anim("stunned")
 	yaw = 20.0
 	pitch = -10.0
