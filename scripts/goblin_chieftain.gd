@@ -85,6 +85,69 @@ func _init_stun_stars() -> void:
 
 func _init_default_stances() -> void:
 	default_stance_configs = {
+		"idle": {
+			"right_arm_rot": Vector3(-32.0, 25.0, 35.0),
+			"right_forearm_rot": Vector3(-115.0, 0.0, 0.0),
+			"warhammer_rot": Vector3(65.0, 0.0, -30.0),
+			"left_arm_rot": Vector3(15.0, 0.0, -15.0),
+			"left_forearm_rot": Vector3(-25.0, 0.0, 0.0),
+			"torso_rot": Vector3(6.0, 0.0, 0.0),
+			"head_rot": Vector3(-4.0, 0.0, 0.0)
+		},
+		"walk": {
+			"right_arm_rot": Vector3(25.0, -10.0, 30.0),
+			"right_forearm_rot": Vector3(-20.0, 0.0, 0.0),
+			"warhammer_rot": Vector3(145.0, 0.0, -10.0),
+			"left_arm_rot": Vector3(0.0, 0.0, -20.0),
+			"left_forearm_rot": Vector3(-25.0, 0.0, 0.0),
+			"torso_rot": Vector3(12.0, 0.0, 0.0),
+			"head_rot": Vector3(-8.0, 0.0, 0.0)
+		},
+		"roar": {
+			"right_arm_rot": Vector3(-35.0, 0.0, 35.0),
+			"right_forearm_rot": Vector3(-65.0, 0.0, 0.0),
+			"warhammer_rot": Vector3(65.0, 0.0, -30.0),
+			"left_arm_rot": Vector3(15.0, 0.0, -15.0),
+			"left_forearm_rot": Vector3(-25.0, 0.0, 0.0),
+			"torso_rot": Vector3(18.0, 0.0, 0.0),
+			"head_rot": Vector3(-12.0, 0.0, 0.0)
+		},
+		"earthshaker": {
+			"right_arm_rot": Vector3(-145.0, 0.0, 15.0),
+			"right_forearm_rot": Vector3(-35.0, 0.0, 0.0),
+			"warhammer_rot": Vector3(-35.0, 0.0, 0.0),
+			"left_arm_rot": Vector3(-135.0, 0.0, -15.0),
+			"left_forearm_rot": Vector3(-45.0, 0.0, 0.0),
+			"torso_rot": Vector3(-32.0, 0.0, 0.0),
+			"head_rot": Vector3(12.0, 0.0, 0.0)
+		},
+		"whirlwind": {
+			"right_arm_rot": Vector3(-10.0, 0.0, 75.0),
+			"right_forearm_rot": Vector3(-15.0, 0.0, 0.0),
+			"warhammer_rot": Vector3(90.0, 0.0, 0.0),
+			"left_arm_rot": Vector3(-10.0, 0.0, -75.0),
+			"left_forearm_rot": Vector3(-15.0, 0.0, 0.0),
+			"torso_rot": Vector3(16.0, 0.0, 0.0),
+			"head_rot": Vector3(-10.0, 0.0, 0.0)
+		},
+		"stagger": {
+			"right_arm_rot": Vector3(-35.0, 0.0, 18.0),
+			"right_forearm_rot": Vector3(-65.0, 0.0, 0.0),
+			"warhammer_rot": Vector3(75.0, 0.0, 0.0),
+			"left_arm_rot": Vector3(25.0, 0.0, -25.0),
+			"left_forearm_rot": Vector3(-20.0, 0.0, 0.0),
+			"torso_rot": Vector3(32.0, 0.0, 0.0),
+			"head_rot": Vector3(-22.0, 0.0, 0.0)
+		},
+		"stunned": {
+			"right_arm_rot": Vector3(-32.0, 25.0, 35.0),
+			"right_forearm_rot": Vector3(-115.0, 0.0, 0.0),
+			"warhammer_rot": Vector3(65.0, 0.0, -30.0),
+			"left_arm_rot": Vector3(15.0, 0.0, -15.0),
+			"left_forearm_rot": Vector3(-25.0, 0.0, 0.0),
+			"torso_rot": Vector3(14.0, 0.0, 0.0),
+			"head_rot": Vector3(-8.0, 0.0, 0.0)
+		},
 		"shoulder": {
 			"right_arm_rot": Vector3(-32.0, 25.0, 35.0),
 			"right_forearm_rot": Vector3(-115.0, 0.0, 0.0),
@@ -135,8 +198,10 @@ func load_stance_config() -> void:
 					d = d["chieftain"]
 				if d.has("ground_hips_y"):
 					ground_hips_y = float(d["ground_hips_y"])
-				for s_key in ["shoulder", "ground", "guard"]:
-					if d.has(s_key) and d[s_key] is Dictionary:
+				for s_key in d:
+					if d[s_key] is Dictionary:
+						if not stance_configs.has(s_key):
+							stance_configs[s_key] = {}
 						var s_dict = d[s_key]
 						for prop in ["right_arm_rot", "right_forearm_rot", "warhammer_rot", "left_arm_rot", "left_forearm_rot", "torso_rot", "head_rot"]:
 							if s_dict.has(prop) and s_dict[prop] is Array and s_dict[prop].size() == 3:
@@ -144,6 +209,13 @@ func load_stance_config() -> void:
 
 func get_stance_definitions() -> Array:
 	return [
+		{"id": "idle", "name": "Uy Vũ", "shortcut": "[ 1 ]"},
+		{"id": "walk", "name": "Bước Nặng", "shortcut": "[ 2 ]"},
+		{"id": "roar", "name": "Gầm Thét", "shortcut": "[ 3 ]"},
+		{"id": "earthshaker", "name": "Địa Chấn", "shortcut": "[ 4 ]"},
+		{"id": "whirlwind", "name": "Bão Chùy 360°", "shortcut": "[ 5 ]"},
+		{"id": "stagger", "name": "Quỳ Gối", "shortcut": "[ 6 ]"},
+		{"id": "stunned", "name": "Choáng", "shortcut": "[ 7 ]"},
 		{"id": "shoulder", "name": "Vác Đại Búa", "shortcut": "[ Q ]"},
 		{"id": "ground", "name": "Chống Búa Đất", "shortcut": "[ W ]"},
 		{"id": "guard", "name": "Thủ Trọng Lực", "shortcut": "[ E ]"}
@@ -155,13 +227,22 @@ func get_weapon_info() -> Dictionary:
 		"prop": "warhammer_rot"
 	}
 
+func copy_weapon_from_idle(target_anim: String) -> void:
+	var src_key = "idle" if stance_configs.has("idle") else "shoulder"
+	if not stance_configs.has(src_key) or not stance_configs.has(target_anim):
+		return
+	var src = stance_configs[src_key]
+	var dst = stance_configs[target_anim]
+	if src.has("warhammer_rot"):
+		dst["warhammer_rot"] = src["warhammer_rot"]
+
 func serialize_stances() -> Dictionary:
-	return {
-		"ground_hips_y": ground_hips_y,
-		"shoulder": _serialize_stance(stance_configs.get("shoulder", {})),
-		"ground": _serialize_stance(stance_configs.get("ground", {})),
-		"guard": _serialize_stance(stance_configs.get("guard", {}))
+	var out: Dictionary = {
+		"ground_hips_y": ground_hips_y
 	}
+	for s_key in stance_configs:
+		out[s_key] = _serialize_stance(stance_configs[s_key])
+	return out
 
 func save_stance_config() -> bool:
 	var path = "res://data/stance_config.json"
@@ -212,7 +293,11 @@ func update_live_stance(s_name: String, prop: String, val: Variant) -> void:
 	current_pose = _compute_pose(current_anim, anim_time)
 	_apply_pose(current_pose)
 
-func _get_active_stance_cfg() -> Dictionary:
+func _get_active_stance_cfg(anim: String = "") -> Dictionary:
+	if anim != "" and stance_configs.has(anim):
+		return stance_configs[anim]
+	if current_anim != "" and stance_configs.has(current_anim):
+		return stance_configs[current_anim]
 	var st_key = current_stance if stance_configs.has(current_stance) else "shoulder"
 	return stance_configs.get(st_key, default_stance_configs.get("shoulder", {}))
 
@@ -411,9 +496,9 @@ func _compute_walk(time_val: float) -> Dictionary:
 	p["right_thigh_rot"] = Vector3(s_leg * 26.0, 0.0, 0.0)
 	p["right_shin_rot"] = Vector3(maxf(0.0, -s_leg * 32.0), 0.0, 0.0)
 	
-	# Dynamic posture driven by idle/shoulder stance configs
-	var st_key = current_stance if (stance_configs.has(current_stance) and current_stance != "guard") else "shoulder"
-	var cfg = stance_configs.get(st_key, default_stance_configs.get("shoulder", {}))
+	# Dynamic posture driven by walk/shoulder stance configs
+	var st_key = "walk" if stance_configs.has("walk") else (current_stance if (stance_configs.has(current_stance) and current_stance != "guard") else "shoulder")
+	var cfg = stance_configs.get(st_key, default_stance_configs.get(st_key, default_stance_configs.get("shoulder", {})))
 	var base_hammer: Vector3 = cfg.get("warhammer_rot", Vector3(145.0, 0.0, -10.0))
 	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(25.0, -10.0, 30.0))
 	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-20.0, 0.0, 0.0))

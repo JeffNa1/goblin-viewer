@@ -78,6 +78,69 @@ func _init_default_stances() -> void:
 			"torso_rot": Vector3(18.0, 0.0, 0.0),
 			"head_rot": Vector3(-12.0, 0.0, 0.0)
 		},
+		"walk": {
+			"right_arm_rot": Vector3(-18.0, 10.0, 16.0),
+			"right_forearm_rot": Vector3(-55.0, 0.0, 0.0),
+			"right_dagger_rot": Vector3(20.0, 0.0, 0.0),
+			"left_arm_rot": Vector3(-16.0, -10.0, -16.0),
+			"left_forearm_rot": Vector3(-52.0, 0.0, 0.0),
+			"torso_rot": Vector3(16.0, 0.0, 0.0),
+			"head_rot": Vector3(-14.0, 0.0, 0.0)
+		},
+		"scurry": {
+			"right_arm_rot": Vector3(-18.0, 10.0, 16.0),
+			"right_forearm_rot": Vector3(-55.0, 0.0, 0.0),
+			"right_dagger_rot": Vector3(20.0, 0.0, 0.0),
+			"left_arm_rot": Vector3(-16.0, -10.0, -16.0),
+			"left_forearm_rot": Vector3(-52.0, 0.0, 0.0),
+			"torso_rot": Vector3(20.0, 0.0, 0.0),
+			"head_rot": Vector3(-24.0, 0.0, 0.0)
+		},
+		"dual_slash": {
+			"right_arm_rot": Vector3(-55.0, -35.0, -15.0),
+			"right_forearm_rot": Vector3(-110.0, 0.0, 0.0),
+			"right_dagger_rot": Vector3(120.0, 0.0, 0.0),
+			"left_arm_rot": Vector3(-55.0, 35.0, 15.0),
+			"left_forearm_rot": Vector3(-110.0, 0.0, 0.0),
+			"torso_rot": Vector3(24.0, 0.0, 0.0),
+			"head_rot": Vector3(-18.0, 0.0, 0.0)
+		},
+		"backstab": {
+			"right_arm_rot": Vector3(-135.0, 0.0, 15.0),
+			"right_forearm_rot": Vector3(-25.0, 0.0, 0.0),
+			"right_dagger_rot": Vector3(180.0, 0.0, 0.0),
+			"left_arm_rot": Vector3(-135.0, 0.0, -15.0),
+			"left_forearm_rot": Vector3(-25.0, 0.0, 0.0),
+			"torso_rot": Vector3(-45.0, 0.0, 0.0),
+			"head_rot": Vector3(15.0, 0.0, 0.0)
+		},
+		"parry": {
+			"right_arm_rot": Vector3(-45.0, 15.0, 30.0),
+			"right_forearm_rot": Vector3(-65.0, 0.0, 0.0),
+			"right_dagger_rot": Vector3(45.0, 0.0, 0.0),
+			"left_arm_rot": Vector3(-45.0, -15.0, -30.0),
+			"left_forearm_rot": Vector3(-65.0, 0.0, 0.0),
+			"torso_rot": Vector3(10.0, 0.0, 0.0),
+			"head_rot": Vector3(-6.0, 0.0, 0.0)
+		},
+		"hurt": {
+			"right_arm_rot": Vector3(-30.0, 0.0, 35.0),
+			"right_forearm_rot": Vector3(-75.0, 0.0, 0.0),
+			"right_dagger_rot": Vector3(35.0, 0.0, 0.0),
+			"left_arm_rot": Vector3(-30.0, 0.0, -35.0),
+			"left_forearm_rot": Vector3(-75.0, 0.0, 0.0),
+			"torso_rot": Vector3(-20.0, -10.0, 0.0),
+			"head_rot": Vector3(16.0, -14.0, 0.0)
+		},
+		"stunned": {
+			"right_arm_rot": Vector3(12.0, 0.0, 20.0),
+			"right_forearm_rot": Vector3(-12.0, 0.0, 0.0),
+			"right_dagger_rot": Vector3(20.0, 0.0, 0.0),
+			"left_arm_rot": Vector3(15.0, 0.0, -20.0),
+			"left_forearm_rot": Vector3(-15.0, 0.0, 0.0),
+			"torso_rot": Vector3(12.0, 0.0, 0.0),
+			"head_rot": Vector3(-8.0, 0.0, 0.0)
+		},
 		"dual_guard": {
 			"right_arm_rot": Vector3(-42.0, -15.0, 12.0),
 			"right_forearm_rot": Vector3(-90.0, 0.0, 0.0),
@@ -119,8 +182,10 @@ func load_stance_config() -> void:
 					d = d["rogue"]
 				if d.has("ground_hips_y"):
 					ground_hips_y = float(d["ground_hips_y"])
-				for s_key in ["idle", "dual_guard", "reverse"]:
-					if d.has(s_key) and d[s_key] is Dictionary:
+				for s_key in d:
+					if d[s_key] is Dictionary:
+						if not stance_configs.has(s_key):
+							stance_configs[s_key] = {}
 						var s_dict = d[s_key]
 						for prop in ["right_arm_rot", "right_forearm_rot", "right_dagger_rot", "left_arm_rot", "left_forearm_rot", "torso_rot", "head_rot"]:
 							if s_dict.has(prop) and s_dict[prop] is Array and s_dict[prop].size() == 3:
@@ -128,7 +193,14 @@ func load_stance_config() -> void:
 
 func get_stance_definitions() -> Array:
 	return [
-		{"id": "idle", "name": "Rình Rập", "shortcut": "[ Q ]"},
+		{"id": "idle", "name": "Rình Rập", "shortcut": "[ 1 ]"},
+		{"id": "walk", "name": "Lẻn Đi", "shortcut": "[ 2 ]"},
+		{"id": "scurry", "name": "Lướt Nhanh", "shortcut": "[ 3 ]"},
+		{"id": "dual_slash", "name": "Chém Chéo X", "shortcut": "[ 4 ]"},
+		{"id": "backstab", "name": "Đâm Lén", "shortcut": "[ 5 ]"},
+		{"id": "parry", "name": "Gạt Dao", "shortcut": "[ 6 ]"},
+		{"id": "hurt", "name": "Trúng Đòn", "shortcut": "[ 7 ]"},
+		{"id": "stunned", "name": "Choáng", "shortcut": "[ 8 ]"},
 		{"id": "dual_guard", "name": "Bắt Chéo X", "shortcut": "[ W ]"},
 		{"id": "reverse", "name": "Dao Ngược", "shortcut": "[ E ]"}
 	]
@@ -139,13 +211,21 @@ func get_weapon_info() -> Dictionary:
 		"prop": "right_dagger_rot"
 	}
 
+func copy_weapon_from_idle(target_anim: String) -> void:
+	if not stance_configs.has("idle") or not stance_configs.has(target_anim):
+		return
+	var src = stance_configs["idle"]
+	var dst = stance_configs[target_anim]
+	if src.has("right_dagger_rot"):
+		dst["right_dagger_rot"] = src["right_dagger_rot"]
+
 func serialize_stances() -> Dictionary:
-	return {
-		"ground_hips_y": ground_hips_y,
-		"idle": _serialize_stance(stance_configs.get("idle", {})),
-		"dual_guard": _serialize_stance(stance_configs.get("dual_guard", {})),
-		"reverse": _serialize_stance(stance_configs.get("reverse", {}))
+	var out: Dictionary = {
+		"ground_hips_y": ground_hips_y
 	}
+	for s_key in stance_configs:
+		out[s_key] = _serialize_stance(stance_configs[s_key])
+	return out
 
 func save_stance_config() -> bool:
 	var path = "res://data/stance_config.json"
@@ -417,8 +497,8 @@ func _compute_walk(time_val: float) -> Dictionary:
 	p["right_thigh_rot"] = Vector3(s_leg * 30.0, 0.0, 0.0)
 	p["right_shin_rot"] = Vector3(maxf(0.0, -s_leg * 36.0), 0.0, 0.0)
 	
-	var st_key = current_stance if stance_configs.has(current_stance) else "idle"
-	var cfg = stance_configs.get(st_key, default_stance_configs.get("idle", {}))
+	var st_key = "walk" if stance_configs.has("walk") else current_stance
+	var cfg = stance_configs.get(st_key, default_stance_configs.get(st_key, default_stance_configs.get("idle", {})))
 	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(20.0, 0.0, 0.0))
 	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", Vector3(base_dag_r.x, -base_dag_r.y, -base_dag_r.z))
 	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-18.0, 10.0, 16.0))
@@ -451,8 +531,8 @@ func _compute_scurry(time_val: float) -> Dictionary:
 	p["right_thigh_rot"] = Vector3(s_leg * 48.0, 0.0, 0.0)
 	p["right_shin_rot"] = Vector3(maxf(0.0, -s_leg * 58.0), 0.0, 0.0)
 	
-	var st_key = current_stance if stance_configs.has(current_stance) else "idle"
-	var cfg = stance_configs.get(st_key, default_stance_configs.get("idle", {}))
+	var st_key = "scurry" if stance_configs.has("scurry") else current_stance
+	var cfg = stance_configs.get(st_key, default_stance_configs.get(st_key, default_stance_configs.get("idle", {})))
 	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(20.0, 0.0, 0.0))
 	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", Vector3(base_dag_r.x, -base_dag_r.y, -base_dag_r.z))
 	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-18.0, 10.0, 16.0))
@@ -473,7 +553,8 @@ func _compute_scurry(time_val: float) -> Dictionary:
 func _compute_dual_slash(t_s: float) -> Dictionary:
 	var p: Dictionary = {}
 	var tau = clampf(t_s / SLASH_DURATION, 0.0, 1.0)
-	var cfg = stance_configs.get(current_stance, default_stance_configs.get(current_stance, {}))
+	var st_key = "dual_slash" if stance_configs.has("dual_slash") else current_stance
+	var cfg = stance_configs.get(st_key, default_stance_configs.get(st_key, default_stance_configs.get("idle", {})))
 	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(20.0, 0.0, 0.0))
 	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", base_dag_r)
 	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-18.0, 10.0, 16.0))
@@ -551,7 +632,8 @@ func _compute_dual_slash(t_s: float) -> Dictionary:
 func _compute_backstab(t_b: float) -> Dictionary:
 	var p: Dictionary = {}
 	var tau = clampf(t_b / BACKSTAB_DURATION, 0.0, 1.0)
-	var cfg = stance_configs.get(current_stance, default_stance_configs.get(current_stance, {}))
+	var st_key = "backstab" if stance_configs.has("backstab") else current_stance
+	var cfg = stance_configs.get(st_key, default_stance_configs.get(st_key, default_stance_configs.get("idle", {})))
 	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(20.0, 0.0, 0.0))
 	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", base_dag_r)
 	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-18.0, 10.0, 16.0))
@@ -632,7 +714,8 @@ func _compute_backstab(t_b: float) -> Dictionary:
 func _compute_parry(t_p: float) -> Dictionary:
 	var p: Dictionary = {}
 	var tau = clampf(t_p / PARRY_DURATION, 0.0, 1.0)
-	var cfg = stance_configs.get(current_stance, default_stance_configs.get(current_stance, {}))
+	var st_key = "parry" if stance_configs.has("parry") else current_stance
+	var cfg = stance_configs.get(st_key, default_stance_configs.get(st_key, default_stance_configs.get("idle", {})))
 	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(20.0, 0.0, 0.0))
 	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", base_dag_r)
 	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-18.0, 10.0, 16.0))
@@ -687,7 +770,8 @@ func _compute_hurt(t_h: float) -> Dictionary:
 	var p: Dictionary = {}
 	var tau = clampf(t_h / HURT_DURATION, 0.0, 1.0)
 	var s = sin(tau * PI)
-	var cfg = stance_configs.get(current_stance, default_stance_configs.get(current_stance, {}))
+	var st_key = "hurt" if stance_configs.has("hurt") else current_stance
+	var cfg = stance_configs.get(st_key, default_stance_configs.get(st_key, default_stance_configs.get("idle", {})))
 	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(20.0, 0.0, 0.0))
 	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", base_dag_r)
 	
@@ -714,7 +798,8 @@ func _compute_hurt(t_h: float) -> Dictionary:
 func _compute_stunned(time_val: float) -> Dictionary:
 	var p: Dictionary = {}
 	var t = time_val * 2.8
-	var cfg = stance_configs.get(current_stance, default_stance_configs.get(current_stance, {}))
+	var st_key = "stunned" if stance_configs.has("stunned") else current_stance
+	var cfg = stance_configs.get(st_key, default_stance_configs.get(st_key, default_stance_configs.get("idle", {})))
 	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(20.0, 0.0, 0.0))
 	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", base_dag_r)
 	

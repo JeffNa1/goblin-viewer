@@ -72,6 +72,78 @@ func _ready() -> void:
 
 func _init_default_stances() -> void:
 	default_stance_configs = {
+		"idle": {
+			"right_arm_rot": Vector3(12.0, -8.0, 26.0),
+			"right_forearm_rot": Vector3(-22.0, -8.0, 0.0),
+			"club_rot": Vector3(118.0, -15.0, -12.0),
+			"left_arm_rot": Vector3(0.0, 0.0, -12.0),
+			"left_forearm_rot": Vector3(-16.0, 0.0, 0.0),
+			"torso_rot": Vector3(7.0, 0.0, 0.0),
+			"head_rot": Vector3(-2.0, 0.0, 0.0)
+		},
+		"walk": {
+			"right_arm_rot": Vector3(12.0, -8.0, 26.0),
+			"right_forearm_rot": Vector3(-22.0, -8.0, 0.0),
+			"club_rot": Vector3(118.0, -15.0, -12.0),
+			"left_arm_rot": Vector3(0.0, 0.0, -12.0),
+			"left_forearm_rot": Vector3(-16.0, 0.0, 0.0),
+			"torso_rot": Vector3(8.0, 0.0, 0.0),
+			"head_rot": Vector3(-3.0, 0.0, 0.0)
+		},
+		"run": {
+			"right_arm_rot": Vector3(-20.0, 10.0, 30.0),
+			"right_forearm_rot": Vector3(-45.0, 0.0, 0.0),
+			"club_rot": Vector3(118.0, -15.0, -12.0),
+			"left_arm_rot": Vector3(0.0, 0.0, -12.0),
+			"left_forearm_rot": Vector3(-20.0, 0.0, 0.0),
+			"torso_rot": Vector3(24.0, 0.0, 0.0),
+			"head_rot": Vector3(-14.0, 0.0, 0.0)
+		},
+		"smash": {
+			"right_arm_rot": Vector3(-85.0, 25.0, 56.0),
+			"right_forearm_rot": Vector3(-115.0, 15.0, 0.0),
+			"club_rot": Vector3(20.0, 25.0, -25.0),
+			"left_arm_rot": Vector3(-45.0, 0.0, -36.0),
+			"left_forearm_rot": Vector3(-55.0, 0.0, 0.0),
+			"torso_rot": Vector3(-28.0, 0.0, 0.0),
+			"head_rot": Vector3(4.0, 0.0, 0.0)
+		},
+		"cleave": {
+			"right_arm_rot": Vector3(18.0, 10.0, 75.0),
+			"right_forearm_rot": Vector3(-35.0, 0.0, 20.0),
+			"club_rot": Vector3(85.0, 30.0, 20.0),
+			"left_arm_rot": Vector3(-40.0, 0.0, 15.0),
+			"left_forearm_rot": Vector3(-55.0, 0.0, 0.0),
+			"torso_rot": Vector3(8.0, 52.0, 4.0),
+			"head_rot": Vector3(-4.0, -32.0, 0.0)
+		},
+		"parry_smash": {
+			"right_arm_rot": Vector3(-85.0, 25.0, 56.0),
+			"right_forearm_rot": Vector3(-115.0, 15.0, 0.0),
+			"club_rot": Vector3(20.0, 25.0, -25.0),
+			"left_arm_rot": Vector3(-45.0, 0.0, -36.0),
+			"left_forearm_rot": Vector3(-55.0, 0.0, 0.0),
+			"torso_rot": Vector3(-28.0, 0.0, 0.0),
+			"head_rot": Vector3(4.0, 0.0, 0.0)
+		},
+		"parry_cleave": {
+			"right_arm_rot": Vector3(-70.0, 0.0, -18.0),
+			"right_forearm_rot": Vector3(-15.0, 0.0, 0.0),
+			"club_rot": Vector3(90.0, 0.0, -75.0),
+			"left_arm_rot": Vector3(32.0, 0.0, -20.0),
+			"left_forearm_rot": Vector3(-80.0, 0.0, 0.0),
+			"torso_rot": Vector3(14.0, -68.0, -6.0),
+			"head_rot": Vector3(6.0, 28.0, 0.0)
+		},
+		"stunned": {
+			"right_arm_rot": Vector3(0.0, 5.0, 42.0),
+			"right_forearm_rot": Vector3(-45.0, 0.0, 0.0),
+			"club_rot": Vector3(75.0, 0.0, -20.0),
+			"left_arm_rot": Vector3(12.0, 0.0, -24.0),
+			"left_forearm_rot": Vector3(-35.0, 0.0, 0.0),
+			"torso_rot": Vector3(14.0, 0.0, 5.0),
+			"head_rot": Vector3(8.0, 0.0, 0.0)
+		},
 		"low": {
 			"right_arm_rot": Vector3(12.0, -8.0, 26.0),
 			"right_forearm_rot": Vector3(-22.0, -8.0, 0.0),
@@ -116,18 +188,27 @@ func load_stance_config() -> void:
 					d = d["warrior"]
 				if d.has("ground_hips_y"):
 					ground_hips_y = float(d["ground_hips_y"])
-				for s_key in ["low", "guard", "shoulder"]:
-					if d.has(s_key) and d[s_key] is Dictionary:
+				for s_key in d:
+					if s_key == "ground_hips_y":
+						continue
+					if d[s_key] is Dictionary:
 						var s_dict = d[s_key]
+						if not stance_configs.has(s_key):
+							stance_configs[s_key] = {}
 						for prop in ["right_arm_rot", "right_forearm_rot", "club_rot", "left_arm_rot", "left_forearm_rot", "torso_rot", "head_rot"]:
 							if s_dict.has(prop) and s_dict[prop] is Array and s_dict[prop].size() == 3:
 								stance_configs[s_key][prop] = Vector3(float(s_dict[prop][0]), float(s_dict[prop][1]), float(s_dict[prop][2]))
 
 func get_stance_definitions() -> Array:
 	return [
-		{"id": "low", "name": "Vác Thấp", "shortcut": "[ Q ]"},
-		{"id": "guard", "name": "Thủ Thế", "shortcut": "[ W ]"},
-		{"id": "shoulder", "name": "Vác Vai", "shortcut": "[ E ]"}
+		{"id": "idle", "name": "Idle", "shortcut": "[ 1 ]"},
+		{"id": "walk", "name": "Walk", "shortcut": "[ 2 ]"},
+		{"id": "run", "name": "Run", "shortcut": "[ 3 ]"},
+		{"id": "smash", "name": "Smash", "shortcut": "[ 4 ]"},
+		{"id": "cleave", "name": "Cleave", "shortcut": "[ 5 ]"},
+		{"id": "parry_smash", "name": "Đỡ Smash", "shortcut": "[ 6 ]"},
+		{"id": "parry_cleave", "name": "Đỡ Chém", "shortcut": "[ 7 ]"},
+		{"id": "stunned", "name": "Choáng", "shortcut": "[ 8 ]"}
 	]
 
 func get_weapon_info() -> Dictionary:
@@ -137,12 +218,12 @@ func get_weapon_info() -> Dictionary:
 	}
 
 func serialize_stances() -> Dictionary:
-	return {
-		"ground_hips_y": ground_hips_y,
-		"low": _serialize_stance(stance_configs.get("low", {})),
-		"guard": _serialize_stance(stance_configs.get("guard", {})),
-		"shoulder": _serialize_stance(stance_configs.get("shoulder", {}))
+	var out: Dictionary = {
+		"ground_hips_y": ground_hips_y
 	}
+	for s_key in stance_configs:
+		out[s_key] = _serialize_stance(stance_configs[s_key])
+	return out
 
 func save_stance_config() -> bool:
 	var path = "res://data/stance_config.json"
@@ -158,11 +239,11 @@ func save_stance_config() -> bool:
 	
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	if f:
-		f.store_string(JSON.stringify(all_cfg, "	"))
+		f.store_string(JSON.stringify(all_cfg, "\t"))
 		f.close()
 	var f2 = FileAccess.open("user://stance_config.json", FileAccess.WRITE)
 	if f2:
-		f2.store_string(JSON.stringify(all_cfg, "	"))
+		f2.store_string(JSON.stringify(all_cfg, "\t"))
 		f2.close()
 	return true
 
@@ -172,6 +253,15 @@ func _serialize_stance(s: Dictionary) -> Dictionary:
 		var v: Vector3 = s.get(k, Vector3.ZERO)
 		out[k] = [snappedf(v.x, 0.1), snappedf(v.y, 0.1), snappedf(v.z, 0.1)]
 	return out
+
+func copy_weapon_from_idle(target_anim: String) -> void:
+	var idle_cfg = stance_configs.get("idle", default_stance_configs.get("idle", {}))
+	if not stance_configs.has(target_anim):
+		stance_configs[target_anim] = default_stance_configs.get(target_anim, {}).duplicate()
+	if idle_cfg.has("club_rot"):
+		stance_configs[target_anim]["club_rot"] = idle_cfg["club_rot"]
+	current_pose = _compute_pose(current_anim, anim_time, current_stance)
+	_apply_pose(current_pose)
 
 func reset_stance_to_default(s_name: String) -> void:
 	if default_stance_configs.has(s_name):
@@ -497,7 +587,8 @@ func _init_stun_stars() -> void:
 func _compute_parry_smash(t_p: float) -> Dictionary:
 	var p: Dictionary = {}
 	var tau = clampf(t_p / PARRY_DURATION, 0.0, 1.0)
-	var cfg = stance_configs.get(current_stance, default_stance_configs.get(current_stance, {}))
+	var key = "parry_smash" if stance_configs.has("parry_smash") else current_stance
+	var cfg = stance_configs.get(key, default_stance_configs.get(key, default_stance_configs.get(current_stance, {})))
 	var base_club: Vector3 = cfg.get("club_rot", Vector3(80.0, 0.0, -20.0))
 	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(0.0, 0.0, 20.0))
 	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-30.0, 0.0, 0.0))
@@ -581,7 +672,8 @@ func _compute_parry_smash(t_p: float) -> Dictionary:
 func _compute_parry_cleave(t_p: float) -> Dictionary:
 	var p: Dictionary = {}
 	var tau = clampf(t_p / PARRY_DURATION, 0.0, 1.0)
-	var cfg = stance_configs.get(current_stance, default_stance_configs.get(current_stance, {}))
+	var key = "parry_cleave" if stance_configs.has("parry_cleave") else current_stance
+	var cfg = stance_configs.get(key, default_stance_configs.get(key, default_stance_configs.get(current_stance, {})))
 	var base_club: Vector3 = cfg.get("club_rot", Vector3(90.0, 0.0, -60.0))
 	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-50.0, 0.0, -18.0))
 	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-15.0, 0.0, 0.0))
@@ -660,7 +752,8 @@ func _compute_parry_cleave(t_p: float) -> Dictionary:
 func _compute_stunned(time_val: float, stance: String) -> Dictionary:
 	var p: Dictionary = {}
 	var t = time_val * 2.8
-	var cfg = stance_configs.get(stance, default_stance_configs.get(stance, {}))
+	var key = "stunned" if stance_configs.has("stunned") else stance
+	var cfg = stance_configs.get(key, default_stance_configs.get(key, default_stance_configs.get(stance, {})))
 	var base_club: Vector3 = cfg.get("club_rot", Vector3(142.0, -10.0, -10.0))
 	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(14.0, -4.0, 16.0))
 	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-10.0, 0.0, 0.0))
@@ -715,7 +808,8 @@ func _compute_attack_smash(t_atk: float) -> Dictionary:
 		# PHASE 1: Windup & Stride Forward (0.0s - 0.45s)
 		# Goblin raises spiked club high overhead while lifting LEFT leg and striding boldly forward (+Z)
 		var s = smoothstep(0.0, 1.0, tau / 0.35)
-		var cfg = stance_configs.get(current_stance, default_stance_configs.get(current_stance, {}))
+		var key = "smash" if stance_configs.has("smash") else current_stance
+		var cfg = stance_configs.get(key, default_stance_configs.get(key, default_stance_configs.get(current_stance, {})))
 		var base_club: Vector3 = cfg.get("club_rot", Vector3(118.0, 26.0, -20.0))
 		var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(12.0, -8.0, 26.0))
 		var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-22.0, 0.0, 0.0))
@@ -830,7 +924,8 @@ func _compute_attack_cleave(t_atk: float) -> Dictionary:
 	if tau < 0.35:
 		# PHASE 1: Windup / Rewind (Coil Body & Weapon Back to the RIGHT) (0.0s - 0.45s)
 		var s = smoothstep(0.0, 1.0, tau / 0.35)
-		var cfg = stance_configs.get(current_stance, default_stance_configs.get(current_stance, {}))
+		var key = "cleave" if stance_configs.has("cleave") else current_stance
+		var cfg = stance_configs.get(key, default_stance_configs.get(key, default_stance_configs.get(current_stance, {})))
 		var base_club: Vector3 = cfg.get("club_rot", Vector3(118.0, -15.0, -12.0))
 		var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(12.0, -8.0, 26.0))
 		var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-22.0, 0.0, 0.0))
@@ -946,7 +1041,8 @@ func _compute_attack_cleave(t_atk: float) -> Dictionary:
 # --- 3. DYNAMIC STANCE ARMS (Reads from configurable stance_configs) ---
 func _compute_stance_arms(t: float, stance: String, motion: String) -> Dictionary:
 	var w: Dictionary = {}
-	var cfg = stance_configs.get(stance, default_stance_configs.get(stance, {}))
+	var key = motion if stance_configs.has(motion) else stance
+	var cfg = stance_configs.get(key, default_stance_configs.get(key, default_stance_configs.get(stance, {})))
 	
 	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3.ZERO)
 	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3.ZERO)

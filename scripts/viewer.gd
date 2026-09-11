@@ -66,9 +66,8 @@ var btn_outfit2: Button = null
 @onready var editor_panel: PanelContainer = $UI/StanceEditorPanel
 @onready var ed_title: Label = $UI/StanceEditorPanel/Scroll/VBoxEd/EdHeader/EdTitle
 @onready var btn_close_ed: Button = $UI/StanceEditorPanel/Scroll/VBoxEd/EdHeader/BtnCloseEd
-@onready var btn_ed_tab1: Button = $UI/StanceEditorPanel/Scroll/VBoxEd/EdStanceTabs/BtnEdTab1
-@onready var btn_ed_tab2: Button = $UI/StanceEditorPanel/Scroll/VBoxEd/EdStanceTabs/BtnEdTab2
-@onready var btn_ed_tab3: Button = $UI/StanceEditorPanel/Scroll/VBoxEd/EdStanceTabs/BtnEdTab3
+@onready var ed_stance_tabs: Container = $UI/StanceEditorPanel/Scroll/VBoxEd/EdStanceTabs
+@onready var btn_copy_idle: Button = $UI/StanceEditorPanel/Scroll/VBoxEd/BtnCopyIdle
 
 @onready var lbl_right_arm_x: Label = $UI/StanceEditorPanel/Scroll/VBoxEd/LblRightArmX
 @onready var slide_right_arm_x: HSlider = $UI/StanceEditorPanel/Scroll/VBoxEd/SlideRightArmX
@@ -359,6 +358,9 @@ func _trigger_action(idx: int) -> void:
 		var anim_name = acts[idx]["anim"]
 		if anim_name != "—":
 			current_monster_node.play_anim(anim_name)
+			if editor_panel.visible:
+				editor_target_stance = anim_name
+				sync_editor_from_monster()
 			_update_ui_state()
 
 func toggle_help() -> void:
@@ -367,17 +369,16 @@ func toggle_help() -> void:
 func toggle_editor() -> void:
 	editor_panel.visible = not editor_panel.visible
 	if editor_panel.visible and current_monster_node:
-		if "current_stance" in current_monster_node:
+		if "current_anim" in current_monster_node and current_monster_node.current_anim != "":
+			editor_target_stance = current_monster_node.current_anim
+		elif "current_stance" in current_monster_node:
 			editor_target_stance = current_monster_node.current_stance
 		sync_editor_from_monster()
 
 func _setup_stance_editor() -> void:
 	btn_close_ed.pressed.connect(func(): editor_panel.visible = false)
-	btn_ed_tab1.pressed.connect(func(): _on_editor_tab_pressed(0))
-	btn_ed_tab2.pressed.connect(func(): _on_editor_tab_pressed(1))
-	btn_ed_tab3.pressed.connect(func(): _on_editor_tab_pressed(2))
-	
 	btn_save_permanent.pressed.connect(_on_save_permanent_pressed)
+	btn_copy_idle.pressed.connect(_on_copy_idle_pressed)
 	btn_reset_stance.pressed.connect(_on_reset_stance_pressed)
 	
 	var sliders = [
@@ -390,17 +391,13 @@ func _setup_stance_editor() -> void:
 	for s in sliders:
 		s.value_changed.connect(_on_editor_slider_changed)
 
-func _on_editor_tab_pressed(idx: int) -> void:
-	if not current_monster_node or not current_monster_node.has_method("get_stance_definitions"):
-		return
-	var defs: Array = current_monster_node.get_stance_definitions()
-	if idx < defs.size():
-		_switch_editor_tab(defs[idx]["id"])
-
 func _switch_editor_tab(st_name: String) -> void:
 	editor_target_stance = st_name
-	if current_monster_node and current_monster_node.has_method("set_stance"):
-		current_monster_node.set_stance(st_name)
+	if current_monster_node:
+		if current_monster_node.has_method("play_anim"):
+			current_monster_node.play_anim(st_name)
+		if current_monster_node.has_method("set_stance") and st_name in ["low", "guard", "shoulder", "aim", "ready", "dual_guard", "reverse", "ground"]:
+			current_monster_node.set_stance(st_name)
 	_update_stance_ui()
 	_update_ui_state()
 	sync_editor_from_monster()
@@ -417,7 +414,7 @@ func sync_editor_from_monster() -> void:
 		"rogue": "SÁT THỦ",
 		"chieftain": "TÙ TRƯỞNG BOSS"
 	}
-	ed_title.text = "🛠 BỘ CHỈNH TƯ THẾ: %s" % m_names.get(active_monster_type, "QUÁI VẬT")
+	ed_title.text = "🛠 BỘ CHỈNH TƯ THẾ & VŨ KHÍ: %s" % m_names.get(active_monster_type, "QUÁI VẬT")
 	
 	var defs: Array = []
 	if current_monster_node.has_method("get_stance_definitions"):
@@ -429,22 +426,30 @@ func sync_editor_from_monster() -> void:
 		
 	sec_weapon.text = w_info.get("title", "⚔ VŨ KHÍ (VỊ TRÍ & GÓC)")
 	
-	var tab_btns = [btn_ed_tab1, btn_ed_tab2, btn_ed_tab3]
+	for child in ed_stance_tabs.get_children():
+		ed_stance_tabs.remove_child(child)
+		child.queue_free()
+		
 	var valid_target = false
-	for i in range(tab_btns.size()):
-		if i < defs.size():
-			tab_btns[i].text = defs[i].get("name", "Thế %d" % (i + 1))
-			tab_btns[i].visible = true
-			var is_active = (defs[i]["id"] == editor_target_stance)
-			tab_btns[i].modulate = Color(0.2, 0.9, 0.7) if is_active else Color(0.8, 0.8, 0.8)
-			if is_active:
-				valid_target = true
-		else:
-			tab_btns[i].visible = false
-			
+	for def in defs:
+		if def["id"] == editor_target_stance:
+			valid_target = true
+			break
 	if not valid_target and defs.size() > 0:
 		editor_target_stance = defs[0]["id"]
-		tab_btns[0].modulate = Color(0.2, 0.9, 0.7)
+		
+	for def in defs:
+		var btn = Button.new()
+		var s_text = def.get("shortcut", "")
+		var n_text = def.get("name", "")
+		btn.text = "%s %s" % [s_text, n_text] if s_text != "" else n_text
+		btn.custom_minimum_size = Vector2(85, 26)
+		btn.add_theme_font_size_override("font_size", 10)
+		var is_active = (def["id"] == editor_target_stance)
+		btn.modulate = Color(0.2, 1.0, 0.7) if is_active else Color(0.85, 0.85, 0.85)
+		var st_id = def["id"]
+		btn.pressed.connect(func(): _switch_editor_tab(st_id))
+		ed_stance_tabs.add_child(btn)
 		
 	var st = editor_target_stance
 	var cfg = {}
@@ -541,6 +546,15 @@ func _on_save_permanent_pressed() -> void:
 	lbl_toast.text = "✓ Đã chốt và lưu vĩnh viễn tư thế cho %s!" % active_monster_type.capitalize()
 	await get_tree().create_timer(2.5).timeout
 	lbl_toast.visible = false
+
+func _on_copy_idle_pressed() -> void:
+	if current_monster_node and current_monster_node.has_method("copy_weapon_from_idle"):
+		current_monster_node.copy_weapon_from_idle(editor_target_stance)
+		sync_editor_from_monster()
+		lbl_toast.visible = true
+		lbl_toast.text = "✓ Đã copy góc vũ khí từ Idle sang '%s'!" % editor_target_stance
+		await get_tree().create_timer(2.0).timeout
+		lbl_toast.visible = false
 
 func _on_reset_stance_pressed() -> void:
 	if current_monster_node and current_monster_node.has_method("reset_stance_to_default"):

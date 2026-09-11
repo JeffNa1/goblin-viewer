@@ -495,24 +495,10 @@ custom_minimum_size = Vector2(28, 26)
 layout_mode = 2
 text = "✕"
 
-[node name="EdStanceTabs" type="HBoxContainer" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+[node name="EdStanceTabs" type="HFlowContainer" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
 layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="BtnEdTab1" type="Button" parent="UI/StanceEditorPanel/Scroll/VBoxEd/EdStanceTabs"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Thế 1"
-
-[node name="BtnEdTab2" type="Button" parent="UI/StanceEditorPanel/Scroll/VBoxEd/EdStanceTabs"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Thế 2"
-
-[node name="BtnEdTab3" type="Button" parent="UI/StanceEditorPanel/Scroll/VBoxEd/EdStanceTabs"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Thế 3"
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
 
 [node name="HSep1" type="HSeparator" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
 layout_mode = 2
@@ -729,6 +715,12 @@ custom_minimum_size = Vector2(0, 36)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.2, 1, 0.6, 1)
 text = "💾 CHỐT & LƯU VĨNH VIỄN"
+
+[node name="BtnCopyIdle" type="Button" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.85, 1, 1)
+text = "📋 Đồng Bộ Vũ Khí Từ Idle"
 
 [node name="BtnResetStance" type="Button" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
 custom_minimum_size = Vector2(0, 30)

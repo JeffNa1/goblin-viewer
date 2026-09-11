@@ -90,15 +90,6 @@ func _ready() -> void:
 
 func _init_default_stances() -> void:
 	default_stance_configs = {
-		"aim": {
-			"right_arm_rot": Vector3(-13.3, -120.9, 120.2),
-			"right_forearm_rot": Vector3(-76.5, 0.0, 0.0),
-			"bow_rot": Vector3(125.5, 44.1, 73.1),
-			"left_arm_rot": Vector3(-109.9, -51.1, 8.0),
-			"left_forearm_rot": Vector3(-1.0, 0.0, 0.0),
-			"torso_rot": Vector3(10.0, 15.0, -8.0),
-			"head_rot": Vector3(-6.0, -65.0, 8.0)
-		},
 		"idle": {
 			"right_arm_rot": Vector3(4.0, 0.0, 10.0),
 			"right_forearm_rot": Vector3(-14.0, 0.0, 0.0),
@@ -116,6 +107,60 @@ func _init_default_stances() -> void:
 			"left_forearm_rot": Vector3(-45.0, 0.0, 0.0),
 			"torso_rot": Vector3(6.0, 12.0, -4.0),
 			"head_rot": Vector3(-4.0, -20.0, 0.0)
+		},
+		"walk": {
+			"right_arm_rot": Vector3(4.0, 0.0, 10.0),
+			"right_forearm_rot": Vector3(-14.0, 0.0, 0.0),
+			"bow_rot": Vector3(0.0, 0.0, 12.0),
+			"left_arm_rot": Vector3(6.0, 0.0, -12.0),
+			"left_forearm_rot": Vector3(-12.0, 0.0, 0.0),
+			"torso_rot": Vector3(7.0, 0.0, 0.0),
+			"head_rot": Vector3(-2.0, 0.0, 0.0)
+		},
+		"run": {
+			"right_arm_rot": Vector3(4.0, 0.0, 10.0),
+			"right_forearm_rot": Vector3(-14.0, 0.0, 0.0),
+			"bow_rot": Vector3(25.0, 5.0, 15.0),
+			"left_arm_rot": Vector3(-14.0, -10.0, -12.0),
+			"left_forearm_rot": Vector3(-35.0, 0.0, 0.0),
+			"torso_rot": Vector3(20.0, 0.0, 0.0),
+			"head_rot": Vector3(-12.0, 0.0, 0.0)
+		},
+		"aim": {
+			"right_arm_rot": Vector3(-13.3, -120.9, 120.2),
+			"right_forearm_rot": Vector3(-76.5, 0.0, 0.0),
+			"bow_rot": Vector3(125.5, 44.1, 73.1),
+			"left_arm_rot": Vector3(-109.9, -51.1, 8.0),
+			"left_forearm_rot": Vector3(-1.0, 0.0, 0.0),
+			"torso_rot": Vector3(10.0, 15.0, -8.0),
+			"head_rot": Vector3(-6.0, -65.0, 8.0)
+		},
+		"shoot": {
+			"right_arm_rot": Vector3(-10.0, -128.0, 115.0),
+			"right_forearm_rot": Vector3(-60.0, 0.0, 0.0),
+			"bow_rot": Vector3(128.5, 44.1, 73.1),
+			"left_arm_rot": Vector3(-113.9, -51.1, 8.0),
+			"left_forearm_rot": Vector3(-4.0, 0.0, 0.0),
+			"torso_rot": Vector3(13.0, 15.0, -8.0),
+			"head_rot": Vector3(-6.0, -65.0, 8.0)
+		},
+		"hurt": {
+			"right_arm_rot": Vector3(15.0, 0.0, 20.0),
+			"right_forearm_rot": Vector3(-35.0, 0.0, 0.0),
+			"bow_rot": Vector3(15.0, 0.0, 10.0),
+			"left_arm_rot": Vector3(25.0, 0.0, -20.0),
+			"left_forearm_rot": Vector3(-40.0, 0.0, 0.0),
+			"torso_rot": Vector3(-18.0, 0.0, 0.0),
+			"head_rot": Vector3(16.0, 0.0, 0.0)
+		},
+		"stunned": {
+			"right_arm_rot": Vector3(12.0, 0.0, 15.0),
+			"right_forearm_rot": Vector3(-20.0, 0.0, 0.0),
+			"bow_rot": Vector3(10.0, 0.0, 20.0),
+			"left_arm_rot": Vector3(14.0, 0.0, -16.0),
+			"left_forearm_rot": Vector3(-18.0, 0.0, 0.0),
+			"torso_rot": Vector3(10.0, 0.0, 4.0),
+			"head_rot": Vector3(-6.0, 0.0, 0.0)
 		}
 	}
 
@@ -140,18 +185,27 @@ func load_stance_config() -> void:
 					d = d["archer"]
 				if d.has("ground_hips_y"):
 					ground_hips_y = float(d["ground_hips_y"])
-				for s_key in ["aim", "idle", "ready"]:
-					if d.has(s_key) and d[s_key] is Dictionary:
+				for s_key in d:
+					if s_key == "ground_hips_y":
+						continue
+					if d[s_key] is Dictionary:
 						var s_dict = d[s_key]
+						if not stance_configs.has(s_key):
+							stance_configs[s_key] = {}
 						for prop in ["right_arm_rot", "right_forearm_rot", "bow_rot", "left_arm_rot", "left_forearm_rot", "torso_rot", "head_rot"]:
 							if s_dict.has(prop) and s_dict[prop] is Array and s_dict[prop].size() == 3:
 								stance_configs[s_key][prop] = Vector3(float(s_dict[prop][0]), float(s_dict[prop][1]), float(s_dict[prop][2]))
 
 func get_stance_definitions() -> Array:
 	return [
-		{"id": "aim", "name": "Ngắm Bắn", "shortcut": "[ Q ]"},
-		{"id": "idle", "name": "Buông Cung", "shortcut": "[ W ]"},
-		{"id": "ready", "name": "Thủ Cung", "shortcut": "[ E ]"}
+		{"id": "idle", "name": "Idle", "shortcut": "[ 1 ]"},
+		{"id": "ready", "name": "Ready", "shortcut": "[ 2 ]"},
+		{"id": "walk", "name": "Walk", "shortcut": "[ 3 ]"},
+		{"id": "run", "name": "Run", "shortcut": "[ 4 ]"},
+		{"id": "aim", "name": "Aim", "shortcut": "[ 5 ]"},
+		{"id": "shoot", "name": "Bắn", "shortcut": "[ 6 ]"},
+		{"id": "hurt", "name": "Trúng Đòn", "shortcut": "[ 7 ]"},
+		{"id": "stunned", "name": "Choáng", "shortcut": "[ 8 ]"}
 	]
 
 func get_weapon_info() -> Dictionary:
@@ -161,12 +215,12 @@ func get_weapon_info() -> Dictionary:
 	}
 
 func serialize_stances() -> Dictionary:
-	return {
-		"ground_hips_y": ground_hips_y,
-		"aim": _serialize_stance(stance_configs.get("aim", {})),
-		"idle": _serialize_stance(stance_configs.get("idle", {})),
-		"ready": _serialize_stance(stance_configs.get("ready", {}))
+	var out: Dictionary = {
+		"ground_hips_y": ground_hips_y
 	}
+	for s_key in stance_configs:
+		out[s_key] = _serialize_stance(stance_configs[s_key])
+	return out
 
 func save_stance_config() -> bool:
 	var path = "res://data/stance_config.json"
@@ -182,11 +236,11 @@ func save_stance_config() -> bool:
 	
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	if f:
-		f.store_string(JSON.stringify(all_cfg, "	"))
+		f.store_string(JSON.stringify(all_cfg, "\t"))
 		f.close()
 	var f2 = FileAccess.open("user://stance_config.json", FileAccess.WRITE)
 	if f2:
-		f2.store_string(JSON.stringify(all_cfg, "	"))
+		f2.store_string(JSON.stringify(all_cfg, "\t"))
 		f2.close()
 	return true
 
@@ -196,6 +250,15 @@ func _serialize_stance(s: Dictionary) -> Dictionary:
 		var v: Vector3 = s.get(k, Vector3.ZERO)
 		out[k] = [snappedf(v.x, 0.1), snappedf(v.y, 0.1), snappedf(v.z, 0.1)]
 	return out
+
+func copy_weapon_from_idle(target_anim: String) -> void:
+	var idle_cfg = stance_configs.get("idle", default_stance_configs.get("idle", {}))
+	if not stance_configs.has(target_anim):
+		stance_configs[target_anim] = default_stance_configs.get(target_anim, {}).duplicate()
+	if idle_cfg.has("bow_rot"):
+		stance_configs[target_anim]["bow_rot"] = idle_cfg["bow_rot"]
+	current_pose = _compute_pose(current_anim, anim_time)
+	_apply_pose(current_pose)
 
 func set_stance(st_name: String) -> void:
 	if current_stance == st_name and current_anim == st_name:
@@ -489,9 +552,8 @@ func _compute_walk(time_val: float) -> Dictionary:
 	p["right_thigh_rot"] = Vector3(thigh_r, 0.0, 2.0)
 	p["right_shin_rot"] = Vector3(5.0 + stance_r + swing_r, 0.0, 0.0)
 	
-	# Thế tay mang cung: Nếu đang ở ready thì theo ready, còn lại theo idle
-	var st_key = current_stance if (stance_configs.has(current_stance) and current_stance != "aim") else "idle"
-	var cfg = stance_configs.get(st_key, default_stance_configs.get("idle", {}))
+	# Thế tay mang cung
+	var cfg = stance_configs.get("walk", default_stance_configs.get("walk", {}))
 	var base_bow: Vector3 = cfg.get("bow_rot", Vector3(0.0, 0.0, 12.0))
 	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(6.0, 0.0, -12.0))
 	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-12.0, 0.0, 0.0))
@@ -543,19 +605,18 @@ func _compute_run(time_val: float) -> Dictionary:
 	p["right_thigh_rot"] = Vector3(thigh_r, 0.0, 3.0)
 	p["right_shin_rot"] = Vector3(8.0 + stance_r + max(rear_kick_r, knee_drive_r), 0.0, 0.0)
 	
-	var st_key = current_stance if (stance_configs.has(current_stance) and current_stance != "aim") else "idle"
-	var cfg = stance_configs.get(st_key, default_stance_configs.get("idle", {}))
-	var base_bow: Vector3 = cfg.get("bow_rot", Vector3(0.0, 0.0, 12.0))
-	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(6.0, 0.0, -12.0))
-	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-12.0, 0.0, 0.0))
+	var cfg = stance_configs.get("run", default_stance_configs.get("run", {}))
+	var base_bow: Vector3 = cfg.get("bow_rot", Vector3(25.0, 5.0, 15.0))
+	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(-14.0, -10.0, -12.0))
+	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-35.0, 0.0, 0.0))
 	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(4.0, 0.0, 10.0))
 	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-14.0, 0.0, 0.0))
 	
 	# Ranger Bow Sprint Carriage: Cung cầm ở tay trái đưa chéo về trước, chếch lên trên và ra ngoài
 	# Triệt tiêu 100% việc chạm đùi khi đùi nâng cao sải chân
-	p["bow_rot"] = base_bow + Vector3(25.0 + sin(t) * 6.0, 5.0, 15.0)
-	p["left_arm_rot"] = base_l_arm + Vector3(-20.0 + sin(t) * 12.0, -10.0, -12.0)
-	p["left_forearm_rot"] = base_l_fore + Vector3(-35.0 - sin(t) * 10.0, 0.0, 0.0)
+	p["bow_rot"] = base_bow + Vector3(sin(t) * 6.0, 0.0, 0.0)
+	p["left_arm_rot"] = base_l_arm + Vector3(sin(t) * 12.0, 0.0, 0.0)
+	p["left_forearm_rot"] = base_l_fore + Vector3(-sin(t) * 10.0, 0.0, 0.0)
 	
 	# Tay phải bơm nhịp điệu mạnh mẽ
 	p["right_arm_rot"] = base_r_arm + Vector3(-sin(t) * 32.0, 0.0, 14.0)
@@ -572,11 +633,20 @@ func _compute_aim(time_val: float) -> Dictionary:
 	var p: Dictionary = {}
 	var tremor = sin(time_val * 42.0) * 0.20
 	
-	# Dáng đứng chiến đấu nghiêng người (Combat Archery Stance) mô phỏng chính xác Reference 1:
+	var cfg = stance_configs.get("aim", default_stance_configs.get("aim", {}))
+	var base_bow: Vector3 = cfg.get("bow_rot", Vector3(125.5, 44.1, 73.1))
+	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(-109.9, -51.1, 8.0))
+	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-1.0, 0.0, 0.0))
+	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-13.3, -120.9, 120.2))
+	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-76.5, 0.0, 0.0))
+	var base_torso: Vector3 = cfg.get("torso_rot", Vector3(10.0, 15.0, -8.0))
+	var base_head: Vector3 = cfg.get("head_rot", Vector3(-6.0, -65.0, 8.0))
+	
+	# Dáng đứng chiến đấu nghiêng người (Combat Archery Stance)
 	p["hips_pos"] = Vector3(0.0, ground_hips_y - 0.03, 0.0)
 	p["hips_rot"] = Vector3(0.0, 50.0, 0.0)
-	p["torso_rot"] = Vector3(10.0, 15.0, -8.0)
-	p["head_rot"] = Vector3(-6.0, -65.0, 8.0)
+	p["torso_rot"] = base_torso
+	p["head_rot"] = base_head
 	
 	# Chân trụ tấn vững chãi
 	p["left_thigh_rot"] = Vector3(-18.0, 0.0, -6.0)
@@ -585,13 +655,13 @@ func _compute_aim(time_val: float) -> Dictionary:
 	p["right_shin_rot"] = Vector3(16.0, 0.0, 0.0)
 	
 	# Tay trái đẩy thẳng bệ gỗ cung về phía trước (+Z), cánh cung ngửa ra ngoài (Cant Outward ~18°)
-	p["left_arm_rot"] = Vector3(-109.9, -51.1, 8.0) + Vector3(tremor, 0, 0)
-	p["left_forearm_rot"] = Vector3(-1.0, 0.0, 0.0)
-	p["bow_rot"] = Vector3(125.5, 44.1, 73.1)
+	p["left_arm_rot"] = base_l_arm + Vector3(tremor, 0, 0)
+	p["left_forearm_rot"] = base_l_fore
+	p["bow_rot"] = base_bow
 	
 	# Tay phải (Draw Arm): Cùi chỏ nhấc cao ngang vai vểnh ra mạn sườn phải
-	p["right_arm_rot"] = Vector3(-13.3, -120.9, 120.2) + Vector3(tremor, 0, 0)
-	p["right_forearm_rot"] = Vector3(-76.5, 0.0, 0.0)
+	p["right_arm_rot"] = base_r_arm + Vector3(tremor, 0, 0)
+	p["right_forearm_rot"] = base_r_fore
 	
 	p["is_drawn"] = true
 	p["arrow_visible"] = true
