@@ -203,9 +203,9 @@ func set_live_ground_hips_y(val: float) -> void:
 
 func _lerp_angles(a: Vector3, b: Vector3, weight: float) -> Vector3:
 	return Vector3(
-		lerpf(a.x, b.x, weight),
-		lerpf(a.y, b.y, weight),
-		lerpf(a.z, b.z, weight)
+		rad_to_deg(lerp_angle(deg_to_rad(a.x), deg_to_rad(b.x), weight)),
+		rad_to_deg(lerp_angle(deg_to_rad(a.y), deg_to_rad(b.y), weight)),
+		rad_to_deg(lerp_angle(deg_to_rad(a.z), deg_to_rad(b.z), weight))
 	)
 
 func generate_voxel_meshes() -> void:
@@ -298,19 +298,24 @@ func _process(delta: float) -> void:
 	_apply_pose(current_pose)
 
 func _update_totem_spawn(t_s: float) -> void:
-	var tau = t_s / SUMMON_DURATION
-	# Totem erupts from ground at tau = 0.20
-	if tau >= 0.20 and tau < 0.96:
+	var tau = clampf(t_s / SUMMON_DURATION, 0.0, 1.0)
+	# Totem erupts right as staff slams the ground at tau = 0.36
+	if tau >= 0.36 and tau < 0.94:
 		totem_mesh.visible = true
-		var rise_s = clampf((tau - 0.20) / 0.25, 0.0, 1.0)
+		var rise_s = clampf((tau - 0.36) / 0.18, 0.0, 1.0)
 		var smooth_rise = smoothstep(0.0, 1.0, rise_s)
 		# Erupts from Y = -1.2m below ground to Y = 0.0m
 		totem_spawn.position.y = lerp(-1.2, 0.0, smooth_rise)
 		if rise_s < 1.0:
-			totem_spawn.position.x = 0.55 + sin(t_s * 60.0) * 0.025
+			totem_spawn.position.x = 0.55 + sin(t_s * 55.0) * 0.02
 		else:
 			totem_spawn.position.x = 0.55
-	elif tau >= 0.96:
+	elif tau >= 0.94:
+		var sink_s = clampf((tau - 0.94) / 0.06, 0.0, 1.0)
+		totem_spawn.position.y = lerp(0.0, -1.2, smoothstep(0.0, 1.0, sink_s))
+		if tau >= 0.99:
+			totem_mesh.visible = false
+	else:
 		totem_mesh.visible = false
 
 func _compute_pose(anim: String, time_val: float) -> Dictionary:
@@ -326,27 +331,36 @@ func _compute_pose(anim: String, time_val: float) -> Dictionary:
 		"stunned": return _compute_stunned(time_val)
 		_: return _compute_idle(time_val)
 
-# --- 1. IDLE (Occult Sway, Muttering Chants, Staff Rest) ---
+# --- 1. IDLE (Occult Ritual Stance: Organic Breathing, Grounded Staff Pillar, Mudra Swirl) ---
 func _compute_idle(time_val: float) -> Dictionary:
 	var p: Dictionary = {}
-	var t = time_val * 2.0
-	var bob = sin(t) * 0.012
+	var t = time_val * 1.8
+	var breath = sin(t)
 	var cfg = stance_configs.get("idle", default_stance_configs.get("idle", {}))
+	var cfg_torso = cfg.get("torso_rot", Vector3(6.0, 0.0, 0.0))
+	var cfg_head = cfg.get("head_rot", Vector3(-4.0, 0.0, 0.0))
+	var cfg_r_arm = cfg.get("right_arm_rot", Vector3(-12.0, 6.0, 18.0))
+	var cfg_r_fore = cfg.get("right_forearm_rot", Vector3(-35.0, 0.0, 0.0))
+	var cfg_staff = cfg.get("staff_rot", Vector3(12.0, 0.0, -8.0))
+	var cfg_l_arm = cfg.get("left_arm_rot", Vector3(-25.0, 15.0, -26.0))
+	var cfg_l_fore = cfg.get("left_forearm_rot", Vector3(-65.0, 0.0, 0.0))
 	
-	p["hips_pos"] = Vector3(0.0, ground_hips_y + bob, 0.0)
-	p["hips_rot"] = Vector3(4.0, sin(t * 0.6) * 6.0, 0.0)
-	p["torso_rot"] = cfg.get("torso_rot", Vector3(6.0, 0.0, 0.0)) + Vector3(sin(t) * 3.0, 0, sin(t * 0.7) * 2.0)
-	p["head_rot"] = cfg.get("head_rot", Vector3(-4.0, 0.0, 0.0)) + Vector3(sin(t * 1.3) * 6.0, sin(t * 0.5) * 12.0, cos(t * 0.8) * 5.0)
+	# Organic rhythmic breathing
+	p["hips_pos"] = Vector3(0.0, ground_hips_y + breath * 0.005, 0.0)
+	p["hips_rot"] = Vector3(4.0 + breath * 1.2, sin(t * 0.4) * 3.0, 0.0)
+	p["torso_rot"] = cfg_torso + Vector3(-breath * 2.0, sin(t * 0.4) * -2.0, 0.0)
+	p["head_rot"] = cfg_head + Vector3(breath * 1.5, sin(t * 0.4) * 4.0, 0.0)
 	
-	# Staff held in right hand, planted near ground
-	p["right_arm_rot"] = cfg.get("right_arm_rot", Vector3(-12.0, 6.0, 18.0)) + Vector3(bob * 100.0, 0, 0)
-	p["right_forearm_rot"] = cfg.get("right_forearm_rot", Vector3(-35.0, 0.0, 0.0))
-	p["staff_rot"] = cfg.get("staff_rot", Vector3(12.0, 0.0, -8.0))
+	# Right arm securely grips the grounded staff with subtle breath transmission
+	p["right_arm_rot"] = cfg_r_arm + Vector3(breath * 1.5, 0.0, 0.0)
+	p["right_forearm_rot"] = cfg_r_fore
+	p["staff_rot"] = cfg_staff + Vector3(-breath * 1.2, 0.0, 0.0)
 	
-	# Left hand gesturing occult mudras
-	p["left_arm_rot"] = cfg.get("left_arm_rot", Vector3(-25.0, 15.0, -26.0)) + Vector3(sin(t) * 8.0, 0, 0)
-	p["left_forearm_rot"] = cfg.get("left_forearm_rot", Vector3(-65.0, 0.0, 0.0)) + Vector3(cos(t) * 12.0, 0, 0)
+	# Left arm hovers in front of chest weaving subtle occult mudras
+	p["left_arm_rot"] = cfg_l_arm + Vector3(sin(t + 0.8) * 4.0, cos(t * 0.7) * 3.0, sin(t) * 2.0)
+	p["left_forearm_rot"] = cfg_l_fore + Vector3(cos(t + 0.5) * 5.0, 0.0, 0.0)
 	
+	# Wide grounded stance, flat soles firmly at y = -10
 	p["left_thigh_rot"] = Vector3(-4.0, 0.0, -3.0)
 	p["left_shin_rot"] = Vector3(6.0, 0.0, 0.0)
 	p["right_thigh_rot"] = Vector3(4.0, 0.0, 3.0)
@@ -356,21 +370,28 @@ func _compute_idle(time_val: float) -> Dictionary:
 # --- WARD (Thế Ấn Hộ Mệnh) ---
 func _compute_ward(time_val: float) -> Dictionary:
 	var p: Dictionary = {}
-	var t = time_val * 2.5
-	var bob = sin(t) * 0.008
+	var t = time_val * 2.0
+	var pulse = sin(t)
 	var cfg = stance_configs.get("ward", default_stance_configs.get("ward", {}))
+	var cfg_torso = cfg.get("torso_rot", Vector3(10.0, -10.0, 0.0))
+	var cfg_head = cfg.get("head_rot", Vector3(-6.0, 10.0, 0.0))
+	var cfg_r_arm = cfg.get("right_arm_rot", Vector3(-42.0, 20.0, 15.0))
+	var cfg_r_fore = cfg.get("right_forearm_rot", Vector3(-75.0, 0.0, 0.0))
+	var cfg_staff = cfg.get("staff_rot", Vector3(75.0, 25.0, -15.0))
+	var cfg_l_arm = cfg.get("left_arm_rot", Vector3(-48.0, -25.0, -20.0))
+	var cfg_l_fore = cfg.get("left_forearm_rot", Vector3(-85.0, 0.0, 0.0))
 	
-	p["hips_pos"] = Vector3(0.0, ground_hips_y + bob, 0.0)
-	p["hips_rot"] = Vector3(2.0, 10.0, 0.0)
-	p["torso_rot"] = cfg.get("torso_rot", Vector3(10.0, -10.0, 0.0))
-	p["head_rot"] = cfg.get("head_rot", Vector3(-6.0, 10.0, 0.0))
+	p["hips_pos"] = Vector3(0.0, ground_hips_y - 0.012 + pulse * 0.004, 0.0)
+	p["hips_rot"] = Vector3(2.0, 10.0 + pulse * 1.5, 0.0)
+	p["torso_rot"] = cfg_torso + Vector3(pulse * 1.5, 0.0, 0.0)
+	p["head_rot"] = cfg_head + Vector3(-pulse * 1.5, 0.0, 0.0)
 	
-	p["right_arm_rot"] = cfg.get("right_arm_rot", Vector3(-42.0, 20.0, 15.0))
-	p["right_forearm_rot"] = cfg.get("right_forearm_rot", Vector3(-75.0, 0.0, 0.0))
-	p["staff_rot"] = cfg.get("staff_rot", Vector3(75.0, 25.0, -15.0))
+	p["right_arm_rot"] = cfg_r_arm + Vector3(pulse * 2.0, 0.0, 0.0)
+	p["right_forearm_rot"] = cfg_r_fore
+	p["staff_rot"] = cfg_staff + Vector3(pulse * 2.0, 0.0, 0.0)
 	
-	p["left_arm_rot"] = cfg.get("left_arm_rot", Vector3(-48.0, -25.0, -20.0))
-	p["left_forearm_rot"] = cfg.get("left_forearm_rot", Vector3(-85.0, 0.0, 0.0))
+	p["left_arm_rot"] = cfg_l_arm + Vector3(cos(t) * 3.0, 0.0, 0.0)
+	p["left_forearm_rot"] = cfg_l_fore
 	
 	p["left_thigh_rot"] = Vector3(-8.0, 0.0, -4.0)
 	p["left_shin_rot"] = Vector3(14.0, 0.0, 0.0)
@@ -378,21 +399,30 @@ func _compute_ward(time_val: float) -> Dictionary:
 	p["right_shin_rot"] = Vector3(10.0, 0.0, 0.0)
 	return p
 
-# --- 2. WALK (Deliberate Hunched Ritual Stride) ---
+# --- 2. WALK (Pilgrim Shaman Stride: Kinematic Knee Bends, Weight Shift, Staff Rhythm) ---
 func _compute_walk(time_val: float) -> Dictionary:
 	var p: Dictionary = {}
 	var t = time_val * 3.8
 	var s_leg = sin(t)
+	var c_leg = cos(t)
 	
-	p["hips_pos"] = Vector3(0.0, ground_hips_y + abs(sin(t * 2.0)) * 0.025, 0.0)
-	p["hips_rot"] = Vector3(8.0, s_leg * 8.0, 0.0)
-	p["torso_rot"] = Vector3(10.0, -s_leg * 6.0, 0.0)
-	p["head_rot"] = Vector3(-8.0, -s_leg * 4.0, 0.0)
+	# Smooth continuous knee flexion without sharp snapping
+	var knee_l = pow(maxf(0.0, -s_leg), 1.4) * 34.0
+	var knee_r = pow(maxf(0.0, s_leg), 1.4) * 34.0
 	
-	p["left_thigh_rot"] = Vector3(-s_leg * 28.0, 0.0, 0.0)
-	p["left_shin_rot"] = Vector3(maxf(0.0, s_leg * 34.0), 0.0, 0.0)
-	p["right_thigh_rot"] = Vector3(s_leg * 28.0, 0.0, 0.0)
-	p["right_shin_rot"] = Vector3(maxf(0.0, -s_leg * 34.0), 0.0, 0.0)
+	# Pelvic weight shift & vertical bob
+	p["hips_pos"] = Vector3(s_leg * 0.015, ground_hips_y - 0.008 + cos(2.0 * t) * 0.014, 0.0)
+	p["hips_rot"] = Vector3(6.0, s_leg * 6.0, -s_leg * 2.5)
+	
+	# Hunched elder shaman posture
+	p["torso_rot"] = Vector3(10.0, -s_leg * 5.0, c_leg * 2.0)
+	p["head_rot"] = Vector3(-10.0, -s_leg * 4.0, 0.0)
+	
+	# Leg strides with continuous phase swing
+	p["left_thigh_rot"] = Vector3(-s_leg * 24.0, 0.0, -3.0)
+	p["left_shin_rot"] = Vector3(knee_l + 4.0, 0.0, 0.0)
+	p["right_thigh_rot"] = Vector3(s_leg * 24.0, 0.0, 3.0)
+	p["right_shin_rot"] = Vector3(knee_r + 4.0, 0.0, 0.0)
 	
 	var st_key = current_stance if (stance_configs.has(current_stance) and current_stance != "chant") else "idle"
 	var cfg = stance_configs.get(st_key, default_stance_configs.get("idle", {}))
@@ -402,77 +432,80 @@ func _compute_walk(time_val: float) -> Dictionary:
 	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(-25.0, 15.0, -26.0))
 	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-65.0, 0.0, 0.0))
 	
-	# Staff walking rhythm following base pose
-	p["staff_rot"] = base_staff + Vector3(cos(t) * 4.0, 0.0, 0.0)
-	p["right_arm_rot"] = base_r_arm + Vector3(cos(t) * 14.0, 0.0, 0.0)
-	p["right_forearm_rot"] = base_r_fore
+	# Staff acts as a walking cane, planting in cadence with contralateral step
+	p["staff_rot"] = base_staff + Vector3(s_leg * 8.0, 0.0, 0.0)
+	p["right_arm_rot"] = base_r_arm + Vector3(-s_leg * 12.0, 0.0, c_leg * 3.0)
+	p["right_forearm_rot"] = base_r_fore + Vector3(-s_leg * 5.0, 0.0, 0.0)
 	
-	p["left_arm_rot"] = base_l_arm + Vector3(-s_leg * 18.0, 0.0, 0.0)
-	p["left_forearm_rot"] = base_l_fore
+	# Left arm counter-swings naturally with mudra flourish
+	p["left_arm_rot"] = base_l_arm + Vector3(s_leg * 16.0, 0.0, -s_leg * 4.0)
+	p["left_forearm_rot"] = base_l_fore + Vector3(c_leg * 8.0, 0.0, 0.0)
 	return p
 
-# --- 3. RUN (Frantic Skulking Robe Sprint) ---
+# --- 3. RUN (Aggressive Hunched Robe Sprint: Tucked Flank Staff, High Knee Propulsion) ---
 func _compute_run(time_val: float) -> Dictionary:
 	var p: Dictionary = {}
-	var t = time_val * 6.8
+	var t = time_val * 6.2
 	var s_leg = sin(t)
+	var c_leg = cos(t)
 	
-	p["hips_pos"] = Vector3(0.0, ground_hips_y - 0.02 + abs(sin(t * 2.0)) * 0.035, 0.0)
-	p["hips_rot"] = Vector3(16.0, s_leg * 14.0, 0.0)
-	p["torso_rot"] = Vector3(12.0, -s_leg * 10.0, 0.0)
-	p["head_rot"] = Vector3(-14.0, 0.0, 0.0)
+	# High knee power swing with smooth curve
+	var knee_l = pow(maxf(0.0, -s_leg), 1.3) * 50.0
+	var knee_r = pow(maxf(0.0, s_leg), 1.3) * 50.0
 	
-	p["left_thigh_rot"] = Vector3(-s_leg * 44.0, 0.0, 0.0)
-	p["left_shin_rot"] = Vector3(maxf(0.0, s_leg * 52.0), 0.0, 0.0)
-	p["right_thigh_rot"] = Vector3(s_leg * 44.0, 0.0, 0.0)
-	p["right_shin_rot"] = Vector3(maxf(0.0, -s_leg * 52.0), 0.0, 0.0)
+	# Dynamic forward scurry
+	p["hips_pos"] = Vector3(s_leg * 0.02, ground_hips_y - 0.02 + cos(2.0 * t) * 0.026, 0.0)
+	p["hips_rot"] = Vector3(12.0, s_leg * 10.0, -s_leg * 4.0)
+	p["torso_rot"] = Vector3(18.0, -s_leg * 8.0, c_leg * 3.0)
+	p["head_rot"] = Vector3(-18.0, -s_leg * 5.0, 0.0)
 	
-	var st_key = current_stance if (stance_configs.has(current_stance) and current_stance != "chant") else "idle"
-	var cfg = stance_configs.get(st_key, default_stance_configs.get("idle", {}))
-	var base_staff: Vector3 = cfg.get("staff_rot", Vector3(12.0, 0.0, -8.0))
-	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-12.0, 6.0, 18.0))
-	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-35.0, 0.0, 0.0))
-	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(-25.0, 15.0, -26.0))
-	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-65.0, 0.0, 0.0))
+	p["left_thigh_rot"] = Vector3(-s_leg * 38.0, 0.0, -4.0)
+	p["left_shin_rot"] = Vector3(knee_l + 6.0, 0.0, 0.0)
+	p["right_thigh_rot"] = Vector3(s_leg * 38.0, 0.0, 4.0)
+	p["right_shin_rot"] = Vector3(knee_r + 6.0, 0.0, 0.0)
 	
-	p["staff_rot"] = base_staff + Vector3(sin(t) * 8.0, 0.0, 0.0)
-	p["right_arm_rot"] = base_r_arm + Vector3(cos(t) * 22.0, 0.0, 0.0)
-	p["right_forearm_rot"] = base_r_fore
+	# Staff carried tucked along the right flank pointing back-down (no erratic flailing)
+	p["right_arm_rot"] = Vector3(-35.0 + c_leg * 8.0, 12.0, 18.0)
+	p["right_forearm_rot"] = Vector3(-55.0, 0.0, 0.0)
+	p["staff_rot"] = Vector3(45.0 + s_leg * 6.0, 0.0, -8.0)
 	
-	p["left_arm_rot"] = base_l_arm + Vector3(-s_leg * 32.0, 0.0, 0.0)
-	p["left_forearm_rot"] = base_l_fore
+	# Left arm pumps vigorously for balance
+	p["left_arm_rot"] = Vector3(-45.0 - s_leg * 26.0, -10.0, -22.0)
+	p["left_forearm_rot"] = Vector3(-65.0 - c_leg * 15.0, 0.0, 0.0)
 	return p
 
-# --- 4. CHANT (Mystic Incantation, Levitation, Soul Surge) ---
+# --- 4. CHANT (Ground-Rooted Mystic Ritual: Wide Stance, Spine Arching, Skyward Soul Orb Surge) ---
 func _compute_chant(time_val: float) -> Dictionary:
 	var p: Dictionary = {}
-	var t = time_val * 3.2
+	var t = time_val * 2.6
 	var surge = sin(t)
-	var float_y = sin(t * 0.8) * 0.045
-	var cfg = stance_configs.get("chant", default_stance_configs.get("chant", {}))
+	var trem = sin(time_val * 34.0) * 1.6
 	
-	# Shaman levitates slightly off ground
-	p["hips_pos"] = Vector3(0.0, ground_hips_y + 0.04 + float_y, 0.0)
-	p["hips_rot"] = Vector3(-6.0 + surge * 3.0, sin(t * 0.4) * 8.0, 0.0)
-	p["torso_rot"] = cfg.get("torso_rot", Vector3(-14.0, 0.0, 0.0)) + Vector3(surge * 5.0, 0, 0)
-	p["head_rot"] = cfg.get("head_rot", Vector3(-24.0, 0.0, 0.0)) + Vector3(surge * 8.0, 0, 0)
+	# 100% Grounded deep ritual stance (zero hovering, soles firmly planted on floor)
+	p["hips_pos"] = Vector3(0.0, ground_hips_y - 0.026 + surge * 0.008, 0.0)
+	p["hips_rot"] = Vector3(4.0 + surge * 2.0, sin(t * 0.5) * 5.0, 0.0)
 	
-	# Both arms raised high invoking dark deities
-	p["right_arm_rot"] = cfg.get("right_arm_rot", Vector3(-120.0, 15.0, 35.0)) + Vector3(surge * 10.0, 0, 0)
-	p["right_forearm_rot"] = cfg.get("right_forearm_rot", Vector3(-20.0, 0.0, 0.0))
-	p["staff_rot"] = cfg.get("staff_rot", Vector3(-15.0, 0.0, 0.0)) + Vector3(surge * 8.0, 0, 0)
+	# Spine rocks in trance, arching back to project dark mana to the sky
+	p["torso_rot"] = Vector3(-16.0 + surge * 6.0, sin(t * 0.5) * -7.0, cos(t) * 3.0)
+	p["head_rot"] = Vector3(-26.0 + surge * 8.0, sin(t * 0.5) * 5.0, 0.0)
 	
-	p["left_arm_rot"] = cfg.get("left_arm_rot", Vector3(-115.0, -15.0, -35.0)) + Vector3(surge * 10.0, 0, 0)
-	p["left_forearm_rot"] = cfg.get("left_forearm_rot", Vector3(-35.0, 0.0, 0.0)) + Vector3(cos(t) * 8.0, 0, 0)
+	# Right arm raises the gnarled staff high, shaking with arcane resonance
+	p["right_arm_rot"] = Vector3(-125.0 + surge * 8.0, 15.0 + trem, 28.0)
+	p["right_forearm_rot"] = Vector3(-22.0, 0.0, 0.0)
+	p["staff_rot"] = Vector3(88.0 + trem * 1.2, 0.0, 0.0)
 	
-	# Feet dangling loosely in levitation
-	p["left_thigh_rot"] = Vector3(10.0 + surge * 4.0, 0.0, -6.0)
-	p["left_shin_rot"] = Vector3(25.0, 0.0, 0.0)
-	p["right_thigh_rot"] = Vector3(14.0 - surge * 4.0, 0.0, 6.0)
-	p["right_shin_rot"] = Vector3(28.0, 0.0, 0.0)
+	# Left hand weaves circular dark mudras, fingers channeling eldritch smoke
+	p["left_arm_rot"] = Vector3(-115.0 + cos(t) * 10.0, -18.0, -32.0 + surge * 8.0)
+	p["left_forearm_rot"] = Vector3(-35.0 + sin(t) * 12.0, 0.0, 0.0)
+	
+	# Deep rooted legs absorbing the magical ground tremor
+	p["left_thigh_rot"] = Vector3(-12.0 + surge * 3.0, 0.0, -8.0)
+	p["left_shin_rot"] = Vector3(20.0 - surge * 3.0, 0.0, 0.0)
+	p["right_thigh_rot"] = Vector3(10.0 - surge * 3.0, 0.0, 8.0)
+	p["right_shin_rot"] = Vector3(18.0 + surge * 3.0, 0.0, 0.0)
 	return p
 
-# --- 5. SUMMON RITUAL (Staff Slam, Earth Tremor, Totem Eruption) ---
+# --- 5. SUMMON TOTEM (Cinematic Earth Shatter: Windup -> Vertical Slam -> Totem Eruption -> Recovery) ---
 func _compute_summon(t_s: float) -> Dictionary:
 	var p: Dictionary = {}
 	var tau = clampf(t_s / SUMMON_DURATION, 0.0, 1.0)
@@ -483,94 +516,92 @@ func _compute_summon(t_s: float) -> Dictionary:
 	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(-25.0, 15.0, -26.0))
 	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-65.0, 0.0, 0.0))
 	
-	if tau < 0.28:
-		# WINDUP (0.0s - 0.40s): Raise staff high with both hands, crouching
-		var s = smoothstep(0.0, 1.0, tau / 0.28)
-		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y, ground_hips_y + 0.04, s), lerp(0.0, -0.05, s))
+	if tau < 0.24:
+		# PHASE 1: Dramatic Windup (0.0s - 0.35s): Arches back gathering lightning
+		var s = smoothstep(0.0, 1.0, tau / 0.24)
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y, ground_hips_y + 0.02, s), lerp(0.0, -0.05, s))
 		p["hips_rot"] = Vector3(lerp(0.0, -8.0, s), 0.0, 0.0)
 		p["torso_rot"] = Vector3(lerp(0.0, -18.0, s), 0.0, 0.0)
-		p["head_rot"] = Vector3(lerp(0.0, -16.0, s), 0.0, 0.0)
+		p["head_rot"] = Vector3(lerp(0.0, -20.0, s), 0.0, 0.0)
 		
-		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(-125.0, 15.0, 28.0), s)
-		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-25.0, 0.0, 0.0), s)
-		p["staff_rot"] = _lerp_angles(base_staff, Vector3(-25.0, 0.0, 0.0), s)
+		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(-135.0, 10.0, 25.0), s)
+		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-20.0, 0.0, 0.0), s)
+		p["staff_rot"] = _lerp_angles(base_staff, Vector3(85.0, 0.0, 0.0), s)
 		
-		p["left_arm_rot"] = _lerp_angles(base_l_arm, Vector3(-110.0, -15.0, -30.0), s)
-		p["left_forearm_rot"] = _lerp_angles(base_l_fore, Vector3(-45.0, 0.0, 0.0), s)
+		p["left_arm_rot"] = _lerp_angles(base_l_arm, Vector3(-115.0, -15.0, -32.0), s)
+		p["left_forearm_rot"] = _lerp_angles(base_l_fore, Vector3(-35.0, 0.0, 0.0), s)
 		
 		p["left_thigh_rot"] = Vector3(-6.0, 0.0, -4.0)
 		p["left_shin_rot"] = Vector3(12.0, 0.0, 0.0)
 		p["right_thigh_rot"] = Vector3(4.0, 0.0, 4.0)
 		p["right_shin_rot"] = Vector3(10.0, 0.0, 0.0)
 		
-	elif tau < 0.44:
-		# SLAM TO GROUND (0.28s - 0.64s): Staff slams vertically into earth!
-		var s = smoothstep(0.0, 1.0, (tau - 0.28) / 0.16)
-		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y + 0.04, ground_hips_y - 0.06, s), lerp(-0.05, 0.12, s))
-		p["hips_rot"] = Vector3(lerp(-8.0, 16.0, s), 0.0, 0.0)
-		p["torso_rot"] = Vector3(lerp(-18.0, 28.0, s), 0.0, 0.0)
-		p["head_rot"] = Vector3(lerp(-16.0, -8.0, s), 0.0, 0.0)
+	elif tau < 0.36:
+		# PHASE 2: Cataclysmic Ground Slam (0.24s - 0.52s): Staff driven vertically straight down into meadow
+		var s = smoothstep(0.0, 1.0, (tau - 0.24) / 0.12)
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y + 0.02, ground_hips_y - 0.055, s), lerp(-0.05, 0.10, s))
+		p["hips_rot"] = Vector3(lerp(-8.0, 14.0, s), 0.0, 0.0)
+		p["torso_rot"] = Vector3(lerp(-18.0, 26.0, s), 0.0, 0.0)
+		p["head_rot"] = Vector3(lerp(-20.0, -6.0, s), 0.0, 0.0)
 		
-		# Staff planted into ground vertically
-		p["right_arm_rot"] = Vector3(lerp(-125.0, -25.0, s), 0.0, 12.0)
-		p["right_forearm_rot"] = Vector3(lerp(-25.0, -65.0, s), 0.0, 0.0)
-		p["staff_rot"] = Vector3(lerp(-25.0, 65.0, s), 0.0, 0.0)
+		# Staff firmly planted vertically into the ground
+		p["right_arm_rot"] = Vector3(lerp(-135.0, -35.0, s), 5.0, 15.0)
+		p["right_forearm_rot"] = Vector3(lerp(-20.0, -55.0, s), 0.0, 0.0)
+		p["staff_rot"] = Vector3(lerp(-20.0, 15.0, s), 0.0, -5.0)
 		
-		p["left_arm_rot"] = Vector3(lerp(-110.0, -20.0, s), 0.0, -35.0)
+		p["left_arm_rot"] = Vector3(lerp(-115.0, -25.0, s), 0.0, -30.0)
 		p["left_forearm_rot"] = Vector3(-55.0, 0.0, 0.0)
 		
-		# Deep stance absorb
-		p["left_thigh_rot"] = Vector3(lerp(-6.0, -24.0, s), 0.0, -8.0)
-		p["left_shin_rot"] = Vector3(lerp(12.0, 36.0, s), 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(lerp(4.0, 16.0, s), 0.0, 8.0)
-		p["right_shin_rot"] = Vector3(lerp(10.0, 32.0, s), 0.0, 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(-6.0, -22.0, s), 0.0, -8.0)
+		p["left_shin_rot"] = Vector3(lerp(12.0, 34.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(4.0, 14.0, s), 0.0, 8.0)
+		p["right_shin_rot"] = Vector3(lerp(10.0, 30.0, s), 0.0, 0.0)
 		
-	elif tau < 0.85:
-		# TOTEM CHANNELING & COMMAND (0.44s - 1.23s): Outstretch left hand channeling magic
-		var _s = smoothstep(0.0, 1.0, (tau - 0.44) / 0.41)
-		var shake = sin(t_s * 45.0) * 0.8
-		p["hips_pos"] = Vector3(0.0, ground_hips_y - 0.03, 0.08)
-		p["hips_rot"] = Vector3(8.0, 0.0, 0.0)
-		p["torso_rot"] = Vector3(14.0 + shake, 0.0, 0.0)
+	elif tau < 0.77:
+		# PHASE 3: Totem Eruption & Spirit Binding (0.52s - 1.12s): Outstretched left arm channels dark energy
+		var trem = sin(t_s * 48.0) * 1.2
+		p["hips_pos"] = Vector3(0.0, ground_hips_y - 0.04, 0.08)
+		p["hips_rot"] = Vector3(10.0, 0.0, 0.0)
+		p["torso_rot"] = Vector3(16.0 + trem, 0.0, 0.0)
 		p["head_rot"] = Vector3(-4.0, 0.0, 0.0)
 		
-		# Staff holding ground
-		p["right_arm_rot"] = Vector3(-25.0, 0.0, 12.0)
-		p["right_forearm_rot"] = Vector3(-65.0, 0.0, 0.0)
-		p["staff_rot"] = Vector3(65.0, 0.0, 0.0)
+		# Staff held as an iron ground anchor
+		p["right_arm_rot"] = Vector3(-35.0, 5.0, 15.0)
+		p["right_forearm_rot"] = Vector3(-55.0, 0.0, 0.0)
+		p["staff_rot"] = Vector3(15.0, 0.0, -5.0)
 		
-		# Left arm commanding Totem
-		p["left_arm_rot"] = Vector3(-85.0 + shake, 0.0, -15.0)
+		# Left arm commanding the Totem with arcane vibration
+		p["left_arm_rot"] = Vector3(-88.0 + trem, -15.0, -12.0)
 		p["left_forearm_rot"] = Vector3(-15.0, 0.0, 0.0)
 		
-		p["left_thigh_rot"] = Vector3(-16.0, 0.0, -6.0)
-		p["left_shin_rot"] = Vector3(26.0, 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(10.0, 0.0, 6.0)
-		p["right_shin_rot"] = Vector3(22.0, 0.0, 0.0)
+		p["left_thigh_rot"] = Vector3(-18.0, 0.0, -6.0)
+		p["left_shin_rot"] = Vector3(28.0, 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(12.0, 0.0, 6.0)
+		p["right_shin_rot"] = Vector3(24.0, 0.0, 0.0)
 		
 	else:
-		# RECOVERY (0.85s - 1.45s): Rise back to stance
-		var s = smoothstep(0.0, 1.0, (tau - 0.85) / 0.15)
-		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.03, ground_hips_y, s), lerp(0.08, 0.0, s))
-		p["hips_rot"] = Vector3(lerp(8.0, 0.0, s), 0.0, 0.0)
-		p["torso_rot"] = Vector3(lerp(14.0, 6.0, s), 0.0, 0.0)
+		# PHASE 4: Recovery (1.12s - 1.45s): Majestic rise back to stance
+		var s = smoothstep(0.0, 1.0, (tau - 0.77) / 0.23)
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.04, ground_hips_y, s), lerp(0.08, 0.0, s))
+		p["hips_rot"] = Vector3(lerp(10.0, 0.0, s), 0.0, 0.0)
+		p["torso_rot"] = Vector3(lerp(16.0, 6.0, s), 0.0, 0.0)
 		p["head_rot"] = Vector3(lerp(-4.0, 0.0, s), 0.0, 0.0)
 		
-		p["right_arm_rot"] = _lerp_angles(Vector3(-25.0, 0.0, 12.0), base_r_arm, s)
-		p["right_forearm_rot"] = _lerp_angles(Vector3(-65.0, 0.0, 0.0), base_r_fore, s)
-		p["staff_rot"] = _lerp_angles(Vector3(65.0, 0.0, 0.0), base_staff, s)
+		p["right_arm_rot"] = _lerp_angles(Vector3(-35.0, 5.0, 15.0), base_r_arm, s)
+		p["right_forearm_rot"] = _lerp_angles(Vector3(-55.0, 0.0, 0.0), base_r_fore, s)
+		p["staff_rot"] = _lerp_angles(Vector3(15.0, 0.0, -5.0), base_staff, s)
 		
-		p["left_arm_rot"] = _lerp_angles(Vector3(-85.0, 0.0, -15.0), base_l_arm, s)
+		p["left_arm_rot"] = _lerp_angles(Vector3(-88.0, -15.0, -12.0), base_l_arm, s)
 		p["left_forearm_rot"] = _lerp_angles(Vector3(-15.0, 0.0, 0.0), base_l_fore, s)
 		
-		p["left_thigh_rot"] = Vector3(lerp(-16.0, -4.0, s), 0.0, -3.0)
-		p["left_shin_rot"] = Vector3(lerp(26.0, 6.0, s), 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(lerp(10.0, 4.0, s), 0.0, 3.0)
-		p["right_shin_rot"] = Vector3(lerp(22.0, 4.0, s), 0.0, 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(-18.0, -4.0, s), 0.0, -3.0)
+		p["left_shin_rot"] = Vector3(lerp(28.0, 6.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(12.0, 4.0, s), 0.0, 3.0)
+		p["right_shin_rot"] = Vector3(lerp(24.0, 4.0, s), 0.0, 0.0)
 		
 	return p
 
-# --- 6. HEX BOLT (Spear Thrust Cast) ---
+# --- 6. HEX BOLT (Spellcaster Cast: Coil Mana -> Snap Forward Aiming Demon Skull Orb -> Recoil Shockwave -> Settle) ---
 func _compute_hex(t_h: float) -> Dictionary:
 	var p: Dictionary = {}
 	var tau = clampf(t_h / HEX_DURATION, 0.0, 1.0)
@@ -581,127 +612,162 @@ func _compute_hex(t_h: float) -> Dictionary:
 	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(-25.0, 15.0, -26.0))
 	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-65.0, 0.0, 0.0))
 	
-	if tau < 0.35:
-		# Pull staff back like spear
-		var s = smoothstep(0.0, 1.0, tau / 0.35)
-		p["hips_pos"] = Vector3(0.0, ground_hips_y, lerp(0.0, -0.06, s))
-		p["hips_rot"] = Vector3(0.0, lerp(0.0, 25.0, s), 0.0)
-		p["torso_rot"] = Vector3(lerp(6.0, 2.0, s), lerp(0.0, 20.0, s), 0.0)
-		p["head_rot"] = Vector3(0.0, lerp(0.0, -30.0, s), 0.0)
+	if tau < 0.32:
+		# PHASE 1: Siphoning Mana (0.0s - 0.30s): Twisting torso right, pulling staff back
+		var s = smoothstep(0.0, 1.0, tau / 0.32)
+		p["hips_pos"] = Vector3(0.0, ground_hips_y, lerp(0.0, -0.05, s))
+		p["hips_rot"] = Vector3(0.0, lerp(0.0, 22.0, s), 0.0)
+		p["torso_rot"] = Vector3(lerp(6.0, 2.0, s), lerp(0.0, 24.0, s), 0.0)
+		p["head_rot"] = Vector3(0.0, lerp(0.0, -26.0, s), 0.0)
 		
-		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(-30.0, 35.0, 55.0), s)
-		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-110.0, 0.0, 0.0), s)
-		p["staff_rot"] = _lerp_angles(base_staff, Vector3(75.0, 0.0, 0.0), s)
+		# Staff drawn back near right shoulder, soul orb glowing
+		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(-45.0, 30.0, 48.0), s)
+		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-95.0, 0.0, 0.0), s)
+		p["staff_rot"] = _lerp_angles(base_staff, Vector3(65.0, 0.0, 0.0), s)
 		
-		p["left_arm_rot"] = Vector3(-65.0, -20.0, -15.0)
-		p["left_forearm_rot"] = Vector3(-20.0, 0.0, 0.0)
+		# Left hand locks onto the target
+		p["left_arm_rot"] = _lerp_angles(base_l_arm, Vector3(-75.0, -18.0, -10.0), s)
+		p["left_forearm_rot"] = _lerp_angles(base_l_fore, Vector3(-20.0, 0.0, 0.0), s)
 		
-		p["left_thigh_rot"] = Vector3(-12.0, 0.0, -4.0)
-		p["left_shin_rot"] = Vector3(18.0, 0.0, 0.0)
+		p["left_thigh_rot"] = Vector3(-10.0, 0.0, -4.0)
+		p["left_shin_rot"] = Vector3(16.0, 0.0, 0.0)
 		p["right_thigh_rot"] = Vector3(8.0, 0.0, 4.0)
 		p["right_shin_rot"] = Vector3(12.0, 0.0, 0.0)
-	elif tau < 0.55:
-		# Violent forward thrust
-		var s = smoothstep(0.0, 1.0, (tau - 0.35) / 0.20)
-		p["hips_pos"] = Vector3(0.0, ground_hips_y, lerp(-0.06, 0.12, s))
-		p["hips_rot"] = Vector3(0.0, lerp(25.0, -15.0, s), 0.0)
-		p["torso_rot"] = Vector3(12.0, lerp(20.0, -22.0, s), 0.0)
-		p["head_rot"] = Vector3(-6.0, lerp(-30.0, 15.0, s), 0.0)
 		
-		# Staff thrust forward
-		p["right_arm_rot"] = Vector3(lerp(-30.0, -88.0, s), lerp(35.0, -15.0, s), lerp(55.0, 10.0, s))
-		p["right_forearm_rot"] = Vector3(lerp(-110.0, -8.0, s), 0.0, 0.0)
-		p["staff_rot"] = Vector3(lerp(75.0, 85.0, s), 0.0, 0.0)
+	elif tau < 0.52:
+		# PHASE 2: Eldritch Snap Cast (0.30s - 0.50s): Snap forward pointing soul orb directly at foe!
+		var s = smoothstep(0.0, 1.0, (tau - 0.32) / 0.20)
+		p["hips_pos"] = Vector3(0.0, ground_hips_y, lerp(-0.05, 0.10, s))
+		p["hips_rot"] = Vector3(0.0, lerp(22.0, -16.0, s), 0.0)
+		p["torso_rot"] = Vector3(12.0, lerp(24.0, -20.0, s), 0.0)
+		p["head_rot"] = Vector3(-4.0, lerp(-26.0, 12.0, s), 0.0)
 		
-		p["left_arm_rot"] = Vector3(25.0, 0.0, -25.0)
+		# Staff thrust forward, demon skull & soul orb pointing straight at foe!
+		p["right_arm_rot"] = Vector3(lerp(-45.0, -85.0, s), lerp(30.0, -10.0, s), lerp(48.0, 8.0, s))
+		p["right_forearm_rot"] = Vector3(lerp(-95.0, -12.0, s), 0.0, 0.0)
+		p["staff_rot"] = Vector3(lerp(65.0, 88.0, s), 0.0, 0.0)
+		
+		# Left arm sweeps back for counter-balance
+		p["left_arm_rot"] = Vector3(lerp(-75.0, 28.0, s), 0.0, -26.0)
 		p["left_forearm_rot"] = Vector3(-35.0, 0.0, 0.0)
 		
-		p["left_thigh_rot"] = Vector3(lerp(-12.0, -25.0, s), 0.0, -4.0)
-		p["left_shin_rot"] = Vector3(lerp(18.0, 32.0, s), 0.0, 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(-10.0, -24.0, s), 0.0, -4.0)
+		p["left_shin_rot"] = Vector3(lerp(16.0, 30.0, s), 0.0, 0.0)
 		p["right_thigh_rot"] = Vector3(lerp(8.0, 14.0, s), 0.0, 4.0)
 		p["right_shin_rot"] = Vector3(lerp(12.0, 20.0, s), 0.0, 0.0)
+		
+	elif tau < 0.72:
+		# PHASE 3: Magic Recoil (0.50s - 0.70s): Magical shockwave pushes back
+		var s = smoothstep(0.0, 1.0, (tau - 0.52) / 0.20)
+		var recoil_trem = sin(t_h * 50.0) * 1.5
+		p["hips_pos"] = Vector3(0.0, ground_hips_y, lerp(0.10, 0.02, s))
+		p["hips_rot"] = Vector3(0.0, lerp(-16.0, -4.0, s), 0.0)
+		p["torso_rot"] = Vector3(lerp(12.0, 4.0, s) + recoil_trem, lerp(-20.0, -6.0, s), 0.0)
+		p["head_rot"] = Vector3(lerp(-4.0, 2.0, s), lerp(12.0, 4.0, s), 0.0)
+		
+		p["right_arm_rot"] = Vector3(lerp(-85.0, -65.0, s), -10.0, 12.0)
+		p["right_forearm_rot"] = Vector3(lerp(-12.0, -30.0, s), 0.0, 0.0)
+		p["staff_rot"] = Vector3(lerp(88.0, 70.0, s), 0.0, 0.0)
+		
+		p["left_arm_rot"] = Vector3(lerp(28.0, 0.0, s), 0.0, -25.0)
+		p["left_forearm_rot"] = Vector3(-45.0, 0.0, 0.0)
+		
+		p["left_thigh_rot"] = Vector3(lerp(-24.0, -12.0, s), 0.0, -4.0)
+		p["left_shin_rot"] = Vector3(lerp(30.0, 16.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(14.0, 8.0, s), 0.0, 4.0)
+		p["right_shin_rot"] = Vector3(lerp(20.0, 12.0, s), 0.0, 0.0)
+		
 	else:
-		# Follow through and recover
-		var s = smoothstep(0.0, 1.0, (tau - 0.55) / 0.45)
-		p["hips_pos"] = Vector3(0.0, ground_hips_y, lerp(0.12, 0.0, s))
-		p["hips_rot"] = Vector3(0.0, lerp(-15.0, 0.0, s), 0.0)
-		p["torso_rot"] = Vector3(lerp(12.0, 6.0, s), lerp(-22.0, 0.0, s), 0.0)
-		p["head_rot"] = Vector3(lerp(-6.0, 0.0, s), lerp(15.0, 0.0, s), 0.0)
+		# PHASE 4: Settling Back to Stance (0.70s - 0.95s)
+		var s = smoothstep(0.0, 1.0, (tau - 0.72) / 0.28)
+		p["hips_pos"] = Vector3(0.0, ground_hips_y, lerp(0.02, 0.0, s))
+		p["hips_rot"] = Vector3(0.0, lerp(-4.0, 0.0, s), 0.0)
+		p["torso_rot"] = Vector3(lerp(4.0, 6.0, s), lerp(-6.0, 0.0, s), 0.0)
+		p["head_rot"] = Vector3(lerp(2.0, 0.0, s), lerp(4.0, 0.0, s), 0.0)
 		
-		p["right_arm_rot"] = _lerp_angles(Vector3(-88.0, -15.0, 10.0), base_r_arm, s)
-		p["right_forearm_rot"] = _lerp_angles(Vector3(-8.0, 0.0, 0.0), base_r_fore, s)
-		p["staff_rot"] = _lerp_angles(Vector3(85.0, 0.0, 0.0), base_staff, s)
+		p["right_arm_rot"] = _lerp_angles(Vector3(-65.0, -10.0, 12.0), base_r_arm, s)
+		p["right_forearm_rot"] = _lerp_angles(Vector3(-30.0, 0.0, 0.0), base_r_fore, s)
+		p["staff_rot"] = _lerp_angles(Vector3(70.0, 0.0, 0.0), base_staff, s)
 		
-		p["left_arm_rot"] = _lerp_angles(Vector3(25.0, 0.0, -25.0), base_l_arm, s)
-		p["left_forearm_rot"] = _lerp_angles(Vector3(-35.0, 0.0, 0.0), base_l_fore, s)
+		p["left_arm_rot"] = _lerp_angles(Vector3(0.0, 0.0, -25.0), base_l_arm, s)
+		p["left_forearm_rot"] = _lerp_angles(Vector3(-45.0, 0.0, 0.0), base_l_fore, s)
 		
-		p["left_thigh_rot"] = Vector3(lerp(-25.0, -4.0, s), 0.0, -3.0)
-		p["left_shin_rot"] = Vector3(lerp(32.0, 6.0, s), 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(lerp(14.0, 4.0, s), 0.0, 3.0)
-		p["right_shin_rot"] = Vector3(lerp(20.0, 4.0, s), 0.0, 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(-12.0, -4.0, s), 0.0, -3.0)
+		p["left_shin_rot"] = Vector3(lerp(16.0, 6.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(8.0, 4.0, s), 0.0, 3.0)
+		p["right_shin_rot"] = Vector3(lerp(12.0, 4.0, s), 0.0, 0.0)
 	return p
 
-# --- 7. HURT ---
+# --- 7. HURT (Visceral Kinetic Impact Recoil) ---
 func _compute_hurt(t_h: float) -> Dictionary:
 	var p: Dictionary = {}
 	var tau = clampf(t_h / HURT_DURATION, 0.0, 1.0)
-	var s = sin(tau * PI)
-	var cfg = stance_configs.get(current_stance, default_stance_configs.get(current_stance, {}))
-	var base_staff: Vector3 = cfg.get("staff_rot", Vector3(12.0, 0.0, -8.0))
-	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-12.0, 6.0, 18.0))
-	
-	p["hips_pos"] = Vector3(0.0, ground_hips_y - s * 0.04, -s * 0.14)
-	p["hips_rot"] = Vector3(-s * 12.0, s * 6.0, 0.0)
-	p["torso_rot"] = Vector3(-s * 25.0, -s * 14.0, 0.0)
-	p["head_rot"] = Vector3(s * 20.0, -s * 16.0, 0.0)
-	
-	p["right_arm_rot"] = base_r_arm + Vector3(-s * 40.0, 0.0, s * 25.0)
-	p["right_forearm_rot"] = Vector3(-55.0 - s * 20.0, 0.0, 0.0)
-	p["staff_rot"] = base_staff + Vector3(s * 10.0, 0.0, 0.0)
-	
-	p["left_arm_rot"] = Vector3(s * 20.0, 0.0, -35.0)
-	p["left_forearm_rot"] = Vector3(-45.0, 0.0, 0.0)
-	
-	p["left_thigh_rot"] = Vector3(-s * 16.0, 0.0, -6.0)
-	p["left_shin_rot"] = Vector3(s * 28.0, 0.0, 0.0)
-	p["right_thigh_rot"] = Vector3(s * 12.0, 0.0, 6.0)
-	p["right_shin_rot"] = Vector3(s * 22.0, 0.0, 0.0)
-	return p
-
-# --- 8. STUNNED ---
-func _compute_stunned(time_val: float) -> Dictionary:
-	var p: Dictionary = {}
-	var t = time_val * 2.8
+	var s = sin(tau * PI) * (1.0 - tau * 0.35)
 	var cfg = stance_configs.get(current_stance, default_stance_configs.get(current_stance, {}))
 	var base_staff: Vector3 = cfg.get("staff_rot", Vector3(12.0, 0.0, -8.0))
 	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-12.0, 6.0, 18.0))
 	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-35.0, 0.0, 0.0))
 	
-	p["hips_pos"] = Vector3(sin(t) * 0.03, ground_hips_y - 0.035, cos(t) * 0.024)
-	p["hips_rot"] = Vector3(cos(t) * 3.0, sin(t) * 8.0, -sin(t) * 4.0)
-	p["torso_rot"] = Vector3(12.0 + sin(t) * 8.0, cos(t) * 14.0, sin(t) * 7.0)
-	p["head_rot"] = Vector3(-8.0 + cos(t * 1.4) * 12.0, -sin(t) * 18.0, cos(t * 0.8) * 15.0)
+	p["hips_pos"] = Vector3(0.0, ground_hips_y - s * 0.035, -s * 0.12)
+	p["hips_rot"] = Vector3(-s * 10.0, s * 5.0, 0.0)
+	p["torso_rot"] = Vector3(-s * 26.0, -s * 12.0, 0.0)
+	p["head_rot"] = Vector3(s * 22.0, -s * 14.0, 0.0)
 	
-	# Staff dangling limply
-	p["right_arm_rot"] = base_r_arm + Vector3(sin(t) * 8.0, 0.0, 0.0)
-	p["right_forearm_rot"] = base_r_fore
-	p["staff_rot"] = base_staff + Vector3(25.0 + cos(t) * 6.0, 0.0, 0.0)
+	# Staff jolts outward and shakes from kinetic impact
+	p["right_arm_rot"] = base_r_arm + Vector3(-s * 36.0, 0.0, s * 22.0)
+	p["right_forearm_rot"] = base_r_fore + Vector3(-s * 20.0, 0.0, 0.0)
+	p["staff_rot"] = base_staff + Vector3(s * 15.0, 0.0, 0.0)
 	
-	p["left_arm_rot"] = Vector3(12.0 - sin(t) * 8.0, 0.0, -18.0)
-	p["left_forearm_rot"] = Vector3(-15.0, 0.0, 0.0)
+	p["left_arm_rot"] = Vector3(s * 24.0, 0.0, -32.0)
+	p["left_forearm_rot"] = Vector3(-45.0, 0.0, 0.0)
 	
-	p["left_thigh_rot"] = Vector3(-14.0 + sin(t) * 5.0, 0.0, -4.0)
-	p["left_shin_rot"] = Vector3(22.0 + cos(t) * 6.0, 0.0, 0.0)
-	p["right_thigh_rot"] = Vector3(10.0 - sin(t) * 5.0, 0.0, 4.0)
-	p["right_shin_rot"] = Vector3(16.0 - cos(t) * 6.0, 0.0, 0.0)
+	p["left_thigh_rot"] = Vector3(-s * 15.0, 0.0, -5.0)
+	p["left_shin_rot"] = Vector3(s * 25.0, 0.0, 0.0)
+	p["right_thigh_rot"] = Vector3(s * 10.0, 0.0, 5.0)
+	p["right_shin_rot"] = Vector3(s * 20.0, 0.0, 0.0)
+	return p
+
+# --- 8. STUNNED (Grounded Dazed Gyro-Sway: Leaning on Staff as a Crutch, Dizzy Head Loll, Feet Grounded) ---
+func _compute_stunned(time_val: float) -> Dictionary:
+	var p: Dictionary = {}
+	var t = time_val * 2.2
+	var cfg = stance_configs.get(current_stance, default_stance_configs.get(current_stance, {}))
+	var base_staff: Vector3 = cfg.get("staff_rot", Vector3(12.0, 0.0, -8.0))
+	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-12.0, 6.0, 18.0))
+	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-35.0, 0.0, 0.0))
+	
+	# Weight tilted to the right leaning on staff, hips grounded
+	p["hips_pos"] = Vector3(cos(t) * 0.015 + 0.02, ground_hips_y - 0.025, sin(t * 0.7) * 0.012)
+	p["hips_rot"] = Vector3(cos(t) * 2.5, sin(t * 0.7) * 5.0, 5.0 + sin(t) * 2.5)
+	p["torso_rot"] = Vector3(12.0 + cos(t) * 3.5, sin(t * 0.8) * 7.0, 5.0 + sin(t) * 3.5)
+	
+	# Head lolls in a dizzy circular orbit
+	p["head_rot"] = Vector3(-6.0 + sin(t) * 12.0, cos(t) * 14.0, sin(t * 1.4) * 8.0)
+	
+	# Staff planted firmly acting as a cane/crutch preventing fall
+	p["right_arm_rot"] = base_r_arm + Vector3(-6.0, 0.0, 10.0 + sin(t) * 2.5)
+	p["right_forearm_rot"] = base_r_fore + Vector3(-12.0, 0.0, 0.0)
+	p["staff_rot"] = base_staff + Vector3(8.0 + cos(t) * 2.0, 0.0, 0.0)
+	
+	# Left arm hangs limp and dangling
+	p["left_arm_rot"] = Vector3(14.0 + sin(t) * 3.0, 0.0, -12.0)
+	p["left_forearm_rot"] = Vector3(-12.0, 0.0, 0.0)
+	
+	# Stable wide base, soles grounded at y = -10 (0.000m contact)
+	p["left_thigh_rot"] = Vector3(-12.0 + sin(t) * 2.5, 0.0, -6.0)
+	p["left_shin_rot"] = Vector3(18.0 - sin(t) * 2.5, 0.0, 0.0)
+	p["right_thigh_rot"] = Vector3(8.0 - sin(t) * 2.0, 0.0, 6.0)
+	p["right_shin_rot"] = Vector3(14.0 + sin(t) * 2.0, 0.0, 0.0)
 	return p
 
 func _blend_poses(a: Dictionary, b: Dictionary, f: float) -> Dictionary:
 	var out: Dictionary = {}
 	for k in b:
 		if a.has(k):
-			if b[k] is Vector3:
+			if k == "hips_pos":
 				out[k] = a[k].lerp(b[k], f)
+			elif b[k] is Vector3:
+				out[k] = _lerp_angles(a[k], b[k], f)
 			elif b[k] is float:
 				out[k] = lerpf(a[k], b[k], f)
 		else:

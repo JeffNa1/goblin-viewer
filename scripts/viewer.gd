@@ -713,26 +713,37 @@ func _capture_shaman_showcase() -> void:
 	switch_monster("shaman")
 	editor_panel.visible = false
 	
-	# 1. Front Full Body (Idle / Ward)
+	# 1. Idle - Breathing, firmly planted staff
 	m_shaman.play_anim("idle")
 	yaw = 20.0
 	pitch = -6.0
 	camera_distance = 3.0
-	camera_pivot.position.y = 0.58
+	camera_pivot.position = Vector3(0.0, 0.58, 0.0)
 	_update_camera_transform()
 	await get_tree().create_timer(0.4).timeout
-	_save_shot("shaman_overhaul_front.png")
+	_save_shot("shaman_anim_idle.png")
 	
-	# 2. Close-up on Head, Mask, Tusks, Ears & Piercings
-	yaw = 15.0
-	pitch = -2.0
-	camera_distance = 1.6
-	camera_pivot.position = Vector3(0.0, 1.15, 0.0)
+	# 2. Walk - Pilgrim walking stride with staff pacing
+	m_shaman.play_anim("walk")
+	yaw = 35.0
+	pitch = -6.0
+	camera_distance = 3.0
+	camera_pivot.position = Vector3(0.0, 0.58, 0.0)
 	_update_camera_transform()
-	await get_tree().create_timer(0.4).timeout
-	_save_shot("shaman_overhaul_close_head.png")
+	await get_tree().create_timer(0.5).timeout
+	_save_shot("shaman_anim_walk.png")
 	
-	# 3. Chant Animation (Spellcasting with Claws & Staff)
+	# 3. Run - Aggressive scurry with staff tucked along flank
+	m_shaman.play_anim("run")
+	yaw = 45.0
+	pitch = -8.0
+	camera_distance = 3.1
+	camera_pivot.position = Vector3(0.0, 0.56, 0.0)
+	_update_camera_transform()
+	await get_tree().create_timer(0.5).timeout
+	_save_shot("shaman_anim_run.png")
+	
+	# 4. Chant - Ground-rooted skyward ritual
 	m_shaman.play_anim("chant")
 	yaw = 25.0
 	pitch = -4.0
@@ -740,29 +751,39 @@ func _capture_shaman_showcase() -> void:
 	camera_pivot.position = Vector3(0.0, 0.65, 0.0)
 	_update_camera_transform()
 	await get_tree().create_timer(0.5).timeout
-	_save_shot("shaman_overhaul_chant.png")
+	_save_shot("shaman_anim_chant.png")
 	
-	# 4. Close-up on Staff Crown, Demon Skull & Glowing Soul Orb
-	m_shaman.play_anim("idle")
-	yaw = -25.0
-	pitch = -2.0
-	camera_distance = 1.3
-	camera_pivot.position = Vector3(0.38, 0.95, 0.0)
-	_update_camera_transform()
-	await get_tree().create_timer(0.4).timeout
-	_save_shot("shaman_overhaul_staff_orb.png")
-	
-	# 5. Summon Demon Totem
+	# 5. Summon - Cataclysmic staff slam & Totem eruption
 	m_shaman.play_anim("summon")
 	yaw = 25.0
 	pitch = -8.0
 	camera_distance = 3.4
-	camera_pivot.position.y = 0.62
+	camera_pivot.position = Vector3(0.0, 0.62, 0.0)
 	_update_camera_transform()
 	await get_tree().create_timer(0.65).timeout
-	_save_shot("shaman_overhaul_summon_totem.png")
+	_save_shot("shaman_anim_summon.png")
 	
-	# Reset back to Shaman Idle with normal view
+	# 6. Hex - Eldritch bolt discharge pointing soul orb
+	m_shaman.play_anim("hex")
+	yaw = 35.0
+	pitch = -6.0
+	camera_distance = 3.2
+	camera_pivot.position = Vector3(0.0, 0.60, 0.0)
+	_update_camera_transform()
+	await get_tree().create_timer(0.48).timeout
+	_save_shot("shaman_anim_hex.png")
+	
+	# 7. Stunned - Dazed leaning on staff crutch, feet firmly on ground
+	m_shaman.play_anim("stunned")
+	yaw = 20.0
+	pitch = -10.0
+	camera_distance = 2.8
+	camera_pivot.position = Vector3(0.0, 0.55, 0.0)
+	_update_camera_transform()
+	await get_tree().create_timer(0.5).timeout
+	_save_shot("shaman_anim_stunned.png")
+	
+	# Reset back to Shaman Idle
 	m_shaman.play_anim("idle")
 	reset_camera()
 	_update_ui_state()
