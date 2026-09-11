@@ -91,36 +91,36 @@ func _ready() -> void:
 func _init_default_stances() -> void:
 	default_stance_configs = {
 		"idle": {
-			"right_arm_rot": Vector3(4.0, 0.0, 10.0),
+			"right_arm_rot": Vector3(4.0, 0.0, 9.0),
 			"right_forearm_rot": Vector3(-14.0, 0.0, 0.0),
-			"bow_rot": Vector3(0.0, 0.0, 12.0),
-			"left_arm_rot": Vector3(6.0, 0.0, -12.0),
+			"bow_rot": Vector3(77.0, 0.0, 12.0),
+			"left_arm_rot": Vector3(6.0, 0.0, -13.0),
 			"left_forearm_rot": Vector3(-12.0, 0.0, 0.0),
 			"torso_rot": Vector3(4.0, 0.0, 0.0),
-			"head_rot": Vector3(-2.0, 0.0, 0.0)
+			"head_rot": Vector3(0.0, 0.0, 0.0)
 		},
 		"ready": {
-			"right_arm_rot": Vector3(-45.0, -30.0, 20.0),
+			"right_arm_rot": Vector3(-45.0, -44.0, 20.0),
 			"right_forearm_rot": Vector3(-95.0, 0.0, 0.0),
-			"bow_rot": Vector3(45.0, 15.0, 25.0),
-			"left_arm_rot": Vector3(-35.0, -10.0, -20.0),
+			"bow_rot": Vector3(89.0, 80.0, 36.0),
+			"left_arm_rot": Vector3(-51.0, 5.0, -20.0),
 			"left_forearm_rot": Vector3(-45.0, 0.0, 0.0),
 			"torso_rot": Vector3(6.0, 12.0, -4.0),
-			"head_rot": Vector3(-4.0, -20.0, 0.0)
+			"head_rot": Vector3(0.0, -20.0, 0.0)
 		},
 		"walk": {
-			"right_arm_rot": Vector3(4.0, 0.0, 10.0),
+			"right_arm_rot": Vector3(4.0, 0.0, 9.0),
 			"right_forearm_rot": Vector3(-14.0, 0.0, 0.0),
-			"bow_rot": Vector3(0.0, 0.0, 12.0),
-			"left_arm_rot": Vector3(6.0, 0.0, -12.0),
+			"bow_rot": Vector3(77.0, 0.0, 12.0),
+			"left_arm_rot": Vector3(6.0, 0.0, -13.0),
 			"left_forearm_rot": Vector3(-12.0, 0.0, 0.0),
 			"torso_rot": Vector3(7.0, 0.0, 0.0),
 			"head_rot": Vector3(-2.0, 0.0, 0.0)
 		},
 		"run": {
-			"right_arm_rot": Vector3(4.0, 0.0, 10.0),
+			"right_arm_rot": Vector3(4.0, 0.0, 9.0),
 			"right_forearm_rot": Vector3(-14.0, 0.0, 0.0),
-			"bow_rot": Vector3(25.0, 5.0, 15.0),
+			"bow_rot": Vector3(77.0, 0.0, 12.0),
 			"left_arm_rot": Vector3(-14.0, -10.0, -12.0),
 			"left_forearm_rot": Vector3(-35.0, 0.0, 0.0),
 			"torso_rot": Vector3(20.0, 0.0, 0.0),
