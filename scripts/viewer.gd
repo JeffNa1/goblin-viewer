@@ -253,10 +253,11 @@ func _ready() -> void:
 		)
 	
 	_setup_stance_editor()
-	switch_monster("archer")
-	if m_archer:
-		m_archer.play_anim("aim")
+	switch_monster("shaman")
+	if m_shaman:
+		m_shaman.play_anim("idle")
 	reset_camera()
+	# _capture_shaman_showcase()
 
 func switch_monster(m_type: String) -> void:
 	active_monster_type = m_type
@@ -704,6 +705,65 @@ func _capture_outfit_comparison() -> void:
 	# Reset back to Outfit 1 Aim
 	_select_archer_outfit(1)
 	m_archer.play_anim("aim")
+	reset_camera()
+	_update_ui_state()
+
+func _capture_shaman_showcase() -> void:
+	await get_tree().create_timer(0.4).timeout
+	switch_monster("shaman")
+	editor_panel.visible = false
+	
+	# 1. Front Full Body (Idle / Ward)
+	m_shaman.play_anim("idle")
+	yaw = 20.0
+	pitch = -6.0
+	camera_distance = 3.0
+	camera_pivot.position.y = 0.58
+	_update_camera_transform()
+	await get_tree().create_timer(0.4).timeout
+	_save_shot("shaman_overhaul_front.png")
+	
+	# 2. Close-up on Head, Mask, Tusks, Ears & Piercings
+	yaw = 15.0
+	pitch = -2.0
+	camera_distance = 1.6
+	camera_pivot.position = Vector3(0.0, 1.15, 0.0)
+	_update_camera_transform()
+	await get_tree().create_timer(0.4).timeout
+	_save_shot("shaman_overhaul_close_head.png")
+	
+	# 3. Chant Animation (Spellcasting with Claws & Staff)
+	m_shaman.play_anim("chant")
+	yaw = 25.0
+	pitch = -4.0
+	camera_distance = 3.2
+	camera_pivot.position = Vector3(0.0, 0.65, 0.0)
+	_update_camera_transform()
+	await get_tree().create_timer(0.5).timeout
+	_save_shot("shaman_overhaul_chant.png")
+	
+	# 4. Close-up on Staff Crown, Demon Skull & Glowing Soul Orb
+	m_shaman.play_anim("idle")
+	yaw = -25.0
+	pitch = -2.0
+	camera_distance = 1.3
+	camera_pivot.position = Vector3(0.38, 0.95, 0.0)
+	_update_camera_transform()
+	await get_tree().create_timer(0.4).timeout
+	_save_shot("shaman_overhaul_staff_orb.png")
+	
+	# 5. Summon Demon Totem
+	m_shaman.play_anim("summon")
+	yaw = 25.0
+	pitch = -8.0
+	camera_distance = 3.4
+	camera_pivot.position.y = 0.62
+	_update_camera_transform()
+	await get_tree().create_timer(0.65).timeout
+	_save_shot("shaman_overhaul_summon_totem.png")
+	
+	# Reset back to Shaman Idle with normal view
+	m_shaman.play_anim("idle")
 	reset_camera()
 	_update_ui_state()
 
