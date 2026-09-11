@@ -1,0 +1,76 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/goblin_archer.gd" id="1_archer"]
+
+[node name="GoblinArcher" type="Node3D"]
+script = ExtResource("1_archer")
+
+[node name="VisualRoot" type="Node3D" parent="."]
+
+[node name="Hips" type="Node3D" parent="VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.618, 0)
+
+[node name="Torso" type="Node3D" parent="VisualRoot/Hips"]
+
+[node name="TorsoMesh" type="MeshInstance3D" parent="VisualRoot/Hips/Torso"]
+
+[node name="Quiver" type="Node3D" parent="VisualRoot/Hips/Torso"]
+transform = Transform3D(0.895688, -0.420303, -0.145222, 0.393687, 0.901343, -0.180532, 0.206773, 0.104528, 0.972789, 0.07, 0.26, -0.21)
+
+[node name="QuiverMesh" type="MeshInstance3D" parent="VisualRoot/Hips/Torso/Quiver"]
+
+[node name="Head" type="Node3D" parent="VisualRoot/Hips/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.51, 0)
+
+[node name="HeadMesh" type="MeshInstance3D" parent="VisualRoot/Hips/Torso/Head"]
+
+[node name="LeftArm" type="Node3D" parent="VisualRoot/Hips/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.27, 0.48, 0)
+
+[node name="LeftArmMesh" type="MeshInstance3D" parent="VisualRoot/Hips/Torso/LeftArm"]
+
+[node name="LeftForearm" type="Node3D" parent="VisualRoot/Hips/Torso/LeftArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.27, 0)
+
+[node name="LeftForearmMesh" type="MeshInstance3D" parent="VisualRoot/Hips/Torso/LeftArm/LeftForearm"]
+
+[node name="Bow" type="Node3D" parent="VisualRoot/Hips/Torso/LeftArm/LeftForearm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.24, 0)
+
+[node name="BowMesh" type="MeshInstance3D" parent="VisualRoot/Hips/Torso/LeftArm/LeftForearm/Bow"]
+
+[node name="Arrow" type="Node3D" parent="VisualRoot/Hips/Torso/LeftArm/LeftForearm/Bow"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03, 0, 0)
+
+[node name="ArrowMesh" type="MeshInstance3D" parent="VisualRoot/Hips/Torso/LeftArm/LeftForearm/Bow/Arrow"]
+
+[node name="RightArm" type="Node3D" parent="VisualRoot/Hips/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27, 0.48, 0)
+
+[node name="RightArmMesh" type="MeshInstance3D" parent="VisualRoot/Hips/Torso/RightArm"]
+
+[node name="RightForearm" type="Node3D" parent="VisualRoot/Hips/Torso/RightArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.27, 0)
+
+[node name="RightForearmMesh" type="MeshInstance3D" parent="VisualRoot/Hips/Torso/RightArm/RightForearm"]
+
+
+[node name="LeftThigh" type="Node3D" parent="VisualRoot/Hips"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.13, 0, 0)
+
+[node name="LeftThighMesh" type="MeshInstance3D" parent="VisualRoot/Hips/LeftThigh"]
+
+[node name="LeftShin" type="Node3D" parent="VisualRoot/Hips/LeftThigh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.27, 0)
+
+[node name="LeftShinMesh" type="MeshInstance3D" parent="VisualRoot/Hips/LeftThigh/LeftShin"]
+
+[node name="RightThigh" type="Node3D" parent="VisualRoot/Hips"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.13, 0, 0)
+
+[node name="RightThighMesh" type="MeshInstance3D" parent="VisualRoot/Hips/RightThigh"]
+
+[node name="RightShin" type="Node3D" parent="VisualRoot/Hips/RightThigh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.27, 0)
+
+[node name="RightShinMesh" type="MeshInstance3D" parent="VisualRoot/Hips/RightThigh/RightShin"]

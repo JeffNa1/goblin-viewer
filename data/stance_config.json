@@ -1,0 +1,572 @@
+{
+	"archer": {
+		"aim": {
+			"bow_rot": [
+				125.5,
+				44.1,
+				73.1
+			],
+			"head_rot": [
+				-6.0,
+				-65.0,
+				8.0
+			],
+			"left_arm_rot": [
+				-109.9,
+				-51.1,
+				8.0
+			],
+			"left_forearm_rot": [
+				-1.0,
+				0.0,
+				0.0
+			],
+			"right_arm_rot": [
+				-13.3,
+				-120.9,
+				120.2
+			],
+			"right_forearm_rot": [
+				-76.5,
+				0.0,
+				0.0
+			],
+			"torso_rot": [
+				10.0,
+				15.0,
+				-8.0
+			]
+		},
+		"ground_hips_y": 0.618,
+		"idle": {
+			"bow_rot": [
+				77.0,
+				0.0,
+				12.0
+			],
+			"head_rot": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"left_arm_rot": [
+				6.0,
+				0.0,
+				-13.0
+			],
+			"left_forearm_rot": [
+				-12.0,
+				0.0,
+				0.0
+			],
+			"right_arm_rot": [
+				4.0,
+				0.0,
+				9.0
+			],
+			"right_forearm_rot": [
+				-14.0,
+				0.0,
+				0.0
+			],
+			"torso_rot": [
+				4.0,
+				0.0,
+				0.0
+			]
+		},
+		"ready": {
+			"bow_rot": [
+				89.0,
+				80.0,
+				36.0
+			],
+			"head_rot": [
+				0.0,
+				-20.0,
+				0.0
+			],
+			"left_arm_rot": [
+				-51.0,
+				5.0,
+				-20.0
+			],
+			"left_forearm_rot": [
+				-45.0,
+				0.0,
+				0.0
+			],
+			"right_arm_rot": [
+				-45.0,
+				-44.0,
+				20.0
+			],
+			"right_forearm_rot": [
+				-95.0,
+				0.0,
+				0.0
+			],
+			"torso_rot": [
+				6.0,
+				12.0,
+				-4.0
+			]
+		}
+	},
+	"chieftain": {
+		"ground": {
+			"head_rot": [
+				-2.0,
+				0.0,
+				0.0
+			],
+			"left_arm_rot": [
+				0.0,
+				0.0,
+				-18.0
+			],
+			"left_forearm_rot": [
+				-18.0,
+				0.0,
+				0.0
+			],
+			"right_arm_rot": [
+				-15.0,
+				10.0,
+				24.0
+			],
+			"right_forearm_rot": [
+				-42.0,
+				0.0,
+				0.0
+			],
+			"torso_rot": [
+				8.0,
+				0.0,
+				0.0
+			],
+			"warhammer_rot": [
+				15.0,
+				0.0,
+				-10.0
+			]
+		},
+		"ground_hips_y": 0.65,
+		"guard": {
+			"head_rot": [
+				-6.0,
+				0.0,
+				0.0
+			],
+			"left_arm_rot": [
+				-42.0,
+				18.0,
+				-15.0
+			],
+			"left_forearm_rot": [
+				-80.0,
+				0.0,
+				0.0
+			],
+			"right_arm_rot": [
+				-38.0,
+				-10.0,
+				18.0
+			],
+			"right_forearm_rot": [
+				-75.0,
+				0.0,
+				0.0
+			],
+			"torso_rot": [
+				12.0,
+				0.0,
+				0.0
+			],
+			"warhammer_rot": [
+				120.0,
+				25.0,
+				-45.0
+			]
+		},
+		"shoulder": {
+			"head_rot": [
+				-4.0,
+				0.0,
+				0.0
+			],
+			"left_arm_rot": [
+				15.0,
+				0.0,
+				-15.0
+			],
+			"left_forearm_rot": [
+				-25.0,
+				0.0,
+				0.0
+			],
+			"right_arm_rot": [
+				-32.0,
+				25.0,
+				35.0
+			],
+			"right_forearm_rot": [
+				-115.0,
+				0.0,
+				0.0
+			],
+			"torso_rot": [
+				6.0,
+				0.0,
+				0.0
+			],
+			"warhammer_rot": [
+				65.0,
+				0.0,
+				-30.0
+			]
+		}
+	},
+	"rogue": {
+		"dual_guard": {
+			"head_rot": [
+				-8.0,
+				0.0,
+				0.0
+			],
+			"left_arm_rot": [
+				-40.0,
+				15.0,
+				-12.0
+			],
+			"left_forearm_rot": [
+				-88.0,
+				0.0,
+				0.0
+			],
+			"right_arm_rot": [
+				-42.0,
+				-15.0,
+				12.0
+			],
+			"right_dagger_rot": [
+				65.0,
+				30.0,
+				-25.0
+			],
+			"right_forearm_rot": [
+				-90.0,
+				0.0,
+				0.0
+			],
+			"torso_rot": [
+				14.0,
+				0.0,
+				0.0
+			]
+		},
+		"ground_hips_y": 0.588,
+		"idle": {
+			"head_rot": [
+				-12.0,
+				0.0,
+				0.0
+			],
+			"left_arm_rot": [
+				-16.0,
+				-10.0,
+				-16.0
+			],
+			"left_forearm_rot": [
+				-52.0,
+				0.0,
+				0.0
+			],
+			"right_arm_rot": [
+				-18.0,
+				10.0,
+				16.0
+			],
+			"right_dagger_rot": [
+				20.0,
+				0.0,
+				0.0
+			],
+			"right_forearm_rot": [
+				-55.0,
+				0.0,
+				0.0
+			],
+			"torso_rot": [
+				18.0,
+				0.0,
+				0.0
+			]
+		},
+		"reverse": {
+			"head_rot": [
+				-16.0,
+				0.0,
+				0.0
+			],
+			"left_arm_rot": [
+				12.0,
+				-20.0,
+				-25.0
+			],
+			"left_forearm_rot": [
+				-68.0,
+				0.0,
+				0.0
+			],
+			"right_arm_rot": [
+				15.0,
+				20.0,
+				25.0
+			],
+			"right_dagger_rot": [
+				180.0,
+				0.0,
+				0.0
+			],
+			"right_forearm_rot": [
+				-70.0,
+				0.0,
+				0.0
+			],
+			"torso_rot": [
+				22.0,
+				0.0,
+				0.0
+			]
+		}
+	},
+	"shaman": {
+		"chant": {
+			"head_rot": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"left_arm_rot": [
+				-90.0,
+				-15.0,
+				-35.0
+			],
+			"left_forearm_rot": [
+				-35.0,
+				0.0,
+				0.0
+			],
+			"right_arm_rot": [
+				-90.0,
+				-9.0,
+				35.0
+			],
+			"right_forearm_rot": [
+				-20.0,
+				0.0,
+				0.0
+			],
+			"staff_rot": [
+				142.0,
+				0.0,
+				0.0
+			],
+			"torso_rot": [
+				-14.0,
+				0.0,
+				0.0
+			]
+		},
+		"ground_hips_y": 0.614,
+		"idle": {
+			"head_rot": [
+				0.0,
+				0.0,
+				0.0
+			],
+			"left_arm_rot": [
+				-25.0,
+				15.0,
+				-26.0
+			],
+			"left_forearm_rot": [
+				-65.0,
+				0.0,
+				0.0
+			],
+			"right_arm_rot": [
+				-12.0,
+				6.0,
+				18.0
+			],
+			"right_forearm_rot": [
+				-35.0,
+				0.0,
+				0.0
+			],
+			"staff_rot": [
+				131.0,
+				0.0,
+				-8.0
+			],
+			"torso_rot": [
+				6.0,
+				0.0,
+				0.0
+			]
+		},
+		"ward": {
+			"head_rot": [
+				-6.0,
+				10.0,
+				0.0
+			],
+			"left_arm_rot": [
+				-48.0,
+				-25.0,
+				-20.0
+			],
+			"left_forearm_rot": [
+				-85.0,
+				0.0,
+				0.0
+			],
+			"right_arm_rot": [
+				-42.0,
+				20.0,
+				15.0
+			],
+			"right_forearm_rot": [
+				-75.0,
+				0.0,
+				0.0
+			],
+			"staff_rot": [
+				75.0,
+				25.0,
+				-15.0
+			],
+			"torso_rot": [
+				10.0,
+				-10.0,
+				0.0
+			]
+		}
+	},
+	"warrior": {
+		"ground_hips_y": 0.618,
+		"guard": {
+			"club_rot": [
+				179.0,
+				-124.0,
+				-74.0
+			],
+			"head_rot": [
+				-2.0,
+				0.0,
+				0.0
+			],
+			"left_arm_rot": [
+				-19.0,
+				24.0,
+				-18.0
+			],
+			"left_forearm_rot": [
+				-82.0,
+				0.0,
+				0.0
+			],
+			"right_arm_rot": [
+				-28.0,
+				-11.0,
+				20.0
+			],
+			"right_forearm_rot": [
+				-77.0,
+				0.0,
+				0.0
+			],
+			"torso_rot": [
+				8.0,
+				0.0,
+				0.0
+			]
+		},
+		"low": {
+			"club_rot": [
+				92.0,
+				-14.0,
+				-12.0
+			],
+			"head_rot": [
+				-2.0,
+				0.0,
+				0.0
+			],
+			"left_arm_rot": [
+				0.0,
+				0.0,
+				-12.0
+			],
+			"left_forearm_rot": [
+				-17.0,
+				0.0,
+				0.0
+			],
+			"right_arm_rot": [
+				12.0,
+				-8.0,
+				26.0
+			],
+			"right_forearm_rot": [
+				-22.0,
+				0.0,
+				0.0
+			],
+			"torso_rot": [
+				4.0,
+				0.0,
+				0.0
+			]
+		},
+		"shoulder": {
+			"club_rot": [
+				67.0,
+				-2.0,
+				-33.0
+			],
+			"head_rot": [
+				-2.0,
+				0.0,
+				0.0
+			],
+			"left_arm_rot": [
+				19.0,
+				-10.0,
+				-12.0
+			],
+			"left_forearm_rot": [
+				-56.0,
+				0.0,
+				0.0
+			],
+			"right_arm_rot": [
+				-29.0,
+				25.0,
+				36.0
+			],
+			"right_forearm_rot": [
+				-120.0,
+				0.0,
+				0.0
+			],
+			"torso_rot": [
+				4.0,
+				0.0,
+				0.0
+			]
+		}
+	}
+}

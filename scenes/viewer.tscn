@@ -1,0 +1,745 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/viewer.gd" id="1_viewer"]
+[ext_resource type="PackedScene" path="res://scenes/goblin.tscn" id="2_goblin"]
+[ext_resource type="PackedScene" path="res://scenes/goblin_archer.tscn" id="3_archer"]
+[ext_resource type="PackedScene" path="res://scenes/goblin_shaman.tscn" id="4_shaman"]
+[ext_resource type="PackedScene" path="res://scenes/goblin_rogue.tscn" id="5_rogue"]
+[ext_resource type="PackedScene" path="res://scenes/goblin_chieftain.tscn" id="6_chieftain"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
+sky_top_color = Color(0.2, 0.56, 0.94, 1)
+sky_horizon_color = Color(0.72, 0.88, 0.98, 1)
+ground_bottom_color = Color(0.18, 0.36, 0.12, 1)
+ground_horizon_color = Color(0.68, 0.82, 0.72, 1)
+sun_angle_max = 30.0
+
+[sub_resource type="Sky" id="Sky_1"]
+sky_material = SubResource("ProceduralSkyMaterial_1")
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 2
+sky = SubResource("Sky_1")
+ambient_light_source = 3
+ambient_light_color = Color(0.85, 0.92, 1, 1)
+ambient_light_sky_contribution = 0.55
+ambient_light_energy = 0.65
+tonemap_mode = 2
+tonemap_exposure = 1.05
+tonemap_white = 6.0
+glow_enabled = true
+glow_intensity = 0.25
+glow_bloom = 0.1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glass"]
+bg_color = Color(0.08, 0.1, 0.14, 0.92)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.24, 0.28, 0.36, 0.5)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+content_margin_left = 14.0
+content_margin_top = 10.0
+content_margin_right = 14.0
+content_margin_bottom = 10.0
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 12
+
+[node name="Viewer" type="Node3D"]
+script = ExtResource("1_viewer")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="KeySun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 4.5, 7.5, 5)
+light_color = Color(1, 0.98, 0.92, 1)
+light_energy = 1.35
+shadow_enabled = true
+shadow_bias = 0.015
+shadow_blur = 1.0
+
+[node name="FillLight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, -0.5, 0.5, -4, 3.5, 4)
+light_color = Color(0.8, 0.9, 1, 1)
+light_energy = 0.5
+
+[node name="RimLight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.707107, 0.5, 0.5, 0, 0.707107, -0.707107, -0.707107, -0.5, -0.5, -3.5, 5, -4.5)
+light_color = Color(0.75, 0.88, 1, 1)
+light_energy = 0.65
+
+[node name="BounceLight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.707107, 0.707107, 0, -0.707107, -0.707107, 0, -3, 2)
+light_color = Color(0.55, 0.78, 0.45, 1)
+light_energy = 0.25
+
+[node name="Meadow" type="MeshInstance3D" parent="."]
+
+[node name="Forest" type="MeshInstance3D" parent="."]
+
+[node name="Monsters" type="Node3D" parent="."]
+
+[node name="Warrior" parent="Monsters" instance=ExtResource("2_goblin")]
+
+[node name="Archer" parent="Monsters" instance=ExtResource("3_archer")]
+visible = false
+
+[node name="Shaman" parent="Monsters" instance=ExtResource("4_shaman")]
+visible = false
+
+[node name="Rogue" parent="Monsters" instance=ExtResource("5_rogue")]
+visible = false
+
+[node name="Chieftain" parent="Monsters" instance=ExtResource("6_chieftain")]
+visible = false
+
+[node name="CameraPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.62, 0)
+
+[node name="CameraPitch" type="Node3D" parent="CameraPivot"]
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/CameraPitch"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.4)
+fov = 45.0
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="TopLeftBadge" type="PanelContainer" parent="UI"]
+offset_left = 20.0
+offset_top = 16.0
+offset_right = 420.0
+offset_bottom = 54.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_glass")
+
+[node name="HBox" type="HBoxContainer" parent="UI/TopLeftBadge"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Dot" type="Label" parent="UI/TopLeftBadge/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.13, 0.85, 0.45, 1)
+theme_override_font_sizes/font_size = 14
+text = "●"
+
+[node name="Title" type="Label" parent="UI/TopLeftBadge/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.98, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "DUNGEON FLOOR 1"
+
+[node name="Sep" type="VSeparator" parent="UI/TopLeftBadge/HBox"]
+layout_mode = 2
+
+[node name="Status" type="Label" parent="UI/TopLeftBadge/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.85, 0.98, 1)
+theme_override_font_sizes/font_size = 11
+text = "Goblin Warrior  •  IDLE (Nghỉ)"
+
+[node name="TopRightBar" type="PanelContainer" parent="UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -290.0
+offset_top = 16.0
+offset_right = -20.0
+offset_bottom = 54.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_glass")
+
+[node name="HBox" type="HBoxContainer" parent="UI/TopRightBar"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 2
+
+[node name="BtnHelp" type="Button" parent="UI/TopRightBar/HBox"]
+custom_minimum_size = Vector2(85, 28)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "❓ Phím Tắt"
+
+[node name="ChkAutoRotate" type="CheckBox" parent="UI/TopRightBar/HBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.85, 0.95, 1)
+theme_override_font_sizes/font_size = 11
+text = "Xoay"
+
+[node name="BtnResetCam" type="Button" parent="UI/TopRightBar/HBox"]
+custom_minimum_size = Vector2(70, 28)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.85, 0.95, 1)
+theme_override_font_sizes/font_size = 11
+text = "↺ Reset"
+
+[node name="HelpPopup" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -340.0
+offset_top = 60.0
+offset_right = -20.0
+offset_bottom = 270.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_glass")
+
+[node name="VBox" type="VBoxContainer" parent="UI/HelpPopup"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Header" type="HBoxContainer" parent="UI/HelpPopup/VBox"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="UI/HelpPopup/VBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.95, 0.98, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "🎮 Phím Tắt Tiện Ích"
+
+[node name="BtnCloseHelp" type="Button" parent="UI/HelpPopup/VBox/Header"]
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "✕"
+
+[node name="HSep" type="HSeparator" parent="UI/HelpPopup/VBox"]
+layout_mode = 2
+
+[node name="H0" type="Label" parent="UI/HelpPopup/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.9, 0.7, 1)
+theme_override_font_sizes/font_size = 11
+text = "• [ F1 - F5 ]: Đổi nhanh 5 quái Tầng 1"
+
+[node name="H1" type="Label" parent="UI/HelpPopup/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.82, 0.95, 1)
+theme_override_font_sizes/font_size = 11
+text = "• [ 1, 2, 3 ]: Đổi dáng Idle / Đi / Chạy"
+
+[node name="H2" type="Label" parent="UI/HelpPopup/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1.0, 0.8, 0.35, 1)
+theme_override_font_sizes/font_size = 11
+text = "• [ 4, 5, 6, 7, 8 ]: Chiêu thức & Phản ứng của quái"
+
+[node name="H3" type="Label" parent="UI/HelpPopup/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.85, 1.0, 1)
+theme_override_font_sizes/font_size = 11
+text = "• [ Q, W, E ]: Đổi thế chiến đấu (Stance từng quái)"
+
+[node name="H4" type="Label" parent="UI/HelpPopup/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.9, 0.7, 1)
+theme_override_font_sizes/font_size = 11
+text = "• [ C / T ]: Bật/Tắt Bộ Chỉnh Tư Thế (Stance Editor)"
+
+[node name="H5" type="Label" parent="UI/HelpPopup/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.75, 0.88, 1)
+theme_override_font_sizes/font_size = 11
+text = "• [ Space ]: Tự xoay  |  [ R ]: Reset Cam"
+
+[node name="MonsterSelectorBar" type="PanelContainer" parent="UI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -390.0
+offset_top = -146.0
+offset_right = 390.0
+offset_bottom = -106.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_glass")
+
+[node name="HBox" type="HBoxContainer" parent="UI/MonsterSelectorBar"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="BtnSelWarrior" type="Button" parent="UI/MonsterSelectorBar/HBox"]
+custom_minimum_size = Vector2(138, 30)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "⚔ CHIẾN BINH (F1)"
+
+[node name="BtnSelArcher" type="Button" parent="UI/MonsterSelectorBar/HBox"]
+custom_minimum_size = Vector2(138, 30)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "🏹 CUNG THỦ (F2)"
+
+[node name="BtnSelShaman" type="Button" parent="UI/MonsterSelectorBar/HBox"]
+custom_minimum_size = Vector2(138, 30)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "🔮 PHÁP SƯ (F3)"
+
+[node name="BtnSelRogue" type="Button" parent="UI/MonsterSelectorBar/HBox"]
+custom_minimum_size = Vector2(138, 30)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "🗡 SÁT THỦ (F4)"
+
+[node name="BtnSelBoss" type="Button" parent="UI/MonsterSelectorBar/HBox"]
+custom_minimum_size = Vector2(148, 30)
+layout_mode = 2
+theme_override_colors/font_color = Color(1.0, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 11
+text = "👑 TÙ TRƯỞNG BOSS (F5)"
+
+[node name="BottomDock" type="PanelContainer" parent="UI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -485.0
+offset_top = -98.0
+offset_right = 485.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_glass")
+
+[node name="VBox" type="VBoxContainer" parent="UI/BottomDock"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="Row1" type="HBoxContainer" parent="UI/BottomDock/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="BtnAct1" type="Button" parent="UI/BottomDock/VBox/Row1"]
+custom_minimum_size = Vector2(70, 29)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "[ 1 ] IDLE"
+
+[node name="BtnAct2" type="Button" parent="UI/BottomDock/VBox/Row1"]
+custom_minimum_size = Vector2(72, 29)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "[ 2 ] WALK"
+
+[node name="BtnAct3" type="Button" parent="UI/BottomDock/VBox/Row1"]
+custom_minimum_size = Vector2(70, 29)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "[ 3 ] RUN"
+
+[node name="Sep1" type="VSeparator" parent="UI/BottomDock/VBox/Row1"]
+layout_mode = 2
+
+[node name="BtnAct4" type="Button" parent="UI/BottomDock/VBox/Row1"]
+custom_minimum_size = Vector2(85, 29)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "⚔ [ 4 ] BỔ"
+
+[node name="BtnAct5" type="Button" parent="UI/BottomDock/VBox/Row1"]
+custom_minimum_size = Vector2(88, 29)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "🌪 [ 5 ] QUÉT"
+
+[node name="Sep2" type="VSeparator" parent="UI/BottomDock/VBox/Row1"]
+layout_mode = 2
+
+[node name="BtnAct6" type="Button" parent="UI/BottomDock/VBox/Row1"]
+custom_minimum_size = Vector2(104, 29)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "🛡 [ 6 ] PARRY BỔ"
+
+[node name="BtnAct7" type="Button" parent="UI/BottomDock/VBox/Row1"]
+custom_minimum_size = Vector2(110, 29)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "🛡 [ 7 ] PARRY QUÉT"
+
+[node name="BtnAct8" type="Button" parent="UI/BottomDock/VBox/Row1"]
+custom_minimum_size = Vector2(98, 29)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "💫 [ 8 ] CHOÁNG"
+
+[node name="Row2" type="HBoxContainer" parent="UI/BottomDock/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="SubGroupStances" type="HBoxContainer" parent="UI/BottomDock/VBox/Row2"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="LblStance" type="Label" parent="UI/BottomDock/VBox/Row2/SubGroupStances"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.75, 0.88, 1)
+theme_override_font_sizes/font_size = 11
+text = "Thế:"
+
+[node name="BtnStance1" type="Button" parent="UI/BottomDock/VBox/Row2/SubGroupStances"]
+custom_minimum_size = Vector2(80, 26)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "[ Q ] THẾ 1"
+
+[node name="BtnStance2" type="Button" parent="UI/BottomDock/VBox/Row2/SubGroupStances"]
+custom_minimum_size = Vector2(80, 26)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "[ W ] THẾ 2"
+
+[node name="BtnStance3" type="Button" parent="UI/BottomDock/VBox/Row2/SubGroupStances"]
+custom_minimum_size = Vector2(80, 26)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "[ E ] THẾ 3"
+
+[node name="BtnToggleEditor" type="Button" parent="UI/BottomDock/VBox/Row2/SubGroupStances"]
+custom_minimum_size = Vector2(125, 26)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.9, 0.7, 1)
+theme_override_font_sizes/font_size = 11
+text = "🛠 CHỈNH TƯ THẾ"
+
+[node name="Sep4" type="VSeparator" parent="UI/BottomDock/VBox/Row2"]
+layout_mode = 2
+
+[node name="HBoxSpeed" type="HBoxContainer" parent="UI/BottomDock/VBox/Row2"]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="LblSpeed" type="Label" parent="UI/BottomDock/VBox/Row2/HBoxSpeed"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 10
+text = "⚡ 1.0x"
+
+[node name="SpeedSlider" type="HSlider" parent="UI/BottomDock/VBox/Row2/HBoxSpeed"]
+custom_minimum_size = Vector2(65, 0)
+layout_mode = 2
+min_value = 0.5
+max_value = 2.5
+step = 0.1
+value = 1.0
+
+[node name="HBoxLight" type="HBoxContainer" parent="UI/BottomDock/VBox/Row2"]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="LblLight" type="Label" parent="UI/BottomDock/VBox/Row2/HBoxLight"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.96, 0.85, 0.4, 1)
+theme_override_font_sizes/font_size = 10
+text = "💡 100%"
+
+[node name="LightSlider" type="HSlider" parent="UI/BottomDock/VBox/Row2/HBoxLight"]
+custom_minimum_size = Vector2(65, 0)
+layout_mode = 2
+min_value = 0.2
+max_value = 2.5
+step = 0.05
+value = 1.0
+
+[node name="StanceEditorPanel" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -340.0
+offset_top = -250.0
+offset_right = -15.0
+offset_bottom = 230.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_glass")
+
+[node name="Scroll" type="ScrollContainer" parent="UI/StanceEditorPanel"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VBoxEd" type="VBoxContainer" parent="UI/StanceEditorPanel/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="EdHeader" type="HBoxContainer" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+
+[node name="EdTitle" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd/EdHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.2, 0.9, 0.7, 1)
+theme_override_font_sizes/font_size = 13
+text = "🛠 BỘ CHỈNH TƯ THẾ & CHÙY"
+
+[node name="BtnCloseEd" type="Button" parent="UI/StanceEditorPanel/Scroll/VBoxEd/EdHeader"]
+custom_minimum_size = Vector2(28, 26)
+layout_mode = 2
+text = "✕"
+
+[node name="EdStanceTabs" type="HBoxContainer" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="BtnEdTab1" type="Button" parent="UI/StanceEditorPanel/Scroll/VBoxEd/EdStanceTabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Thế 1"
+
+[node name="BtnEdTab2" type="Button" parent="UI/StanceEditorPanel/Scroll/VBoxEd/EdStanceTabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Thế 2"
+
+[node name="BtnEdTab3" type="Button" parent="UI/StanceEditorPanel/Scroll/VBoxEd/EdStanceTabs"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Thế 3"
+
+[node name="HSep1" type="HSeparator" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+
+[node name="Sec1" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.3, 1)
+theme_override_font_sizes/font_size = 11
+text = "⚔ TAY PHẢI (CẦM VŨ KHÍ)"
+
+[node name="LblRightArmX" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Vai X (Gập/Duỗi): 0°"
+
+[node name="SlideRightArmX" type="HSlider" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+
+[node name="LblRightArmY" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Vai Y (Xoay Trục): 0°"
+
+[node name="SlideRightArmY" type="HSlider" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+
+[node name="LblRightArmZ" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Vai Z (Dang/Khép): 0°"
+
+[node name="SlideRightArmZ" type="HSlider" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+
+[node name="LblRightForearmX" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Khuỷu tay (Gập): 0°"
+
+[node name="SlideRightForearmX" type="HSlider" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+
+[node name="HSep2" type="HSeparator" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+
+[node name="SecWeapon" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.3, 1)
+theme_override_font_sizes/font_size = 11
+text = "🏏 VŨ KHÍ (VỊ TRÍ & GÓC)"
+
+[node name="LblWeaponX" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Góc X: 0°"
+
+[node name="SlideWeaponX" type="HSlider" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+min_value = -180.0
+max_value = 360.0
+
+[node name="LblWeaponY" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Góc Y: 0°"
+
+[node name="SlideWeaponY" type="HSlider" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+
+[node name="LblWeaponZ" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Góc Z: 0°"
+
+[node name="SlideWeaponZ" type="HSlider" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+
+[node name="HSep3" type="HSeparator" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+
+[node name="Sec3" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.3, 1)
+theme_override_font_sizes/font_size = 11
+text = "🛡 TAY TRÁI (TRỢ THỦ / CẦM NẮM)"
+
+[node name="LblLeftArmX" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Vai Trái X: 0°"
+
+[node name="SlideLeftArmX" type="HSlider" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+
+[node name="LblLeftArmY" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Vai Trái Y: 0°"
+
+[node name="SlideLeftArmY" type="HSlider" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+
+[node name="LblLeftArmZ" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Vai Trái Z: 0°"
+
+[node name="SlideLeftArmZ" type="HSlider" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+
+[node name="LblLeftForearmX" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Khuỷu tay Trái: 0°"
+
+[node name="SlideLeftForearmX" type="HSlider" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+min_value = -180.0
+max_value = 180.0
+
+[node name="HSepTorso" type="HSeparator" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+
+[node name="SecTorso" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.3, 1)
+theme_override_font_sizes/font_size = 11
+text = "👤 THÂN MÌNH & ĐẦU (GÓC NGHIÊNG)"
+
+[node name="LblTorsoX" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Thân Gập/Ngửa (X): 0°"
+
+[node name="SlideTorsoX" type="HSlider" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+min_value = -45.0
+max_value = 45.0
+
+[node name="LblTorsoY" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Thân Xoay Hông (Y): 0°"
+
+[node name="SlideTorsoY" type="HSlider" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+min_value = -45.0
+max_value = 45.0
+
+[node name="LblTorsoZ" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Thân Nghiêng Bên (Z): 0°"
+
+[node name="SlideTorsoZ" type="HSlider" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+min_value = -30.0
+max_value = 30.0
+
+[node name="LblHeadY" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Đầu Xoay Ngắm (Y): 0°"
+
+[node name="SlideHeadY" type="HSlider" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+min_value = -60.0
+max_value = 60.0
+
+[node name="HSep4" type="HSeparator" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+
+[node name="Sec4" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.3, 1)
+theme_override_font_sizes/font_size = 11
+text = "👣 TIẾP ĐẤT & CAO ĐỘ (HIPS Y)"
+
+[node name="LblGroundY" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Cao độ hông: 0.618m"
+
+[node name="SlideGroundY" type="HSlider" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+min_value = 0.45
+max_value = 0.85
+step = 0.002
+value = 0.618
+
+[node name="HSep5" type="HSeparator" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+layout_mode = 2
+
+[node name="BtnSavePermanent" type="Button" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 1, 0.6, 1)
+text = "💾 CHỐT & LƯU VĨNH VIỄN"
+
+[node name="BtnResetStance" type="Button" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.7, 0.6, 1)
+text = "↺ Khôi Phục Mặc Định"
+
+[node name="LblToast" type="Label" parent="UI/StanceEditorPanel/Scroll/VBoxEd"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 11
+text = "✓ Đã chốt và lưu vĩnh viễn tư thế!"
+horizontal_alignment = 1
