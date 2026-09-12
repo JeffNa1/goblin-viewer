@@ -35,7 +35,7 @@ var anim_speed: float = 1.0
 # Action Timers
 var action_time: float = 0.0
 const CLEAVE_DURATION: float = 1.50
-const ROAR_DURATION: float = 1.80
+const ROAR_DURATION: float = 2.10
 const EARTHSHAKER_DURATION: float = 2.00
 const WHIRLWIND_DURATION: float = 1.90
 const PARRY_DURATION: float = 1.35
@@ -130,13 +130,13 @@ func _init_default_stances() -> void:
 			"head_rot": Vector3(2.0, 22.0, 0.0)
 		},
 		"roar": {
-			"right_arm_rot": Vector3(-6.0, 10.0, 24.0),
-			"right_forearm_rot": Vector3(-48.0, 0.0, 0.0),
-			"warhammer_rot": Vector3(175.0, 0.0, -10.0),
-			"left_arm_rot": Vector3(-95.0, -20.0, -55.0),
-			"left_forearm_rot": Vector3(-35.0, 0.0, 0.0),
+			"right_arm_rot": Vector3(-78.0, 12.0, 35.0),
+			"right_forearm_rot": Vector3(-42.0, 0.0, 0.0),
+			"warhammer_rot": Vector3(88.0, 12.0, -15.0),
+			"left_arm_rot": Vector3(-52.0, -12.0, -72.0),
+			"left_forearm_rot": Vector3(-25.0, 0.0, 0.0),
 			"torso_rot": Vector3(-18.0, 0.0, 2.0),
-			"head_rot": Vector3(-44.0, 0.0, 0.0)
+			"head_rot": Vector3(-40.0, 0.0, 0.0)
 		},
 		"earthshaker": {
 			"right_arm_rot": Vector3(-35.0, 5.0, 10.0),
@@ -787,107 +787,117 @@ func _compute_cleave(t_c: float) -> Dictionary:
 		p["right_shin_rot"] = Vector3(lerp(28.0, 7.0, s), 0.0, 0.0)
 	return p
 
-# --- 6. WAR ROAR (Chieftain Battle Cry: Planted Warhammer Totem, Skyward Bellow) ---
+# --- 6. WAR ROAR (Chieftain Battle Cry: Titanic Skyward Bellow & Muscular War Totem) ---
 func _compute_roar(t_r: float) -> Dictionary:
 	var p: Dictionary = {}
 	var tau = clampf(t_r / ROAR_DURATION, 0.0, 1.0)
 	var base_cfg = _get_base_stance_cfg()
+	var base_target_pose = _compute_pose(base_anim, anim_time)
 	var base_hammer = base_cfg.get("warhammer_rot", Vector3(65.0, 0.0, -30.0))
 	var base_r_arm = base_cfg.get("right_arm_rot", Vector3(-32.0, 25.0, 35.0))
 	var base_r_fore = base_cfg.get("right_forearm_rot", Vector3(-115.0, 0.0, 0.0))
 	var base_l_arm = base_cfg.get("left_arm_rot", Vector3(15.0, 0.0, -15.0))
 	var base_l_fore = base_cfg.get("left_forearm_rot", Vector3(-25.0, 0.0, 0.0))
 	
-	if tau < 0.28:
-		# PHASE 1: Ground Stomp & Firm Warhammer Plant into Earth (Anchor Stance)
-		var s = smoothstep(0.0, 1.0, tau / 0.28)
-		p["hips_pos"] = Vector3(lerp(0.0, 0.02, s), ground_hips_y + 0.002 * s, 0.0)
-		p["hips_rot"] = Vector3(lerp(4.0, 6.0, s), lerp(0.0, 6.0, s), lerp(0.0, -2.0, s))
-		p["torso_rot"] = Vector3(lerp(6.0, 6.0, s), lerp(0.0, 2.0, s), lerp(0.0, 2.0, s))
-		p["head_rot"] = Vector3(lerp(-4.0, -8.0, s), 0.0, 0.0)
+	if tau < 0.24:
+		# PHASE 1: Heavy Inhale & Power Windup (Hít Sâu & Tụ Lực Thần Tốc)
+		var s = smoothstep(0.0, 1.0, tau / 0.24)
+		p["hips_pos"] = Vector3(0.0, ground_hips_y + 0.002 * s, -0.02 * s)
+		p["hips_rot"] = Vector3(lerp(4.0, 2.0, s), lerp(0.0, -4.0, s), 0.0)
+		p["torso_rot"] = Vector3(lerp(6.0, -6.0, s), lerp(0.0, -5.0, s), 0.0)
+		p["head_rot"] = Vector3(lerp(-4.0, -16.0, s), 0.0, 0.0)
 		
-		# Right hand plants hammer head squarely into earth on right flank
-		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(-15.0, 10.0, 24.0), s)
-		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-42.0, 0.0, 0.0), s)
-		p["warhammer_rot"] = _lerp_angles(base_hammer, Vector3(175.0, 0.0, -10.0), s)
+		# Right arm hoists great warhammer up and back off the shoulder
+		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(-50.0, 15.0, 32.0), s)
+		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-85.0, 0.0, 0.0), s)
+		p["warhammer_rot"] = _lerp_angles(base_hammer, Vector3(68.0, 8.0, -22.0), s)
 		
-		# Left arm braces
-		p["left_arm_rot"] = _lerp_angles(base_l_arm, Vector3(-25.0, 0.0, -20.0), s)
-		p["left_forearm_rot"] = _lerp_angles(base_l_fore, Vector3(-45.0, 0.0, 0.0), s)
+		# Left arm draws back into a clenched predatory claw
+		p["left_arm_rot"] = _lerp_angles(base_l_arm, Vector3(-25.0, -5.0, -35.0), s)
+		p["left_forearm_rot"] = _lerp_angles(base_l_fore, Vector3(-55.0, 0.0, 0.0), s)
 		
-		p["left_thigh_rot"] = Vector3(lerp(0.0, -8.0, s), 0.0, -7.0)
-		p["left_shin_rot"] = Vector3(lerp(7.0, 14.0, s), 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(lerp(0.0, 4.0, s), 0.0, 6.0)
-		p["right_shin_rot"] = Vector3(lerp(7.0, 8.0, s), 0.0, 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(0.0, -4.0, s), 0.0, -6.5)
+		p["left_shin_rot"] = Vector3(lerp(7.0, 9.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(0.0, 4.0, s), 0.0, 6.5)
+		p["right_shin_rot"] = Vector3(lerp(7.0, 9.0, s), 0.0, 0.0)
 		
-	elif tau < 0.44:
-		# PHASE 2: Deep Guttural Inhale & Chest Expansion (Firmly Anchored)
-		var prog = (tau - 0.28) / 0.16
-		var s = smoothstep(0.0, 1.0, prog)
-		p["hips_pos"] = Vector3(0.02, ground_hips_y + 0.002, 0.0)
-		p["hips_rot"] = Vector3(lerp(6.0, 2.0, s), lerp(6.0, 4.0, s), -2.0)
-		p["torso_rot"] = Vector3(lerp(6.0, -8.0, s), lerp(2.0, 0.0, s), 2.0)
-		p["head_rot"] = Vector3(lerp(-8.0, -22.0, s), 0.0, 0.0)
-		
-		# Hammer remains planted as immovable pillar
-		p["right_arm_rot"] = Vector3(lerp(-15.0, -10.0, s), 10.0, 24.0)
-		p["right_forearm_rot"] = Vector3(lerp(-42.0, -45.0, s), 0.0, 0.0)
-		p["warhammer_rot"] = Vector3(175.0, 0.0, -10.0)
-		
-		# Left arm draws back to unleash beast claw
-		p["left_arm_rot"] = Vector3(lerp(-25.0, -55.0, s), lerp(0.0, -10.0, s), lerp(-20.0, -35.0, s))
-		p["left_forearm_rot"] = Vector3(lerp(-45.0, -40.0, s), 0.0, 0.0)
-		
-		p["left_thigh_rot"] = Vector3(lerp(-8.0, -7.0, s), 0.0, -7.0)
-		p["left_shin_rot"] = Vector3(lerp(14.0, 13.0, s), 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(lerp(4.0, 3.0, s), 0.0, 6.0)
-		p["right_shin_rot"] = Vector3(8.0, 0.0, 0.0)
-		
-	elif tau < 0.78:
-		# PHASE 3: TITANIC SKYWARD BELLOW - Zero Body Clipping, Primal War Totem
-		var prog = (tau - 0.44) / 0.34
-		var s = smoothstep(0.0, 1.0, prog)
-		var shake = sin(t_r * 58.0) * 1.5
-		
-		p["hips_pos"] = Vector3(0.02, ground_hips_y + 0.002, 0.0)
-		p["hips_rot"] = Vector3(0.0, 4.0, -2.0)
-		p["torso_rot"] = Vector3(-18.0 + shake, 0.0, 2.0)
-		p["head_rot"] = Vector3(-44.0 + shake * 0.8, 0.0, 0.0)
-		
-		# Right hand anchored on planted warhammer
-		p["right_arm_rot"] = Vector3(-6.0, 10.0, 24.0)
-		p["right_forearm_rot"] = Vector3(-48.0, 0.0, 0.0)
-		p["warhammer_rot"] = Vector3(175.0, 0.0, -10.0)
-		
-		# Left arm wide beastly splay to heavens (cleanly outside torso volume)
-		p["left_arm_rot"] = Vector3(-95.0 + shake, -20.0, -55.0)
-		p["left_forearm_rot"] = Vector3(-35.0, 0.0, 0.0)
-		
-		p["left_thigh_rot"] = Vector3(-6.0, 0.0, -7.0)
-		p["left_shin_rot"] = Vector3(12.0, 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(2.0, 0.0, 6.0)
-		p["right_shin_rot"] = Vector3(8.0, 0.0, 0.0)
-		
-	else:
-		# PHASE 4: Powerful Snort & Smooth Transition Back to Base Stance
-		var prog = (tau - 0.78) / 0.22
+	elif tau < 0.62:
+		# PHASE 2: TITANIC SKYWARD BELLOW - High War Totem Brandish & Diaphragm Pulse
+		var prog = (tau - 0.24) / 0.38
 		var s = smoothstep(0.0, 1.0, prog)
 		
-		p["hips_pos"] = Vector3(lerp(0.02, 0.0, s), ground_hips_y, 0.0)
-		p["hips_rot"] = Vector3(lerp(0.0, 4.0, s), lerp(4.0, 0.0, s), lerp(-2.0, 0.0, s))
-		p["torso_rot"] = Vector3(lerp(-18.0, 6.0, s), 0.0, lerp(2.0, 0.0, s))
-		p["head_rot"] = Vector3(lerp(-44.0, -4.0, s), 0.0, 0.0)
+		# Organic acoustic chest rumble with smooth ramp-up and complete decay to 0.0 before phase end
+		var ramp = smoothstep(0.0, 0.15, prog)
+		var decay = 1.0 - smoothstep(0.70, 1.00, prog)
+		var rumble_amp = ramp * decay
+		var rumble = sin(t_r * 26.0) * (1.2 * rumble_amp)
+		var chest_pulse = sin(prog * PI) * 3.5
 		
-		p["right_arm_rot"] = _lerp_angles(Vector3(-6.0, 10.0, 24.0), base_r_arm, s)
-		p["right_forearm_rot"] = _lerp_angles(Vector3(-48.0, 0.0, 0.0), base_r_fore, s)
-		p["warhammer_rot"] = _lerp_angles(Vector3(175.0, 0.0, -10.0), base_hammer, s)
-		p["left_arm_rot"] = _lerp_angles(Vector3(-95.0, -20.0, -55.0), base_l_arm, s)
-		p["left_forearm_rot"] = _lerp_angles(Vector3(-35.0, 0.0, 0.0), base_l_fore, s)
+		p["hips_pos"] = Vector3(0.0, ground_hips_y + 0.002, lerp(-0.02, 0.01, s))
+		p["hips_rot"] = Vector3(lerp(2.0, -4.0, sin(prog * PI)), 0.0, 0.0)
+		p["torso_rot"] = Vector3(lerp(-6.0, -20.0, sin(prog * PI)) - chest_pulse + rumble, 0.0, 0.0)
+		p["head_rot"] = Vector3(lerp(-16.0, -40.0, sin(prog * PI)) + rumble * 0.7, 0.0, 0.0)
 		
-		p["left_thigh_rot"] = Vector3(lerp(-6.0, 0.0, s), 0.0, -6.0)
-		p["left_shin_rot"] = Vector3(lerp(12.0, 7.0, s), 0.0, 0.0)
+		# Right hand raises warhammer high into the sky as a war totem
+		p["right_arm_rot"] = Vector3(lerp(-50.0, -78.0, s) + rumble * 0.4, 12.0, 35.0)
+		p["right_forearm_rot"] = Vector3(lerp(-85.0, -42.0, s), 0.0, 0.0)
+		p["warhammer_rot"] = Vector3(lerp(68.0, 88.0, s) + rumble * 0.5, 12.0, -15.0)
+		
+		# Left arm splays wide to intimidate the battlefield
+		p["left_arm_rot"] = Vector3(lerp(-25.0, -52.0, s) + rumble * 0.5, -12.0, lerp(-35.0, -72.0, s))
+		p["left_forearm_rot"] = Vector3(lerp(-55.0, -25.0, s), 0.0, 0.0)
+		
+		p["left_thigh_rot"] = Vector3(lerp(-4.0, -2.0, s), 0.0, -7.0)
+		p["left_shin_rot"] = Vector3(lerp(9.0, 8.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(4.0, 2.0, s), 0.0, 7.0)
+		p["right_shin_rot"] = Vector3(lerp(9.0, 8.0, s), 0.0, 0.0)
+		
+	elif tau < 0.84:
+		# PHASE 3: Heavy Exhale & Gravitational Hammer Descent (Zero Jerk, Zero Vibration)
+		var prog = (tau - 0.62) / 0.22
+		var s = smoothstep(0.0, 1.0, prog)
+		
+		p["hips_pos"] = Vector3(0.0, ground_hips_y + 0.001 * (1.0 - s), lerp(0.01, 0.0, s))
+		p["hips_rot"] = Vector3(lerp(2.0, 4.0, s), 0.0, 0.0)
+		p["torso_rot"] = Vector3(lerp(-6.0, 10.0, s), 0.0, 0.0)
+		p["head_rot"] = Vector3(lerp(-16.0, -6.0, s), 0.0, 0.0)
+		
+		# Warhammer descends smoothly in a heavy arc back towards resting shoulder carriage
+		p["right_arm_rot"] = Vector3(lerp(-78.0, -38.0, s), lerp(12.0, 22.0, s), lerp(35.0, 34.0, s))
+		p["right_forearm_rot"] = Vector3(lerp(-42.0, -108.0, s), 0.0, 0.0)
+		p["warhammer_rot"] = Vector3(lerp(88.0, 66.0, s), lerp(12.0, 2.0, s), lerp(-15.0, -28.0, s))
+		
+		# Left arm relaxes naturally
+		p["left_arm_rot"] = Vector3(lerp(-52.0, 12.0, s), lerp(-12.0, 0.0, s), lerp(-72.0, -18.0, s))
+		p["left_forearm_rot"] = Vector3(lerp(-25.0, -25.0, s), 0.0, 0.0)
+		
+		p["left_thigh_rot"] = Vector3(lerp(-2.0, 0.0, s), 0.0, -6.0)
+		p["left_shin_rot"] = Vector3(lerp(8.0, 7.0, s), 0.0, 0.0)
 		p["right_thigh_rot"] = Vector3(lerp(2.0, 0.0, s), 0.0, 6.0)
 		p["right_shin_rot"] = Vector3(lerp(8.0, 7.0, s), 0.0, 0.0)
+		
+	else:
+		# PHASE 4: Seamless Settle to Live Base Stance (Zero Discontinuity, Zero Snap)
+		var prog = (tau - 0.84) / 0.16
+		var s = smoothstep(0.0, 1.0, prog)
+		
+		var end_p3_pose = {
+			"hips_pos": Vector3(0.0, ground_hips_y, 0.0),
+			"hips_rot": Vector3(4.0, 0.0, 0.0),
+			"torso_rot": Vector3(10.0, 0.0, 0.0),
+			"head_rot": Vector3(-6.0, 0.0, 0.0),
+			"right_arm_rot": Vector3(-38.0, 22.0, 34.0),
+			"right_forearm_rot": Vector3(-108.0, 0.0, 0.0),
+			"warhammer_rot": Vector3(66.0, 2.0, -28.0),
+			"left_arm_rot": Vector3(12.0, 0.0, -18.0),
+			"left_forearm_rot": Vector3(-25.0, 0.0, 0.0),
+			"left_thigh_rot": Vector3(0.0, 0.0, -6.0),
+			"left_shin_rot": Vector3(7.0, 0.0, 0.0),
+			"right_thigh_rot": Vector3(0.0, 0.0, 6.0),
+			"right_shin_rot": Vector3(7.0, 0.0, 0.0)
+		}
+		p = _blend_poses(end_p3_pose, base_target_pose, s)
+		
 	return p
 
 # --- 7. EARTHSHAKER SLAM (Grounded 2-Handed Overhead Heave & Devastating Impact) ---
