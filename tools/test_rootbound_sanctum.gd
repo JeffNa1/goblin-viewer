@@ -69,6 +69,22 @@ func _run() -> void:
 			printerr("FAIL: Room camera cannot inspect room ", index + 1)
 			quit(1)
 			return
+	floor_scene.focus_room(2)
+	floor_scene.focus_boss()
+	if floor_scene.selection.selected != 11:
+		printerr("FAIL: Boss inspection still displays the previous room name.")
+		quit(1)
+		return
+	floor_scene.focus_scale()
+	if floor_scene.selection.selected != 2:
+		printerr("FAIL: Scale inspection still displays the previous room name.")
+		quit(1)
+		return
+	floor_scene.focus_overview()
+	if floor_scene.selection.selected != -1:
+		printerr("FAIL: Overview claims that a single room is selected.")
+		quit(1)
+		return
 	print("PASS: 14 rooms, collision, landmarks, five unchanged-scale units, room inspection, and gate prerequisites.")
 	floor_scene.queue_free()
 	await process_frame

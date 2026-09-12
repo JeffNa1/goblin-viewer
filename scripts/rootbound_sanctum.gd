@@ -172,6 +172,8 @@ func focus_room(index: int) -> void:
 	_update_camera()
 
 func focus_overview() -> void:
+	selection.select(-1)
+	selection.text = "All rooms"
 	target = builder.world_point([557, 866])
 	camera.size = 223.0
 	overhead = true
@@ -179,6 +181,7 @@ func focus_overview() -> void:
 	_update_camera()
 
 func focus_scale() -> void:
+	focus_room(2)
 	target = builder.world_point([537, 1128]) + Vector3.UP * 0.5
 	camera.size = 14.0
 	overhead = false
@@ -186,6 +189,7 @@ func focus_scale() -> void:
 	_update_camera()
 
 func focus_boss() -> void:
+	focus_room(11)
 	target = builder.world_point([695, 140]) + Vector3.UP
 	camera.size = 14.0
 	overhead = false
