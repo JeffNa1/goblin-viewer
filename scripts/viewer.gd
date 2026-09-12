@@ -161,7 +161,7 @@ var monster_actions: Dictionary = {
 		{"anim": "stunned", "label": "💫 [ 8 ] CHOÁNG", "color": Color(1.0, 0.9, 0.25)}
 	],
 	"rogue": [
-		{"anim": "idle", "label": "[ 1 ] RÌNH RẬP", "color": Color(0.35, 1.0, 0.5)},
+		{"anim": "idle", "label": "[ 1 ] DAO NGƯỢC", "color": Color(0.35, 1.0, 0.5)},
 		{"anim": "walk", "label": "[ 2 ] LẺN ĐI", "color": Color(0.35, 1.0, 0.5)},
 		{"anim": "scurry", "label": "[ 3 ] LƯỚT NHANH", "color": Color(0.35, 1.0, 0.5)},
 		{"anim": "dual_slash", "label": "⚔ [ 4 ] CHÉM CHÉO X", "color": Color(1.0, 0.8, 0.25)},
@@ -724,12 +724,15 @@ func _capture_warrior_combo() -> void:
 	await get_tree().create_timer(0.65).timeout
 	_save_shot("warrior_combo_hit2_cleave.png")
 	
-	# Hit 3: Explosive Reverse Cleave (Left -> Right) midpoint (t = 2.05s, wait +0.90s)
-	await get_tree().create_timer(0.90).timeout
+	# Hit 3: Explosive Reverse Cleave (Left -> Right) midpoint (t = 2.00s, wait +0.85s)
+	await get_tree().create_timer(0.85).timeout
 	_save_shot("warrior_combo_hit3_reverse_cleave.png")
-	_save_shot("warrior_combo_hit3_uppercut.png")
 	
-	await get_tree().create_timer(1.2).timeout
+	# Hit 3 Smooth Recovery: Continuous fluid deceleration along right flank (t = 2.55s, wait +0.55s)
+	await get_tree().create_timer(0.55).timeout
+	_save_shot("warrior_combo_hit3_smooth_recovery.png")
+	
+	await get_tree().create_timer(0.8).timeout
 	m_warrior.play_anim("idle")
 	reset_camera()
 	_update_ui_state()

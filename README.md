@@ -12,10 +12,10 @@ Featuring 5 distinct goblin monster archetypes with fully custom seamless voxel 
 - **Dual Outfit System**:
   - **Outfit 1 (Feral Primitive / Thô Sơ)**: Tattered raw burlap tunic, rope belt with bone trophy, primitive spiked wooden club, bare clawed feet. Single classic overhead smash (`1.3s`).
   - **Outfit 2 (Ironclad Battle Warrior / Chiến Binh Thép)**: Forged iron horned combat helmet with steel nasal guard, heavy steel cuirass with central keel ridge over crimson war gambeson, tiered spiked shoulder pauldrons, steel vambraces and solid iron gauntlets, heavy steel greaves with spiked war sabaton boots, and an upgraded **Heavy Flanged & Spiked War Mace** (4 razor flanges, 360° corner cleat spikes, golden crown ring, and top armor-piercing thrust spike).
-- **Special Action**: **🔥 Combo 1-2-3 Attack** (Exclusive to Outfit 2, 3.2s continuous sequence):
+- **Special Action**: **🔥 Combo 1-2-3 Attack** (Exclusive to Outfit 2, 3.0s continuous sequence):
   - **Hit 1 (Overhead Slam / Bổ Chùy)**: Forward lunge leap and ground impact with molten solar-crimson trail and earth shockwave.
-  - **Hit 2 (180° Horizontal Cleave / Quét Ngang)**: Instant hip recoil into a full 180° sweeping slash with celestial amber crescent ribbon trail.
-  - **Hit 3 (Reverse Rising Uppercut / Quét Ngược Hất Tung)**: Low pivot crouch into an explosive skyward rising uppercut launcher with ice-cyan golden flare burst, settling into victory ready stance.
+  - **Hit 2 (180° Horizontal Cleave / Quét Thuận)**: Instant hip recoil into a full 180° sweeping slash with celestial amber crescent ribbon trail.
+  - **Hit 3 (Reverse Horizontal Cleave / Quét Ngược Mượt Mà)**: Low spring coil into an explosive 160° reverse horizontal cleave with ice-cyan / molten solar flare burst, flowing seamlessly back into the combat stance with zero hitch or stutter.
 - **Animations**: Idle, Walk, Run, Heavy Overhead Smash / Combo 1-2-3, Horizontal Cleave, Parry Smash, Parry Cleave, Stunned.
 - **Stances**: Low Carriage (`Vác Thấp`), Guard (`Thủ Thế`), Shoulder Rest (`Vác Vai`).
 
@@ -37,10 +37,10 @@ Featuring 5 distinct goblin monster archetypes with fully custom seamless voxel 
 - **Animations**: Stealth Stalk (`Rình Rập`), Dash (`Lướt Nhanh`), Dual Cross Slash (`Chém Chéo X`), Stunned.
 - **Stances**: Stalk (`Rình Rập`), Cross Guard (`Bắt Chéo X`), Reverse Grip (`Dao Ngược`).
 
-### 5. Goblin Chieftain (Boss Tù Trưởng Khổng Lồ)
-- **Equipment**: Heavy horned iron helmet, spiked steel shoulder pauldron, studded iron chest bands, colossal spiked warhammer.
-- **Animations**: Heavy March, War Roar (`Gầm Thét`), Earthshaker Slam (`Địa Chấn`), 360 Whirlwind (`Bão Chùy 360°`), Kneel Stunned.
-- **Stances**: Great Hammer Shoulder (`Vác Đại Búa`), Ground Rest (`Chống Búa Đất`), Heavy Guard (`Thủ Trọng Lực`).
+### 5. Mace Ogre (Boss Ogre Cầm Chùy Nguyên Thủy)
+- **Equipment**: Beast fur pelt draped shoulder sash, crude leather & sinew harness, trophy fangs necklace, tattered loincloth, braided rope belt, bone septum piercing & earrings, warrior mohawk topknot, and a colossal primitive chipped-stone great mace bound with sinew and jagged spikes.
+- **Animations**: Heavy March (`Bước Nặng`), War Roar (`Gầm Thét`), Earthshaker Slam (`Địa Chấn`), 360 Whirlwind (`Bão Chùy 360°`), Stagger Kneel (`Quỳ Gối`), Stunned (`Choáng`).
+- **Stances**: Great Mace Shoulder (`Vác Đại Chùy`), Ground Rest (`Chống Chùy Đất`), Heavy Guard (`Thủ Trọng Lực`).
 
 ---
 
@@ -67,7 +67,7 @@ Featuring 5 distinct goblin monster archetypes with fully custom seamless voxel 
 
 ## 🎮 Controls
 
-- **F1 - F5**: Switch active monster (Warrior, Archer, Shaman, Rogue, Chieftain Boss).
+- **F1 - F5**: Switch active monster (Warrior, Archer, Shaman, Rogue, Mace Ogre Boss).
 - **1 - 8**: Trigger specific animations.
 - **Q / W / E**: Switch weapon stances.
 - **O**: Switch monster outfit (Warrior & Archer: Outfit 1 <-> Outfit 2).
