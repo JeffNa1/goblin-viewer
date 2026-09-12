@@ -271,7 +271,7 @@ func _ready() -> void:
 	if m_warrior:
 		m_warrior.play_anim("idle")
 	reset_camera()
-	# _capture_warrior_combo()
+	# _capture_ogre_walk()
 
 func switch_monster(m_type: String) -> void:
 	active_monster_type = m_type
@@ -734,6 +734,44 @@ func _capture_warrior_combo() -> void:
 	
 	await get_tree().create_timer(0.8).timeout
 	m_warrior.play_anim("idle")
+	reset_camera()
+	_update_ui_state()
+	get_tree().quit()
+
+func _capture_ogre_walk() -> void:
+	await get_tree().create_timer(0.4).timeout
+	editor_panel.visible = false
+	switch_monster("chieftain")
+	m_chieftain.play_anim("walk")
+	
+	# 1. Front view: Lateral weight shift & wide stance
+	yaw = 20.0
+	pitch = -6.0
+	camera_distance = 4.6
+	camera_pivot.position.y = 0.80
+	_update_camera_transform()
+	await get_tree().create_timer(0.45).timeout
+	_save_shot("ogre_walk_front_sway.png")
+	
+	# 2. 3/4 Perspective: Stride plant & knee flexion & warhammer cushion
+	yaw = 45.0
+	pitch = -8.0
+	camera_distance = 4.4
+	camera_pivot.position.y = 0.85
+	_update_camera_transform()
+	await get_tree().create_timer(0.35).timeout
+	_save_shot("ogre_walk_stride_plant.png")
+	
+	# 3. Side profile: Spine posture, passing foot lift & free arm pump
+	yaw = 80.0
+	pitch = -4.0
+	camera_distance = 4.2
+	camera_pivot.position.y = 0.85
+	_update_camera_transform()
+	await get_tree().create_timer(0.40).timeout
+	_save_shot("ogre_walk_side_profile.png")
+	
+	m_chieftain.play_anim("idle")
 	reset_camera()
 	_update_ui_state()
 	get_tree().quit()

@@ -66,17 +66,17 @@ func _ready() -> void:
 	_apply_pose(current_pose)
 
 func generate_voxel_meshes() -> void:
-	head_mesh.mesh = VoxelBuilder.build_boss_head_mesh()
-	torso_mesh.mesh = VoxelBuilder.build_boss_torso_mesh()
-	warhammer_mesh.mesh = VoxelBuilder.build_boss_warhammer_mesh()
-	left_arm_mesh.mesh = VoxelBuilder.build_upper_arm_mesh()
-	left_forearm_mesh.mesh = VoxelBuilder.build_forearm_mesh(false)
-	right_arm_mesh.mesh = VoxelBuilder.build_upper_arm_mesh()
-	right_forearm_mesh.mesh = VoxelBuilder.build_forearm_mesh(true)
-	left_thigh_mesh.mesh = VoxelBuilder.build_thigh_mesh()
-	left_shin_mesh.mesh = VoxelBuilder.build_shin_mesh()
-	right_thigh_mesh.mesh = VoxelBuilder.build_thigh_mesh()
-	right_shin_mesh.mesh = VoxelBuilder.build_shin_mesh()
+	head_mesh.mesh = VoxelBuilder.build_ogre_head_mesh()
+	torso_mesh.mesh = VoxelBuilder.build_ogre_torso_mesh()
+	warhammer_mesh.mesh = VoxelBuilder.build_ogre_mace_mesh()
+	left_arm_mesh.mesh = VoxelBuilder.build_ogre_upper_arm_mesh()
+	left_forearm_mesh.mesh = VoxelBuilder.build_ogre_forearm_mesh(false)
+	right_arm_mesh.mesh = VoxelBuilder.build_ogre_upper_arm_mesh()
+	right_forearm_mesh.mesh = VoxelBuilder.build_ogre_forearm_mesh(true)
+	left_thigh_mesh.mesh = VoxelBuilder.build_ogre_thigh_mesh()
+	left_shin_mesh.mesh = VoxelBuilder.build_ogre_shin_mesh()
+	right_thigh_mesh.mesh = VoxelBuilder.build_ogre_thigh_mesh()
+	right_shin_mesh.mesh = VoxelBuilder.build_ogre_shin_mesh()
 
 func _init_stun_stars() -> void:
 	stun_stars = StunStarsScript.new()
@@ -194,7 +194,9 @@ func load_stance_config() -> void:
 			var json = JSON.new()
 			if json.parse(txt) == OK and json.data is Dictionary:
 				var d: Dictionary = json.data
-				if d.has("chieftain") and d["chieftain"] is Dictionary:
+				if d.has("mace_ogre") and d["mace_ogre"] is Dictionary:
+					d = d["mace_ogre"]
+				elif d.has("chieftain") and d["chieftain"] is Dictionary:
 					d = d["chieftain"]
 				if d.has("ground_hips_y"):
 					ground_hips_y = float(d["ground_hips_y"])
@@ -216,14 +218,14 @@ func get_stance_definitions() -> Array:
 		{"id": "whirlwind", "name": "Bão Chùy 360°", "shortcut": "[ 5 ]"},
 		{"id": "stagger", "name": "Quỳ Gối", "shortcut": "[ 6 ]"},
 		{"id": "stunned", "name": "Choáng", "shortcut": "[ 7 ]"},
-		{"id": "shoulder", "name": "Vác Đại Búa", "shortcut": "[ Q ]"},
-		{"id": "ground", "name": "Chống Búa Đất", "shortcut": "[ W ]"},
+		{"id": "shoulder", "name": "Vác Đại Chùy", "shortcut": "[ Q ]"},
+		{"id": "ground", "name": "Chống Chùy Đất", "shortcut": "[ W ]"},
 		{"id": "guard", "name": "Thủ Trọng Lực", "shortcut": "[ E ]"}
 	]
 
 func get_weapon_info() -> Dictionary:
 	return {
-		"title": "🔨 ĐẠI CHIẾN BÚA (GÓC BÚA)",
+		"title": "🔨 ĐẠI CHÙY NGUYÊN THỦY (GÓC CHÙY)",
 		"prop": "warhammer_rot"
 	}
 
@@ -254,7 +256,9 @@ func save_stance_config() -> bool:
 			if json.parse(f_in.get_as_text()) == OK and json.data is Dictionary:
 				all_cfg = json.data
 			f_in.close()
-	all_cfg["chieftain"] = serialize_stances()
+	var stances_serialized = serialize_stances()
+	all_cfg["chieftain"] = stances_serialized
+	all_cfg["mace_ogre"] = stances_serialized
 	
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	if f:
@@ -480,23 +484,64 @@ func _compute_guard(time_val: float) -> Dictionary:
 	p["right_shin_rot"] = Vector3(14.0, 0.0, 0.0)
 	return p
 
-# --- 2. WALK (Earth-Shaking Heavy Lumbering Stride) ---
+# --- 2. WALK (Earth-Shaking Heavy Lumbering Stride with Colossal Weight & Dynamic Inertia) ---
 func _compute_walk(time_val: float) -> Dictionary:
 	var p: Dictionary = {}
-	var t = time_val * 3.2
+	# Heavy, deliberate, intimidating pace (2.5 rad/s ~ 1.25s full stride cycle)
+	var t = time_val * 2.5
 	var s_leg = sin(t)
+	var c_leg = cos(t)
 	
-	p["hips_pos"] = Vector3(0.0, ground_hips_y + abs(sin(t * 2.0)) * 0.028, 0.0)
-	p["hips_rot"] = Vector3(10.0, s_leg * 8.0, 0.0)
-	p["torso_rot"] = Vector3(12.0, -s_leg * 6.0, 0.0)
-	p["head_rot"] = Vector3(-8.0, -s_leg * 4.0, 0.0)
+	# HIPS DYNAMICS:
+	# 1. Lateral weight shift (Side-to-side sway as weight shifts over bearing foot: +/-0.042m)
+	# 2. Smooth vertical bobbing: Lowest on foot plants (-cos(2t)), highest on passing leg
+	p["hips_pos"] = Vector3(
+		sin(t) * 0.042,
+		ground_hips_y - cos(2.0 * t) * 0.030,
+		0.0
+	)
 	
-	p["left_thigh_rot"] = Vector3(-s_leg * 26.0, 0.0, 0.0)
-	p["left_shin_rot"] = Vector3(maxf(0.0, s_leg * 32.0), 0.0, 0.0)
-	p["right_thigh_rot"] = Vector3(s_leg * 26.0, 0.0, 0.0)
-	p["right_shin_rot"] = Vector3(maxf(0.0, -s_leg * 32.0), 0.0, 0.0)
+	# Hips Rotation:
+	# Pitch (12° forward lean + 1.5° stomp bounce), Yaw (7° rotation with stride), Roll (4.2° pelvic list tilt)
+	p["hips_rot"] = Vector3(
+		12.0 + cos(2.0 * t) * 1.5,
+		s_leg * 7.0,
+		-c_leg * 4.2
+	)
 	
-	# Dynamic posture driven by walk/shoulder stance configs
+	# TORSO DYNAMICS:
+	# Counter-rotates spine and counter-tilts roll to maintain center of mass balance
+	p["torso_rot"] = Vector3(
+		14.0 - cos(2.0 * t) * 2.0,
+		-s_leg * 6.0,
+		c_leg * 3.2
+	)
+	
+	# HEAD DYNAMICS:
+	# Cervical stabilization: keeps eyes focused forward on horizon, chin tucked, slight aggressive head bob
+	p["head_rot"] = Vector3(
+		-8.0 + cos(2.0 * t) * 2.0,
+		-s_leg * 3.5,
+		-c_leg * 2.0
+	)
+	
+	# LEGS KINEMATICS (2-Phase Biomechanical Knee Flexion: Stance Shock Absorption + Passing High Lift):
+	# Left Leg:
+	var thigh_l = -c_leg * 24.0
+	var stance_l = pow(maxf(0.0, cos(t - 0.25 * PI)), 2.0) * 12.0 # Elastic weight absorption on plant
+	var swing_l = pow(maxf(0.0, cos(t - 1.35 * PI)), 1.8) * 38.0  # High clearance lift on swing
+	p["left_thigh_rot"] = Vector3(thigh_l, 0.0, -6.0) # Wide beastly stance (-6° outward splay)
+	p["left_shin_rot"] = Vector3(8.0 + stance_l + swing_l, 0.0, 0.0) # Never locked straight!
+	
+	# Right Leg (180° / PI phase shifted):
+	var t_r = t + PI
+	var thigh_r = -cos(t_r) * 24.0
+	var stance_r = pow(maxf(0.0, cos(t_r - 0.25 * PI)), 2.0) * 12.0
+	var swing_r = pow(maxf(0.0, cos(t_r - 1.35 * PI)), 1.8) * 38.0
+	p["right_thigh_rot"] = Vector3(thigh_r, 0.0, 6.0) # Wide beastly stance (+6° outward splay)
+	p["right_shin_rot"] = Vector3(8.0 + stance_r + swing_r, 0.0, 0.0)
+	
+	# UPPER BODY, ARMS & WARHAMMER DYNAMICS:
 	var st_key = "walk" if stance_configs.has("walk") else (current_stance if (stance_configs.has(current_stance) and current_stance != "guard") else "shoulder")
 	var cfg = stance_configs.get(st_key, default_stance_configs.get(st_key, default_stance_configs.get("shoulder", {})))
 	var base_hammer: Vector3 = cfg.get("warhammer_rot", Vector3(145.0, 0.0, -10.0))
@@ -505,12 +550,21 @@ func _compute_walk(time_val: float) -> Dictionary:
 	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(0.0, 0.0, -20.0))
 	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-25.0, 0.0, 0.0))
 	
-	p["right_arm_rot"] = base_r_arm + Vector3(cos(t) * 10.0, 0.0, 0.0)
-	p["right_forearm_rot"] = base_r_fore
-	p["warhammer_rot"] = base_hammer + Vector3(cos(t) * 4.0, 0.0, 0.0)
+	# Right Arm & Warhammer: Heavy inertia lag and bicep cushioning on stomp impacts
+	var hammer_heave = cos(2.0 * t) * 3.5
+	var arm_r_swing = cos(t) * 8.0
+	var elbow_r_cushion = -cos(2.0 * t) * 5.0
+	var hammer_inertia = cos(t - 0.3) * 5.0 + sin(2.0 * t) * 3.0
+	p["right_arm_rot"] = base_r_arm + Vector3(arm_r_swing + hammer_heave, 0.0, sin(t) * 2.0)
+	p["right_forearm_rot"] = base_r_fore + Vector3(elbow_r_cushion, 0.0, 0.0)
+	p["warhammer_rot"] = base_hammer + Vector3(hammer_inertia, 0.0, 0.0)
 	
-	p["left_arm_rot"] = base_l_arm + Vector3(-s_leg * 24.0, 0.0, 0.0)
-	p["left_forearm_rot"] = base_l_fore
+	# Left Arm: Free natural counter-swing with rhythmic forearm flexing & breathing elbow articulation
+	var arm_l_swing = -s_leg * 22.0
+	var elbow_l_flex = s_leg * 16.0 # Dynamic flex: bends on forward swing, relaxes on backswing
+	p["left_arm_rot"] = base_l_arm + Vector3(arm_l_swing, 0.0, -c_leg * 3.0)
+	p["left_forearm_rot"] = base_l_fore + Vector3(elbow_l_flex, 0.0, 0.0)
+	
 	return p
 
 # --- 3. WAR ROAR (Pound Chest, Skyward Roar with Hammer Aloft) ---
