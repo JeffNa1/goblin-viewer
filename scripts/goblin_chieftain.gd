@@ -38,7 +38,8 @@ const CLEAVE_DURATION: float = 1.50
 const ROAR_DURATION: float = 1.80
 const EARTHSHAKER_DURATION: float = 2.00
 const WHIRLWIND_DURATION: float = 1.90
-const STAGGER_DURATION: float = 1.60
+const PARRY_DURATION: float = 1.35
+const STAGGER_DURATION: float = 1.35
 
 # Blending
 var is_blending: bool = false
@@ -156,13 +157,22 @@ func _init_default_stances() -> void:
 			"head_rot": Vector3(-10.0, 0.0, 0.0)
 		},
 		"stagger": {
-			"right_arm_rot": Vector3(-12.0, 10.0, 22.0),
-			"right_forearm_rot": Vector3(-45.0, 0.0, 0.0),
-			"warhammer_rot": Vector3(175.0, 0.0, -10.0),
-			"left_arm_rot": Vector3(-35.0, 12.0, -12.0),
-			"left_forearm_rot": Vector3(-78.0, 0.0, 0.0),
-			"torso_rot": Vector3(24.0, -4.0, 2.0),
-			"head_rot": Vector3(-16.0, 0.0, 0.0)
+			"right_arm_rot": Vector3(-42.0, 18.0, 36.0),
+			"right_forearm_rot": Vector3(-60.0, 0.0, 0.0),
+			"warhammer_rot": Vector3(48.0, 22.0, 12.0),
+			"left_arm_rot": Vector3(-10.0, 0.0, -48.0),
+			"left_forearm_rot": Vector3(-25.0, 0.0, 0.0),
+			"torso_rot": Vector3(-14.0, 15.0, -6.0),
+			"head_rot": Vector3(-15.0, 8.0, 0.0)
+		},
+		"parry": {
+			"right_arm_rot": Vector3(-42.0, 18.0, 36.0),
+			"right_forearm_rot": Vector3(-60.0, 0.0, 0.0),
+			"warhammer_rot": Vector3(48.0, 22.0, 12.0),
+			"left_arm_rot": Vector3(-10.0, 0.0, -48.0),
+			"left_forearm_rot": Vector3(-25.0, 0.0, 0.0),
+			"torso_rot": Vector3(-14.0, 15.0, -6.0),
+			"head_rot": Vector3(-15.0, 8.0, 0.0)
 		},
 		"stunned": {
 			"right_arm_rot": Vector3(10.0, 5.0, 32.0),
@@ -242,7 +252,7 @@ func get_stance_definitions() -> Array:
 		{"id": "earthshaker", "name": "Địa Chấn", "shortcut": "[ 4 ]"},
 		{"id": "whirlwind", "name": "Bão Chùy 360°", "shortcut": "[ 5 ]"},
 		{"id": "roar", "name": "Gầm Thét", "shortcut": "[ 6 ]"},
-		{"id": "stagger", "name": "Quỳ Gối", "shortcut": "[ 7 ]"},
+		{"id": "stagger", "name": "Bị Parry", "shortcut": "[ 7 ]"},
 		{"id": "stunned", "name": "Choáng", "shortcut": "[ 8 ]"},
 		{"id": "shoulder", "name": "Vác Đại Chùy", "shortcut": "[ Q ]"},
 		{"id": "ground", "name": "Chống Chùy Đất", "shortcut": "[ W ]"},
@@ -348,7 +358,7 @@ func set_live_ground_hips_y(val: float) -> void:
 	_apply_pose(current_pose)
 
 func play_anim(anim_name: String) -> void:
-	if current_anim == anim_name and current_anim not in ["cleave", "roar", "earthshaker", "stagger"]:
+	if current_anim == anim_name and current_anim not in ["cleave", "roar", "earthshaker", "stagger", "parry"]:
 		return
 	_stop_all_weapon_trails()
 	earthshaker_impacted = false
@@ -362,6 +372,10 @@ func play_anim(anim_name: String) -> void:
 		
 	if stun_stars:
 		stun_stars.set_active(current_anim == "stunned")
+		
+	if current_anim in ["parry", "stagger"] and weapon_trail:
+		var spark_pos = warhammer.to_global(weapon_trail.tip_offset)
+		weapon_trail.trigger_parry_spark(spark_pos)
 		
 	emit_signal("anim_changed", current_anim)
 
@@ -396,20 +410,16 @@ func _update_attack_trails(t_cur: float) -> void:
 			if not earthshaker_impacted:
 				earthshaker_impacted = true
 				var impact_pos = warhammer.to_global(weapon_trail.tip_offset)
-				weapon_trail.trigger_ground_impact(impact_pos, 1.85, 0.42, Color(1.0, 0.70, 0.18))
+				# Massive multi-layer shockwave, crater spikes & 22 rock shards
+				weapon_trail.trigger_ground_impact(impact_pos, 2.35, 0.46, Color(1.0, 0.70, 0.18))
 				
 	elif current_anim == "whirlwind":
-		# Raging 360° cyclone ribbon and ground vortex ring
+		# Intimidating 360° cyclone storm: thick blazing ribbon, multi-tier vortex & tornado debris
 		if not weapon_trail.is_emitting:
-			weapon_trail.start_trail(Color(1.0, 0.88, 0.35, 0.95), Color(0.95, 0.42, 0.08, 0.85), 0.42)
-		weapon_trail.set_vortex_active(true, global_position, 1.70, Color(1.0, 0.78, 0.25))
+			weapon_trail.start_trail(Color(1.0, 0.95, 0.50, 0.98), Color(1.0, 0.38, 0.05, 0.90), 0.45)
+		weapon_trail.set_vortex_active(true, global_position, 1.85, Color(1.0, 0.82, 0.25))
 		
-	elif current_anim == "stagger":
-		var tau = clampf(t_cur / STAGGER_DURATION, 0.0, 1.0)
-		if tau >= 0.38 and not stagger_planted:
-			stagger_planted = true
-			var plant_pos = warhammer.to_global(weapon_trail.tip_offset)
-			weapon_trail.trigger_ground_impact(plant_pos, 0.65, 0.24, Color(0.85, 0.75, 0.55))
+	elif current_anim in ["stagger", "parry"]:
 		if weapon_trail.is_emitting:
 			weapon_trail.stop_trail()
 			
@@ -452,9 +462,9 @@ func _process(delta: float) -> void:
 			action_time = 0.0
 			_start_blend()
 			emit_signal("anim_changed", current_anim)
-	elif current_anim == "stagger":
+	elif current_anim in ["stagger", "parry"]:
 		action_time += dt
-		if action_time >= STAGGER_DURATION:
+		if action_time >= PARRY_DURATION:
 			_stop_all_weapon_trails()
 			current_anim = base_anim
 			action_time = 0.0
@@ -464,7 +474,7 @@ func _process(delta: float) -> void:
 	if stun_stars:
 		stun_stars.set_active(current_anim == "stunned")
 		
-	var cur_t = action_time if current_anim in ["cleave", "roar", "earthshaker", "stagger"] else anim_time
+	var cur_t = action_time if current_anim in ["cleave", "roar", "earthshaker", "stagger", "parry"] else anim_time
 	_update_attack_trails(cur_t)
 	var target_pose = _compute_pose(current_anim, cur_t)
 	
@@ -496,7 +506,7 @@ func _compute_pose(anim: String, time_val: float) -> Dictionary:
 		"roar": return _compute_roar(time_val)
 		"earthshaker": return _compute_earthshaker(time_val)
 		"whirlwind": return _compute_whirlwind(time_val)
-		"stagger": return _compute_stagger(time_val)
+		"stagger", "parry": return _compute_parry(time_val)
 		"stunned": return _compute_stunned(time_val)
 		_: return _compute_shoulder(time_val)
 
@@ -1004,10 +1014,10 @@ func _compute_whirlwind(time_val: float) -> Dictionary:
 	p["right_shin_rot"] = Vector3(12.0, 0.0, 0.0)
 	return p
 
-# --- 9. STAGGER / POISE BREAK (Authentic Heavyweight Drop to One Knee & Crutch Plant) ---
-func _compute_stagger(t_s: float) -> Dictionary:
+# --- 9. PARRY REACTION (Deflected Upward/Backward, Violent Recoil & Heavy Stumble) ---
+func _compute_parry(t_p: float) -> Dictionary:
 	var p: Dictionary = {}
-	var tau = clampf(t_s / STAGGER_DURATION, 0.0, 1.0)
+	var tau = clampf(t_p / PARRY_DURATION, 0.0, 1.0)
 	var base_cfg = _get_base_stance_cfg()
 	var base_hammer = base_cfg.get("warhammer_rot", Vector3(65.0, 0.0, -30.0))
 	var base_r_arm = base_cfg.get("right_arm_rot", Vector3(-32.0, 25.0, 35.0))
@@ -1015,94 +1025,104 @@ func _compute_stagger(t_s: float) -> Dictionary:
 	var base_l_arm = base_cfg.get("left_arm_rot", Vector3(15.0, 0.0, -15.0))
 	var base_l_fore = base_cfg.get("left_forearm_rot", Vector3(-25.0, 0.0, 0.0))
 	
-	if tau < 0.20:
-		# PHASE 1: Heavy Impact Recoil (Upper body knocked back, feet sliding back)
-		var s = smoothstep(0.0, 1.0, tau / 0.20)
-		p["hips_pos"] = Vector3(0.0, ground_hips_y + 0.01 * s, -0.08 * s)
-		p["hips_rot"] = Vector3(lerp(4.0, -12.0, s), 0.0, 0.0)
-		p["torso_rot"] = Vector3(lerp(6.0, -24.0, s), 0.0, 0.0)
-		p["head_rot"] = Vector3(lerp(-4.0, -26.0, s), 0.0, 0.0)
+	if tau < 0.18:
+		# PHASE 1: Violent Clash & Explosive Weapon Deflection
+		var s = 1.0 - pow(1.0 - (tau / 0.18), 2.5)
+		p["hips_pos"] = Vector3(0.0, ground_hips_y + 0.010 * s, -0.10 * s)
+		p["hips_rot"] = Vector3(lerp(4.0, -12.0, s), lerp(0.0, 10.0, s), 0.0)
+		p["torso_rot"] = Vector3(lerp(6.0, -22.0, s), lerp(0.0, 20.0, s), lerp(0.0, -6.0, s))
+		p["head_rot"] = Vector3(lerp(-4.0, -28.0, s), lerp(0.0, 14.0, s), 0.0)
 		
-		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(-25.0, 15.0, 30.0), s)
-		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-60.0, 0.0, 0.0), s)
-		p["warhammer_rot"] = _lerp_angles(base_hammer, Vector3(50.0, 0.0, 0.0), s)
-		p["left_arm_rot"] = _lerp_angles(base_l_arm, Vector3(-40.0, 0.0, -30.0), s)
-		p["left_forearm_rot"] = _lerp_angles(base_l_fore, Vector3(-20.0, 0.0, 0.0), s)
+		# Mace deflected sharply backward & upward over right shoulder
+		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(-68.0, 22.0, 42.0), s)
+		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-35.0, 0.0, 0.0), s)
+		p["warhammer_rot"] = _lerp_angles(base_hammer, Vector3(25.0, 25.0, 20.0), s)
+		
+		# Left arm blown off grip, splayed outward for balance
+		p["left_arm_rot"] = _lerp_angles(base_l_arm, Vector3(-20.0, -10.0, -60.0), s)
+		p["left_forearm_rot"] = _lerp_angles(base_l_fore, Vector3(-15.0, 0.0, 0.0), s)
 		
 		p["left_thigh_rot"] = Vector3(lerp(0.0, 14.0, s), 0.0, -7.0)
 		p["left_shin_rot"] = Vector3(lerp(7.0, 10.0, s), 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(lerp(0.0, -10.0, s), 0.0, 7.0)
-		p["right_shin_rot"] = Vector3(lerp(7.0, 20.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(0.0, -16.0, s), 0.0, 7.0)
+		p["right_shin_rot"] = Vector3(lerp(7.0, 24.0, s), 0.0, 0.0)
 		
-	elif tau < 0.44:
-		# PHASE 2: Deep Kneel Collapse & Ground Brace (Right knee to ground, mace planted firmly)
-		var prog = (tau - 0.20) / 0.24
+	elif tau < 0.50:
+		# PHASE 2: Heavy Backward Stumble & Poise Breakdown
+		var prog = (tau - 0.18) / 0.32
 		var s = smoothstep(0.0, 1.0, prog)
+		var dip = sin(prog * PI) * 0.025
+		var shock = sin(t_p * 50.0) * (2.0 * (1.0 - prog))
 		
-		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y + 0.01, ground_hips_y - 0.135, s), lerp(-0.08, -0.04, s))
-		p["hips_rot"] = Vector3(lerp(-12.0, 10.0, s), lerp(0.0, 4.0, s), lerp(0.0, -2.0, s))
-		p["torso_rot"] = Vector3(lerp(-24.0, 24.0, s), lerp(0.0, -4.0, s), lerp(0.0, 2.0, s))
-		p["head_rot"] = Vector3(lerp(-26.0, -16.0, s), 0.0, 0.0)
+		# Sliding backward in a heavy stumble
+		p["hips_pos"] = Vector3(lerp(0.0, -0.04, s), ground_hips_y - dip, lerp(-0.10, -0.22, s))
+		p["hips_rot"] = Vector3(lerp(-12.0, -8.0, s), lerp(10.0, 12.0, s), lerp(0.0, -3.0, s))
+		p["torso_rot"] = Vector3(lerp(-22.0, -14.0, s) + shock, lerp(20.0, 15.0, s), -6.0)
+		p["head_rot"] = Vector3(lerp(-28.0, -15.0, s), lerp(14.0, 8.0, s), 0.0)
 		
-		p["right_arm_rot"] = Vector3(lerp(-25.0, -12.0, s), lerp(15.0, 10.0, s), lerp(30.0, 22.0, s))
-		p["right_forearm_rot"] = Vector3(lerp(-60.0, -45.0, s), 0.0, 0.0)
-		p["warhammer_rot"] = Vector3(lerp(50.0, 175.0, s), 0.0, lerp(0.0, -10.0, s))
-		p["left_arm_rot"] = Vector3(lerp(-40.0, -35.0, s), lerp(0.0, 12.0, s), lerp(-30.0, -12.0, s))
-		p["left_forearm_rot"] = Vector3(lerp(-20.0, -78.0, s), 0.0, 0.0)
+		# Right arm strained fighting the recoiling mace
+		p["right_arm_rot"] = Vector3(lerp(-68.0, -42.0, s) + shock, 18.0, lerp(42.0, 36.0, s))
+		p["right_forearm_rot"] = Vector3(lerp(-35.0, -60.0, s), 0.0, 0.0)
+		p["warhammer_rot"] = Vector3(lerp(25.0, 48.0, s), 22.0, lerp(20.0, 12.0, s) + shock * 1.5)
 		
-		p["left_thigh_rot"] = Vector3(lerp(14.0, 32.0, s), 0.0, -8.0)
-		p["left_shin_rot"] = Vector3(lerp(10.0, 24.0, s), 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(lerp(-10.0, -38.0, s), 0.0, 8.0)
-		p["right_shin_rot"] = Vector3(lerp(20.0, 82.0, s), 0.0, 0.0)
+		# Left arm flailing wide for counterbalance
+		p["left_arm_rot"] = Vector3(lerp(-20.0, -10.0, s), 0.0, lerp(-60.0, -48.0, s))
+		p["left_forearm_rot"] = Vector3(lerp(-15.0, -25.0, s), 0.0, 0.0)
+		
+		# Right foot steps back hard to brake fall; left foot drags
+		p["right_thigh_rot"] = Vector3(lerp(-16.0, -32.0, s), 0.0, 8.0)
+		p["right_shin_rot"] = Vector3(lerp(24.0, 44.0, s), 0.0, 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(14.0, 24.0, s), 0.0, -8.0)
+		p["left_shin_rot"] = Vector3(lerp(10.0, 15.0, s), 0.0, 0.0)
 		
 	elif tau < 0.74:
-		# PHASE 3: Panting Defiance on One Knee (Grounded, chest heaving, defiant forward glare)
-		var pant_t = (tau - 0.44) / 0.30 * 4.0 * PI
-		var pant_wave = sin(pant_t)
-		var pant_hips = abs(pant_wave) * 0.004
-		var pant_chest = pant_wave * 3.5
+		# PHASE 3: Regaining Balance & Firm Heel Stomp
+		var prog = (tau - 0.50) / 0.24
+		var s = smoothstep(0.0, 1.0, prog)
+		var head_shake = sin(prog * 3.0 * PI) * 5.0
 		
-		p["hips_pos"] = Vector3(0.0, ground_hips_y - 0.135 + pant_hips, -0.04 - pant_hips * 2.0)
-		p["hips_rot"] = Vector3(10.0, 4.0 + pant_wave * 0.5, -2.0)
-		p["torso_rot"] = Vector3(24.0 + pant_chest, -4.0, 2.0)
-		p["head_rot"] = Vector3(-16.0 - pant_chest * 0.4, 0.0, 0.0)
+		p["hips_pos"] = Vector3(lerp(-0.04, 0.0, s), ground_hips_y, lerp(-0.22, -0.12, s))
+		p["hips_rot"] = Vector3(lerp(-8.0, 4.0, s), lerp(12.0, 4.0, s), lerp(-3.0, 0.0, s))
+		p["torso_rot"] = Vector3(lerp(-14.0, 10.0, s), lerp(15.0, 4.0, s), lerp(-6.0, 0.0, s))
+		p["head_rot"] = Vector3(lerp(-15.0, -6.0, s), head_shake, 0.0)
 		
-		# Right arm anchors mace crutch firmly on earth
-		p["right_arm_rot"] = Vector3(-12.0, 10.0, 22.0)
-		p["right_forearm_rot"] = Vector3(-45.0, 0.0, 0.0)
-		p["warhammer_rot"] = Vector3(175.0, 0.0, -10.0)
+		# Both hands clamp back toward mace shaft
+		p["right_arm_rot"] = _lerp_angles(Vector3(-42.0, 18.0, 36.0), Vector3(-35.0, 20.0, 34.0), s)
+		p["right_forearm_rot"] = _lerp_angles(Vector3(-60.0, 0.0, 0.0), Vector3(-95.0, 0.0, 0.0), s)
+		p["warhammer_rot"] = _lerp_angles(Vector3(48.0, 22.0, 12.0), Vector3(60.0, 10.0, -15.0), s)
+		p["left_arm_rot"] = _lerp_angles(Vector3(-10.0, 0.0, -48.0), Vector3(10.0, 0.0, -20.0), s)
+		p["left_forearm_rot"] = _lerp_angles(Vector3(-25.0, 0.0, 0.0), Vector3(-30.0, 0.0, 0.0), s)
 		
-		# Left arm braces on left knee, rises and falls with breathing
-		p["left_arm_rot"] = Vector3(-35.0 + pant_wave * 2.0, 12.0, -12.0)
-		p["left_forearm_rot"] = Vector3(-78.0, 0.0, 0.0)
-		
-		p["left_thigh_rot"] = Vector3(32.0 + pant_wave * 1.0, 0.0, -8.0)
-		p["left_shin_rot"] = Vector3(24.0, 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(-38.0, 0.0, 8.0)
-		p["right_shin_rot"] = Vector3(82.0, 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(-32.0, -12.0, s), 0.0, 7.0)
+		p["right_shin_rot"] = Vector3(lerp(44.0, 20.0, s), 0.0, 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(24.0, 10.0, s), 0.0, -7.0)
+		p["left_shin_rot"] = Vector3(lerp(15.0, 10.0, s), 0.0, 0.0)
 		
 	else:
-		# PHASE 4: Muscular Push-Off & Smooth Recovery Back to Base Stance
+		# PHASE 4: Muscular Step-Up Back to Base Stance
 		var prog = (tau - 0.74) / 0.26
 		var s = smoothstep(0.0, 1.0, prog)
 		
-		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.135, ground_hips_y, s), lerp(-0.04, 0.0, s))
-		p["hips_rot"] = Vector3(lerp(10.0, 4.0, s), lerp(4.0, 0.0, s), lerp(-2.0, 0.0, s))
-		p["torso_rot"] = Vector3(lerp(24.0, 6.0, s), lerp(-4.0, 0.0, s), lerp(2.0, 0.0, s))
-		p["head_rot"] = Vector3(lerp(-16.0, -4.0, s), 0.0, 0.0)
+		p["hips_pos"] = Vector3(0.0, ground_hips_y, lerp(-0.12, 0.0, s))
+		p["hips_rot"] = Vector3(lerp(4.0, 4.0, s), lerp(4.0, 0.0, s), 0.0)
+		p["torso_rot"] = Vector3(lerp(10.0, 6.0, s), lerp(4.0, 0.0, s), 0.0)
+		p["head_rot"] = Vector3(lerp(-6.0, -4.0, s), 0.0, 0.0)
 		
-		p["right_arm_rot"] = _lerp_angles(Vector3(-12.0, 10.0, 22.0), base_r_arm, s)
-		p["right_forearm_rot"] = _lerp_angles(Vector3(-45.0, 0.0, 0.0), base_r_fore, s)
-		p["warhammer_rot"] = _lerp_angles(Vector3(175.0, 0.0, -10.0), base_hammer, s)
-		p["left_arm_rot"] = _lerp_angles(Vector3(-35.0, 12.0, -12.0), base_l_arm, s)
-		p["left_forearm_rot"] = _lerp_angles(Vector3(-78.0, 0.0, 0.0), base_l_fore, s)
+		p["right_arm_rot"] = _lerp_angles(Vector3(-35.0, 20.0, 34.0), base_r_arm, s)
+		p["right_forearm_rot"] = _lerp_angles(Vector3(-95.0, 0.0, 0.0), base_r_fore, s)
+		p["warhammer_rot"] = _lerp_angles(Vector3(60.0, 10.0, -15.0), base_hammer, s)
+		p["left_arm_rot"] = _lerp_angles(Vector3(10.0, 0.0, -20.0), base_l_arm, s)
+		p["left_forearm_rot"] = _lerp_angles(Vector3(-30.0, 0.0, 0.0), base_l_fore, s)
 		
-		p["left_thigh_rot"] = Vector3(lerp(32.0, 0.0, s), 0.0, -6.0)
-		p["left_shin_rot"] = Vector3(lerp(24.0, 7.0, s), 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(lerp(-38.0, 0.0, s), 0.0, 6.0)
-		p["right_shin_rot"] = Vector3(lerp(82.0, 7.0, s), 0.0, 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(10.0, 0.0, s), 0.0, -6.0)
+		p["left_shin_rot"] = Vector3(lerp(10.0, 7.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(-12.0, 0.0, s), 0.0, 6.0)
+		p["right_shin_rot"] = Vector3(lerp(20.0, 7.0, s), 0.0, 0.0)
 		
 	return p
+
+func _compute_stagger(t_s: float) -> Dictionary:
+	return _compute_parry(t_s)
 
 # --- 10. STUNNED (Woozy Dazed Sway, Mace Hanging Low Away From Face) ---
 func _compute_stunned(time_val: float) -> Dictionary:

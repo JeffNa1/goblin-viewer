@@ -177,7 +177,7 @@ var monster_actions: Dictionary = {
 		{"anim": "earthshaker", "label": "💥 [ 4 ] ĐỊA CHẤN", "color": Color(1.0, 0.45, 0.2)},
 		{"anim": "whirlwind", "label": "🌪 [ 5 ] BÃO CHÙY 360°", "color": Color(1.0, 0.65, 0.15)},
 		{"anim": "roar", "label": "🦁 [ 6 ] GẦM THÉT", "color": Color(1.0, 0.85, 0.3)},
-		{"anim": "stagger", "label": "🛡 [ 7 ] QUỲ GỐI", "color": Color(0.4, 0.85, 1.0)},
+		{"anim": "stagger", "label": "🛡 [ 7 ] BỊ PARRY", "color": Color(1.0, 0.45, 0.3)},
 		{"anim": "stunned", "label": "💫 [ 8 ] CHOÁNG", "color": Color(1.0, 0.9, 0.25)}
 	]
 }
