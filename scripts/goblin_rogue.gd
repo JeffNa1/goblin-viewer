@@ -37,7 +37,7 @@ var anim_speed: float = 1.0
 # Action Timers
 var action_time: float = 0.0
 const SLASH_DURATION: float = 1.05
-const BACKSTAB_DURATION: float = 1.30
+const BACKSTAB_DURATION: float = 1.60
 const PARRY_DURATION: float = 0.85
 const HURT_DURATION: float = 0.45
 
@@ -322,6 +322,22 @@ func _lerp_angles(a: Vector3, b: Vector3, weight: float) -> Vector3:
 		lerpf(a.z, b.z, weight)
 	)
 
+# 3-Point Non-Clipping Outward Dagger Flip via Quaternion Slerp
+# Ensures blade rolls laterally away from the forearm through mid_rot instead of slicing through the arm
+func _compute_dagger_flip(base_rot: Vector3, mid_rot: Vector3, fwd_rot: Vector3, t: float) -> Vector3:
+	var q1 = Basis.from_euler(Vector3(deg_to_rad(base_rot.x), deg_to_rad(base_rot.y), deg_to_rad(base_rot.z))).get_rotation_quaternion()
+	var q2 = Basis.from_euler(Vector3(deg_to_rad(mid_rot.x), deg_to_rad(mid_rot.y), deg_to_rad(mid_rot.z))).get_rotation_quaternion()
+	var q3 = Basis.from_euler(Vector3(deg_to_rad(fwd_rot.x), deg_to_rad(fwd_rot.y), deg_to_rad(fwd_rot.z))).get_rotation_quaternion()
+	var res_q: Quaternion
+	if t < 0.5:
+		var st = smoothstep(0.0, 1.0, t * 2.0)
+		res_q = q1.slerp(q2, st)
+	else:
+		var st = smoothstep(0.0, 1.0, (t - 0.5) * 2.0)
+		res_q = q2.slerp(q3, st)
+	var euler = Basis(res_q).get_euler()
+	return Vector3(rad_to_deg(euler.x), rad_to_deg(euler.y), rad_to_deg(euler.z))
+
 func generate_voxel_meshes() -> void:
 	# Pre-build meshes for Outfit 1 (Thô Sơ / Primitive Scavenger)
 	outfit_meshes[1] = {
@@ -426,8 +442,8 @@ func _update_weapon_trails(t_act: float) -> void:
 		var tau = clampf(t_act / BACKSTAB_DURATION, 0.0, 1.0)
 		var blood_tip = Color(1.0, 0.22, 0.30, 0.98)
 		var blood_base = Color(0.65, 0.04, 0.10, 0.85)
-		# Thrust & Lateral Tear Outward (tau in [0.26, 0.74])
-		if tau >= 0.26 and tau < 0.74:
+		# Thrust & Lateral Tear Outward (tau in [0.28, 0.74])
+		if tau >= 0.28 and tau < 0.74:
 			if not right_weapon_trail.is_emitting:
 				right_weapon_trail.start_trail(blood_tip, blood_base, 0.28)
 			if not left_weapon_trail.is_emitting:
@@ -858,7 +874,7 @@ func _compute_dual_slash(t_s: float) -> Dictionary:
 		
 	return p
 
-# --- 5. BACKSTAB (Lethal Ambush: Shadow Stalk & Grip Flip to Dao Xuôi, Explosive Forward Lunge & Deep Impale, Brutal Twist Tear & Recovery) ---
+# --- 5. BACKSTAB (Lethal Ambush: Dedicated Smooth Non-Clipping Grip Flip to Dao Xuôi, Explosive Forward Lunge & Deep Impale, Brutal Twist Tear & Non-Clipping Recovery Flip) ---
 func _compute_backstab(t_b: float) -> Dictionary:
 	var p: Dictionary = {}
 	var tau = clampf(t_b / BACKSTAB_DURATION, 0.0, 1.0)
@@ -877,33 +893,40 @@ func _compute_backstab(t_b: float) -> Dictionary:
 	var fwd_dag_r = Vector3(88.0, -10.0, 12.0)
 	var fwd_dag_l = Vector3(88.0, 10.0, -12.0)
 	
-	if tau < 0.26:
-		# PHASE 1: SHADOW STALK, GRIP FLIP TO DAO XUÔI & COILED WINDUP (0.00s - 0.338s)
-		# Sinks low, steps back with right foot to load weight, wrists snap daggers to FORWARD GRIP
-		var u = tau / 0.26
+	# Lateral outward roll waypoints: rolls the blade through outer space, completely avoiding forearm collision
+	var mid_dag_r = Vector3(10.0, 15.0, -95.0)
+	var mid_dag_l = Vector3(10.0, -15.0, 95.0)
+	
+	if tau < 0.28:
+		# PHASE 1: DEDICATED TRANSITION - SMOOTH OUTWARD NON-CLIPPING DAGGER FLIP & SHADOW COIL (0.00s - 0.448s)
+		# Low stalking windup: weight shifts to rear right foot, forearms lift slightly to open clearance,
+		# daggers roll fluidly through outer lateral arc into forward grip (Dao Xuôi) with zero arm clipping.
+		var u = tau / 0.28
 		var s = smoothstep(0.0, 1.0, u)
 		
 		# Hips sink and coil back
 		p["hips_pos"] = Vector3(0.0, ground_hips_y - 0.06 * s, -0.05 * s)
 		p["hips_rot"] = Vector3(lerp(12.0, 14.0, s), lerp(0.0, 18.0, s), 0.0)
 		
-		# Torso coils back and twists heavily right (+28° yaw, -8° roll, 14° pitch)
+		# Torso coils back and twists right (+28° yaw, -8° roll, 14° pitch)
 		p["torso_rot"] = Vector3(lerp(base_torso.x, 14.0, s), lerp(0.0, 28.0, s), lerp(0.0, -8.0, s))
-		p["head_rot"] = Vector3(lerp(base_head.x, -14.0, s), lerp(0.0, -22.0, s), 0.0) # Head locks on victim
+		p["head_rot"] = Vector3(lerp(base_head.x, -14.0, s), lerp(0.0, -22.0, s), 0.0) # Head locked on target
 		
-		# Grip Flip: Wrists flip daggers smoothly from reverse grip to forward grip
-		var flip_u = clampf((u - 0.25) / 0.60, 0.0, 1.0)
-		var flip_s = smoothstep(0.0, 1.0, flip_u)
-		p["right_dagger_rot"] = _lerp_angles(base_dag_r, fwd_dag_r, flip_s)
-		p["left_dagger_rot"] = _lerp_angles(base_dag_l, fwd_dag_l, flip_s)
+		# Flip timing inside Stage 1: dedicated fluid roll starting at u=0.10 through u=0.90
+		var flip_u = clampf((u - 0.10) / 0.80, 0.0, 1.0)
+		p["right_dagger_rot"] = _compute_dagger_flip(base_dag_r, mid_dag_r, fwd_dag_r, flip_u)
+		p["left_dagger_rot"] = _compute_dagger_flip(base_dag_l, mid_dag_l, fwd_dag_l, flip_u)
 		
-		# Right arm cocks far back behind ribs, elbow pulled back high (coiling for spear thrust)
-		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(34.0, 26.0, 22.0), s)
-		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-88.0, 0.0, 0.0), s)
+		# Clearance lift: slightly uncurls elbow and expands arms during the flip to give generous margin
+		var clear_lift = sin(flip_u * PI) * 16.0
 		
-		# Left arm reaches far forward and wide to grapple/pin target's shoulder
-		p["left_arm_rot"] = _lerp_angles(base_l_arm, Vector3(-32.0, -18.0, -24.0), s)
-		p["left_forearm_rot"] = _lerp_angles(base_l_fore, Vector3(-38.0, 0.0, 0.0), s)
+		# Right arm cocks back behind ribs, elbow drawn back high for spear thrust
+		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(34.0, 26.0, 22.0), s) + Vector3(0.0, 0.0, clear_lift * 0.4)
+		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-88.0, 0.0, 0.0), s) + Vector3(clear_lift * 0.5, 0.0, 0.0)
+		
+		# Left arm reaches forward to grapple target
+		p["left_arm_rot"] = _lerp_angles(base_l_arm, Vector3(-32.0, -18.0, -24.0), s) - Vector3(0.0, 0.0, clear_lift * 0.4)
+		p["left_forearm_rot"] = _lerp_angles(base_l_fore, Vector3(-38.0, 0.0, 0.0), s) + Vector3(clear_lift * 0.5, 0.0, 0.0)
 		
 		# Stance loading onto rear foot
 		p["left_thigh_rot"] = Vector3(lerp(-18.0, -24.0, s), 0.0, -10.0)
@@ -911,10 +934,10 @@ func _compute_backstab(t_b: float) -> Dictionary:
 		p["right_thigh_rot"] = Vector3(lerp(12.0, 24.0, s), 0.0, 10.0)
 		p["right_shin_rot"] = Vector3(lerp(24.0, 16.0, s), 0.0, 0.0)
 		
-	elif tau < 0.50:
-		# PHASE 2: EXPLOSIVE FORWARD LUNGE & DEEP FORWARD IMPALE (0.338s - 0.650s)
-		# Pushes off back foot, surges forward (+0.46m!), torso uncoils, arm reaches FULL EXTENSION with forward blade
-		var u = (tau - 0.26) / 0.24
+	elif tau < 0.52:
+		# PHASE 2: EXPLOSIVE FORWARD LUNGE & DEEP FORWARD IMPALE (0.448s - 0.832s)
+		# Drives off back foot, surges forward (+0.48m!), torso uncoils, arm reaches FULL EXTENSION with forward blade
+		var u = (tau - 0.28) / 0.24
 		var thrust_curve: float = 0.0
 		if u < 0.65:
 			var strike_sub = u / 0.65
@@ -924,14 +947,14 @@ func _compute_backstab(t_b: float) -> Dictionary:
 			var sub = (u - 0.65) / 0.35
 			thrust_curve = 1.0 + sin(sub * PI) * 0.03
 			
-		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.06, ground_hips_y - 0.05, thrust_curve), lerp(-0.05, 0.46, thrust_curve))
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.06, ground_hips_y - 0.05, thrust_curve), lerp(-0.05, 0.48, thrust_curve))
 		p["hips_rot"] = Vector3(lerp(14.0, 10.0, thrust_curve), lerp(18.0, -14.0, thrust_curve), 0.0)
 		
 		# Torso drives upper body weight into the thrust: leans forward 36°, rotates from +28° to -16°
 		p["torso_rot"] = Vector3(lerp(14.0, 36.0, thrust_curve), lerp(28.0, -16.0, thrust_curve), lerp(-8.0, 8.0, thrust_curve))
 		p["head_rot"] = Vector3(lerp(-14.0, -24.0, thrust_curve), lerp(-22.0, 14.0, thrust_curve), 0.0)
 		
-		# Both daggers strictly in DAO XUÔI (Forward Grip)
+		# Both daggers locked firmly in DAO XUÔI (Forward Grip)
 		p["right_dagger_rot"] = fwd_dag_r
 		p["left_dagger_rot"] = fwd_dag_l
 		
@@ -950,12 +973,12 @@ func _compute_backstab(t_b: float) -> Dictionary:
 		p["right_shin_rot"] = Vector3(lerp(16.0, 10.0, thrust_curve), 0.0, 0.0)
 		
 	elif tau < 0.74:
-		# PHASE 3: BRUTAL INTERNAL TWIST & LATERAL RIPPING TEAR (0.650s - 0.962s)
+		# PHASE 3: BRUTAL INTERNAL TWIST & LATERAL RIPPING TEAR (0.832s - 1.184s)
 		# Drives full body weight deeper (torso 42°), twists forward blades 90°, violently wrenches arms outward
-		var u = (tau - 0.50) / 0.24
+		var u = (tau - 0.52) / 0.22
 		var rip_curve = 1.0 - pow(1.0 - u, 2.5)
 		
-		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.05, ground_hips_y - 0.07, rip_curve), lerp(0.46, 0.48, rip_curve))
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.05, ground_hips_y - 0.07, rip_curve), lerp(0.48, 0.50, rip_curve))
 		p["hips_rot"] = Vector3(10.0, -14.0, 0.0)
 		p["torso_rot"] = Vector3(lerp(36.0, 42.0, rip_curve), lerp(-16.0, -18.0, rip_curve), 8.0)
 		p["head_rot"] = Vector3(-24.0, 14.0, 0.0)
@@ -977,27 +1000,30 @@ func _compute_backstab(t_b: float) -> Dictionary:
 		p["right_shin_rot"] = Vector3(10.0, 0.0, 0.0)
 		
 	else:
-		# PHASE 4: RECOIL EXTRACTION, BLOOD FLICK & FLIP BACK TO REVERSE IDLE (0.962s - 1.30s)
+		# PHASE 4: RECOIL EXTRACTION, BLOOD FLICK & FLIP BACK TO REVERSE IDLE (1.184s - 1.60s)
 		# Springs back from front foot to neutral, stylish wrist snap flicks blood, daggers spin back to DAO NGƯỢC
+		# using outward non-clipping quaternion roll trajectory.
 		var u = (tau - 0.74) / 0.26
 		var s = smoothstep(0.0, 1.0, u)
 		
-		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.07, ground_hips_y, s), lerp(0.48, 0.0, s))
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.07, ground_hips_y, s), lerp(0.50, 0.0, s))
 		p["hips_rot"] = Vector3(lerp(10.0, 12.0, s), lerp(-14.0, 0.0, s), 0.0)
 		p["torso_rot"] = Vector3(lerp(42.0, base_torso.x, s), lerp(-18.0, base_torso.y, s), lerp(8.0, base_torso.z, s))
 		p["head_rot"] = Vector3(lerp(-24.0, base_head.x, s), lerp(14.0, base_head.y, s), 0.0)
 		
-		# Grip Flip Back: Daggers flip smoothly from forward grip back to reverse grip
-		var unflip_u = clampf((u - 0.35) / 0.55, 0.0, 1.0)
-		var unflip_s = smoothstep(0.0, 1.0, unflip_u)
-		p["right_dagger_rot"] = _lerp_angles(Vector3(82.0, 25.0, 45.0), base_dag_r, unflip_s)
-		p["left_dagger_rot"] = _lerp_angles(Vector3(82.0, -25.0, -45.0), base_dag_l, unflip_s)
+		# Grip Flip Back: Daggers roll outward smoothly from forward grip back to reverse grip
+		var unflip_u = clampf((u - 0.20) / 0.65, 0.0, 1.0)
+		var tear_dag_r = Vector3(82.0, 25.0, 45.0)
+		var tear_dag_l = Vector3(82.0, -25.0, -45.0)
+		p["right_dagger_rot"] = _compute_dagger_flip(tear_dag_r, mid_dag_r, base_dag_r, unflip_u)
+		p["left_dagger_rot"] = _compute_dagger_flip(tear_dag_l, mid_dag_l, base_dag_l, unflip_u)
 		
-		p["right_arm_rot"] = _lerp_angles(Vector3(-42.0, 32.0, 40.0), base_r_arm, s)
-		p["right_forearm_rot"] = _lerp_angles(Vector3(-58.0, 0.0, 0.0), base_r_fore, s)
+		var unflip_lift = sin(unflip_u * PI) * 12.0
+		p["right_arm_rot"] = _lerp_angles(Vector3(-42.0, 32.0, 40.0), base_r_arm, s) + Vector3(0.0, 0.0, unflip_lift * 0.3)
+		p["right_forearm_rot"] = _lerp_angles(Vector3(-58.0, 0.0, 0.0), base_r_fore, s) + Vector3(unflip_lift * 0.4, 0.0, 0.0)
 		
-		p["left_arm_rot"] = _lerp_angles(Vector3(-42.0, -32.0, -40.0), base_l_arm, s)
-		p["left_forearm_rot"] = _lerp_angles(Vector3(-58.0, 0.0, 0.0), base_l_fore, s)
+		p["left_arm_rot"] = _lerp_angles(Vector3(-42.0, -32.0, -40.0), base_l_arm, s) - Vector3(0.0, 0.0, unflip_lift * 0.3)
+		p["left_forearm_rot"] = _lerp_angles(Vector3(-58.0, 0.0, 0.0), base_l_fore, s) + Vector3(unflip_lift * 0.4, 0.0, 0.0)
 		
 		p["left_thigh_rot"] = Vector3(lerp(-44.0, -18.0, s), 0.0, -8.0)
 		p["left_shin_rot"] = Vector3(lerp(60.0, 28.0, s), 0.0, 0.0)
