@@ -1,1806 +1,1848 @@
-﻿{
-    "archer":  {
-                   "aim":  {
-                               "bow_rot":  [
-                                               125.5,
-                                               44.1,
-                                               73.1
-                                           ],
-                               "head_rot":  [
-                                                -6.0,
-                                                -65.0,
-                                                8.0
-                                            ],
-                               "left_arm_rot":  [
-                                                    -109.9,
-                                                    -51.1,
-                                                    8.0
-                                                ],
-                               "left_forearm_rot":  [
-                                                        -1.0,
-                                                        0.0,
-                                                        0.0
-                                                    ],
-                               "right_arm_rot":  [
-                                                     -13.3,
-                                                     -120.9,
-                                                     120.2
-                                                 ],
-                               "right_forearm_rot":  [
-                                                         -76.5,
-                                                         0.0,
-                                                         0.0
-                                                     ],
-                               "torso_rot":  [
-                                                 10.0,
-                                                 15.0,
-                                                 -8.0
-                                             ]
-                           },
-                   "ground_hips_y":  0.618,
-                   "hurt":  {
-                                "bow_rot":  [
-                                                15.0,
-                                                0.0,
-                                                10.0
-                                            ],
-                                "head_rot":  [
-                                                 16.0,
-                                                 0.0,
-                                                 0.0
-                                             ],
-                                "left_arm_rot":  [
-                                                     25.0,
-                                                     0.0,
-                                                     -20.0
-                                                 ],
-                                "left_forearm_rot":  [
-                                                         -40.0,
-                                                         0.0,
-                                                         0.0
-                                                     ],
-                                "right_arm_rot":  [
-                                                      15.0,
-                                                      0.0,
-                                                      20.0
-                                                  ],
-                                "right_forearm_rot":  [
-                                                          -35.0,
-                                                          0.0,
-                                                          0.0
-                                                      ],
-                                "torso_rot":  [
-                                                  -18.0,
-                                                  0.0,
-                                                  0.0
-                                              ]
-                            },
-                   "idle":  {
-                                "bow_rot":  [
-                                                77.0,
-                                                0.0,
-                                                12.0
-                                            ],
-                                "head_rot":  [
-                                                 0.0,
-                                                 0.0,
-                                                 0.0
-                                             ],
-                                "left_arm_rot":  [
-                                                     6.0,
-                                                     0.0,
-                                                     -13.0
-                                                 ],
-                                "left_forearm_rot":  [
-                                                         -12.0,
-                                                         0.0,
-                                                         0.0
-                                                     ],
-                                "right_arm_rot":  [
-                                                      4.0,
-                                                      0.0,
-                                                      9.0
-                                                  ],
-                                "right_forearm_rot":  [
-                                                          -14.0,
-                                                          0.0,
-                                                          0.0
-                                                      ],
-                                "torso_rot":  [
-                                                  4.0,
-                                                  0.0,
-                                                  0.0
-                                              ]
-                            },
-                   "ready":  {
-                                 "bow_rot":  [
-                                                 89.0,
-                                                 80.0,
-                                                 36.0
-                                             ],
-                                 "head_rot":  [
-                                                  0.0,
-                                                  -20.0,
-                                                  0.0
-                                              ],
-                                 "left_arm_rot":  [
-                                                      -51.0,
-                                                      5.0,
-                                                      -20.0
-                                                  ],
-                                 "left_forearm_rot":  [
-                                                          -45.0,
-                                                          0.0,
-                                                          0.0
-                                                      ],
-                                 "right_arm_rot":  [
-                                                       -45.0,
-                                                       -44.0,
-                                                       20.0
-                                                   ],
-                                 "right_forearm_rot":  [
-                                                           -95.0,
-                                                           0.0,
-                                                           0.0
-                                                       ],
-                                 "torso_rot":  [
-                                                   6.0,
-                                                   12.0,
-                                                   -4.0
-                                               ]
-                             },
-                   "run":  {
-                               "bow_rot":  [
-                                               77.0,
-                                               0.0,
-                                               12.0
-                                           ],
-                               "head_rot":  [
-                                                -12.0,
-                                                0.0,
-                                                0.0
-                                            ],
-                               "left_arm_rot":  [
-                                                    -14.0,
-                                                    -10.0,
-                                                    -12.0
-                                                ],
-                               "left_forearm_rot":  [
-                                                        -35.0,
-                                                        0.0,
-                                                        0.0
-                                                    ],
-                               "right_arm_rot":  [
-                                                     4.0,
-                                                     0.0,
-                                                     9.0
-                                                 ],
-                               "right_forearm_rot":  [
-                                                         -14.0,
-                                                         0.0,
-                                                         0.0
-                                                     ],
-                               "torso_rot":  [
-                                                 20.0,
-                                                 0.0,
-                                                 0.0
-                                             ]
-                           },
-                   "shoot":  {
-                                 "bow_rot":  [
-                                                 128.5,
-                                                 44.1,
-                                                 73.1
-                                             ],
-                                 "head_rot":  [
-                                                  -6.0,
-                                                  -65.0,
-                                                  8.0
-                                              ],
-                                 "left_arm_rot":  [
-                                                      -113.9,
-                                                      -51.1,
-                                                      8.0
-                                                  ],
-                                 "left_forearm_rot":  [
-                                                          -4.0,
-                                                          0.0,
-                                                          0.0
-                                                      ],
-                                 "right_arm_rot":  [
-                                                       -10.0,
-                                                       -128.0,
-                                                       115.0
-                                                   ],
-                                 "right_forearm_rot":  [
-                                                           -60.0,
-                                                           0.0,
-                                                           0.0
-                                                       ],
-                                 "torso_rot":  [
-                                                   13.0,
-                                                   15.0,
-                                                   -8.0
-                                               ]
-                             },
-                   "stunned":  {
-                                   "bow_rot":  [
-                                                   10.0,
-                                                   0.0,
-                                                   20.0
-                                               ],
-                                   "head_rot":  [
-                                                    -6.0,
-                                                    0.0,
-                                                    0.0
-                                                ],
-                                   "left_arm_rot":  [
-                                                        14.0,
-                                                        0.0,
-                                                        -16.0
-                                                    ],
-                                   "left_forearm_rot":  [
-                                                            -18.0,
-                                                            0.0,
-                                                            0.0
-                                                        ],
-                                   "right_arm_rot":  [
-                                                         12.0,
-                                                         0.0,
-                                                         15.0
-                                                     ],
-                                   "right_forearm_rot":  [
-                                                             -20.0,
-                                                             0.0,
-                                                             0.0
-                                                         ],
-                                   "torso_rot":  [
-                                                     10.0,
-                                                     0.0,
-                                                     4.0
-                                                 ]
-                               },
-                   "walk":  {
-                                "bow_rot":  [
-                                                77.0,
-                                                0.0,
-                                                12.0
-                                            ],
-                                "head_rot":  [
-                                                 0.0,
-                                                 0.0,
-                                                 0.0
-                                             ],
-                                "left_arm_rot":  [
-                                                     6.0,
-                                                     0.0,
-                                                     -13.0
-                                                 ],
-                                "left_forearm_rot":  [
-                                                         -12.0,
-                                                         0.0,
-                                                         0.0
-                                                     ],
-                                "right_arm_rot":  [
-                                                      4.0,
-                                                      0.0,
-                                                      9.0
-                                                  ],
-                                "right_forearm_rot":  [
-                                                          -14.0,
-                                                          0.0,
-                                                          0.0
-                                                      ],
-                                "torso_rot":  [
-                                                  7.0,
-                                                  0.0,
-                                                  0.0
-                                              ]
-                            }
-               },
-    "chieftain":  {
-                      "earthshaker":  {
-                                          "head_rot":  [
-                                                           12.0,
-                                                           0.0,
-                                                           0.0
-                                                       ],
-                                          "left_arm_rot":  [
-                                                               -135.0,
-                                                               0.0,
-                                                               -15.0
-                                                           ],
-                                          "left_forearm_rot":  [
-                                                                   -45.0,
-                                                                   0.0,
-                                                                   0.0
-                                                               ],
-                                          "right_arm_rot":  [
-                                                                -145.0,
-                                                                0.0,
-                                                                15.0
-                                                            ],
-                                          "right_forearm_rot":  [
-                                                                    -35.0,
-                                                                    0.0,
-                                                                    0.0
-                                                                ],
-                                          "torso_rot":  [
-                                                            -32.0,
-                                                            0.0,
-                                                            0.0
-                                                        ],
-                                          "warhammer_rot":  [
-                                                                -35.0,
-                                                                0.0,
-                                                                0.0
-                                                            ]
-                                      },
-                      "ground":  {
-                                     "head_rot":  [
-                                                      -2.0,
-                                                      0.0,
-                                                      0.0
-                                                  ],
-                                     "left_arm_rot":  [
-                                                          0.0,
-                                                          0.0,
-                                                          -18.0
-                                                      ],
-                                     "left_forearm_rot":  [
-                                                              -18.0,
-                                                              0.0,
-                                                              0.0
-                                                          ],
-                                     "right_arm_rot":  [
-                                                           -15.0,
-                                                           10.0,
-                                                           24.0
-                                                       ],
-                                     "right_forearm_rot":  [
-                                                               -42.0,
-                                                               0.0,
-                                                               0.0
-                                                           ],
-                                     "torso_rot":  [
-                                                       8.0,
-                                                       0.0,
-                                                       0.0
-                                                   ],
-                                     "warhammer_rot":  [
-                                                           15.0,
-                                                           0.0,
-                                                           -10.0
-                                                       ]
-                                 },
-                      "ground_hips_y":  0.65,
-                      "guard":  {
-                                    "head_rot":  [
-                                                     -6.0,
-                                                     0.0,
-                                                     0.0
-                                                 ],
-                                    "left_arm_rot":  [
-                                                         -42.0,
-                                                         18.0,
-                                                         -15.0
-                                                     ],
-                                    "left_forearm_rot":  [
-                                                             -80.0,
-                                                             0.0,
-                                                             0.0
-                                                         ],
-                                    "right_arm_rot":  [
-                                                          -38.0,
-                                                          -10.0,
-                                                          18.0
-                                                      ],
-                                    "right_forearm_rot":  [
-                                                              -75.0,
-                                                              0.0,
-                                                              0.0
-                                                          ],
-                                    "torso_rot":  [
-                                                      12.0,
-                                                      0.0,
-                                                      0.0
-                                                  ],
-                                    "warhammer_rot":  [
-                                                          120.0,
-                                                          25.0,
-                                                          -45.0
-                                                      ]
-                                },
-                      "idle":  {
-                                   "head_rot":  [
-                                                    -4.0,
-                                                    0.0,
-                                                    0.0
-                                                ],
-                                   "left_arm_rot":  [
-                                                        15.0,
-                                                        0.0,
-                                                        -15.0
-                                                    ],
-                                   "left_forearm_rot":  [
-                                                            -25.0,
-                                                            0.0,
-                                                            0.0
-                                                        ],
-                                   "right_arm_rot":  [
-                                                         -32.0,
-                                                         25.0,
-                                                         35.0
-                                                     ],
-                                   "right_forearm_rot":  [
-                                                             -115.0,
-                                                             0.0,
-                                                             0.0
-                                                         ],
-                                   "torso_rot":  [
-                                                     6.0,
-                                                     0.0,
-                                                     0.0
-                                                 ],
-                                   "warhammer_rot":  [
-                                                         65.0,
-                                                         0.0,
-                                                         -30.0
-                                                     ]
-                               },
-                      "roar":  {
-                                   "head_rot":  [
-                                                    -12.0,
-                                                    0.0,
-                                                    0.0
-                                                ],
-                                   "left_arm_rot":  [
-                                                        15.0,
-                                                        0.0,
-                                                        -15.0
-                                                    ],
-                                   "left_forearm_rot":  [
-                                                            -25.0,
-                                                            0.0,
-                                                            0.0
-                                                        ],
-                                   "right_arm_rot":  [
-                                                         -35.0,
-                                                         0.0,
-                                                         35.0
-                                                     ],
-                                   "right_forearm_rot":  [
-                                                             -65.0,
-                                                             0.0,
-                                                             0.0
-                                                         ],
-                                   "torso_rot":  [
-                                                     18.0,
-                                                     0.0,
-                                                     0.0
-                                                 ],
-                                   "warhammer_rot":  [
-                                                         65.0,
-                                                         0.0,
-                                                         -30.0
-                                                     ]
-                               },
-                      "shoulder":  {
-                                       "head_rot":  [
-                                                        -4.0,
-                                                        0.0,
-                                                        0.0
-                                                    ],
-                                       "left_arm_rot":  [
-                                                            15.0,
-                                                            0.0,
-                                                            -15.0
-                                                        ],
-                                       "left_forearm_rot":  [
-                                                                -25.0,
-                                                                0.0,
-                                                                0.0
-                                                            ],
-                                       "right_arm_rot":  [
-                                                             -32.0,
-                                                             25.0,
-                                                             35.0
-                                                         ],
-                                       "right_forearm_rot":  [
-                                                                 -115.0,
-                                                                 0.0,
-                                                                 0.0
-                                                             ],
-                                       "torso_rot":  [
-                                                         6.0,
-                                                         0.0,
-                                                         0.0
-                                                     ],
-                                       "warhammer_rot":  [
-                                                             65.0,
-                                                             0.0,
-                                                             -30.0
-                                                         ]
-                                   },
-                      "stagger":  {
-                                      "head_rot":  [
-                                                       -22.0,
-                                                       0.0,
-                                                       0.0
-                                                   ],
-                                      "left_arm_rot":  [
-                                                           25.0,
-                                                           0.0,
-                                                           -25.0
-                                                       ],
-                                      "left_forearm_rot":  [
-                                                               -20.0,
-                                                               0.0,
-                                                               0.0
-                                                           ],
-                                      "right_arm_rot":  [
-                                                            -35.0,
-                                                            0.0,
-                                                            18.0
-                                                        ],
-                                      "right_forearm_rot":  [
-                                                                -65.0,
-                                                                0.0,
-                                                                0.0
-                                                            ],
-                                      "torso_rot":  [
-                                                        32.0,
-                                                        0.0,
-                                                        0.0
-                                                    ],
-                                      "warhammer_rot":  [
-                                                            75.0,
-                                                            0.0,
-                                                            0.0
-                                                        ]
-                                  },
-                      "stunned":  {
-                                      "head_rot":  [
-                                                       -8.0,
-                                                       0.0,
-                                                       0.0
-                                                   ],
-                                      "left_arm_rot":  [
-                                                           15.0,
-                                                           0.0,
-                                                           -15.0
-                                                       ],
-                                      "left_forearm_rot":  [
-                                                               -25.0,
-                                                               0.0,
-                                                               0.0
-                                                           ],
-                                      "right_arm_rot":  [
-                                                            -32.0,
-                                                            25.0,
-                                                            35.0
-                                                        ],
-                                      "right_forearm_rot":  [
-                                                                -115.0,
-                                                                0.0,
-                                                                0.0
-                                                            ],
-                                      "torso_rot":  [
-                                                        14.0,
-                                                        0.0,
-                                                        0.0
-                                                    ],
-                                      "warhammer_rot":  [
-                                                            65.0,
-                                                            0.0,
-                                                            -30.0
-                                                        ]
-                                  },
-                      "walk":  {
-                                   "head_rot":  [
-                                                    -8.0,
-                                                    0.0,
-                                                    0.0
-                                                ],
-                                   "left_arm_rot":  [
-                                                        0.0,
-                                                        0.0,
-                                                        -20.0
-                                                    ],
-                                   "left_forearm_rot":  [
-                                                            -25.0,
-                                                            0.0,
-                                                            0.0
-                                                        ],
-                                   "right_arm_rot":  [
-                                                         25.0,
-                                                         -10.0,
-                                                         30.0
-                                                     ],
-                                   "right_forearm_rot":  [
-                                                             -20.0,
-                                                             0.0,
-                                                             0.0
-                                                         ],
-                                   "torso_rot":  [
-                                                     12.0,
-                                                     0.0,
-                                                     0.0
-                                                 ],
-                                   "warhammer_rot":  [
-                                                         145.0,
-                                                         0.0,
-                                                         -10.0
-                                                     ]
-                               },
-                      "whirlwind":  {
-                                        "head_rot":  [
-                                                         -10.0,
-                                                         0.0,
-                                                         0.0
-                                                     ],
-                                        "left_arm_rot":  [
-                                                             -10.0,
-                                                             0.0,
-                                                             -75.0
-                                                         ],
-                                        "left_forearm_rot":  [
-                                                                 -15.0,
-                                                                 0.0,
-                                                                 0.0
-                                                             ],
-                                        "right_arm_rot":  [
-                                                              -10.0,
-                                                              0.0,
-                                                              75.0
-                                                          ],
-                                        "right_forearm_rot":  [
-                                                                  -15.0,
-                                                                  0.0,
-                                                                  0.0
-                                                              ],
-                                        "torso_rot":  [
-                                                          16.0,
-                                                          0.0,
-                                                          0.0
-                                                      ],
-                                        "warhammer_rot":  [
-                                                              90.0,
-                                                              0.0,
-                                                              0.0
-                                                          ]
-                                    }
-                  },
-    "rogue":  {
-                  "parry":  {
-                                "left_arm_rot":  [
-                                                     -45,
-                                                     15,
-                                                     -25
-                                                 ],
-                                "right_arm_rot":  [
-                                                      -45,
-                                                      -15,
-                                                      25
-                                                  ],
-                                "torso_rot":  [
-                                                  10,
-                                                  0,
-                                                  0
-                                              ],
-                                "right_dagger_rot":  [
-                                                         80,
-                                                         -30,
-                                                         35
-                                                     ],
-                                "left_dagger_rot":  [
-                                                        80,
-                                                        30,
-                                                        -35
-                                                    ],
-                                "head_rot":  [
-                                                 -6,
-                                                 0,
-                                                 0
-                                             ],
-                                "right_forearm_rot":  [
-                                                          -65,
-                                                          0,
-                                                          0
-                                                      ],
-                                "left_forearm_rot":  [
-                                                         -65,
-                                                         0,
-                                                         0
-                                                     ]
-                            },
-                  "scurry":  {
-                                 "left_arm_rot":  [
-                                                      -28,
-                                                      12,
-                                                      -18
-                                                  ],
-                                 "right_arm_rot":  [
-                                                       -28,
-                                                       -12,
-                                                       18
-                                                   ],
-                                 "torso_rot":  [
-                                                   20,
-                                                   0,
-                                                   0
-                                               ],
-                                 "right_dagger_rot":  [
-                                                          85,
-                                                          -15,
-                                                          15
-                                                      ],
-                                 "left_dagger_rot":  [
-                                                         85,
-                                                         15,
-                                                         -15
-                                                     ],
-                                 "head_rot":  [
-                                                  -24,
-                                                  0,
-                                                  0
-                                              ],
-                                 "right_forearm_rot":  [
-                                                           -70,
-                                                           0,
-                                                           0
-                                                       ],
-                                 "left_forearm_rot":  [
-                                                          -70,
-                                                          0,
-                                                          0
-                                                      ]
-                             },
-                  "stunned":  {
-                                  "left_arm_rot":  [
-                                                       15,
-                                                       0,
-                                                       -20
-                                                   ],
-                                  "right_arm_rot":  [
-                                                        12,
-                                                        0,
-                                                        20
-                                                    ],
-                                  "torso_rot":  [
-                                                    12,
-                                                    0,
-                                                    0
-                                                ],
-                                  "right_dagger_rot":  [
-                                                           45,
-                                                           -10,
-                                                           10
-                                                       ],
-                                  "left_dagger_rot":  [
-                                                          45,
-                                                          10,
-                                                          -10
-                                                      ],
-                                  "head_rot":  [
-                                                   -8,
-                                                   0,
-                                                   0
-                                               ],
-                                  "right_forearm_rot":  [
-                                                            -12,
-                                                            0,
-                                                            0
-                                                        ],
-                                  "left_forearm_rot":  [
-                                                           -15,
-                                                           0,
-                                                           0
-                                                       ]
-                              },
-                  "reverse":  {
-                                  "left_arm_rot":  [
-                                                       -15,
-                                                       -15,
-                                                       -18
-                                                   ],
-                                  "right_arm_rot":  [
-                                                        -15,
-                                                        15,
-                                                        18
-                                                    ],
-                                  "torso_rot":  [
-                                                    22,
-                                                    0,
-                                                    0
-                                                ],
-                                  "right_dagger_rot":  [
-                                                           -85,
-                                                           15,
-                                                           -15
-                                                       ],
-                                  "left_dagger_rot":  [
-                                                          -85,
-                                                          -15,
-                                                          15
-                                                      ],
-                                  "head_rot":  [
-                                                   -16,
-                                                   0,
-                                                   0
-                                               ],
-                                  "right_forearm_rot":  [
-                                                            -60,
-                                                            0,
-                                                            0
-                                                        ],
-                                  "left_forearm_rot":  [
-                                                           -60,
-                                                           0,
-                                                           0
-                                                       ]
-                              },
-                  "hurt":  {
-                               "left_arm_rot":  [
-                                                    -30,
-                                                    0,
-                                                    -35
-                                                ],
-                               "right_arm_rot":  [
-                                                     -30,
-                                                     0,
-                                                     35
-                                                 ],
-                               "torso_rot":  [
-                                                 -20,
-                                                 -10,
-                                                 0
-                                             ],
-                               "right_dagger_rot":  [
-                                                        65,
-                                                        -15,
-                                                        20
-                                                    ],
-                               "left_dagger_rot":  [
-                                                       65,
-                                                       15,
-                                                       -20
-                                                   ],
-                               "head_rot":  [
-                                                16,
-                                                -14,
-                                                0
-                                            ],
-                               "right_forearm_rot":  [
-                                                         -75,
-                                                         0,
-                                                         0
-                                                     ],
-                               "left_forearm_rot":  [
-                                                        -75,
-                                                        0,
-                                                        0
-                                                    ]
-                           },
-                  "walk":  {
-                               "left_arm_rot":  [
-                                                    -25,
-                                                    10,
-                                                    -16
-                                                ],
-                               "right_arm_rot":  [
-                                                     -25,
-                                                     -10,
-                                                     16
-                                                 ],
-                               "torso_rot":  [
-                                                 16,
-                                                 0,
-                                                 0
-                                             ],
-                               "right_dagger_rot":  [
-                                                        85,
-                                                        -15,
-                                                        15
-                                                    ],
-                               "left_dagger_rot":  [
-                                                       85,
-                                                       15,
-                                                       -15
-                                                   ],
-                               "head_rot":  [
-                                                -14,
-                                                0,
-                                                0
-                                            ],
-                               "right_forearm_rot":  [
-                                                         -65,
-                                                         0,
-                                                         0
-                                                     ],
-                               "left_forearm_rot":  [
-                                                        -65,
-                                                        0,
-                                                        0
-                                                    ]
-                           },
-                  "idle":  {
-                               "left_arm_rot":  [
-                                                    -25,
-                                                    10,
-                                                    -16
-                                                ],
-                               "right_arm_rot":  [
-                                                     -25,
-                                                     -10,
-                                                     16
-                                                 ],
-                               "torso_rot":  [
-                                                 18,
-                                                 0,
-                                                 0
-                                             ],
-                               "right_dagger_rot":  [
-                                                        85,
-                                                        -15,
-                                                        15
-                                                    ],
-                               "left_dagger_rot":  [
-                                                       85,
-                                                       15,
-                                                       -15
-                                                   ],
-                               "head_rot":  [
-                                                -12,
-                                                0,
-                                                0
-                                            ],
-                               "right_forearm_rot":  [
-                                                         -65,
-                                                         0,
-                                                         0
-                                                     ],
-                               "left_forearm_rot":  [
-                                                        -65,
-                                                        0,
-                                                        0
-                                                    ]
-                           },
-                  "backstab":  {
-                                   "left_arm_rot":  [
-                                                        -135,
-                                                        0,
-                                                        -15
-                                                    ],
-                                   "right_arm_rot":  [
-                                                         -135,
-                                                         0,
-                                                         15
-                                                     ],
-                                   "torso_rot":  [
-                                                     -45,
-                                                     0,
-                                                     0
-                                                 ],
-                                   "right_dagger_rot":  [
-                                                            170,
-                                                            -10,
-                                                            10
-                                                        ],
-                                   "left_dagger_rot":  [
-                                                           170,
-                                                           10,
-                                                           -10
-                                                       ],
-                                   "head_rot":  [
-                                                    15,
-                                                    0,
-                                                    0
-                                                ],
-                                   "right_forearm_rot":  [
-                                                             -25,
-                                                             0,
-                                                             0
-                                                         ],
-                                   "left_forearm_rot":  [
-                                                            -25,
-                                                            0,
-                                                            0
-                                                        ]
-                               },
-                  "dual_slash":  {
-                                     "left_arm_rot":  [
-                                                          -55,
-                                                          35,
-                                                          15
-                                                      ],
-                                     "right_arm_rot":  [
-                                                           -55,
-                                                           -35,
-                                                           -15
-                                                       ],
-                                     "torso_rot":  [
-                                                       24,
-                                                       0,
-                                                       0
-                                                   ],
-                                     "right_dagger_rot":  [
-                                                              90,
-                                                              20,
-                                                              45
-                                                          ],
-                                     "left_dagger_rot":  [
-                                                             90,
-                                                             -20,
-                                                             -45
-                                                         ],
-                                     "head_rot":  [
-                                                      -18,
-                                                      0,
-                                                      0
-                                                  ],
-                                     "right_forearm_rot":  [
-                                                               -110,
-                                                               0,
-                                                               0
-                                                           ],
-                                     "left_forearm_rot":  [
-                                                              -110,
-                                                              0,
-                                                              0
-                                                          ]
-                                 },
-                  "dual_guard":  {
-                                     "left_arm_rot":  [
-                                                          -40,
-                                                          15,
-                                                          -12
-                                                      ],
-                                     "right_arm_rot":  [
-                                                           -42,
-                                                           -15,
-                                                           12
-                                                       ],
-                                     "torso_rot":  [
-                                                       14,
-                                                       0,
-                                                       0
-                                                   ],
-                                     "right_dagger_rot":  [
-                                                              80,
-                                                              -25,
-                                                              40
-                                                          ],
-                                     "left_dagger_rot":  [
-                                                             80,
-                                                             25,
-                                                             -40
-                                                         ],
-                                     "head_rot":  [
-                                                      -8,
-                                                      0,
-                                                      0
-                                                  ],
-                                     "right_forearm_rot":  [
-                                                               -85,
-                                                               0,
-                                                               0
-                                                           ],
-                                     "left_forearm_rot":  [
-                                                              -85,
-                                                              0,
-                                                              0
-                                                          ]
-                                 },
-                  "ground_hips_y":  0.588
-              },
-    "shaman":  {
-                   "chant":  {
-                                 "head_rot":  [
-                                                  -28.0,
-                                                  0.0,
-                                                  0.0
-                                              ],
-                                 "left_arm_rot":  [
-                                                      -118.0,
-                                                      -18.0,
-                                                      -36.0
-                                                  ],
-                                 "left_forearm_rot":  [
-                                                          -35.0,
-                                                          0.0,
-                                                          0.0
-                                                      ],
-                                 "right_arm_rot":  [
-                                                       -128.0,
-                                                       15.0,
-                                                       32.0
-                                                   ],
-                                 "right_forearm_rot":  [
-                                                           -20.0,
-                                                           0.0,
-                                                           0.0
-                                                       ],
-                                 "staff_rot":  [
-                                                   88.0,
-                                                   12.0,
-                                                   -8.0
-                                               ],
-                                 "torso_rot":  [
-                                                   -18.0,
-                                                   0.0,
-                                                   0.0
-                                               ]
-                             },
-                   "ground_hips_y":  0.618,
-                   "hex":  {
-                               "head_rot":  [
-                                                0.0,
-                                                12.0,
-                                                0.0
-                                            ],
-                               "left_arm_rot":  [
-                                                    28.0,
-                                                    0.0,
-                                                    -26.0
-                                                ],
-                               "left_forearm_rot":  [
-                                                        -40.0,
-                                                        0.0,
-                                                        0.0
-                                                    ],
-                               "right_arm_rot":  [
-                                                     -88.0,
-                                                     -10.0,
-                                                     18.0
-                                                 ],
-                               "right_forearm_rot":  [
-                                                         -10.0,
-                                                         0.0,
-                                                         0.0
-                                                     ],
-                               "staff_rot":  [
-                                                 88.0,
-                                                 10.0,
-                                                 0.0
-                                             ],
-                               "torso_rot":  [
-                                                 12.0,
-                                                 -23.0,
-                                                 0.0
-                                             ]
-                           },
-                   "hurt":  {
-                                "head_rot":  [
-                                                 0.0,
-                                                 -14.0,
-                                                 0.0
-                                             ],
-                                "left_arm_rot":  [
-                                                     24.0,
-                                                     0.0,
-                                                     -32.0
-                                                 ],
-                                "left_forearm_rot":  [
-                                                         -45.0,
-                                                         0.0,
-                                                         0.0
-                                                     ],
-                                "right_arm_rot":  [
-                                                      -36.0,
-                                                      0.0,
-                                                      28.0
-                                                  ],
-                                "right_forearm_rot":  [
-                                                          -21.0,
-                                                          0.0,
-                                                          0.0
-                                                      ],
-                                "staff_rot":  [
-                                                  73.0,
-                                                  10.0,
-                                                  -1.0
-                                              ],
-                                "torso_rot":  [
-                                                  -26.0,
-                                                  -12.0,
-                                                  0.0
-                                              ]
-                            },
-                   "idle":  {
-                                "head_rot":  [
-                                                 0.0,
-                                                 0.0,
-                                                 0.0
-                                             ],
-                                "left_arm_rot":  [
-                                                     -25.0,
-                                                     15.0,
-                                                     -26.0
-                                                 ],
-                                "left_forearm_rot":  [
-                                                         -65.0,
-                                                         0.0,
-                                                         0.0
-                                                     ],
-                                "right_arm_rot":  [
-                                                      -12.0,
-                                                      6.0,
-                                                      20.0
-                                                  ],
-                                "right_forearm_rot":  [
-                                                          -35.0,
-                                                          0.0,
-                                                          0.0
-                                                      ],
-                                "staff_rot":  [
-                                                  81.0,
-                                                  12.0,
-                                                  -8.0
-                                              ],
-                                "torso_rot":  [
-                                                  6.0,
-                                                  0.0,
-                                                  0.0
-                                              ]
-                            },
-                   "run":  {
-                               "head_rot":  [
-                                                0.0,
-                                                0.0,
-                                                0.0
-                                            ],
-                               "left_arm_rot":  [
-                                                    -38.0,
-                                                    -12.0,
-                                                    -24.0
-                                                ],
-                               "left_forearm_rot":  [
-                                                        -60.0,
-                                                        0.0,
-                                                        0.0
-                                                    ],
-                               "right_arm_rot":  [
-                                                     -25.0,
-                                                     15.0,
-                                                     24.0
-                                                 ],
-                               "right_forearm_rot":  [
-                                                         -45.0,
-                                                         0.0,
-                                                         0.0
-                                                     ],
-                               "staff_rot":  [
-                                                 89.0,
-                                                 0.0,
-                                                 -2.0
-                                             ],
-                               "torso_rot":  [
-                                                 16.0,
-                                                 0.0,
-                                                 0.0
-                                             ]
-                           },
-                   "stunned":  {
-                                   "head_rot":  [
-                                                    0.0,
-                                                    0.0,
-                                                    0.0
-                                                ],
-                                   "left_arm_rot":  [
-                                                        15.0,
-                                                        0.0,
-                                                        -15.0
-                                                    ],
-                                   "left_forearm_rot":  [
-                                                            -13.0,
-                                                            0.0,
-                                                            0.0
-                                                        ],
-                                   "right_arm_rot":  [
-                                                         -18.0,
-                                                         6.0,
-                                                         22.0
-                                                     ],
-                                   "right_forearm_rot":  [
-                                                             -47.0,
-                                                             0.0,
-                                                             0.0
-                                                         ],
-                                   "staff_rot":  [
-                                                     129.0,
-                                                     -50.0,
-                                                     -55.0
-                                                 ],
-                                   "torso_rot":  [
-                                                     12.0,
-                                                     -1.0,
-                                                     6.0
-                                                 ]
-                               },
-                   "summon":  {
-                                  "head_rot":  [
-                                                   0.0,
-                                                   0.0,
-                                                   0.0
-                                               ],
-                                  "left_arm_rot":  [
-                                                       -25.0,
-                                                       0.0,
-                                                       -30.0
-                                                   ],
-                                  "left_forearm_rot":  [
-                                                           -55.0,
-                                                           0.0,
-                                                           0.0
-                                                       ],
-                                  "right_arm_rot":  [
-                                                        -38.0,
-                                                        -5.0,
-                                                        24.0
-                                                    ],
-                                  "right_forearm_rot":  [
-                                                            -50.0,
-                                                            0.0,
-                                                            0.0
-                                                        ],
-                                  "staff_rot":  [
-                                                    44.0,
-                                                    18.0,
-                                                    -6.0
-                                                ],
-                                  "torso_rot":  [
-                                                    26.0,
-                                                    0.0,
-                                                    0.0
-                                                ]
-                              },
-                   "walk":  {
-                                "head_rot":  [
-                                                 0.0,
-                                                 0.0,
-                                                 0.0
-                                             ],
-                                "left_arm_rot":  [
-                                                     -25.0,
-                                                     12.0,
-                                                     -22.0
-                                                 ],
-                                "left_forearm_rot":  [
-                                                         -40.0,
-                                                         0.0,
-                                                         0.0
-                                                     ],
-                                "right_arm_rot":  [
-                                                      -14.0,
-                                                      10.0,
-                                                      22.0
-                                                  ],
-                                "right_forearm_rot":  [
-                                                          -35.0,
-                                                          0.0,
-                                                          0.0
-                                                      ],
-                                "staff_rot":  [
-                                                  87.0,
-                                                  12.0,
-                                                  -8.0
-                                              ],
-                                "torso_rot":  [
-                                                  6.0,
-                                                  0.0,
-                                                  0.0
-                                              ]
-                            }
-               },
-    "warrior":  {
-                    "cleave":  {
-                                   "club_rot":  [
-                                                    85.0,
-                                                    30.0,
-                                                    20.0
-                                                ],
-                                   "head_rot":  [
-                                                    -4.0,
-                                                    -32.0,
-                                                    0.0
-                                                ],
-                                   "left_arm_rot":  [
-                                                        -40.0,
-                                                        0.0,
-                                                        15.0
-                                                    ],
-                                   "left_forearm_rot":  [
-                                                            -55.0,
-                                                            0.0,
-                                                            0.0
-                                                        ],
-                                   "right_arm_rot":  [
-                                                         18.0,
-                                                         10.0,
-                                                         75.0
-                                                     ],
-                                   "right_forearm_rot":  [
-                                                             -35.0,
-                                                             0.0,
-                                                             20.0
-                                                         ],
-                                   "torso_rot":  [
-                                                     8.0,
-                                                     52.0,
-                                                     4.0
-                                                 ]
-                               },
-                    "ground_hips_y":  0.618,
-                    "guard":  {
-                                  "club_rot":  [
-                                                   165.0,
-                                                   35.0,
-                                                   -35.0
-                                               ],
-                                  "head_rot":  [
-                                                   0.0,
-                                                   0.0,
-                                                   0.0
-                                               ],
-                                  "left_arm_rot":  [
-                                                       -32.0,
-                                                       24.0,
-                                                       -18.0
-                                                   ],
-                                  "left_forearm_rot":  [
-                                                           -78.0,
-                                                           -15.0,
-                                                           10.0
-                                                       ],
-                                  "right_arm_rot":  [
-                                                        -28.0,
-                                                        -12.0,
-                                                        20.0
-                                                    ],
-                                  "right_forearm_rot":  [
-                                                            -76.0,
-                                                            15.0,
-                                                            -5.0
-                                                        ],
-                                  "torso_rot":  [
-                                                    0.0,
-                                                    0.0,
-                                                    0.0
-                                                ]
-                              },
-                    "idle":  {
-                                 "club_rot":  [
-                                                  118.0,
-                                                  -15.0,
-                                                  -12.0
-                                              ],
-                                 "head_rot":  [
-                                                  -2.0,
-                                                  0.0,
-                                                  0.0
-                                              ],
-                                 "left_arm_rot":  [
-                                                      0.0,
-                                                      0.0,
-                                                      -12.0
-                                                  ],
-                                 "left_forearm_rot":  [
-                                                          -16.0,
-                                                          0.0,
-                                                          0.0
-                                                      ],
-                                 "right_arm_rot":  [
-                                                       12.0,
-                                                       -8.0,
-                                                       26.0
-                                                   ],
-                                 "right_forearm_rot":  [
-                                                           -22.0,
-                                                           -8.0,
-                                                           0.0
-                                                       ],
-                                 "torso_rot":  [
-                                                   7.0,
-                                                   0.0,
-                                                   0.0
-                                               ]
-                             },
-                    "low":  {
-                                "club_rot":  [
-                                                 118.0,
-                                                 -15.0,
-                                                 -12.0
-                                             ],
-                                "head_rot":  [
-                                                 0.0,
-                                                 0.0,
-                                                 0.0
-                                             ],
-                                "left_arm_rot":  [
-                                                     0.0,
-                                                     0.0,
-                                                     -12.0
-                                                 ],
-                                "left_forearm_rot":  [
-                                                         -16.0,
-                                                         0.0,
-                                                         0.0
-                                                     ],
-                                "right_arm_rot":  [
-                                                      12.0,
-                                                      -8.0,
-                                                      26.0
-                                                  ],
-                                "right_forearm_rot":  [
-                                                          -22.0,
-                                                          -8.0,
-                                                          0.0
-                                                      ],
-                                "torso_rot":  [
-                                                  0.0,
-                                                  0.0,
-                                                  0.0
-                                              ]
-                            },
-                    "parry_cleave":  {
-                                         "club_rot":  [
-                                                          90.0,
-                                                          0.0,
-                                                          -75.0
-                                                      ],
-                                         "head_rot":  [
-                                                          6.0,
-                                                          28.0,
-                                                          0.0
-                                                      ],
-                                         "left_arm_rot":  [
-                                                              32.0,
-                                                              0.0,
-                                                              -20.0
-                                                          ],
-                                         "left_forearm_rot":  [
-                                                                  -80.0,
-                                                                  0.0,
-                                                                  0.0
-                                                              ],
-                                         "right_arm_rot":  [
-                                                               -70.0,
-                                                               0.0,
-                                                               -18.0
-                                                           ],
-                                         "right_forearm_rot":  [
-                                                                   -15.0,
-                                                                   0.0,
-                                                                   0.0
-                                                               ],
-                                         "torso_rot":  [
-                                                           14.0,
-                                                           -68.0,
-                                                           -6.0
-                                                       ]
-                                     },
-                    "parry_smash":  {
-                                        "club_rot":  [
-                                                         20.0,
-                                                         25.0,
-                                                         -25.0
-                                                     ],
-                                        "head_rot":  [
-                                                         4.0,
-                                                         0.0,
-                                                         0.0
-                                                     ],
-                                        "left_arm_rot":  [
-                                                             -45.0,
-                                                             0.0,
-                                                             -36.0
-                                                         ],
-                                        "left_forearm_rot":  [
-                                                                 -55.0,
-                                                                 0.0,
-                                                                 0.0
-                                                             ],
-                                        "right_arm_rot":  [
-                                                              -85.0,
-                                                              25.0,
-                                                              56.0
-                                                          ],
-                                        "right_forearm_rot":  [
-                                                                  -115.0,
-                                                                  15.0,
-                                                                  0.0
-                                                              ],
-                                        "torso_rot":  [
-                                                          -28.0,
-                                                          0.0,
-                                                          0.0
-                                                      ]
-                                    },
-                    "run":  {
-                                "club_rot":  [
-                                                 118.0,
-                                                 -15.0,
-                                                 -12.0
-                                             ],
-                                "head_rot":  [
-                                                 -14.0,
-                                                 0.0,
-                                                 0.0
-                                             ],
-                                "left_arm_rot":  [
-                                                     0.0,
-                                                     0.0,
-                                                     -12.0
-                                                 ],
-                                "left_forearm_rot":  [
-                                                         -20.0,
-                                                         0.0,
-                                                         0.0
-                                                     ],
-                                "right_arm_rot":  [
-                                                      -20.0,
-                                                      10.0,
-                                                      30.0
-                                                  ],
-                                "right_forearm_rot":  [
-                                                          -45.0,
-                                                          0.0,
-                                                          0.0
-                                                      ],
-                                "torso_rot":  [
-                                                  24.0,
-                                                  0.0,
-                                                  0.0
-                                              ]
-                            },
-                    "shoulder":  {
-                                     "club_rot":  [
-                                                      50.0,
-                                                      25.0,
-                                                      -20.0
-                                                  ],
-                                     "head_rot":  [
-                                                      0.0,
-                                                      0.0,
-                                                      0.0
-                                                  ],
-                                     "left_arm_rot":  [
-                                                          0.0,
-                                                          0.0,
-                                                          -12.0
-                                                      ],
-                                     "left_forearm_rot":  [
-                                                              -16.0,
-                                                              0.0,
-                                                              0.0
-                                                          ],
-                                     "right_arm_rot":  [
-                                                           -20.0,
-                                                           15.0,
-                                                           42.0
-                                                       ],
-                                     "right_forearm_rot":  [
-                                                               -110.0,
-                                                               10.0,
-                                                               0.0
-                                                           ],
-                                     "torso_rot":  [
-                                                       0.0,
-                                                       0.0,
-                                                       0.0
-                                                   ]
-                                 },
-                    "smash":  {
-                                  "club_rot":  [
-                                                   20.0,
-                                                   25.0,
-                                                   -25.0
-                                               ],
-                                  "head_rot":  [
-                                                   4.0,
-                                                   0.0,
-                                                   0.0
-                                               ],
-                                  "left_arm_rot":  [
-                                                       -45.0,
-                                                       0.0,
-                                                       -36.0
-                                                   ],
-                                  "left_forearm_rot":  [
-                                                           -55.0,
-                                                           0.0,
-                                                           0.0
-                                                       ],
-                                  "right_arm_rot":  [
-                                                        -85.0,
-                                                        25.0,
-                                                        56.0
-                                                    ],
-                                  "right_forearm_rot":  [
-                                                            -115.0,
-                                                            15.0,
-                                                            0.0
-                                                        ],
-                                  "torso_rot":  [
-                                                    -28.0,
-                                                    0.0,
-                                                    0.0
-                                                ]
-                              },
-                    "stunned":  {
-                                    "club_rot":  [
-                                                     75.0,
-                                                     0.0,
-                                                     -20.0
-                                                 ],
-                                    "head_rot":  [
-                                                     8.0,
-                                                     0.0,
-                                                     0.0
-                                                 ],
-                                    "left_arm_rot":  [
-                                                         12.0,
-                                                         0.0,
-                                                         -24.0
-                                                     ],
-                                    "left_forearm_rot":  [
-                                                             -35.0,
-                                                             0.0,
-                                                             0.0
-                                                         ],
-                                    "right_arm_rot":  [
-                                                          0.0,
-                                                          5.0,
-                                                          42.0
-                                                      ],
-                                    "right_forearm_rot":  [
-                                                              -45.0,
-                                                              0.0,
-                                                              0.0
-                                                          ],
-                                    "torso_rot":  [
-                                                      14.0,
-                                                      0.0,
-                                                      5.0
-                                                  ]
-                                },
-                    "walk":  {
-                                 "club_rot":  [
-                                                  118.0,
-                                                  -15.0,
-                                                  -12.0
-                                              ],
-                                 "head_rot":  [
-                                                  -3.0,
-                                                  0.0,
-                                                  0.0
-                                              ],
-                                 "left_arm_rot":  [
-                                                      0.0,
-                                                      0.0,
-                                                      -12.0
-                                                  ],
-                                 "left_forearm_rot":  [
-                                                          -16.0,
-                                                          0.0,
-                                                          0.0
-                                                      ],
-                                 "right_arm_rot":  [
-                                                       12.0,
-                                                       -8.0,
-                                                       26.0
-                                                   ],
-                                 "right_forearm_rot":  [
-                                                           -22.0,
-                                                           -8.0,
-                                                           0.0
-                                                       ],
-                                 "torso_rot":  [
-                                                   8.0,
-                                                   0.0,
-                                                   0.0
-                                               ]
-                             }
-                }
+{
+    "archer": {
+        "aim": {
+            "bow_rot": [
+                125.5,
+                44.1,
+                73.1
+            ],
+            "head_rot": [
+                -6.0,
+                -65.0,
+                8.0
+            ],
+            "left_arm_rot": [
+                -109.9,
+                -51.1,
+                8.0
+            ],
+            "left_forearm_rot": [
+                -1.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -13.3,
+                -120.9,
+                120.2
+            ],
+            "right_forearm_rot": [
+                -76.5,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                10.0,
+                15.0,
+                -8.0
+            ]
+        },
+        "ground_hips_y": 0.618,
+        "hurt": {
+            "bow_rot": [
+                15.0,
+                0.0,
+                10.0
+            ],
+            "head_rot": [
+                16.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                25.0,
+                0.0,
+                -20.0
+            ],
+            "left_forearm_rot": [
+                -40.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                15.0,
+                0.0,
+                20.0
+            ],
+            "right_forearm_rot": [
+                -35.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                -18.0,
+                0.0,
+                0.0
+            ]
+        },
+        "idle": {
+            "bow_rot": [
+                77.0,
+                0.0,
+                12.0
+            ],
+            "head_rot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                6.0,
+                0.0,
+                -13.0
+            ],
+            "left_forearm_rot": [
+                -12.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                4.0,
+                0.0,
+                9.0
+            ],
+            "right_forearm_rot": [
+                -14.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                4.0,
+                0.0,
+                0.0
+            ]
+        },
+        "ready": {
+            "bow_rot": [
+                89.0,
+                80.0,
+                36.0
+            ],
+            "head_rot": [
+                0.0,
+                -20.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -51.0,
+                5.0,
+                -20.0
+            ],
+            "left_forearm_rot": [
+                -45.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -45.0,
+                -44.0,
+                20.0
+            ],
+            "right_forearm_rot": [
+                -95.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                6.0,
+                12.0,
+                -4.0
+            ]
+        },
+        "run": {
+            "bow_rot": [
+                77.0,
+                0.0,
+                12.0
+            ],
+            "head_rot": [
+                -12.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -14.0,
+                -10.0,
+                -12.0
+            ],
+            "left_forearm_rot": [
+                -35.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                4.0,
+                0.0,
+                9.0
+            ],
+            "right_forearm_rot": [
+                -14.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                20.0,
+                0.0,
+                0.0
+            ]
+        },
+        "shoot": {
+            "bow_rot": [
+                128.5,
+                44.1,
+                73.1
+            ],
+            "head_rot": [
+                -6.0,
+                -65.0,
+                8.0
+            ],
+            "left_arm_rot": [
+                -113.9,
+                -51.1,
+                8.0
+            ],
+            "left_forearm_rot": [
+                -4.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -10.0,
+                -128.0,
+                115.0
+            ],
+            "right_forearm_rot": [
+                -60.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                13.0,
+                15.0,
+                -8.0
+            ]
+        },
+        "stunned": {
+            "bow_rot": [
+                10.0,
+                0.0,
+                20.0
+            ],
+            "head_rot": [
+                -6.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                14.0,
+                0.0,
+                -16.0
+            ],
+            "left_forearm_rot": [
+                -18.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                12.0,
+                0.0,
+                15.0
+            ],
+            "right_forearm_rot": [
+                -20.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                10.0,
+                0.0,
+                4.0
+            ]
+        },
+        "walk": {
+            "bow_rot": [
+                77.0,
+                0.0,
+                12.0
+            ],
+            "head_rot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                6.0,
+                0.0,
+                -13.0
+            ],
+            "left_forearm_rot": [
+                -12.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                4.0,
+                0.0,
+                9.0
+            ],
+            "right_forearm_rot": [
+                -14.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                7.0,
+                0.0,
+                0.0
+            ]
+        }
+    },
+    "chieftain": {
+        "earthshaker": {
+            "head_rot": [
+                -18.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -22.0,
+                0.0,
+                -20.0
+            ],
+            "left_forearm_rot": [
+                -60.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -32.0,
+                0.0,
+                10.0
+            ],
+            "right_forearm_rot": [
+                -75.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                50.0,
+                0.0,
+                0.0
+            ],
+            "warhammer_rot": [
+                180.0,
+                0.0,
+                0.0
+            ]
+        },
+        "ground": {
+            "head_rot": [
+                -2.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                0.0,
+                0.0,
+                -18.0
+            ],
+            "left_forearm_rot": [
+                -18.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -15.0,
+                10.0,
+                24.0
+            ],
+            "right_forearm_rot": [
+                -42.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                8.0,
+                0.0,
+                0.0
+            ],
+            "warhammer_rot": [
+                180.0,
+                0.0,
+                -10.0
+            ]
+        },
+        "ground_hips_y": 0.598,
+        "guard": {
+            "head_rot": [
+                -6.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -42.0,
+                18.0,
+                -15.0
+            ],
+            "left_forearm_rot": [
+                -80.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -38.0,
+                -10.0,
+                18.0
+            ],
+            "right_forearm_rot": [
+                -75.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                12.0,
+                0.0,
+                0.0
+            ],
+            "warhammer_rot": [
+                120.0,
+                25.0,
+                -45.0
+            ]
+        },
+        "idle": {
+            "head_rot": [
+                -4.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                15.0,
+                0.0,
+                -15.0
+            ],
+            "left_forearm_rot": [
+                -25.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -32.0,
+                25.0,
+                35.0
+            ],
+            "right_forearm_rot": [
+                -115.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                6.0,
+                0.0,
+                0.0
+            ],
+            "warhammer_rot": [
+                65.0,
+                0.0,
+                -30.0
+            ]
+        },
+        "roar": {
+            "head_rot": [
+                -42.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -110.0,
+                -25.0,
+                -45.0
+            ],
+            "left_forearm_rot": [
+                -35.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -145.0,
+                10.0,
+                20.0
+            ],
+            "right_forearm_rot": [
+                -10.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                -28.0,
+                0.0,
+                0.0
+            ],
+            "warhammer_rot": [
+                180.0,
+                0.0,
+                0.0
+            ]
+        },
+        "shoulder": {
+            "head_rot": [
+                -4.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                15.0,
+                0.0,
+                -15.0
+            ],
+            "left_forearm_rot": [
+                -25.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -32.0,
+                25.0,
+                35.0
+            ],
+            "right_forearm_rot": [
+                -115.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                6.0,
+                0.0,
+                0.0
+            ],
+            "warhammer_rot": [
+                65.0,
+                0.0,
+                -30.0
+            ]
+        },
+        "stagger": {
+            "head_rot": [
+                -18.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                28.0,
+                0.0,
+                -25.0
+            ],
+            "left_forearm_rot": [
+                -20.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -35.0,
+                0.0,
+                18.0
+            ],
+            "right_forearm_rot": [
+                -65.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                35.0,
+                0.0,
+                0.0
+            ],
+            "warhammer_rot": [
+                180.0,
+                0.0,
+                0.0
+            ]
+        },
+        "stunned": {
+            "head_rot": [
+                -8.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                15.0,
+                0.0,
+                -15.0
+            ],
+            "left_forearm_rot": [
+                -25.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -32.0,
+                25.0,
+                35.0
+            ],
+            "right_forearm_rot": [
+                -115.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                14.0,
+                0.0,
+                0.0
+            ],
+            "warhammer_rot": [
+                65.0,
+                0.0,
+                -30.0
+            ]
+        },
+        "walk": {
+            "head_rot": [
+                -6.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                10.0,
+                0.0,
+                -18.0
+            ],
+            "left_forearm_rot": [
+                -25.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -32.0,
+                25.0,
+                35.0
+            ],
+            "right_forearm_rot": [
+                -115.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                10.0,
+                0.0,
+                0.0
+            ],
+            "warhammer_rot": [
+                65.0,
+                0.0,
+                -30.0
+            ]
+        },
+        "whirlwind": {
+            "head_rot": [
+                -10.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -10.0,
+                0.0,
+                -75.0
+            ],
+            "left_forearm_rot": [
+                -15.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -10.0,
+                0.0,
+                75.0
+            ],
+            "right_forearm_rot": [
+                -15.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                16.0,
+                0.0,
+                0.0
+            ],
+            "warhammer_rot": [
+                90.0,
+                0.0,
+                0.0
+            ]
+        }
+    },
+    "rogue": {
+        "backstab": {
+            "head_rot": [
+                15.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -135.0,
+                0.0,
+                -15.0
+            ],
+            "left_dagger_rot": [
+                170.0,
+                10.0,
+                -10.0
+            ],
+            "left_forearm_rot": [
+                -25.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -135.0,
+                0.0,
+                15.0
+            ],
+            "right_dagger_rot": [
+                170.0,
+                -10.0,
+                10.0
+            ],
+            "right_forearm_rot": [
+                -25.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                -45.0,
+                0.0,
+                0.0
+            ]
+        },
+        "dual_guard": {
+            "head_rot": [
+                -8.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -40.0,
+                15.0,
+                -12.0
+            ],
+            "left_dagger_rot": [
+                80.0,
+                25.0,
+                -40.0
+            ],
+            "left_forearm_rot": [
+                -85.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -42.0,
+                -15.0,
+                12.0
+            ],
+            "right_dagger_rot": [
+                80.0,
+                -25.0,
+                40.0
+            ],
+            "right_forearm_rot": [
+                -85.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                14.0,
+                0.0,
+                0.0
+            ]
+        },
+        "dual_slash": {
+            "head_rot": [
+                -16.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -15.0,
+                -15.0,
+                -18.0
+            ],
+            "left_dagger_rot": [
+                -85.0,
+                -15.0,
+                15.0
+            ],
+            "left_forearm_rot": [
+                -62.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -15.0,
+                15.0,
+                18.0
+            ],
+            "right_dagger_rot": [
+                -85.0,
+                15.0,
+                -15.0
+            ],
+            "right_forearm_rot": [
+                -62.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                22.0,
+                0.0,
+                0.0
+            ]
+        },
+        "forward": {
+            "head_rot": [
+                -12.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -25.0,
+                10.0,
+                -16.0
+            ],
+            "left_dagger_rot": [
+                85.0,
+                15.0,
+                -15.0
+            ],
+            "left_forearm_rot": [
+                -65.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -25.0,
+                -10.0,
+                16.0
+            ],
+            "right_dagger_rot": [
+                85.0,
+                -15.0,
+                15.0
+            ],
+            "right_forearm_rot": [
+                -65.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                18.0,
+                0.0,
+                0.0
+            ]
+        },
+        "ground_hips_y": 0.588,
+        "hurt": {
+            "head_rot": [
+                16.0,
+                -14.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -30.0,
+                0.0,
+                -35.0
+            ],
+            "left_dagger_rot": [
+                65.0,
+                15.0,
+                -20.0
+            ],
+            "left_forearm_rot": [
+                -75.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -30.0,
+                0.0,
+                35.0
+            ],
+            "right_dagger_rot": [
+                65.0,
+                -15.0,
+                20.0
+            ],
+            "right_forearm_rot": [
+                -75.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                -20.0,
+                -10.0,
+                0.0
+            ]
+        },
+        "idle": {
+            "head_rot": [
+                -16.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -15.0,
+                -15.0,
+                -18.0
+            ],
+            "left_dagger_rot": [
+                -85.0,
+                -15.0,
+                15.0
+            ],
+            "left_forearm_rot": [
+                -62.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -15.0,
+                15.0,
+                18.0
+            ],
+            "right_dagger_rot": [
+                -85.0,
+                15.0,
+                -15.0
+            ],
+            "right_forearm_rot": [
+                -62.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                22.0,
+                0.0,
+                0.0
+            ]
+        },
+        "parry": {
+            "head_rot": [
+                -6.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -45.0,
+                15.0,
+                -25.0
+            ],
+            "left_dagger_rot": [
+                80.0,
+                30.0,
+                -35.0
+            ],
+            "left_forearm_rot": [
+                -65.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -45.0,
+                -15.0,
+                25.0
+            ],
+            "right_dagger_rot": [
+                80.0,
+                -30.0,
+                35.0
+            ],
+            "right_forearm_rot": [
+                -65.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                10.0,
+                0.0,
+                0.0
+            ]
+        },
+        "reverse": {
+            "head_rot": [
+                -16.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -15.0,
+                -15.0,
+                -18.0
+            ],
+            "left_dagger_rot": [
+                -85.0,
+                -15.0,
+                15.0
+            ],
+            "left_forearm_rot": [
+                -62.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -15.0,
+                15.0,
+                18.0
+            ],
+            "right_dagger_rot": [
+                -85.0,
+                15.0,
+                -15.0
+            ],
+            "right_forearm_rot": [
+                -62.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                22.0,
+                0.0,
+                0.0
+            ]
+        },
+        "scurry": {
+            "head_rot": [
+                -22.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -20.0,
+                -18.0,
+                -20.0
+            ],
+            "left_dagger_rot": [
+                -85.0,
+                -15.0,
+                15.0
+            ],
+            "left_forearm_rot": [
+                -68.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -20.0,
+                18.0,
+                20.0
+            ],
+            "right_dagger_rot": [
+                -85.0,
+                15.0,
+                -15.0
+            ],
+            "right_forearm_rot": [
+                -68.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                24.0,
+                0.0,
+                0.0
+            ]
+        },
+        "stunned": {
+            "head_rot": [
+                -8.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                15.0,
+                0.0,
+                -20.0
+            ],
+            "left_dagger_rot": [
+                45.0,
+                10.0,
+                -10.0
+            ],
+            "left_forearm_rot": [
+                -15.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                12.0,
+                0.0,
+                20.0
+            ],
+            "right_dagger_rot": [
+                45.0,
+                -10.0,
+                10.0
+            ],
+            "right_forearm_rot": [
+                -12.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                12.0,
+                0.0,
+                0.0
+            ]
+        },
+        "walk": {
+            "head_rot": [
+                -16.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -15.0,
+                -15.0,
+                -18.0
+            ],
+            "left_dagger_rot": [
+                -85.0,
+                -15.0,
+                15.0
+            ],
+            "left_forearm_rot": [
+                -62.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -15.0,
+                15.0,
+                18.0
+            ],
+            "right_dagger_rot": [
+                -85.0,
+                15.0,
+                -15.0
+            ],
+            "right_forearm_rot": [
+                -62.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                18.0,
+                0.0,
+                0.0
+            ]
+        }
+    },
+    "shaman": {
+        "chant": {
+            "head_rot": [
+                -28.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -118.0,
+                -18.0,
+                -36.0
+            ],
+            "left_forearm_rot": [
+                -35.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -128.0,
+                15.0,
+                32.0
+            ],
+            "right_forearm_rot": [
+                -20.0,
+                0.0,
+                0.0
+            ],
+            "staff_rot": [
+                88.0,
+                12.0,
+                -8.0
+            ],
+            "torso_rot": [
+                -18.0,
+                0.0,
+                0.0
+            ]
+        },
+        "ground_hips_y": 0.618,
+        "hex": {
+            "head_rot": [
+                0.0,
+                12.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                28.0,
+                0.0,
+                -26.0
+            ],
+            "left_forearm_rot": [
+                -40.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -88.0,
+                -10.0,
+                18.0
+            ],
+            "right_forearm_rot": [
+                -10.0,
+                0.0,
+                0.0
+            ],
+            "staff_rot": [
+                88.0,
+                10.0,
+                0.0
+            ],
+            "torso_rot": [
+                12.0,
+                -23.0,
+                0.0
+            ]
+        },
+        "hurt": {
+            "head_rot": [
+                0.0,
+                -14.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                24.0,
+                0.0,
+                -32.0
+            ],
+            "left_forearm_rot": [
+                -45.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -36.0,
+                0.0,
+                28.0
+            ],
+            "right_forearm_rot": [
+                -21.0,
+                0.0,
+                0.0
+            ],
+            "staff_rot": [
+                73.0,
+                10.0,
+                -1.0
+            ],
+            "torso_rot": [
+                -26.0,
+                -12.0,
+                0.0
+            ]
+        },
+        "idle": {
+            "head_rot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -25.0,
+                15.0,
+                -26.0
+            ],
+            "left_forearm_rot": [
+                -65.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -12.0,
+                6.0,
+                20.0
+            ],
+            "right_forearm_rot": [
+                -35.0,
+                0.0,
+                0.0
+            ],
+            "staff_rot": [
+                81.0,
+                12.0,
+                -8.0
+            ],
+            "torso_rot": [
+                6.0,
+                0.0,
+                0.0
+            ]
+        },
+        "run": {
+            "head_rot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -38.0,
+                -12.0,
+                -24.0
+            ],
+            "left_forearm_rot": [
+                -60.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -25.0,
+                15.0,
+                24.0
+            ],
+            "right_forearm_rot": [
+                -45.0,
+                0.0,
+                0.0
+            ],
+            "staff_rot": [
+                89.0,
+                0.0,
+                -2.0
+            ],
+            "torso_rot": [
+                16.0,
+                0.0,
+                0.0
+            ]
+        },
+        "stunned": {
+            "head_rot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                15.0,
+                0.0,
+                -15.0
+            ],
+            "left_forearm_rot": [
+                -13.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -18.0,
+                6.0,
+                22.0
+            ],
+            "right_forearm_rot": [
+                -47.0,
+                0.0,
+                0.0
+            ],
+            "staff_rot": [
+                129.0,
+                -50.0,
+                -55.0
+            ],
+            "torso_rot": [
+                12.0,
+                -1.0,
+                6.0
+            ]
+        },
+        "summon": {
+            "head_rot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -25.0,
+                0.0,
+                -30.0
+            ],
+            "left_forearm_rot": [
+                -55.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -38.0,
+                -5.0,
+                24.0
+            ],
+            "right_forearm_rot": [
+                -50.0,
+                0.0,
+                0.0
+            ],
+            "staff_rot": [
+                44.0,
+                18.0,
+                -6.0
+            ],
+            "torso_rot": [
+                26.0,
+                0.0,
+                0.0
+            ]
+        },
+        "walk": {
+            "head_rot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -25.0,
+                12.0,
+                -22.0
+            ],
+            "left_forearm_rot": [
+                -40.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -14.0,
+                10.0,
+                22.0
+            ],
+            "right_forearm_rot": [
+                -35.0,
+                0.0,
+                0.0
+            ],
+            "staff_rot": [
+                87.0,
+                12.0,
+                -8.0
+            ],
+            "torso_rot": [
+                6.0,
+                0.0,
+                0.0
+            ]
+        }
+    },
+    "warrior": {
+        "cleave": {
+            "club_rot": [
+                85.0,
+                30.0,
+                20.0
+            ],
+            "head_rot": [
+                -4.0,
+                -32.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -40.0,
+                0.0,
+                15.0
+            ],
+            "left_forearm_rot": [
+                -55.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                18.0,
+                10.0,
+                75.0
+            ],
+            "right_forearm_rot": [
+                -35.0,
+                0.0,
+                20.0
+            ],
+            "torso_rot": [
+                8.0,
+                52.0,
+                4.0
+            ]
+        },
+        "ground_hips_y": 0.618,
+        "guard": {
+            "club_rot": [
+                165.0,
+                35.0,
+                -35.0
+            ],
+            "head_rot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -32.0,
+                24.0,
+                -18.0
+            ],
+            "left_forearm_rot": [
+                -78.0,
+                -15.0,
+                10.0
+            ],
+            "right_arm_rot": [
+                -28.0,
+                -12.0,
+                20.0
+            ],
+            "right_forearm_rot": [
+                -76.0,
+                15.0,
+                -5.0
+            ],
+            "torso_rot": [
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        "idle": {
+            "club_rot": [
+                118.0,
+                -15.0,
+                -12.0
+            ],
+            "head_rot": [
+                -2.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                0.0,
+                0.0,
+                -12.0
+            ],
+            "left_forearm_rot": [
+                -16.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                12.0,
+                -8.0,
+                26.0
+            ],
+            "right_forearm_rot": [
+                -22.0,
+                -8.0,
+                0.0
+            ],
+            "torso_rot": [
+                7.0,
+                0.0,
+                0.0
+            ]
+        },
+        "low": {
+            "club_rot": [
+                118.0,
+                -15.0,
+                -12.0
+            ],
+            "head_rot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                0.0,
+                0.0,
+                -12.0
+            ],
+            "left_forearm_rot": [
+                -16.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                12.0,
+                -8.0,
+                26.0
+            ],
+            "right_forearm_rot": [
+                -22.0,
+                -8.0,
+                0.0
+            ],
+            "torso_rot": [
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        "parry_cleave": {
+            "club_rot": [
+                90.0,
+                0.0,
+                -75.0
+            ],
+            "head_rot": [
+                6.0,
+                28.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                32.0,
+                0.0,
+                -20.0
+            ],
+            "left_forearm_rot": [
+                -80.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -70.0,
+                0.0,
+                -18.0
+            ],
+            "right_forearm_rot": [
+                -15.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                14.0,
+                -68.0,
+                -6.0
+            ]
+        },
+        "parry_smash": {
+            "club_rot": [
+                20.0,
+                25.0,
+                -25.0
+            ],
+            "head_rot": [
+                4.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -45.0,
+                0.0,
+                -36.0
+            ],
+            "left_forearm_rot": [
+                -55.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -85.0,
+                25.0,
+                56.0
+            ],
+            "right_forearm_rot": [
+                -115.0,
+                15.0,
+                0.0
+            ],
+            "torso_rot": [
+                -28.0,
+                0.0,
+                0.0
+            ]
+        },
+        "run": {
+            "club_rot": [
+                118.0,
+                -15.0,
+                -12.0
+            ],
+            "head_rot": [
+                -14.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                0.0,
+                0.0,
+                -12.0
+            ],
+            "left_forearm_rot": [
+                -20.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -20.0,
+                10.0,
+                30.0
+            ],
+            "right_forearm_rot": [
+                -45.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                24.0,
+                0.0,
+                0.0
+            ]
+        },
+        "shoulder": {
+            "club_rot": [
+                50.0,
+                25.0,
+                -20.0
+            ],
+            "head_rot": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                0.0,
+                0.0,
+                -12.0
+            ],
+            "left_forearm_rot": [
+                -16.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -20.0,
+                15.0,
+                42.0
+            ],
+            "right_forearm_rot": [
+                -110.0,
+                10.0,
+                0.0
+            ],
+            "torso_rot": [
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        "smash": {
+            "club_rot": [
+                20.0,
+                25.0,
+                -25.0
+            ],
+            "head_rot": [
+                4.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                -45.0,
+                0.0,
+                -36.0
+            ],
+            "left_forearm_rot": [
+                -55.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                -85.0,
+                25.0,
+                56.0
+            ],
+            "right_forearm_rot": [
+                -115.0,
+                15.0,
+                0.0
+            ],
+            "torso_rot": [
+                -28.0,
+                0.0,
+                0.0
+            ]
+        },
+        "stunned": {
+            "club_rot": [
+                75.0,
+                0.0,
+                -20.0
+            ],
+            "head_rot": [
+                8.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                12.0,
+                0.0,
+                -24.0
+            ],
+            "left_forearm_rot": [
+                -35.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                0.0,
+                5.0,
+                42.0
+            ],
+            "right_forearm_rot": [
+                -45.0,
+                0.0,
+                0.0
+            ],
+            "torso_rot": [
+                14.0,
+                0.0,
+                5.0
+            ]
+        },
+        "walk": {
+            "club_rot": [
+                118.0,
+                -15.0,
+                -12.0
+            ],
+            "head_rot": [
+                -3.0,
+                0.0,
+                0.0
+            ],
+            "left_arm_rot": [
+                0.0,
+                0.0,
+                -12.0
+            ],
+            "left_forearm_rot": [
+                -16.0,
+                0.0,
+                0.0
+            ],
+            "right_arm_rot": [
+                12.0,
+                -8.0,
+                26.0
+            ],
+            "right_forearm_rot": [
+                -22.0,
+                -8.0,
+                0.0
+            ],
+            "torso_rot": [
+                8.0,
+                0.0,
+                0.0
+            ]
+        }
+    }
 }
