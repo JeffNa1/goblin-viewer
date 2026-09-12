@@ -4302,6 +4302,27 @@ static func build_ogre_head_mesh() -> ArrayMesh:
 	voxels[Vector3i(-1, 8, 6)] = C_TEETH
 	voxels[Vector3i(1, 8, 6)] = C_TEETH
 
+	# 2B. Mid-Face, Cheeks, Temples & Cranial Base (y: 9..11)
+	# Bridges jaw (y=8) seamlessly to cranium dome (y=12) - 100% solid, zero gaping holes!
+	for y in range(9, 12):
+		var rx = 6 if y == 9 else 5
+		var rz = 5
+		for x in range(-rx, rx + 1):
+			for z in range(-rz, rz + 2): # z: -5..6
+				if abs(x) >= rx and abs(z) >= rz: continue
+				if abs(x) == 6 and (z <= -3 or z >= 4): continue
+				if y == 10 and abs(x) in [2, 3] and z >= 6: continue # Eye socket recess
+				if y == 11 and z >= 6: continue # Brow ridge recess
+				
+				var col = C_SKIN
+				if z <= -4:
+					col = C_SKIN_DARK # Shaded back of skull
+				elif abs(x) >= 5:
+					col = C_SKIN_DARK # Temples / jaw hinge
+				elif z >= 4 and abs(x) <= 4:
+					col = C_SKIN_LIGHT if y in [9, 10] else C_SKIN # Prominent muscular cheekbones
+				voxels[Vector3i(x, y, z)] = col
+
 	# 3. Flattened Broken Ogre Nose & Bone Piercing (y: 8..11)
 	for y in range(8, 12):
 		for x in range(-2, 3):
@@ -4382,11 +4403,14 @@ static func build_ogre_head_mesh() -> ArrayMesh:
 	for x in range(-2, 3):
 		for y in range(13, 16):
 			voxels[Vector3i(x, y, 6)] = C_BONE
+			voxels[Vector3i(x, y, 5)] = C_BONE # Solid backing against cranium dome
 	voxels[Vector3i(-1, 14, 6)] = C_HAIR # Eye socket 1
 	voxels[Vector3i(1, 14, 6)] = C_HAIR  # Eye socket 2
 	voxels[Vector3i(0, 15, 6)] = C_BONE
 	voxels[Vector3i(-2, 16, 6)] = C_TEETH # Skull horn tip L
 	voxels[Vector3i(2, 16, 6)] = C_TEETH  # Skull horn tip R
+	voxels[Vector3i(-2, 16, 5)] = C_BONE  # Solid horn L backing
+	voxels[Vector3i(2, 16, 5)] = C_BONE   # Solid horn R backing
 
 	# 8. Wild Warrior Mohawk & Tied Topknot Plume (y: 15..23)
 	# Mohawk ridge
@@ -4506,14 +4530,17 @@ static func build_ogre_torso_mesh() -> ArrayMesh:
 	voxels[Vector3i(2, 13, 7)] = C_TEETH
 	voxels[Vector3i(4, 14, 7)] = C_TEETH
 
-	# 5. Heavy Braided Rope Belt & Tattered Beast Fur Loincloth (Thắt Lưng Thừng & Khố Rách)
-	# Braided double rope belt (y: 2..4)
+	# 5. Heavy Rawhide & Leather War Belt (Thắt Lưng Da Thô To Bản) (y: 2..4)
 	for y in [2, 3, 4]:
 		for x in range(-7, 8):
 			for z in range(-6, 7):
 				if (abs(x) == 7 or abs(z) == 6) and (abs(x) >= 2 or abs(z) >= 2):
-					var is_knot = ((x + z) % 2 == 0)
-					voxels[Vector3i(x, y, z)] = C_ROPE if is_knot else C_LEATHER_DARK
+					var col = C_LEATHER
+					if y in [2, 4]:
+						col = C_LEATHER_DARK
+					elif (x + z) % 4 == 0:
+						col = C_BUCKLE # Warm bronze stud
+					voxels[Vector3i(x, y, z)] = col
 	# Big carved stone/bone belt clasp
 	for x in range(-1, 2):
 		for y in range(2, 5):
@@ -4579,7 +4606,7 @@ static func build_ogre_upper_arm_mesh() -> ArrayMesh:
 static func build_ogre_forearm_mesh(is_right: bool) -> ArrayMesh:
 	var voxels: Dictionary = {}
 
-	# 1. Thick Forearm Muscle with Rawhide Cord Wraps (y: -6..0)
+	# 1. Thick Forearm Muscle with Leather Bracers (y: -6..0)
 	for y in range(-6, 1):
 		var rx = 3
 		var rz = 3
@@ -4587,10 +4614,13 @@ static func build_ogre_forearm_mesh(is_right: bool) -> ArrayMesh:
 			for z in range(-rz, rz + 1):
 				if abs(x) == rx and abs(z) == rz and y == 0: continue
 				var col = C_SKIN
-				# Primitive criss-cross leather bindings & sinew
+				# Solid leather bracer with dark trim
 				if y in [-5, -4, -3, -2] and (abs(x) == rx or abs(z) == rz):
-					var is_cord = ((x + y + z) % 2 == 0)
-					col = C_ROPE if is_cord else C_LEATHER_DARK
+					col = C_LEATHER
+					if y in [-2, -5]:
+						col = C_LEATHER_DARK
+					elif y == -3 and abs(z) == rz:
+						col = C_SINEW # Single subtle tie cord
 				elif y <= -5:
 					col = C_SKIN_DARK
 				voxels[Vector3i(x, y, z)] = col
@@ -4661,12 +4691,11 @@ static func build_ogre_thigh_mesh() -> ArrayMesh:
 				var col = C_SKIN
 				# Upper thigh fur wrap & bindings (y: -4..0)
 				if y in [-4, -3, -2, -1, 0] and (abs(x) == rx or abs(z) == rz):
-					if y == -2:
-						col = C_ROPE
-					elif (x + y + z) % 2 == 0:
-						col = C_PELT_BASE
-					else:
+					col = C_PELT_BASE
+					if y in [0, -4]:
 						col = C_PELT_DARK
+					elif y == -2:
+						col = C_LEATHER_DARK
 				# Quadricep front bulge
 				elif z >= 3 and y in [-7, -6, -5]:
 					col = C_SKIN_LIGHT
@@ -4695,9 +4724,13 @@ static func build_ogre_shin_mesh() -> ArrayMesh:
 				# Calf muscle bulge in back (-Z)
 				if z == -rz and y in [-4, -3, -2]:
 					col = C_SKIN_LIGHT
-				# Primitive rawhide calf bindings
+				# Weathered rawhide calf bindings (y: -6..-3)
 				elif y in [-6, -5, -4, -3] and (abs(x) == rx or abs(z) == rz):
-					col = C_ROPE if (x + y) % 2 == 0 else C_LEATHER_DARK
+					col = C_LEATHER
+					if y in [-3, -6]:
+						col = C_LEATHER_DARK
+					elif y == -4 and abs(z) == rz:
+						col = C_PELT_DARK
 				elif abs(x) == rx or abs(z) == rz:
 					col = C_SKIN_DARK
 				voxels[Vector3i(x, y, z)] = col
@@ -4734,12 +4767,13 @@ static func build_ogre_mace_mesh() -> ArrayMesh:
 				# Bark variations & knots
 				if (x + y + z) % 3 == 0:
 					col = C_WOOD
-				# Leather criss-cross grip wrap around hand position (y: -6..4)
+				# Leather wrapped grip around hand position (y: -6..4)
 				if y >= -6 and y <= 4 and (abs(x) == 1 or abs(z) == 1):
-					col = C_ROPE if (y + x) % 2 == 0 else C_LEATHER_DARK
+					var is_seam = ((y + x) % 3 == 0)
+					col = C_LEATHER_DARK if is_seam else C_LEATHER
 				# Heavy sinew lashings below mace head (y: 13..16)
 				elif y >= 13 and y <= 16 and (abs(x) == 1 or abs(z) == 1):
-					col = C_ROPE if y % 2 == 0 else C_SINEW
+					col = C_ROPE if y in [13, 16] else C_SINEW
 				voxels[Vector3i(x, y, z)] = col
 
 	# 2. Pommel Knot with Hanging Beast Talisman (y: -22..-18)

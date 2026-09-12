@@ -742,9 +742,28 @@ func _capture_ogre_walk() -> void:
 	await get_tree().create_timer(0.4).timeout
 	editor_panel.visible = false
 	switch_monster("chieftain")
-	m_chieftain.play_anim("walk")
 	
-	# 1. Front view: Lateral weight shift & wide stance
+	# 1. Close-up Front Head view (verify solid skull, cheeks, zero holes)
+	m_chieftain.play_anim("idle")
+	yaw = 15.0
+	pitch = -2.0
+	camera_distance = 2.6
+	camera_pivot.position.y = 1.95
+	_update_camera_transform()
+	await get_tree().create_timer(0.35).timeout
+	_save_shot("ogre_head_fixed_front.png")
+	
+	# 2. Close-up Side Head view (verify solid temples, ears, jaw-to-cranium bridge)
+	yaw = 70.0
+	pitch = -4.0
+	camera_distance = 2.5
+	camera_pivot.position.y = 1.95
+	_update_camera_transform()
+	await get_tree().create_timer(0.35).timeout
+	_save_shot("ogre_head_fixed_side.png")
+	
+	# 3. Front view: Lateral weight shift & wide stance
+	m_chieftain.play_anim("walk")
 	yaw = 20.0
 	pitch = -6.0
 	camera_distance = 4.6
@@ -753,7 +772,7 @@ func _capture_ogre_walk() -> void:
 	await get_tree().create_timer(0.45).timeout
 	_save_shot("ogre_walk_front_sway.png")
 	
-	# 2. 3/4 Perspective: Stride plant & knee flexion & warhammer cushion
+	# 4. 3/4 Perspective: Stride plant & knee flexion & warhammer cushion
 	yaw = 45.0
 	pitch = -8.0
 	camera_distance = 4.4
@@ -762,7 +781,7 @@ func _capture_ogre_walk() -> void:
 	await get_tree().create_timer(0.35).timeout
 	_save_shot("ogre_walk_stride_plant.png")
 	
-	# 3. Side profile: Spine posture, passing foot lift & free arm pump
+	# 5. Side profile: Spine posture, passing foot lift & free arm pump
 	yaw = 80.0
 	pitch = -4.0
 	camera_distance = 4.2
