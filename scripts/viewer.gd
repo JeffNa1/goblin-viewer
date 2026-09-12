@@ -394,7 +394,7 @@ func _reconfigure_action_buttons() -> void:
 				var w_outfit = m_warrior.current_outfit if m_warrior and "current_outfit" in m_warrior else 1
 				if w_outfit == 2:
 					label = "🔥 [ 4 ] COMBO 1-2-3"
-					tooltip = "Combo 3 Đòn: Bổ Chùy -> Quét Ngang -> Quét Ngược Hất Tung [Phím 4]"
+					tooltip = "Combo 3 Đòn: Bổ Chùy -> Quét Thuận -> Quét Ngược [Phím 4]"
 				else:
 					label = "⚔ [ 4 ] BỔ"
 					tooltip = "Bổ chùy uy lực [Phím 4]"
@@ -465,7 +465,7 @@ func sync_editor_from_monster() -> void:
 		"archer": "CUNG THỦ",
 		"shaman": "PHÁP SƯ",
 		"rogue": "SÁT THỦ",
-		"chieftain": "TÙ TRƯỞNG BOSS"
+		"chieftain": "MACE OGRE"
 	}
 	ed_title.text = "🛠 BỘ CHỈNH TƯ THẾ & VŨ KHÍ: %s" % m_names.get(active_monster_type, "QUÁI VẬT")
 	
@@ -724,8 +724,9 @@ func _capture_warrior_combo() -> void:
 	await get_tree().create_timer(0.65).timeout
 	_save_shot("warrior_combo_hit2_cleave.png")
 	
-	# Hit 3: Rising Uppercut Finisher launch (t = 2.20s, so wait +1.05s)
-	await get_tree().create_timer(1.05).timeout
+	# Hit 3: Explosive Reverse Cleave (Left -> Right) midpoint (t = 2.05s, wait +0.90s)
+	await get_tree().create_timer(0.90).timeout
+	_save_shot("warrior_combo_hit3_reverse_cleave.png")
 	_save_shot("warrior_combo_hit3_uppercut.png")
 	
 	await get_tree().create_timer(1.2).timeout
@@ -1162,7 +1163,7 @@ func _update_ui_state() -> void:
 		"archer": archer_name,
 		"shaman": "Goblin Shaman (Pháp Sư)",
 		"rogue": "Goblin Rogue (Sát Thủ)",
-		"chieftain": "Goblin Chieftain (Boss)"
+		"chieftain": "Mace Ogre (Boss)"
 	}
 	
 	var cur_status = cur.to_upper()
