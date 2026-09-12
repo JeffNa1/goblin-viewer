@@ -36,8 +36,10 @@ var anim_speed: float = 1.0
 # Attack
 var attack_time: float = 0.0
 const ATTACK_DURATION: float = 1.3
+const COMBO_DURATION: float = 3.2
 const PARRY_DURATION: float = 1.15
 var parry_time: float = 0.0
+var combo_impact_step: int = 0
 
 # Continuous Cross-fade Blending
 var is_blending: bool = false
@@ -58,6 +60,11 @@ const StunStarsScript = preload("res://scripts/stun_stars.gd")
 var stun_stars: Node3D = null
 var weapon_trail: Node3D = null
 var smash_impact_triggered: bool = false
+
+# Outfit System
+var current_outfit: int = 1
+var outfit_meshes: Dictionary = {}
+signal outfit_changed(outfit_id: int)
 
 signal anim_changed(anim_name: String)
 
@@ -212,8 +219,9 @@ func get_stance_definitions() -> Array:
 	]
 
 func get_weapon_info() -> Dictionary:
+	var title = "🔨 THIẾT CHÙY CHIẾN TRẬN (VỊ TRÍ & GÓC)" if current_outfit == 2 else "🏏 CHÙY GAI (VỊ TRÍ & GÓC)"
 	return {
-		"title": "🏏 CHÙY GAI (VỊ TRÍ & GÓC)",
+		"title": title,
 		"prop": "club_rot"
 	}
 
@@ -287,17 +295,52 @@ func set_live_ground_hips_y(val: float) -> void:
 		_apply_pose(current_pose)
 
 func generate_voxel_meshes() -> void:
-	head_mesh.mesh = VoxelBuilder.build_head_mesh()
-	torso_mesh.mesh = VoxelBuilder.build_torso_mesh()
-	left_arm_mesh.mesh = VoxelBuilder.build_upper_arm_mesh()
-	left_forearm_mesh.mesh = VoxelBuilder.build_forearm_mesh(false)
-	right_arm_mesh.mesh = VoxelBuilder.build_upper_arm_mesh()
-	right_forearm_mesh.mesh = VoxelBuilder.build_forearm_mesh(true)
-	club_mesh.mesh = VoxelBuilder.build_club_mesh()
-	left_thigh_mesh.mesh = VoxelBuilder.build_thigh_mesh()
-	left_shin_mesh.mesh = VoxelBuilder.build_shin_mesh()
-	right_thigh_mesh.mesh = VoxelBuilder.build_thigh_mesh()
-	right_shin_mesh.mesh = VoxelBuilder.build_shin_mesh()
+	# Pre-build meshes for Outfit 1 (Thô Sơ / Primitive Feral Warrior)
+	outfit_meshes[1] = {
+		"head": VoxelBuilder.build_head_mesh(1),
+		"torso": VoxelBuilder.build_torso_mesh(1),
+		"upper_arm": VoxelBuilder.build_upper_arm_mesh(1),
+		"left_forearm": VoxelBuilder.build_forearm_mesh(false, 1),
+		"right_forearm": VoxelBuilder.build_forearm_mesh(true, 1),
+		"club": VoxelBuilder.build_club_mesh(1),
+		"thigh": VoxelBuilder.build_thigh_mesh(1),
+		"shin": VoxelBuilder.build_shin_mesh(1)
+	}
+	
+	# Pre-build meshes for Outfit 2 (Chiến Binh Thép / Ironclad Battle Warrior)
+	outfit_meshes[2] = {
+		"head": VoxelBuilder.build_head_mesh(2),
+		"torso": VoxelBuilder.build_torso_mesh(2),
+		"upper_arm": VoxelBuilder.build_upper_arm_mesh(2),
+		"left_forearm": VoxelBuilder.build_forearm_mesh(false, 2),
+		"right_forearm": VoxelBuilder.build_forearm_mesh(true, 2),
+		"club": VoxelBuilder.build_club_mesh(2),
+		"thigh": VoxelBuilder.build_thigh_mesh(2),
+		"shin": VoxelBuilder.build_shin_mesh(2)
+	}
+	
+	apply_outfit(current_outfit)
+
+func set_outfit(outfit_id: int) -> void:
+	current_outfit = clamp(outfit_id, 1, 2)
+	apply_outfit(current_outfit)
+	outfit_changed.emit(current_outfit)
+
+func apply_outfit(outfit_id: int) -> void:
+	if not outfit_meshes.has(outfit_id):
+		return
+	var m: Dictionary = outfit_meshes[outfit_id]
+	head_mesh.mesh = m["head"]
+	torso_mesh.mesh = m["torso"]
+	left_arm_mesh.mesh = m["upper_arm"]
+	left_forearm_mesh.mesh = m["left_forearm"]
+	right_arm_mesh.mesh = m["upper_arm"]
+	right_forearm_mesh.mesh = m["right_forearm"]
+	club_mesh.mesh = m["club"]
+	left_thigh_mesh.mesh = m["thigh"]
+	left_shin_mesh.mesh = m["shin"]
+	right_thigh_mesh.mesh = m["thigh"]
+	right_shin_mesh.mesh = m["shin"]
 
 func _process(delta: float) -> void:
 	var dt = delta * anim_speed
@@ -306,7 +349,8 @@ func _process(delta: float) -> void:
 	if current_anim in ["smash", "cleave"]:
 		attack_time += dt
 		_update_attack_trails(attack_time)
-		if attack_time >= ATTACK_DURATION:
+		var cur_attack_dur: float = COMBO_DURATION if (current_anim == "smash" and current_outfit == 2) else ATTACK_DURATION
+		if attack_time >= cur_attack_dur:
 			if weapon_trail:
 				weapon_trail.stop_trail()
 			current_anim = base_anim
@@ -356,9 +400,12 @@ func _update_attack_trails(t_atk: float) -> void:
 	if not weapon_trail:
 		return
 		
-	var tau = clampf(t_atk / ATTACK_DURATION, 0.0, 1.0)
-	
 	if current_anim == "smash":
+		if current_outfit == 2:
+			_update_combo_trails(t_atk)
+			return
+			
+		var tau = clampf(t_atk / ATTACK_DURATION, 0.0, 1.0)
 		# Violent slam phase: tau in [0.32, 0.50]
 		if tau >= 0.32 and tau < 0.50:
 			if not weapon_trail.is_emitting:
@@ -381,6 +428,7 @@ func _update_attack_trails(t_atk: float) -> void:
 				weapon_trail.stop_trail()
 				
 	elif current_anim == "cleave":
+		var tau = clampf(t_atk / ATTACK_DURATION, 0.0, 1.0)
 		# Full 180° horizontal cleave: tau in [0.35, 0.60]
 		if tau >= 0.35 and tau < 0.60:
 			if not weapon_trail.is_emitting:
@@ -392,6 +440,51 @@ func _update_attack_trails(t_atk: float) -> void:
 		else:
 			if weapon_trail.is_emitting:
 				weapon_trail.stop_trail()
+
+func _update_combo_trails(t_atk: float) -> void:
+	if not weapon_trail:
+		return
+		
+	# Hit 1: Overhead Slam (0.32s -> 0.50s)
+	if t_atk >= 0.32 and t_atk < 0.50:
+		if not weapon_trail.is_emitting:
+			weapon_trail.start_trail(
+				Color(1.0, 0.95, 0.50, 0.98), # Brilliant Solar Gold tip
+				Color(1.0, 0.35, 0.05, 0.88), # Heavy Molten Crimson base
+				0.18
+			)
+	elif t_atk >= 0.50 and t_atk < 0.60:
+		if weapon_trail.is_emitting:
+			weapon_trail.stop_trail()
+		if combo_impact_step == 0:
+			combo_impact_step = 1
+			var impact_pos = club.to_global(Vector3(0.0, 0.88, 0.0))
+			impact_pos.y = 0.038
+			weapon_trail.trigger_ground_impact(impact_pos)
+	# Hit 2: 180° Horizontal Cleave (0.95s -> 1.35s)
+	elif t_atk >= 0.95 and t_atk < 1.35:
+		if not weapon_trail.is_emitting:
+			weapon_trail.start_trail(
+				Color(1.0, 1.0, 0.85, 0.98), # Radiant White-Gold tip
+				Color(1.0, 0.60, 0.15, 0.85), # Warm Amber Wind Blade base
+				0.26
+			)
+	# Hit 3: Rising Uppercut Finisher (1.95s -> 2.40s)
+	elif t_atk >= 1.95 and t_atk < 2.40:
+		if not weapon_trail.is_emitting:
+			weapon_trail.start_trail(
+				Color(0.85, 0.95, 1.0, 1.0), # Celestial Ice-Cyan tip
+				Color(1.0, 0.80, 0.20, 0.90), # Solar Golden Flare base
+				0.30
+			)
+		if t_atk >= 2.22 and combo_impact_step == 1:
+			combo_impact_step = 2
+			var impact_pos = club.to_global(Vector3(0.0, 0.88, 0.0))
+			impact_pos.y = 0.038
+			weapon_trail.trigger_ground_impact(impact_pos)
+	else:
+		if weapon_trail.is_emitting:
+			weapon_trail.stop_trail()
 
 func _start_blend() -> void:
 	source_pose = current_pose.duplicate()
@@ -407,6 +500,7 @@ func play_anim(anim_name: String) -> void:
 			base_anim = current_anim
 		attack_time = 0.0
 		smash_impact_triggered = false
+		combo_impact_step = 0
 	elif anim_name in ["parry_smash", "parry_cleave"]:
 		if not (current_anim in ["smash", "cleave", "parry_smash", "parry_cleave"]):
 			base_anim = current_anim
@@ -566,7 +660,10 @@ func _compute_pose(anim: String, time_val: float, stance: String) -> Dictionary:
 		p["club_rot"] = w["club_rot"]
 		
 	elif anim == "smash":
-		p = _compute_attack_smash(attack_time)
+		if current_outfit == 2:
+			p = _compute_attack_smash_combo(attack_time)
+		else:
+			p = _compute_attack_smash(attack_time)
 	elif anim == "cleave":
 		p = _compute_attack_cleave(attack_time)
 	elif anim == "parry_smash":
@@ -914,6 +1011,215 @@ func _compute_attack_smash(t_atk: float) -> Dictionary:
 		p["right_forearm_rot"] = _lerp_angles(Vector3(-18.0, 0.0, 0.0), w_target["right_forearm_rot"], s)
 		p["club_rot"] = _lerp_angles(Vector3(138.0, -10.0, -10.0), w_target["club_rot"], s)
 		
+	return p
+
+# --- 1B. WARRIOR OUTFIT 2: COMBO 1-2-3 ATTACK (Smash -> Cleave -> Rising Uppercut Finisher) ---
+func _compute_attack_smash_combo(t_atk: float) -> Dictionary:
+	var p: Dictionary = {}
+	var key = "smash" if stance_configs.has("smash") else current_stance
+	var cfg = stance_configs.get(key, default_stance_configs.get(key, default_stance_configs.get(current_stance, {})))
+	var base_club: Vector3 = cfg.get("club_rot", Vector3(118.0, 26.0, -20.0))
+	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(12.0, -8.0, 26.0))
+	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-22.0, 0.0, 0.0))
+	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(0.0, 0.0, -18.0))
+	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-16.0, 0.0, 0.0))
+
+	if t_atk < 0.35:
+		# HIT 1 - PHASE 1A: Windup & Stride Forward (0.0s - 0.35s)
+		var s = smoothstep(0.0, 1.0, t_atk / 0.35)
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y, ground_hips_y + 0.03, s), lerp(0.0, 0.10, s))
+		p["hips_rot"] = Vector3(lerp(0.0, -4.0, s), lerp(0.0, -6.0, s), 0.0)
+		p["torso_rot"] = Vector3(lerp(7.0, -24.0, s), lerp(0.0, -10.0, s), 0.0)
+		p["head_rot"] = Vector3(lerp(-2.0, -18.0, s), 2.0, 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(-2.0, -32.0, s), 0.0, 0.0)
+		p["left_shin_rot"] = Vector3(lerp(4.0, 42.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(1.0, 16.0, s), 0.0, 2.0)
+		p["right_shin_rot"] = Vector3(lerp(3.0, 10.0, s), 0.0, 0.0)
+		p["left_arm_rot"] = _lerp_angles(base_l_arm, Vector3(-52.0, 0.0, -18.0), s)
+		p["left_forearm_rot"] = _lerp_angles(base_l_fore, Vector3(-45.0, 0.0, 0.0), s)
+		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(-96.0, 18.0, 42.0), s)
+		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-120.0, 15.0, 0.0), s)
+		p["club_rot"] = _lerp_angles(base_club, Vector3(26.0, 25.0, -20.0), s)
+
+	elif t_atk < 0.50:
+		# HIT 1 - PHASE 1B: Violent Forward Lunge Slam (0.35s - 0.50s)
+		var prog = (t_atk - 0.35) / 0.15
+		var s = sin(prog * 0.5 * PI)
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y + 0.03, ground_hips_y - 0.04, s), lerp(0.10, 0.16, s))
+		p["hips_rot"] = Vector3(lerp(-4.0, 6.0, s), lerp(-6.0, 2.0, s), 0.0)
+		p["torso_rot"] = Vector3(lerp(-24.0, 32.0, s), lerp(-10.0, 4.0, s), 0.0)
+		p["head_rot"] = Vector3(lerp(-18.0, 16.0, s), 3.0, 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(-32.0, -36.0, s), 0.0, -2.0)
+		p["left_shin_rot"] = Vector3(lerp(42.0, 44.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(16.0, 24.0, s), 0.0, 3.0)
+		p["right_shin_rot"] = Vector3(lerp(10.0, 18.0, s), 0.0, 0.0)
+		p["left_arm_rot"] = Vector3(lerp(-52.0, 30.0, s), 0.0, -12.0)
+		p["left_forearm_rot"] = Vector3(lerp(-45.0, -72.0, s), 0.0, 0.0)
+		p["right_arm_rot"] = Vector3(lerp(-96.0, 32.0, s), lerp(18.0, -10.0, s), lerp(42.0, 14.0, s))
+		p["right_forearm_rot"] = Vector3(lerp(-120.0, -18.0, s), 0.0, 0.0)
+		p["club_rot"] = Vector3(lerp(26.0, 138.0, s), -10.0, -10.0)
+
+	elif t_atk < 0.58:
+		# HIT 1 - PHASE 1C: Hit-Stop & Ground Impact Tremble (0.50s - 0.58s)
+		var shake = sin((t_atk - 0.50) * 80.0) * 0.003
+		p["hips_pos"] = Vector3(0.0, ground_hips_y - 0.04 + shake, 0.16)
+		p["hips_rot"] = Vector3(6.0, 2.0, 0.0)
+		p["torso_rot"] = Vector3(32.0, 4.0, 0.0)
+		p["head_rot"] = Vector3(16.0, 3.0, 0.0)
+		p["left_thigh_rot"] = Vector3(-36.0, 0.0, -2.0)
+		p["left_shin_rot"] = Vector3(44.0, 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(24.0, 0.0, 3.0)
+		p["right_shin_rot"] = Vector3(18.0, 0.0, 0.0)
+		p["left_arm_rot"] = Vector3(30.0, 0.0, -12.0)
+		p["left_forearm_rot"] = Vector3(-72.0, 0.0, 0.0)
+		p["right_arm_rot"] = Vector3(32.0, -10.0, 14.0)
+		p["right_forearm_rot"] = Vector3(-18.0, 0.0, 0.0)
+		p["club_rot"] = Vector3(138.0, -10.0, -10.0)
+
+	elif t_atk < 0.70:
+		# HIT 1 -> HIT 2: Pivot & Re-arm to Right Flank (0.58s - 0.70s)
+		var prog = (t_atk - 0.58) / 0.12
+		var s = smoothstep(0.0, 1.0, prog)
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.04, ground_hips_y - 0.02, s), lerp(0.16, 0.10, s))
+		p["hips_rot"] = Vector3(lerp(6.0, 0.0, s), lerp(2.0, 15.0, s), 0.0)
+		p["torso_rot"] = Vector3(lerp(32.0, 12.0, s), lerp(4.0, 25.0, s), 0.0)
+		p["head_rot"] = Vector3(lerp(16.0, 2.0, s), lerp(3.0, -15.0, s), 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(-36.0, -20.0, s), 0.0, lerp(-2.0, -8.0, s))
+		p["left_shin_rot"] = Vector3(lerp(44.0, 26.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(24.0, 12.0, s), 0.0, lerp(3.0, 8.0, s))
+		p["right_shin_rot"] = Vector3(lerp(18.0, 20.0, s), 0.0, 0.0)
+		p["left_arm_rot"] = Vector3(lerp(30.0, -10.0, s), 0.0, lerp(-12.0, 0.0, s))
+		p["left_forearm_rot"] = Vector3(lerp(-72.0, -45.0, s), 0.0, 0.0)
+		p["right_arm_rot"] = Vector3(lerp(32.0, 20.0, s), lerp(-10.0, 5.0, s), lerp(14.0, 45.0, s))
+		p["right_forearm_rot"] = Vector3(lerp(-18.0, -30.0, s), 0.0, 0.0)
+		p["club_rot"] = Vector3(lerp(138.0, 100.0, s), lerp(-10.0, 10.0, s), lerp(-10.0, 0.0, s))
+
+	elif t_atk < 0.95:
+		# HIT 2 - PHASE 2A: Full Right Coil / Charge Cleave (0.70s - 0.95s)
+		var prog = (t_atk - 0.70) / 0.25
+		var s = smoothstep(0.0, 1.0, prog)
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.02, ground_hips_y - 0.035, s), lerp(0.10, 0.04, s))
+		p["hips_rot"] = Vector3(0.0, lerp(15.0, 36.0, s), 0.0)
+		p["torso_rot"] = Vector3(lerp(12.0, 8.0, s), lerp(25.0, 56.0, s), lerp(0.0, 4.0, s))
+		p["head_rot"] = Vector3(lerp(2.0, -4.0, s), lerp(-15.0, -36.0, s), 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(-20.0, -14.0, s), 0.0, lerp(-8.0, -14.0, s))
+		p["left_shin_rot"] = Vector3(lerp(26.0, 20.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(12.0, 18.0, s), 0.0, lerp(8.0, 16.0, s))
+		p["right_shin_rot"] = Vector3(lerp(20.0, 24.0, s), 0.0, 0.0)
+		p["left_arm_rot"] = Vector3(lerp(-10.0, -42.0, s), 0.0, lerp(0.0, 15.0, s))
+		p["left_forearm_rot"] = Vector3(lerp(-45.0, -55.0, s), 0.0, 0.0)
+		p["right_arm_rot"] = Vector3(lerp(20.0, 18.0, s), lerp(5.0, 12.0, s), lerp(45.0, 78.0, s))
+		p["right_forearm_rot"] = Vector3(lerp(-30.0, -35.0, s), 0.0, lerp(0.0, 20.0, s))
+		p["club_rot"] = Vector3(lerp(100.0, 85.0, s), lerp(10.0, 30.0, s), lerp(0.0, 20.0, s))
+
+	elif t_atk < 1.35:
+		# HIT 2 - PHASE 2B: Explosive 180° Horizontal Cleave Across Front (0.95s - 1.35s)
+		var prog = (t_atk - 0.95) / 0.40
+		var s = 1.0 - pow(1.0 - prog, 2.8)
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.035, ground_hips_y + 0.015, s), lerp(0.04, 0.08, s))
+		p["hips_rot"] = Vector3(0.0, lerp(36.0, -42.0, s), 0.0)
+		p["torso_rot"] = Vector3(lerp(8.0, 15.0, s), lerp(56.0, -70.0, s), lerp(4.0, -6.0, s))
+		p["head_rot"] = Vector3(lerp(-4.0, 6.0, s), lerp(-36.0, 30.0, s), 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(-14.0, 12.0, s), 0.0, -14.0)
+		p["left_shin_rot"] = Vector3(lerp(20.0, 14.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(18.0, -18.0, s), 0.0, 16.0)
+		p["right_shin_rot"] = Vector3(lerp(24.0, 36.0, s), 0.0, 0.0)
+		p["left_arm_rot"] = Vector3(lerp(-42.0, 32.0, s), 0.0, lerp(15.0, -20.0, s))
+		p["left_forearm_rot"] = Vector3(lerp(-55.0, -80.0, s), 0.0, 0.0)
+		p["right_arm_rot"] = Vector3(lerp(18.0, -72.0, s), lerp(12.0, 0.0, s), lerp(78.0, -20.0, s))
+		p["right_forearm_rot"] = Vector3(lerp(-35.0, -15.0, s), 0.0, 0.0)
+		p["club_rot"] = Vector3(lerp(85.0, 92.0, s), lerp(30.0, 0.0, s), lerp(20.0, -78.0, s))
+
+	elif t_atk < 1.65:
+		# HIT 2 -> HIT 3: Absorb Sweep & Crouch Coil to Left Flank (1.35s - 1.65s)
+		var prog = (t_atk - 1.35) / 0.30
+		var s = smoothstep(0.0, 1.0, prog)
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y + 0.015, ground_hips_y - 0.05, s), lerp(0.08, 0.02, s))
+		p["hips_rot"] = Vector3(lerp(0.0, -6.0, s), lerp(-42.0, -20.0, s), 0.0)
+		p["torso_rot"] = Vector3(lerp(15.0, -8.0, s), lerp(-70.0, -30.0, s), lerp(-6.0, -4.0, s))
+		p["head_rot"] = Vector3(lerp(6.0, -12.0, s), lerp(30.0, 10.0, s), 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(12.0, -22.0, s), 0.0, lerp(-14.0, -6.0, s))
+		p["left_shin_rot"] = Vector3(lerp(14.0, 38.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(-18.0, 14.0, s), 0.0, lerp(16.0, 8.0, s))
+		p["right_shin_rot"] = Vector3(lerp(36.0, 28.0, s), 0.0, 0.0)
+		p["left_arm_rot"] = Vector3(lerp(32.0, -25.0, s), 0.0, lerp(-20.0, -28.0, s))
+		p["left_forearm_rot"] = Vector3(lerp(-80.0, -50.0, s), 0.0, 0.0)
+		p["right_arm_rot"] = Vector3(lerp(-72.0, 25.0, s), lerp(0.0, -15.0, s), lerp(-20.0, -15.0, s))
+		p["right_forearm_rot"] = Vector3(lerp(-15.0, -40.0, s), 0.0, 0.0)
+		p["club_rot"] = Vector3(lerp(92.0, 145.0, s), lerp(0.0, -20.0, s), lerp(-78.0, -30.0, s))
+
+	elif t_atk < 1.95:
+		# HIT 3 - PHASE 3A: Tension Spring Crouch Hold (1.65s - 1.95s)
+		var prog = (t_atk - 1.65) / 0.30
+		var s = sin(prog * PI) * 0.012
+		p["hips_pos"] = Vector3(0.0, ground_hips_y - 0.05 - s, 0.02)
+		p["hips_rot"] = Vector3(-6.0, -20.0, 0.0)
+		p["torso_rot"] = Vector3(-8.0, -30.0, -4.0)
+		p["head_rot"] = Vector3(-12.0, 10.0, 0.0)
+		p["left_thigh_rot"] = Vector3(-22.0, 0.0, -6.0)
+		p["left_shin_rot"] = Vector3(38.0, 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(14.0, 0.0, 8.0)
+		p["right_shin_rot"] = Vector3(28.0, 0.0, 0.0)
+		p["left_arm_rot"] = Vector3(-25.0, 0.0, -28.0)
+		p["left_forearm_rot"] = Vector3(-50.0, 0.0, 0.0)
+		p["right_arm_rot"] = Vector3(25.0, -15.0, -15.0)
+		p["right_forearm_rot"] = Vector3(-40.0, 0.0, 0.0)
+		p["club_rot"] = Vector3(145.0, -20.0, -30.0)
+
+	elif t_atk < 2.40:
+		# HIT 3 - PHASE 3B: Cataclysmic Rising Diagonal Uppercut Launch (1.95s - 2.40s)
+		var prog = (t_atk - 1.95) / 0.45
+		var s = 1.0 - pow(1.0 - prog, 3.0)
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.05, ground_hips_y + 0.065, s), lerp(0.02, 0.12, s))
+		p["hips_rot"] = Vector3(lerp(-6.0, 10.0, s), lerp(-20.0, 25.0, s), 0.0)
+		p["torso_rot"] = Vector3(lerp(-8.0, -24.0, s), lerp(-30.0, 42.0, s), lerp(-4.0, 12.0, s))
+		p["head_rot"] = Vector3(lerp(-12.0, -28.0, s), lerp(10.0, -22.0, s), 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(-22.0, -8.0, s), 0.0, lerp(-6.0, -4.0, s))
+		p["left_shin_rot"] = Vector3(lerp(38.0, 10.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(14.0, 26.0, s), 0.0, lerp(8.0, 6.0, s))
+		p["right_shin_rot"] = Vector3(lerp(28.0, 8.0, s), 0.0, 0.0)
+		p["left_arm_rot"] = Vector3(lerp(-25.0, 42.0, s), 0.0, lerp(-28.0, -24.0, s))
+		p["left_forearm_rot"] = Vector3(lerp(-50.0, -65.0, s), 0.0, 0.0)
+		p["right_arm_rot"] = Vector3(lerp(25.0, -110.0, s), lerp(-15.0, 25.0, s), lerp(-15.0, 50.0, s))
+		p["right_forearm_rot"] = Vector3(lerp(-40.0, -105.0, s), 0.0, 0.0)
+		p["club_rot"] = Vector3(lerp(145.0, 30.0, s), lerp(-20.0, 35.0, s), lerp(-30.0, 25.0, s))
+
+	elif t_atk < 2.60:
+		# HIT 3 - PHASE 3C: Heroic Apex Hold & Triumphant Arch (2.40s - 2.60s)
+		p["hips_pos"] = Vector3(0.0, ground_hips_y + 0.065, 0.12)
+		p["hips_rot"] = Vector3(10.0, 25.0, 0.0)
+		p["torso_rot"] = Vector3(-24.0, 42.0, 12.0)
+		p["head_rot"] = Vector3(-28.0, -22.0, 0.0)
+		p["left_thigh_rot"] = Vector3(-8.0, 0.0, -4.0)
+		p["left_shin_rot"] = Vector3(10.0, 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(26.0, 0.0, 6.0)
+		p["right_shin_rot"] = Vector3(8.0, 0.0, 0.0)
+		p["left_arm_rot"] = Vector3(42.0, 0.0, -24.0)
+		p["left_forearm_rot"] = Vector3(-65.0, 0.0, 0.0)
+		p["right_arm_rot"] = Vector3(-110.0, 25.0, 50.0)
+		p["right_forearm_rot"] = Vector3(-105.0, 0.0, 0.0)
+		p["club_rot"] = Vector3(30.0, 35.0, 25.0)
+
+	else:
+		# HIT 3 - PHASE 3D: Heroic Stance Recovery (2.60s - 3.20s)
+		var prog = (t_atk - 2.60) / 0.60
+		var s = smoothstep(0.0, 1.0, prog)
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y + 0.065, ground_hips_y, s), lerp(0.12, 0.0, s))
+		p["hips_rot"] = Vector3(lerp(10.0, 0.0, s), lerp(25.0, 0.0, s), 0.0)
+		p["torso_rot"] = Vector3(lerp(-24.0, 7.0, s), lerp(42.0, 0.0, s), lerp(12.0, 0.0, s))
+		p["head_rot"] = Vector3(lerp(-28.0, -2.0, s), lerp(-22.0, 0.0, s), 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(-8.0, -2.0, s), 0.0, lerp(-4.0, 0.0, s))
+		p["left_shin_rot"] = Vector3(lerp(10.0, 4.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(26.0, 1.0, s), 0.0, lerp(6.0, 0.0, s))
+		p["right_shin_rot"] = Vector3(lerp(8.0, 3.0, s), 0.0, 0.0)
+		
+		var w_target = _compute_stance_arms(0.0, current_stance, "idle")
+		p["left_arm_rot"] = _lerp_angles(Vector3(42.0, 0.0, -24.0), w_target["left_arm_rot"], s)
+		p["left_forearm_rot"] = _lerp_angles(Vector3(-65.0, 0.0, 0.0), w_target["left_forearm_rot"], s)
+		p["right_arm_rot"] = _lerp_angles(Vector3(-110.0, 25.0, 50.0), w_target["right_arm_rot"], s)
+		p["right_forearm_rot"] = _lerp_angles(Vector3(-105.0, 0.0, 0.0), w_target["right_forearm_rot"], s)
+		p["club_rot"] = _lerp_angles(Vector3(30.0, 35.0, 25.0), w_target["club_rot"], s)
+
 	return p
 
 # --- 2. FULL-BODY 180° CLEAVE (Zero Torso-Clipping Recovery, Anatomically Safe Splay) ---

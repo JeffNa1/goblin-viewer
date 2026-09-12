@@ -1,4 +1,4 @@
-﻿# Voxel Goblin Viewer
+# Voxel Goblin Viewer
 
 An interactive 3D Voxel Monster Viewer, Showcase, and Stance Editor built with **Godot Engine 4** (GL Compatibility).
 
@@ -9,8 +9,14 @@ Featuring 5 distinct goblin monster archetypes with fully custom seamless voxel 
 ## 👹 Monster Roster
 
 ### 1. Goblin Warrior (Chiến Binh Chùy Gai)
-- **Equipment**: Spiked wooden war club reinforced with iron bands and steel spikes, leather arm wraps.
-- **Animations**: Idle, Walk, Run, Heavy Overhead Smash, Horizontal Cleave, Parry Smash, Parry Cleave, Stunned.
+- **Dual Outfit System**:
+  - **Outfit 1 (Feral Primitive / Thô Sơ)**: Tattered raw burlap tunic, rope belt with bone trophy, primitive spiked wooden club, bare clawed feet. Single classic overhead smash (`1.3s`).
+  - **Outfit 2 (Ironclad Battle Warrior / Chiến Binh Thép)**: Forged iron horned combat helmet with steel nasal guard, heavy steel cuirass with central keel ridge over crimson war gambeson, tiered spiked shoulder pauldrons, steel vambraces and solid iron gauntlets, heavy steel greaves with spiked war sabaton boots, and an upgraded **Heavy Flanged & Spiked War Mace** (4 razor flanges, 360° corner cleat spikes, golden crown ring, and top armor-piercing thrust spike).
+- **Special Action**: **🔥 Combo 1-2-3 Attack** (Exclusive to Outfit 2, 3.2s continuous sequence):
+  - **Hit 1 (Overhead Slam / Bổ Chùy)**: Forward lunge leap and ground impact with molten solar-crimson trail and earth shockwave.
+  - **Hit 2 (180° Horizontal Cleave / Quét Ngang)**: Instant hip recoil into a full 180° sweeping slash with celestial amber crescent ribbon trail.
+  - **Hit 3 (Reverse Rising Uppercut / Quét Ngược Hất Tung)**: Low pivot crouch into an explosive skyward rising uppercut launcher with ice-cyan golden flare burst, settling into victory ready stance.
+- **Animations**: Idle, Walk, Run, Heavy Overhead Smash / Combo 1-2-3, Horizontal Cleave, Parry Smash, Parry Cleave, Stunned.
 - **Stances**: Low Carriage (`Vác Thấp`), Guard (`Thủ Thế`), Shoulder Rest (`Vác Vai`).
 
 ### 2. Goblin Archer (Xạ Thủ Cung)
@@ -64,7 +70,7 @@ Featuring 5 distinct goblin monster archetypes with fully custom seamless voxel 
 - **F1 - F5**: Switch active monster (Warrior, Archer, Shaman, Rogue, Chieftain Boss).
 - **1 - 8**: Trigger specific animations.
 - **Q / W / E**: Switch weapon stances.
-- **O**: Switch Archer outfit (Outfit 1 <-> Outfit 2).
+- **O**: Switch monster outfit (Warrior & Archer: Outfit 1 <-> Outfit 2).
 - **Left Mouse Drag**: Rotate camera around character.
 - **Mouse Wheel**: Zoom in / out.
 - **Spacebar**: Toggle auto-rotation.
