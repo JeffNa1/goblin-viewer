@@ -173,12 +173,12 @@ var monster_actions: Dictionary = {
 	"chieftain": [
 		{"anim": "idle", "label": "[ 1 ] UY VŨ", "color": Color(0.35, 1.0, 0.5)},
 		{"anim": "walk", "label": "[ 2 ] BƯỚC NẶNG", "color": Color(0.35, 1.0, 0.5)},
-		{"anim": "roar", "label": "🦁 [ 3 ] GẦM THÉT", "color": Color(1.0, 0.85, 0.3)},
+		{"anim": "cleave", "label": "⚔ [ 3 ] THIẾT QUẸT", "color": Color(1.0, 0.8, 0.25)},
 		{"anim": "earthshaker", "label": "💥 [ 4 ] ĐỊA CHẤN", "color": Color(1.0, 0.45, 0.2)},
 		{"anim": "whirlwind", "label": "🌪 [ 5 ] BÃO CHÙY 360°", "color": Color(1.0, 0.65, 0.15)},
-		{"anim": "stagger", "label": "🛡 [ 6 ] QUỲ GỐI", "color": Color(0.4, 0.85, 1.0)},
-		{"anim": "stunned", "label": "💫 [ 7 ] CHOÁNG", "color": Color(1.0, 0.9, 0.25)},
-		{"anim": "idle", "label": "—", "color": Color(0.5, 0.5, 0.5)}
+		{"anim": "roar", "label": "🦁 [ 6 ] GẦM THÉT", "color": Color(1.0, 0.85, 0.3)},
+		{"anim": "stagger", "label": "🛡 [ 7 ] QUỲ GỐI", "color": Color(0.4, 0.85, 1.0)},
+		{"anim": "stunned", "label": "💫 [ 8 ] CHOÁNG", "color": Color(1.0, 0.9, 0.25)}
 	]
 }
 

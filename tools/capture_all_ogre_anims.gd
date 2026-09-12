@@ -75,21 +75,34 @@ func _start() -> void:
 	await _simulate_anim(viewer.m_chieftain, 30)
 	_take_screenshot("ogre_walk_stride.png")
 	
-	# 6. Roar (War cry with skyward mace)
+	# 6. Cleave (Wide horizontal sweep arc - dynamic front-facing angle)
+	viewer.m_chieftain.play_anim("cleave")
+	viewer.yaw = -135.0
+	viewer.pitch = -5.0
+	viewer.camera_distance = 4.2
+	viewer.camera_pivot.position = Vector3(0.0, 0.85, 0.0)
+	viewer._update_camera_transform()
+	await create_timer(0.65).timeout
+	_take_screenshot("ogre_cleave_sweep.png")
+	
+	# 7. Roar - Phase 1: Chest Pound (Check zero chest clipping)
 	viewer.m_chieftain.play_anim("roar")
-	viewer.yaw = 20.0
-	viewer.pitch = -2.0
-	viewer.camera_distance = 5.4
+	viewer.yaw = 25.0
+	viewer.pitch = -4.0
+	viewer.camera_distance = 3.6
+	viewer.camera_pivot.position = Vector3(0.0, 0.95, 0.0)
+	viewer._update_camera_transform()
+	await create_timer(0.50).timeout
+	_take_screenshot("ogre_roar_chest_pound.png")
+	
+	# 8. Roar - Phase 2: Skyward Bellow (War cry with skyward mace)
+	viewer.camera_distance = 5.2
 	viewer.camera_pivot.position = Vector3(0.0, 1.25, 0.0)
 	viewer._update_camera_transform()
-	# Step into the skyward bellow phase (approx 0.95s in)
-	for f in range(58):
-		viewer.m_chieftain._process(0.016)
-		await process_frame
-	await create_timer(0.2).timeout
+	await create_timer(0.45).timeout
 	_take_screenshot("ogre_roar_bellow.png")
 	
-	# 7. Earthshaker (Crater slam impact)
+	# 9. Earthshaker (Crater slam impact)
 	viewer.m_chieftain.play_anim("earthshaker")
 	viewer.yaw = 38.0
 	viewer.pitch = -8.0
@@ -103,35 +116,40 @@ func _start() -> void:
 	await create_timer(0.2).timeout
 	_take_screenshot("ogre_earthshaker_impact.png")
 	
-	# 8. Whirlwind (360 centrifugal spin)
+	# 10. Earthshaker (Smooth recovery, zero hitch)
+	for f in range(35):
+		viewer.m_chieftain._process(0.016)
+		await process_frame
+	await create_timer(0.2).timeout
+	_take_screenshot("ogre_earthshaker_recovery.png")
+	
+	# 11. Whirlwind (Continuous 360 centrifugal spin)
 	viewer.m_chieftain.play_anim("whirlwind")
 	viewer.yaw = 15.0
 	viewer.pitch = -6.0
 	viewer.camera_distance = 4.5
 	viewer.camera_pivot.position = Vector3(0.0, 0.85, 0.0)
 	viewer._update_camera_transform()
-	# Step into high speed centrifugal sweep phase (approx 0.75s in)
 	for f in range(46):
 		viewer.m_chieftain._process(0.016)
 		await process_frame
 	await create_timer(0.2).timeout
 	_take_screenshot("ogre_whirlwind_sweep.png")
 	
-	# 9. Stagger (Heavy recoil brace)
+	# 12. Stagger (Heavy recoil brace)
 	viewer.m_chieftain.play_anim("stagger")
 	viewer.yaw = 30.0
 	viewer.pitch = -5.0
 	viewer.camera_distance = 4.0
 	viewer.camera_pivot.position = Vector3(0.0, 0.75, 0.0)
 	viewer._update_camera_transform()
-	# Step into groggy ground brace phase (approx 0.70s in)
 	for f in range(44):
 		viewer.m_chieftain._process(0.016)
 		await process_frame
 	await create_timer(0.2).timeout
 	_take_screenshot("ogre_stagger_brace.png")
 	
-	# 10. Stunned (Woozy drunken daze)
+	# 13. Stunned (Woozy drunken daze, mace safely near knee away from face)
 	viewer.m_chieftain.play_anim("stunned")
 	viewer.yaw = 22.0
 	viewer.pitch = -3.0
