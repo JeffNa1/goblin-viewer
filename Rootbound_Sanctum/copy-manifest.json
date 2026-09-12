@@ -1,0 +1,159 @@
+{
+  "counts": {
+    "Plan": 12,
+    "Sources": 12,
+    "Screenshots": 6
+  },
+  "files": [
+    {
+      "file": "Plan/browser-checks.json",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\shape-v2\\browser-checks.json",
+      "sha256": "a80fba34e6eac4b05748333237d8fe272ab0b5d600a98b4a683d4ebef720ef74"
+    },
+    {
+      "file": "Plan/create_review.py",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\shape-v2\\create_review.py",
+      "sha256": "def4eb1a0b25fc31e525feb59facdef51a055f7b7930f95f923fddc0c6c6212f"
+    },
+    {
+      "file": "Plan/design-checks.json",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\shape-v2\\design-checks.json",
+      "sha256": "a073e4493a8eb3310e8065a568872daa7296882362a4ed11116f3905d3f15a88"
+    },
+    {
+      "file": "Plan/design.json",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\shape-v2\\design.json",
+      "sha256": "d3799b1ce1bc1060c7d099613fdb1f97bac1071194709e51ed06024b96959eec"
+    },
+    {
+      "file": "Plan/floorplan.png",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\shape-v2\\floorplan.png",
+      "sha256": "f884df7958e80d3748ed511f6ec8c9e457a8cd3f99f2ae51de984afc6a26a660"
+    },
+    {
+      "file": "Plan/floorplan.svg",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\shape-v2\\floorplan.svg",
+      "sha256": "3f654a00f69d210dd9ca7a18b0106db7c5a18cac23f9b26231118d6afcf19b85"
+    },
+    {
+      "file": "Plan/progression.svg",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\shape-v2\\progression.svg",
+      "sha256": "607ccaa5c8ccfab6c26601e3788a46c1d6b22deae9cdf06db4cd386b04e8d16b"
+    },
+    {
+      "file": "Plan/research.md",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\shape-v2\\research.md",
+      "sha256": "4774c738610566d4dfc3dc5bcb4c3d8f7bedcdf25c8de2932d3978a16ef104b2"
+    },
+    {
+      "file": "Plan/review.html",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\shape-v2\\review.html",
+      "sha256": "9f106bf70511c964408f41b0ffa09c109ea29b51bf7d8d7696f7c259b8e6f2b7"
+    },
+    {
+      "file": "Plan/shape-clearance-checks.json",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\shape-v2\\shape-clearance-checks.json",
+      "sha256": "3cfd986623e63b507ff2082934f3e045e06f19e51327be2faf8332abbafe80b9"
+    },
+    {
+      "file": "Plan/shape-layout.json",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\shape-v2\\shape-layout.json",
+      "sha256": "e47f716188d8ad4133ab85721996904291438559ec35e40a3a4799c88aa05d1a"
+    },
+    {
+      "file": "Plan/sources.json",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\shape-v2\\sources.json",
+      "sha256": "24d1be8e3d7e6706bca00be5b46203d2cbfb2e676a28c6644c3c0d3db656fd7c"
+    },
+    {
+      "file": "Sources/source-01.txt",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\evidence\\source-01.txt",
+      "sha256": "17ab067238223345a091dc2cae5d64a8e961d77b2f9c269623a9111e9d6b22d1"
+    },
+    {
+      "file": "Sources/source-02.txt",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\evidence\\source-02.txt",
+      "sha256": "43226774bb3eefa1943dacae2bc2d6b7938088614628d1765ae4b0f1e7c61302"
+    },
+    {
+      "file": "Sources/source-03.txt",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\evidence\\source-03.txt",
+      "sha256": "c4811664c6f400f24ef7f00ceecee044836dd172b56314ed5daac2bf53f8ab77"
+    },
+    {
+      "file": "Sources/source-04.txt",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\evidence\\source-04.txt",
+      "sha256": "85e46d87baac5187e13b8618d15e7e2d9746ae037a75ba2b55e0d0379c0ceb8b"
+    },
+    {
+      "file": "Sources/source-05.txt",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\evidence\\source-05.txt",
+      "sha256": "776c61d3bb7e3cad64903edf8f1c6069959e1d6ce87ced58607575b8a35996a9"
+    },
+    {
+      "file": "Sources/source-07.txt",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\evidence\\source-07.txt",
+      "sha256": "7bf1f395dd29db7833bea33595526c57405229935ccb7c99c7e3429ad7e0f662"
+    },
+    {
+      "file": "Sources/source-08.txt",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\evidence\\source-08.txt",
+      "sha256": "d61032340bd1e1ed44aa79fa1a9450b09fc4cf317cd19c1d7f082b59c7df19d3"
+    },
+    {
+      "file": "Sources/source-09.txt",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\evidence\\source-09.txt",
+      "sha256": "67f04a245183bb47eff05054fd7fcfc314a1aa02727ef284158287128cf16872"
+    },
+    {
+      "file": "Sources/source-10.txt",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\evidence\\source-10.txt",
+      "sha256": "9e9e85b9888e8f22c847bd37cf0e2108293aaad52d201aa53a23bfb85d1e3d98"
+    },
+    {
+      "file": "Sources/source-11.txt",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\evidence\\source-11.txt",
+      "sha256": "c4d27bcca0b737f3a4e86e94351cba4a4c2e922d69d8ef4aef75f009e0c645f3"
+    },
+    {
+      "file": "Sources/source-12.txt",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\evidence\\source-12.txt",
+      "sha256": "3c62e1ad7263029469b7b1b49f7ce9fd80a134ed86738ff4bd91c41ce4378aaa"
+    },
+    {
+      "file": "Sources/source-14.txt",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\evidence\\source-14.txt",
+      "sha256": "ca26fcc7b8638b31ee139c08b20efd3377728a998348256d30abb3e7bf50ebde"
+    },
+    {
+      "file": "Screenshots/archive.png",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\voxel-build\\archive.png",
+      "sha256": "0228449a31e138b93d2bfb390e9b4a632f3b281401667dc6d55c5cde71a1e989"
+    },
+    {
+      "file": "Screenshots/boss.png",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\voxel-build\\boss.png",
+      "sha256": "00cb4c9bfa297496777868daa1f92bec5804667df1e9e1badfc6448dff269ffa"
+    },
+    {
+      "file": "Screenshots/court.png",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\voxel-build\\court.png",
+      "sha256": "04d07006551f99b11c126b0f951fee8787c7f3cfd3d676b034032c710b7c200d"
+    },
+    {
+      "file": "Screenshots/overview.png",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\voxel-build\\overview.png",
+      "sha256": "61e4ce95e71fabf167e153bc2d6639f375069fb1fdc2f3485b2693e256167287"
+    },
+    {
+      "file": "Screenshots/sanctuary.png",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\voxel-build\\sanctuary.png",
+      "sha256": "361c8fcc8708660e37e643205c84871bd291f4f8a971d80579fd4879039a767b"
+    },
+    {
+      "file": "Screenshots/scale.png",
+      "source": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\artifacts\\goblin-map-review\\voxel-build\\scale.png",
+      "sha256": "8c45748efadf086c00333983cd92aa13138bfbfc3a68e4f125f7109a255dd9bc"
+    }
+  ]
+}

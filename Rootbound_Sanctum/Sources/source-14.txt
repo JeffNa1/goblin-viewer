@@ -1,0 +1,36 @@
+# How Spelunky Made Procedural Generation Fun | PCMag
+URL: https://www.pcmag.com/news/how-spelunky-made-procedural-generation-fun
+
+How Spelunky Made Procedural Generation Fun | PCMag
+
+# How Spelunky Made Procedural Generation Fun 
+
+Spelunky used procedural generation to improve replayability and compete with big budget games. Now Spelunky 2 will try to do it better. Let's look back on how Spelunky came to be, and how it changed indie gaming.
+
+ 
+
+ By K. Thor Jensen 
+
+ Updated September 15, 2020 
+
+ 
+
+ Getting your Trinity Audio player ready... 
+
+(Image: Mossmouth, LLC)
+
+Of all the trends that have swept the gaming space in the last decade or so, few have the staying power of procedural generation, which is writing a system of rules for creating content and letting a program iterate through them starting from a randomized âseed.â
+
+Players expect their games to have lots of content and replayability, but hiring designers and artists to make lots of unique elements can be way out of reach for many studios. Computers can help. Artificial intelligence takes the component elements of a game world and mixes and matches them into thousands, or even millions, of different arrangements. Procedural generation then harnesses that power.
+
+Game designers started experimenting with these methods in the 1970s, but most of the titles that used them were punishing to players. Procedural generation was most commonly found in games like Rogue and Nethack, dungeon crawlers with deep, obtuse mechanics and primitive ASCII graphics. The technique was also used to create solar systems for games like Elite.
+
+Game designer Derek Yu painstakingly hand-crafted the world of 2007âs Aquaria, an underwater Metroidvania that won critical acclaim after it was released. But for his next project, he wanted to create a game with more replayability. On forums like TIGSource, he saw other developers like Minecraftâs Notch experiment with procedural generation, and he decided to try it himself.
+
+## Get a Rope
+
+Inspired by classic 1983 platform game Spelunker, Yu prototyped a title in which the player descended into subterranean caverns littered with treasure and populated with aggressive fauna and deadly traps.
+
+Although each game followed the same general narrative arc, the experience and challenges were different on every run. Thatâs where procedural generation came in. Spelunkyâs world isnât entirely random. Instead, the game uses a complex system to build floor plans out of a palette of elements. Each level is broken into a 4-by-4 grid of 16 ârooms,â which are chosen from a number of types. The player always starts in one of the four rooms on the top row, and the exit is always one of the four rooms on the bottom.
+
+The algorithm constructs a path between the entrance and the exit, and then starts adding detail to the individual rooms along the way. Each âtypeâ of room draws from a number of possible templates, and then those templates are populated with blocks that have a probability of being special types. This multi-layered decision making lets the system create terrain that is always navigable but presents a w

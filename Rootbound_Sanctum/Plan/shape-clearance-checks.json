@@ -1,0 +1,71 @@
+{
+  "roomCount": 14,
+  "labelOutside": [],
+  "blockerOutside": [],
+  "markerOutside": [],
+  "portalMisses": [],
+  "reachableRooms": [
+    {
+      "id": "01",
+      "reachable": true
+    },
+    {
+      "id": "02",
+      "reachable": true
+    },
+    {
+      "id": "03",
+      "reachable": true
+    },
+    {
+      "id": "04",
+      "reachable": true
+    },
+    {
+      "id": "05",
+      "reachable": true
+    },
+    {
+      "id": "06",
+      "reachable": true
+    },
+    {
+      "id": "07",
+      "reachable": true
+    },
+    {
+      "id": "08",
+      "reachable": true
+    },
+    {
+      "id": "09",
+      "reachable": true
+    },
+    {
+      "id": "10",
+      "reachable": true
+    },
+    {
+      "id": "11",
+      "reachable": true
+    },
+    {
+      "id": "12",
+      "reachable": true
+    },
+    {
+      "id": "13",
+      "reachable": true
+    },
+    {
+      "id": "14",
+      "reachable": true
+    }
+  ],
+  "reachableDoorEnds": 30,
+  "doorEndCount": 30,
+  "sampledClearanceRadiusPx": 9,
+  "sampleStepPx": 5,
+  "allGatesAssumedOpen": true,
+  "gameplayTested": false
+}

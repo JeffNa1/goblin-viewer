@@ -85,6 +85,17 @@ func _run() -> void:
 		printerr("FAIL: Overview claims that a single room is selected.")
 		quit(1)
 		return
+	var ui_rect: Rect2 = floor_scene.get_node("InspectionUI").get_child(0).get_global_rect()
+	for spec in floor_scene.layout["rooms"]:
+		for vertex in spec["polygon"]:
+			if ui_rect.has_point(floor_scene.camera.unproject_position(floor_scene.builder.world_point(vertex))):
+				printerr("FAIL: Overview controls hide the approved outline of room ", spec["id"])
+				quit(1)
+				return
+	if floor_scene.get_window().title != "Rootbound Sanctum — B":
+		printerr("FAIL: The standalone map window is indistinguishable from the original viewer.")
+		quit(1)
+		return
 	print("PASS: 14 rooms, collision, landmarks, five unchanged-scale units, room inspection, and gate prerequisites.")
 	floor_scene.queue_free()
 	await process_frame

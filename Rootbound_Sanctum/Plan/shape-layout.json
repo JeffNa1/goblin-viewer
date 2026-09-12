@@ -1,0 +1,37 @@
+{
+  "revision": "B — architectural silhouettes",
+  "scope": "Change only room geometry, placement, connectors, and geometry-related explanation. Preserve room roles, progression, and gates.",
+  "rooms": {
+    "01": {"box": [465,1540,260,120], "family": "shoreline landing", "label": [607,1608], "outline": "M540 1540 H585 L625 1560 H700 L725 1585 V1620 L700 1635 L650 1618 L600 1658 L550 1640 L525 1610 L465 1625 V1585 L500 1560 H540 Z", "layout": "An irregular landing follows the riverbank. The paved arrival apron stays broad; a side dock carries the boat.", "blockers": []},
+    "02": {"box": [490,1285,295,180], "family": "splayed gatehouse", "label": [642,1394], "outline": "M560 1285 H615 L690 1310 L785 1370 L735 1420 L690 1465 H645 L565 1430 L520 1410 L490 1360 L515 1315 Z", "layout": "A skewed, splayed gatehouse opens into a broad diagonal combat lane. The two low blocks sit outside the entry and exit lines.", "blockers": [[548,1330,30,25],[705,1375,26,25]]},
+    "03": {"box": [380,950,340,280], "family": "oval root court", "label": [550,1165], "outline": "M505 955 H555 C620 955 685 995 700 1040 L720 1065 V1105 C700 1170 670 1215 600 1215 H530 C460 1220 395 1200 380 1125 V1065 C385 1000 445 960 505 955 Z", "layout": "An oval court wraps a small root island. The two branches leave different curved shoulders; the perimeter remains a broad combat circuit.", "blockers": [[520,1054,58,57]]},
+    "04": {"box": [45,995,275,210], "family": "splayed barracks", "label": [201,1147], "outline": "M45 1050 L160 1005 L185 995 H235 L275 1025 L320 1080 V1160 L270 1205 H135 L90 1180 Z", "layout": "The barracks fan outward from an oblique rear wall. Bunks follow the wall, while the wider eastern apron supports flanking and the court entrance.", "blockers": [[101,1060,28,25],[145,1045,28,25],[143,1111,50,15]]},
+    "05": {"box": [90,785,220,140], "family": "keyhole smithy", "label": [213,872], "outline": "M165 785 H205 L230 808 H280 Q310 808 310 842 V883 Q310 910 280 910 L260 925 H215 L195 910 C135 930 90 900 90 855 C90 815 125 788 165 785 Z", "layout": "A rounded forge bay joins a straight counter wing. The north-to-south walking lane stays outside the work area.", "blockers": [[120,834,35,38],[241,831,39,17]]},
+    "06": {"box": [65,490,225,210], "family": "L-shaped cloister", "label": [165,649], "outline": "M65 490 H160 V560 H290 V640 H225 V700 H65 Z", "layout": "A wide L-shaped cloister surrounds an open garden corner. Its bend breaks a long firing line without turning the combat space into a narrow maze.", "blockers": [[97,573,20,20],[191,654,20,20]]},
+    "07": {"box": [375,590,250,190], "family": "four-port rotunda", "label": [500,712], "outline": "M475 590 H525 V605 Q585 605 600 660 H625 V710 H600 Q585 765 525 765 V780 H475 V765 Q415 765 400 710 H375 V660 H400 Q415 605 475 605 Z", "layout": "A round recovery sanctuary has four short vestibules. The fountain sits north of the crossing; the return lever remains in the south vestibule.", "blockers": [[479,632,42,34]]},
+    "08": {"box": [790,975,280,285], "family": "crescent archive", "label": [893,1181], "outline": "M905 980 H955 Q1040 985 1060 1045 L1050 1065 Q1010 1045 975 1070 Q945 1100 948 1135 Q950 1170 1010 1205 L995 1240 Q870 1265 805 1150 L790 1110 V1060 L815 1025 Q850 990 905 980 Z", "layout": "A crescent gallery follows an eroded water inlet. The inward bay creates a clear shoreline; the dry western band connects both doors without a thin bridge.", "blockers": [[850,1117,25,30],[969,1014,28,18]]},
+    "09": {"box": [800,710,235,195], "family": "faceted ritual vault", "label": [917,839], "outline": "M885 710 H945 L1035 780 V830 L945 905 H885 L800 830 V780 Z", "layout": "A faceted ritual vault has splayed corners and a broad open center. Edge monuments frame the encounter rather than divide it into corridors.", "blockers": [[834,786,20,20],[984,786,20,20]]},
+    "10": {"box": [815,540,200,105], "family": "apsidal reward bay", "label": [923,610], "outline": "M835 540 H915 Q1015 540 1015 590 Q1015 645 945 645 H900 Q815 645 815 615 V570 Q815 540 835 540 Z", "layout": "A small rounded apse holds the reward. Its western vestibule still meets the gated return into the sanctuary.", "blockers": [[890,559,57,21]]},
+    "11": {"box": [335,300,340,220], "family": "cruciform choir", "label": [505,438], "outline": "M475 300 H535 Q575 315 575 365 H655 L675 385 V435 L655 455 H575 V500 L555 520 H455 L435 500 V455 H355 L335 435 V385 L355 365 H435 Q435 315 475 300 Z", "layout": "A cruciform hall combines a north apse, a broad transept, and a clear central nave. Side arms offer flanking space instead of decorative dead corridors.", "blockers": [[382,387,22,22],[608,387,22,22],[486,325,38,18]]},
+    "12": {"box": [450,10,500,270], "family": "eroded grotto", "label": [722,207], "outline": "M548 45 L615 28 L676 38 Q720 10 762 24 L801 48 L853 39 L890 63 L882 89 L915 106 L905 137 L935 159 L922 200 L880 222 H844 L840 255 H790 L754 239 L707 252 L674 237 L643 251 L620 238 H565 L534 251 L496 233 L485 206 L460 190 L473 167 L458 139 L481 107 L505 101 L499 78 Z", "layout": "An asymmetrical, multi-lobed grotto forms the finale. Recessed pools and rocky shoulders stay peripheral; a large continuous dry center supports the Chieftain encounter.", "blockers": [[500,118,36,38],[842,112,30,39]]},
+    "13": {"box": [70,1310,150,145], "family": "tapered crypt", "label": [150,1420], "outline": "M140 1310 H185 L220 1415 L200 1455 H70 V1410 Z", "layout": "A tapered crypt widens beyond its concealed threshold. The shape suggests an older excavation, not another standard reward box.", "blockers": [[128,1381,44,22]]},
+    "14": {"box": [895,335,150,135], "family": "dogleg ascent", "label": [982,448], "outline": "M950 335 H990 V380 H1045 V435 Q1045 470 1010 470 H920 V425 H965 V405 H895 V375 H950 Z", "layout": "A compact dogleg stair folds around the rock face. It is an exit landmark, not an extra rectangular combat chamber.", "blockers": []}
+  },
+  "links": [
+    {"a":"01","b":"02","points":[[560,1540],[560,1505],[670,1505],[670,1465]]},
+    {"a":"02","b":"03","points":[[590,1285],[590,1250],[550,1250],[550,1215]]},
+    {"a":"03","b":"04","points":[[380,1085],[352,1085],[352,1130],[320,1130]]},
+    {"a":"04","b":"05","points":[[210,995],[210,960],[240,960],[240,925]]},
+    {"a":"05","b":"06","points":[[180,785],[180,700]]},
+    {"a":"06","b":"07","points":[[290,605],[330,605],[330,685],[375,685]]},
+    {"a":"03","b":"08","points":[[720,1085],[790,1085]]},
+    {"a":"08","b":"09","points":[[930,980],[930,945],[915,945],[915,905]]},
+    {"a":"09","b":"10","points":[[915,710],[915,675],[920,675],[920,645]]},
+    {"a":"10","b":"07","points":[[815,590],[730,590],[675,685],[625,685]]},
+    {"a":"07","b":"03","points":[[500,780],[500,830],[530,890],[530,955]]},
+    {"a":"07","b":"11","points":[[500,590],[500,555],[505,555],[505,520]]},
+    {"a":"11","b":"12","points":[[505,300],[505,275],[590,275],[590,238]]},
+    {"a":"12","b":"14","points":[[815,255],[815,292],[970,292],[970,335]]},
+    {"a":"04","b":"13","points":[[185,1205],[185,1255],[160,1255],[160,1310]]}
+  ]
+}

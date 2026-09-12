@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "id": 1,
+      "url": "https://www.youtube.com/watch?v=qv_vUa7bxks",
+      "title": "",
+      "accessed": "2026-09-12",
+      "quotes": [
+        {
+          "text": "24:25 handcrafted the way we would design any\n24:27 other linear game, but we had discrete\n24:30 points of randomization within those\n24:32 chambers where we could serve a set of",
+          "added": "2026-09-12"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "url": "https://deepnight.net/tutorial/the-level-design-of-dead-cells-a-hybrid-approach",
+      "title": "",
+      "accessed": "2026-09-12",
+      "quotes": [
+        {
+          "text": "3. Ok so we’ve got a bunch of tiles that are fun to play, now we need to arrange them in a logical, interesting way. So we create a concept graph for each level (our “biomes”). A graph is a schematic visual display of the layout of the tiles inside a biome, represented here by nodes. We start by placing the entrance and exit of the level, then we add the special rooms (treasure, merchants, etc.) and finally the tiles in between where you fight and explore.",
+          "added": "2026-09-12"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "url": "https://www.gamedeveloper.com/design/q-a-the-guns-and-dungeons-of-i-enter-the-gungeon-i-",
+      "title": "",
+      "accessed": "2026-09-12",
+      "quotes": [
+        {
+          "text": "We quickly realized that the game was going to be more fun and more fair if we hand designed the rooms. This made teaching the generator layouts a bit simpler. We created a room and played it over and over again, and then structured floor layouts based on rules that we think make good dungeon designs.",
+          "added": "2026-09-12"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "url": "https://www.boristhebrave.com/2019/07/28/dungeon-generation-in-enter-the-gungeon",
+      "title": "",
+      "accessed": "2026-09-12",
+      "quotes": [
+        {
+          "text": "This is a super great break-down. You are spot on in our intentions, and how much emphasis we put on things like loops, and overall feel of the layouts. Our goal was to approximate a Zelda dungeon with each generation. This was a metric butt-load of work, and something few people consciously notice. We like to believe that it adds a lot to the pacing and feel, so even if the player isn’t thinking about it, the layout’s just feel right. Hoping to one day make it even better, if the right project comes along.",
+          "added": "2026-09-12"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "url": "https://edmundmcmillen.blogspot.com/2011/09/binding-of-isaac-gameplay-explained.html",
+      "title": "",
+      "accessed": "2026-09-12",
+      "quotes": [
+        {
+          "text": "The non-core rooms are randomly selected from a pre-designed group of 1000+ rooms that are arranged by difficulty and chapter. the majority of these rooms consist of small arena battles that make the bulk of the game play, but they are also peppered with bonus rooms with mini puzzles, prizes, traps and a few surprises here and there.",
+          "added": "2026-09-12"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "url": "https://gamedev.net/blogs/entry/2249558-the-full-spelunky-on-spelunky-xbla",
+      "title": "",
+      "accessed": "2026-09-12"
+    },
+    {
+      "id": 7,
+      "url": "https://store.steampowered.com/app/646570/Slay_the_Spire",
+      "title": "",
+      "accessed": "2026-09-12",
+      "quotes": [
+        {
+          "text": "An Ever-changing Spire: Whenever you embark on a journey up the Spire, the layout differs each time. Choose a risky or safe path, face different enemies, choose different cards, discover different relics, and even fight different bosses!",
+          "added": "2026-09-12"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "url": "https://www.gamedeveloper.com/design/how-moving-from-2d-to-3d-shaped-the-design-of-i-risk-of-rain-2-i-",
+      "title": "",
+      "accessed": "2026-09-12",
+      "quotes": [
+        {
+          "text": "Procedural generation is something we messed around with for awhile for Risk 2 but the level of difficulty needed to make interesting / memorable procedural maps in 3D was too much for our team size.",
+          "added": "2026-09-12"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "url": "https://www.unrealengine.com/developer-interviews/deciphering-the-narrative-driven-procedural-horror-of-returnal",
+      "title": "",
+      "accessed": "2026-09-12",
+      "quotes": [
+        {
+          "text": "Louden: All of Returnal is handcrafted, but the most exciting thing about the game is every time you play, we procedurally connect these moments, connecting our handcrafted environments, level design, combat, and narrative beats.",
+          "added": "2026-09-12"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "url": "https://wizardoflegend.com/press/wizard_of_legend/index.html",
+      "title": "",
+      "accessed": "2026-09-12",
+      "quotes": [
+        {
+          "text": "- Procedurally generated levels with both random and precrafted rooms mean a new challenge every time!",
+          "added": "2026-09-12"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "url": "https://store.steampowered.com/app/1123770/Curse_of_the_Dead_Gods",
+      "title": "",
+      "accessed": "2026-09-12",
+      "quotes": [
+        {
+          "text": "A skill-based roguelike exploring a cruel, dark temple made of endless rooms and corridors",
+          "added": "2026-09-12"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "url": "https://threadreaderapp.com/scrolly/1311777010239193088",
+      "title": "",
+      "accessed": "2026-09-12",
+      "quotes": [
+        {
+          "text": "You may have also noticed that smaller chambers tend to appear early on in biomes, and larger chambers appear later so that they are reflective of the escalating encounters. 5/19",
+          "added": "2026-09-12"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "url": "https://www.indiedb.com/games/dead-cells/news/the-level-design-of-a-procedurally-generated-metroidvania",
+      "title": "",
+      "accessed": "2026-09-12"
+    },
+    {
+      "id": 14,
+      "url": "https://www.pcmag.com/news/how-spelunky-made-procedural-generation-fun",
+      "title": "",
+      "accessed": "2026-09-12",
+      "quotes": [
+        {
+          "text": "The algorithm constructs a path between the entrance and the exit, and then starts adding detail to the individual rooms along the way. Each âtypeâ of room draws from a number of possible templates, and then those templates are populated with blocks that have a probability of being special types. This multi-layered decision making lets the system create terrain that is always navigable but presents a w",
+          "added": "2026-09-12"
+        }
+      ]
+    }
+  ]
+}

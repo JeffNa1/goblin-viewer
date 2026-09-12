@@ -50,6 +50,9 @@ const C_WARRIOR_RED: int = 0x7f1d1d
 const C_WARRIOR_RED_DARK: int = 0x450a0a
 const C_CHAINMAIL: int = 0x475569
 const C_BRONZE: int = 0xb45309
+const C_SPIKE_STEEL: int = 0x94a3b8
+const C_LAVA_HOT: int = 0xea580c
+const C_LAVA_CORE: int = 0xfbbf24
 
 # Shaman Witch-Doctor Regalia Colors
 const C_SHAMAN_ROBE: int = 0x2b104c
@@ -4239,7 +4242,655 @@ static func build_dagger_mesh_outfit2() -> ArrayMesh:
 
 # --- D. MACE OGRE (Boss Ogre Cầm Chùy Nguyên Thủy, Da Thú Xù Lông, Đại Chùy Đá Gai) ---
 
-static func build_ogre_head_mesh() -> ArrayMesh:
+# =============================================================================
+# MACE OGRE OUTFIT 2: THIẾT GIÁP MA THÚ (IRON JUGGERNAUT FULL HEAVY ARMOR)
+# =============================================================================
+
+static func build_ogre_head_mesh(outfit: int = 1) -> ArrayMesh:
+	if outfit == 2:
+		return build_ogre_head_mesh_outfit2()
+	return build_ogre_head_mesh_outfit1()
+
+static func build_ogre_torso_mesh(outfit: int = 1) -> ArrayMesh:
+	if outfit == 2:
+		return build_ogre_torso_mesh_outfit2()
+	return build_ogre_torso_mesh_outfit1()
+
+static func build_ogre_upper_arm_mesh(outfit: int = 1) -> ArrayMesh:
+	if outfit == 2:
+		return build_ogre_upper_arm_mesh_outfit2()
+	return build_ogre_upper_arm_mesh_outfit1()
+
+static func build_ogre_forearm_mesh(is_right: bool, outfit: int = 1) -> ArrayMesh:
+	if outfit == 2:
+		return build_ogre_forearm_mesh_outfit2(is_right)
+	return build_ogre_forearm_mesh_outfit1(is_right)
+
+static func build_ogre_thigh_mesh(outfit: int = 1) -> ArrayMesh:
+	if outfit == 2:
+		return build_ogre_thigh_mesh_outfit2()
+	return build_ogre_thigh_mesh_outfit1()
+
+static func build_ogre_shin_mesh(outfit: int = 1) -> ArrayMesh:
+	if outfit == 2:
+		return build_ogre_shin_mesh_outfit2()
+	return build_ogre_shin_mesh_outfit1()
+
+static func build_ogre_mace_mesh(outfit: int = 1) -> ArrayMesh:
+	if outfit == 2:
+		return build_ogre_mace_mesh_outfit2()
+	return build_ogre_mace_mesh_outfit1()
+
+# --- OUTFIT 2 IMPLEMENTATION ---
+
+static func build_ogre_head_mesh_outfit2() -> ArrayMesh:
+	var voxels: Dictionary = {}
+
+	# 1. Thick Muscular Neck with Heavy Chainmail Coif (y: 0..3)
+	for y in range(4):
+		for x in range(-5, 6):
+			for z in range(-5, 6):
+				if abs(x) == 5 and abs(z) == 5: continue
+				var col = C_CHAINMAIL if (x + y + z) % 2 == 0 else C_IRON_DARK
+				if y == 0: col = C_IRON_DARK
+				voxels[Vector3i(x, y, z)] = col
+
+	# 2. Brutal Jutting Iron Jaw & Reinforced Steel Tusk Guards (y: 4..8)
+	for y in range(4, 9):
+		for x in range(-6, 7):
+			for z in range(-5, 9):
+				if (abs(x) >= 5 and z <= -4) or (abs(x) >= 5 and z >= 7): continue
+				if abs(x) == 6 and (z <= -2 or z >= 5): continue
+				if y == 4 and abs(x) >= 5 and abs(z) >= 5: continue
+				if y == 8 and z >= 7 and abs(x) >= 5: continue
+
+				var col = C_IRON
+				if y == 4:
+					col = C_IRON_DARK
+				elif abs(x) <= 3 and z in [3, 4, 5, 6] and y in [5, 6, 7]:
+					col = C_MOUTH_DARK # Oral cavity
+					if y == 5 and abs(x) <= 1 and z in [4, 5]: col = C_WARRIOR_RED_DARK
+				elif z >= 6:
+					# Heavy steel jaw plate with bronze studs
+					col = C_STEEL_BRIGHT if (abs(x) in [1, 3] and y == 6) else C_STEEL_LIGHT
+				elif abs(x) == 5:
+					col = C_IRON_DARK
+				voxels[Vector3i(x, y, z)] = col
+
+	# Colossal Boar Tusks with Armored Iron Bands & Sharp Steel Caps
+	for side in [-1, 1]:
+		voxels[Vector3i(side * 4, 6, 7)] = C_IRON_DARK    # Base iron cuff
+		voxels[Vector3i(side * 4, 7, 8)] = C_STEEL_LIGHT  # Steel sheath
+		voxels[Vector3i(side * 4, 8, 8)] = C_STEEL_LIGHT  # Steel sheath
+		voxels[Vector3i(side * 4, 9, 7)] = C_STEEL_BRIGHT # Razor sharp steel tip
+		voxels[Vector3i(side * 4, 10, 6)] = C_STEEL_BRIGHT
+
+	# Secondary teeth
+	for tx in [-2, 0, 2]:
+		voxels[Vector3i(tx, 6, 7)] = C_TEETH
+	for tx in [-1, 1]:
+		voxels[Vector3i(tx, 7, 7)] = C_TEETH
+		voxels[Vector3i(tx * 3, 8, 6)] = C_TEETH
+
+	# 3. Full Steel Gladiatorial War Helmet Visor & Glowing Amber Eyes (y: 9..12)
+	for y in range(9, 13):
+		var rx = 6 if y == 9 else 5
+		var rz = 5
+		for x in range(-rx, rx + 1):
+			for z in range(-rz, rz + 3):
+				if abs(x) >= rx and abs(z) >= rz: continue
+				if abs(x) == 6 and (z <= -3 or z >= 4): continue
+				
+				var col = C_IRON
+				# Heavy visor brow plate at front
+				if z >= 4:
+					if y == 10 and abs(x) in [1, 2, 3]:
+						# Narrow menacing visor slit with glowing fiery amber eyes!
+						col = C_EYE_YELLOW if abs(x) == 2 else C_FEATHER_RED
+					elif y == 11 and z >= 5:
+						col = C_STEEL_BRIGHT # Brow reinforce rim
+					elif y in [9, 10] and abs(x) in [4, 5]:
+						col = C_STEEL_LIGHT # Cheek plate
+					else:
+						col = C_IRON_DARK
+				elif z <= -3:
+					col = C_CHAINMAIL if y <= 10 else C_IRON_DARK
+				elif abs(x) == rx:
+					col = C_STEEL_LIGHT
+				voxels[Vector3i(x, y, z)] = col
+
+	# Nose guard with steel rivets
+	for y in range(8, 12):
+		for x in range(-1, 2):
+			voxels[Vector3i(x, y, 7)] = C_STEEL_BRIGHT
+			if y in [9, 11] and x == 0:
+				voxels[Vector3i(x, y, 8)] = C_GOLD # Brass rivet
+
+	# 4. Colossal Curved Iron Bull / Demon Horns (x: +-6..+-10, y: 12..19)
+	for side in [-1, 1]:
+		# Heavy gold/brass base mount ring
+		for dx in range(2):
+			for dz in range(2):
+				voxels[Vector3i(side * (6 + dx), 12, 1 + dz)] = C_GOLD
+		# Outward curving horn base
+		voxels[Vector3i(side * 7, 13, 1)] = C_IRON_DARK
+		voxels[Vector3i(side * 8, 14, 1)] = C_IRON_DARK
+		voxels[Vector3i(side * 8, 14, 2)] = C_IRON
+		voxels[Vector3i(side * 9, 15, 1)] = C_IRON
+		voxels[Vector3i(side * 9, 16, 0)] = C_STEEL_LIGHT
+		# Upward and forward tapering horn tip
+		voxels[Vector3i(side * 9, 17, 0)] = C_STEEL_LIGHT
+		voxels[Vector3i(side * 8, 18, -1)] = C_STEEL_BRIGHT
+		voxels[Vector3i(side * 8, 19, -1)] = C_STEEL_BRIGHT # Sharp point
+
+	# 5. Cranium Helmet Dome & Serrated Steel Mohawk Spikes (y: 13..19)
+	for y in range(13, 17):
+		var rad = 5 if y <= 14 else (4 if y == 15 else 3)
+		for x in range(-rad, rad + 1):
+			for z in range(-rad, rad + 1):
+				if x * x + z * z <= rad * rad + 2:
+					var col = C_IRON
+					if (x + y + z) % 3 == 0: col = C_STEEL_LIGHT
+					elif abs(x) == rad or abs(z) == rad: col = C_IRON_DARK
+					voxels[Vector3i(x, y, z)] = col
+
+	# Serrated Razor Mohawk Spine Crest (x = 0, z: -4..5, y: 16..20)
+	for z in range(-4, 6):
+		var spike_h = 19 if z in [-2, 0, 2] else (18 if z in [-3, -1, 1, 3] else 17)
+		for y in range(16, spike_h + 1):
+			var sc = C_STEEL_BRIGHT if y == spike_h else C_STEEL_LIGHT
+			voxels[Vector3i(0, y, z)] = sc
+		voxels[Vector3i(-1, 16, z)] = C_IRON_DARK
+		voxels[Vector3i(1, 16, z)] = C_IRON_DARK
+
+	# Chainmail aventail trailing onto upper shoulders at back
+	for y in range(8, 13):
+		for x in range(-5, 6):
+			voxels[Vector3i(x, y, -5)] = C_CHAINMAIL if (x + y) % 2 == 0 else C_IRON_DARK
+			if abs(x) == 5:
+				voxels[Vector3i(x, y, -4)] = C_CHAINMAIL
+
+	var v_arr: Array = []
+	for k in voxels:
+		v_arr.append([k.x, k.y, k.z, voxels[k]])
+	return build_seamless_mesh(v_arr)
+
+
+static func build_ogre_torso_mesh_outfit2() -> ArrayMesh:
+	var voxels: Dictionary = {}
+
+	# 1. Heavy Full Steel Plate Cuirass Body (y: 0..17)
+	for y in range(18):
+		var rx = 7 if y <= 3 else (9 if y <= 13 else 8)
+		var rz = 6 if y <= 3 else (7 if y <= 13 else 6)
+		for x in range(-rx, rx + 1):
+			for z in range(-rz, rz + 1):
+				if abs(x) == rx and abs(z) == rz: continue
+				if abs(x) >= rx - 1 and abs(z) >= rz and y in [0, 1, 16, 17]: continue
+
+				var col = C_IRON
+				# Heavy Pectoral Steel Breastplate (y: 9..14, z >= rz - 1)
+				if y in [9, 10, 11, 12, 13, 14] and z >= rz - 1:
+					if x == 0:
+						col = C_GOLD # Raised center gilded keel ridge
+					elif abs(x) in [1, 2, 3, 4, 5]:
+						col = C_STEEL_BRIGHT if (y in [11, 12] and abs(x) in [2, 3]) else C_STEEL_LIGHT
+					else:
+						col = C_IRON_DARK
+				# Segmented Abdominal Armor Plates (y: 4..8, z >= rz - 1)
+				elif y in [4, 5, 6, 7, 8] and z >= rz - 1:
+					if y in [4, 6, 8]:
+						col = C_STEEL_BRIGHT # Plate rim edges
+					elif abs(x) == 0:
+						col = C_GOLD # Center vertical crest
+					else:
+						col = C_STEEL_LIGHT
+				# Backplate Spinal Armor & Hunch (z <= -rz + 1)
+				elif z <= -rz + 1:
+					if x == 0 and y in [6, 10, 14]:
+						col = C_STEEL_BRIGHT # Steel spine spike
+					elif abs(x) <= 2:
+						col = C_STEEL_LIGHT
+					else:
+						col = C_IRON_DARK
+				# Chainmail flanks under arms
+				elif abs(x) >= rx - 1 and z in [-1, 0, 1]:
+					col = C_CHAINMAIL if (x + y + z) % 2 == 0 else C_IRON_DARK
+				elif abs(x) == rx or abs(z) == rz:
+					col = C_IRON_DARK
+
+				voxels[Vector3i(x, y, z)] = col
+
+	# 2. Spinal Armor Spikes protruding from Backplate (-Z)
+	for sp_y in [6, 10, 14]:
+		voxels[Vector3i(0, sp_y, -7)] = C_STEEL_BRIGHT
+		voxels[Vector3i(0, sp_y, -8)] = C_STEEL_BRIGHT
+
+	# 3. Colossal Spiked Fortress Pauldrons (BOTH Shoulders: x = +-7..+-13)
+	for side in [-1, 1]:
+		# Tier 1 Base Shoulder Armor (y: 13..17, x: 7..10)
+		for y in range(13, 18):
+			for dx in range(7, 11):
+				for z in range(-6, 7):
+					var px = side * dx
+					var col = C_STEEL_LIGHT if (dx + y) % 2 == 0 else C_STEEL_BRIGHT
+					voxels[Vector3i(px, y, z)] = col
+
+		# Tier 2 Flared Mid Shoulder Plate with Forward/Back Spikes (y: 15..19, x: 9..12)
+		for y in range(15, 20):
+			for dx in range(9, 13):
+				for z in range(-5, 6):
+					if abs(z) >= 5 and dx >= 11: continue
+					var px = side * dx
+					voxels[Vector3i(px, y, z)] = C_IRON
+		# Heavy steel spike jutting forward from pauldron
+		voxels[Vector3i(side * 11, 16, 6)] = C_STEEL_LIGHT
+		voxels[Vector3i(side * 11, 16, 7)] = C_STEEL_BRIGHT
+		voxels[Vector3i(side * 11, 16, 8)] = C_STEEL_BRIGHT
+		# Heavy steel spike jutting backward from pauldron
+		voxels[Vector3i(side * 11, 16, -6)] = C_STEEL_LIGHT
+		voxels[Vector3i(side * 11, 16, -7)] = C_STEEL_BRIGHT
+		voxels[Vector3i(side * 11, 16, -8)] = C_STEEL_BRIGHT
+
+		# Tier 3 Massive Upward-Curved Apex Pauldron Spikes (y: 19..23, x: 11..14)
+		for sy in range(19, 24):
+			var sx = side * (12 + (sy - 19) / 2)
+			voxels[Vector3i(sx, sy, 0)] = C_STEEL_BRIGHT
+			voxels[Vector3i(sx, sy, 1)] = C_STEEL_LIGHT
+			voxels[Vector3i(sx, sy, -1)] = C_STEEL_LIGHT
+
+	# 4. Heavy Steel War Belt with Demon Skull Buckle (y: 2..5)
+	for y in [2, 3, 4, 5]:
+		for x in range(-8, 9):
+			for z in range(-7, 8):
+				if (abs(x) == 8 or abs(z) == 7) and (abs(x) >= 2 or abs(z) >= 2):
+					var col = C_IRON_DARK
+					if y in [2, 5]: col = C_GOLD # Gilded border rims
+					elif (x + z) % 3 == 0: col = C_STEEL_BRIGHT # Steel rivets
+					voxels[Vector3i(x, y, z)] = col
+
+	# Massive Embossed Iron Skull / Demon Buckle at Belt Center
+	for bx in range(-2, 3):
+		for by in range(2, 6):
+			voxels[Vector3i(bx, by, 8)] = C_STEEL_BRIGHT
+	voxels[Vector3i(-1, 4, 9)] = C_FEATHER_RED # Glowing red eye
+	voxels[Vector3i(1, 4, 9)] = C_FEATHER_RED  # Glowing red eye
+	voxels[Vector3i(-1, 2, 9)] = C_BONE        # Fangs
+	voxels[Vector3i(1, 2, 9)] = C_BONE
+
+	# 5. Segmented Steel Plate Tassets & Armored Faulds (y: -4..2)
+	# Hanging armored front tasset flaps
+	for side in [-1, 1]:
+		for y in range(-4, 3):
+			for tx in range(1, 5):
+				var px = side * tx
+				var t_col = C_STEEL_LIGHT
+				if y in [-4, -1, 2]: t_col = C_GOLD # Gold trimmed segment rims
+				elif (px + y) % 2 == 0: t_col = C_STEEL_BRIGHT
+				voxels[Vector3i(px, y, 7)] = t_col
+				# Crimson cloth backing
+				voxels[Vector3i(px, y, 6)] = C_WARRIOR_RED
+
+	# Side hip tassets
+	for side in [-1, 1]:
+		for y in range(-3, 3):
+			for tz in range(-3, 4):
+				voxels[Vector3i(side * 8, y, tz)] = C_STEEL_LIGHT if (tz + y) % 2 == 0 else C_IRON
+
+	# Back tasset flap
+	for y in range(-3, 3):
+		for bx in range(-4, 5):
+			voxels[Vector3i(bx, y, -7)] = C_STEEL_LIGHT if (bx + y) % 2 == 0 else C_IRON_DARK
+			voxels[Vector3i(bx, y, -6)] = C_WARRIOR_RED
+
+	var v_arr: Array = []
+	for k in voxels:
+		v_arr.append([k.x, k.y, k.z, voxels[k]])
+	return build_seamless_mesh(v_arr)
+
+
+static func build_ogre_upper_arm_mesh_outfit2() -> ArrayMesh:
+	var voxels: Dictionary = {}
+	# Heavy Steel Plate Rerebrace wrapped around muscular arm (y: -9..0)
+	for y in range(-9, 1):
+		var rx = 4 if y >= -5 else 3
+		var rz = 4 if y >= -5 else 3
+		for x in range(-rx, rx + 1):
+			for z in range(-rz, rz + 1):
+				if abs(x) == rx and abs(z) == rz: continue
+				var col = C_IRON
+				# Full plate covering upper & outer arm
+				if y in [-6, -5, -4, -3, -2, -1, 0]:
+					if (abs(x) == rx or abs(z) == rz):
+						if y in [0, -6]:
+							col = C_GOLD # Gold trim rings
+						elif (x + y + z) % 3 == 0:
+							col = C_STEEL_BRIGHT
+						else:
+							col = C_STEEL_LIGHT
+					else:
+						col = C_IRON_DARK
+				# Chainmail weave near elbow joint
+				elif y <= -7:
+					if (abs(x) == rx or abs(z) == rz):
+						col = C_CHAINMAIL if (x + y + z) % 2 == 0 else C_IRON_DARK
+					else:
+						col = C_SKIN_DARK
+				voxels[Vector3i(x, y, z)] = col
+
+	# Protruding Outer Bicep Armor Spike
+	voxels[Vector3i(5, -4, 0)] = C_STEEL_LIGHT
+	voxels[Vector3i(6, -4, 0)] = C_STEEL_BRIGHT
+	voxels[Vector3i(5, -4, 1)] = C_STEEL_LIGHT
+	voxels[Vector3i(5, -4, -1)] = C_STEEL_LIGHT
+
+	var v_arr: Array = []
+	for k in voxels:
+		v_arr.append([k.x, k.y, k.z, voxels[k]])
+	return build_seamless_mesh(v_arr)
+
+
+static func build_ogre_forearm_mesh_outfit2(is_right: bool) -> ArrayMesh:
+	var voxels: Dictionary = {}
+
+	# 1. Heavy Segmented Steel Vambrace with Elbow Spike (y: -6..0)
+	for y in range(-6, 1):
+		var rx = 4 if y >= -3 else 3
+		var rz = 4 if y >= -3 else 3
+		for x in range(-rx, rx + 1):
+			for z in range(-rz, rz + 1):
+				if abs(x) == rx and abs(z) == rz and y == 0: continue
+				var col = C_IRON
+				if abs(x) == rx or abs(z) == rz:
+					if y in [0, -6]:
+						col = C_GOLD # Gilded cuff rings
+					elif (x + y + z) % 2 == 0:
+						col = C_STEEL_BRIGHT
+					else:
+						col = C_STEEL_LIGHT
+				else:
+					col = C_IRON_DARK
+				voxels[Vector3i(x, y, z)] = col
+
+	# Rear Flared Elbow Spikes (-Z)
+	voxels[Vector3i(0, -1, -5)] = C_STEEL_LIGHT
+	voxels[Vector3i(0, -1, -6)] = C_STEEL_BRIGHT
+	voxels[Vector3i(0, -2, -5)] = C_STEEL_BRIGHT
+
+	# Outer Vambrace Shield Fin
+	var out_side = 1 if is_right else -1
+	for y in [-4, -3, -2]:
+		voxels[Vector3i(out_side * 5, y, 0)] = C_STEEL_BRIGHT
+		voxels[Vector3i(out_side * 5, y, 1)] = C_STEEL_LIGHT
+
+	# 2. Hand Sculpting (y: -9..-7)
+	if is_right:
+		# RIGHT HAND: Heavy Articulated Steel Plate Gauntlet Fist wrapped around Mace Shaft
+		for y in range(-9, -6):
+			for x in range(-3, 4):
+				for z in range(-2, 3):
+					if abs(x) <= 1 and abs(z) <= 1: continue
+					var col = C_STEEL_LIGHT
+					# Reinforced knuckle bar at front (+Z)
+					if z == 2:
+						col = C_STEEL_BRIGHT if (x in [-2, 0, 2]) else C_GOLD
+					elif abs(x) == 3:
+						col = C_IRON_DARK
+					voxels[Vector3i(x, y, z)] = col
+		# Spiked Iron Knuckle Blades
+		voxels[Vector3i(-2, -8, 3)] = C_SPIKE_STEEL
+		voxels[Vector3i(0, -8, 3)] = C_SPIKE_STEEL
+		voxels[Vector3i(2, -8, 3)] = C_SPIKE_STEEL
+	else:
+		# LEFT HAND: Menacing Articulated Steel Claw Gauntlet
+		for y in range(-9, -6):
+			for x in range(-3, 4):
+				for z in range(-2, 3):
+					var col = C_STEEL_LIGHT
+					if y == -7: col = C_STEEL_BRIGHT if z >= 1 else C_IRON
+					voxels[Vector3i(x, y, z)] = col
+		# 4 razor-sharp articulated steel talon claws extending down to y = -10!
+		for fx in [-2, -1, 1, 2]:
+			var fz = 2 if abs(fx) == 1 else 1
+			voxels[Vector3i(fx, -8, fz)] = C_STEEL_LIGHT
+			voxels[Vector3i(fx, -9, fz)] = C_STEEL_BRIGHT
+			voxels[Vector3i(fx, -10, fz + 1)] = C_SPIKE_STEEL # Curving sharp talon tip
+		# Thumb talon
+		voxels[Vector3i(3, -8, 0)] = C_STEEL_LIGHT
+		voxels[Vector3i(4, -9, 0)] = C_SPIKE_STEEL
+
+	var v_arr: Array = []
+	for k in voxels:
+		v_arr.append([k.x, k.y, k.z, voxels[k]])
+	return build_seamless_mesh(v_arr)
+
+
+static func build_ogre_thigh_mesh_outfit2() -> ArrayMesh:
+	var voxels: Dictionary = {}
+	# Heavy Steel Cuisse Plate Armor (y: -9..0)
+	for y in range(-9, 1):
+		var rx = 4
+		var rz = 4
+		for x in range(-rx, rx + 1):
+			for z in range(-rz, rz + 1):
+				if abs(x) == rx and abs(z) == rz: continue
+				var col = C_IRON
+				if (abs(x) == rx or abs(z) == rz):
+					if z >= 2: # Front heavy steel plate
+						col = C_STEEL_BRIGHT if (x + y) % 2 == 0 else C_STEEL_LIGHT
+					elif abs(x) == rx:
+						col = C_STEEL_LIGHT
+					elif z <= -rz + 1: # Chainmail rear thigh
+						col = C_CHAINMAIL if (x + y + z) % 2 == 0 else C_IRON_DARK
+				else:
+					col = C_IRON_DARK
+				voxels[Vector3i(x, y, z)] = col
+
+	# Spiked Knee-Cop (Poleyn) Guard at y: -9, z: 4..6
+	voxels[Vector3i(0, -9, 5)] = C_STEEL_LIGHT
+	voxels[Vector3i(0, -9, 6)] = C_STEEL_BRIGHT # Upward angled knee spike
+	voxels[Vector3i(0, -8, 5)] = C_STEEL_BRIGHT
+	voxels[Vector3i(-1, -9, 5)] = C_GOLD
+	voxels[Vector3i(1, -9, 5)] = C_GOLD
+
+	var v_arr: Array = []
+	for k in voxels:
+		v_arr.append([k.x, k.y, k.z, voxels[k]])
+	return build_seamless_mesh(v_arr)
+
+
+static func build_ogre_shin_mesh_outfit2() -> ArrayMesh:
+	var voxels: Dictionary = {}
+
+	# 1. Fluted Steel Greaves Wrapping Shin & Calf (y: -7..0)
+	for y in range(-7, 1):
+		var rx = 4
+		var rz = 4
+		for x in range(-rx, rx + 1):
+			for z in range(-rz, rz + 1):
+				if abs(x) == rx and abs(z) == rz and y == 0: continue
+				var col = C_IRON
+				if abs(x) == rx or abs(z) == rz:
+					if z == rz: # Front reinforced fluted ridge
+						col = C_STEEL_BRIGHT if x == 0 else C_STEEL_LIGHT
+					elif y in [0, -7]:
+						col = C_GOLD # Gold trim rings
+					else:
+						col = C_STEEL_LIGHT if (x + y + z) % 2 == 0 else C_IRON_DARK
+				else:
+					col = C_IRON_DARK
+				voxels[Vector3i(x, y, z)] = col
+
+	# 2. Heavy Armored Steel Sabatons (War Boots) (y: -9..-6, z: -3..6)
+	for y in range(-9, -6):
+		for x in range(-3, 4):
+			for z in range(-3, 6):
+				if (abs(x) == 3 and abs(z) == 3) or (abs(x) == 3 and z >= 4): continue
+				var col = C_STEEL_LIGHT
+				if y == -9:
+					col = C_IRON_DARK # Sole
+				elif z >= 2:
+					col = C_STEEL_BRIGHT if (x + z) % 2 == 0 else C_STEEL_LIGHT
+				voxels[Vector3i(x, y, z)] = col
+
+	# 4 Heavy Steel Toe Cleaver Spikes on Boots
+	voxels[Vector3i(-3, -9, 6)] = C_SPIKE_STEEL
+	voxels[Vector3i(-1, -9, 6)] = C_SPIKE_STEEL
+	voxels[Vector3i(1, -9, 6)] = C_SPIKE_STEEL
+	voxels[Vector3i(3, -9, 6)] = C_SPIKE_STEEL
+	# Raised front boot spike
+	voxels[Vector3i(0, -8, 5)] = C_STEEL_BRIGHT
+
+	var v_arr: Array = []
+	for k in voxels:
+		v_arr.append([k.x, k.y, k.z, voxels[k]])
+	return build_seamless_mesh(v_arr)
+
+
+static func build_ogre_mace_mesh_outfit2() -> ArrayMesh:
+	var voxels: Dictionary = {}
+
+	# =========================================================================
+	# DREADNOUGHT ANNIHILATOR WAR MACE (ĐẠI THIẾT CHÙY HỦY DIỆT)
+	# Monolithic Master-Forged 8-Flanged Black Iron with Molten Runes & Spikes
+	# =========================================================================
+
+	# 1. Blackened Iron Shaft with Steel Bands & Cross-Hatched Grip (y: -22..20)
+	for y in range(-22, 21):
+		for x in range(-1, 2):
+			for z in range(-1, 2):
+				var col = C_IRON_DARK
+				# Cross-hatched leather grip around handhold (y: -7..5)
+				if y >= -7 and y <= 5 and (abs(x) == 1 or abs(z) == 1):
+					col = C_LEATHER_DARK if (x + y + z) % 2 == 0 else C_LEATHER
+					if (y in [-7, -1, 5]): col = C_GOLD # Gold wire binding
+				# Steel reinforcing collars along shaft
+				elif y in [-14, -13, 12, 13, 19, 20]:
+					col = C_STEEL_BRIGHT if (abs(x) == 1 or abs(z) == 1) else C_GOLD
+				elif (x + y + z) % 3 == 0:
+					col = C_STEEL_LIGHT
+				voxels[Vector3i(x, y, z)] = col
+
+	# Flared Heavy Steel Crossguards above/below grip
+	for y_guard in [-8, 6]:
+		for gx in range(-3, 4):
+			for gz in range(-3, 4):
+				if abs(gx) == 3 and abs(gz) == 3: continue
+				voxels[Vector3i(gx, y_guard, gz)] = C_STEEL_BRIGHT if (abs(gx) == 3 or abs(gz) == 3) else C_GOLD
+
+	# 2. Spiked Skull Pommel & Hanging Steel Chain Links (y: -28..-22)
+	for y in range(-25, -21):
+		for x in range(-2, 3):
+			for z in range(-2, 3):
+				if abs(x) == 2 and abs(z) == 2: continue
+				voxels[Vector3i(x, y, z)] = C_STEEL_LIGHT
+	# Heavy bottom armor-piercing pommel spike
+	for py in range(-28, -25):
+		voxels[Vector3i(0, py, 0)] = C_STEEL_BRIGHT
+	# Hanging steel chain links
+	voxels[Vector3i(1, -26, 1)] = C_CHAINMAIL
+	voxels[Vector3i(1, -27, 1)] = C_CHAINMAIL
+	voxels[Vector3i(2, -28, 1)] = C_STEEL_BRIGHT
+	voxels[Vector3i(2, -29, 1)] = C_STEEL_BRIGHT
+
+	# 3. Monolithic 8-Flanged Black Iron War Head (y: 19..33)
+	# Octagonal core base
+	for y in range(19, 34):
+		var core_r = 5 if (y in [19, 33]) else 6
+		for x in range(-core_r, core_r + 1):
+			for z in range(-core_r, core_r + 1):
+				if abs(x) + abs(z) >= core_r + 4: continue
+				var col = C_IRON_DARK
+				# Molten glowing core crevices
+				if abs(x) <= 2 and abs(z) <= 2 and y in [24, 25, 26, 27]:
+					col = C_LAVA_HOT if (x + y + z) % 2 == 0 else C_LAVA_CORE
+				elif (abs(x) == core_r or abs(z) == core_r):
+					col = C_STEEL_LIGHT if (x + y + z) % 3 == 0 else C_IRON
+				voxels[Vector3i(x, y, z)] = col
+
+	# 4. Eight Heavy Radial Flanged Blades with Serrated Steel Edges
+	# Primary Cardinal Flanges: +Z, -Z, +X, -X (extend to dist 11 voxels)
+	for y in range(21, 32):
+		var is_mid = (y in [25, 26, 27])
+		var f_dist = 11 if is_mid else 9
+		
+		# +Z Front Flange
+		for dz in range(6, f_dist + 1):
+			var sc = C_STEEL_BRIGHT if dz == f_dist else C_STEEL_LIGHT
+			voxels[Vector3i(0, y, dz)] = sc
+			voxels[Vector3i(-1, y, dz)] = C_IRON
+			voxels[Vector3i(1, y, dz)] = C_IRON
+			
+		# -Z Rear Flange
+		for dz in range(6, f_dist + 1):
+			var sc = C_STEEL_BRIGHT if dz == f_dist else C_STEEL_LIGHT
+			voxels[Vector3i(0, y, -dz)] = sc
+			voxels[Vector3i(-1, y, -dz)] = C_IRON
+			voxels[Vector3i(1, y, -dz)] = C_IRON
+
+		# +X Right Flange
+		for dx in range(6, f_dist + 1):
+			var sc = C_STEEL_BRIGHT if dx == f_dist else C_STEEL_LIGHT
+			voxels[Vector3i(dx, y, 0)] = sc
+			voxels[Vector3i(dx, y, -1)] = C_IRON
+			voxels[Vector3i(dx, y, 1)] = C_IRON
+
+		# -X Left Flange
+		for dx in range(6, f_dist + 1):
+			var sc = C_STEEL_BRIGHT if dx == f_dist else C_STEEL_LIGHT
+			voxels[Vector3i(-dx, y, 0)] = sc
+			voxels[Vector3i(-dx, y, -1)] = C_IRON
+			voxels[Vector3i(-dx, y, 1)] = C_IRON
+
+	# Diagonal Secondary Flanges (4 corners at 45 degrees)
+	for y in range(22, 31):
+		for d in range(5, 9):
+			var sc = C_STEEL_BRIGHT if d == 8 else C_STEEL_LIGHT
+			voxels[Vector3i( d, y,  d)] = sc
+			voxels[Vector3i(-d, y,  d)] = sc
+			voxels[Vector3i( d, y, -d)] = sc
+			voxels[Vector3i(-d, y, -d)] = sc
+
+	# Heavy Steel Ramming Spikes jutting from Cardinal Flanges
+	for side in [-1, 1]:
+		# Lateral Ram Spikes (+-X)
+		for dx in range(12, 16):
+			voxels[Vector3i(side * dx, 26, 0)] = C_SPIKE_STEEL if dx >= 14 else C_STEEL_BRIGHT
+		# Fore/Aft Ram Spikes (+-Z)
+		for dz in range(12, 16):
+			voxels[Vector3i(0, 26, side * dz)] = C_SPIKE_STEEL if dz >= 14 else C_STEEL_BRIGHT
+
+	# Front Face Embossed Demonic Ram Skull Relief (+Z)
+	voxels[Vector3i(-2, 27, 8)] = C_FEATHER_RED # Glowing demonic red eye
+	voxels[Vector3i(2, 27, 8)] = C_FEATHER_RED  # Glowing demonic red eye
+	voxels[Vector3i(-1, 24, 8)] = C_GOLD        # Golden skull tusk
+	voxels[Vector3i(1, 24, 8)] = C_GOLD
+
+	# 5. Colossal Apex Armor-Piercing Halberd Spearhead (+Y: 34..46)
+	for y in range(34, 47):
+		var sp_r = int(lerpf(4.0, 0.0, float(y - 34) / 12.0))
+		for x in range(-sp_r, sp_r + 1):
+			for z in range(-sp_r, sp_r + 1):
+				if abs(x) + abs(z) <= sp_r + 1:
+					var sc = C_STEEL_BRIGHT if (abs(x) + abs(z) == sp_r + 1 or y >= 44) else C_STEEL_LIGHT
+					if y in [34, 35] and abs(x) == sp_r: sc = C_GOLD # Gold collar base
+					voxels[Vector3i(x, y, z)] = sc
+
+	# Flanking Barbed Crescent Blades on Spearhead base (y: 35..39, x: +-3..+-6)
+	for side in [-1, 1]:
+		for by in range(35, 40):
+			var bx = side * (4 + (by - 35))
+			voxels[Vector3i(bx, by, 0)] = C_STEEL_BRIGHT
+			voxels[Vector3i(bx, by - 1, 0)] = C_SPIKE_STEEL
+
+	var v_arr: Array = []
+	for k in voxels:
+		v_arr.append([k.x, k.y, k.z, voxels[k]])
+	return build_seamless_mesh(v_arr)
+
+
+
+static func build_ogre_head_mesh_outfit1() -> ArrayMesh:
 	var voxels: Dictionary = {}
 
 	# 1. Thick Muscular Neck (y: 0..3)
@@ -4433,7 +5084,7 @@ static func build_ogre_head_mesh() -> ArrayMesh:
 		v_arr.append([k.x, k.y, k.z, voxels[k]])
 	return build_seamless_mesh(v_arr)
 
-static func build_ogre_torso_mesh() -> ArrayMesh:
+static func build_ogre_torso_mesh_outfit1() -> ArrayMesh:
 	var voxels: Dictionary = {}
 
 	# 1. Muscular Barrel Body Volume with Hunched Posture (y: 0..17)
@@ -4570,7 +5221,7 @@ static func build_ogre_torso_mesh() -> ArrayMesh:
 		v_arr.append([k.x, k.y, k.z, voxels[k]])
 	return build_seamless_mesh(v_arr)
 
-static func build_ogre_upper_arm_mesh() -> ArrayMesh:
+static func build_ogre_upper_arm_mesh_outfit1() -> ArrayMesh:
 	var voxels: Dictionary = {}
 	# Massive muscular Ogre arm (y: -9..0)
 	for y in range(-9, 1):
@@ -4601,7 +5252,7 @@ static func build_ogre_upper_arm_mesh() -> ArrayMesh:
 		v_arr.append([k.x, k.y, k.z, voxels[k]])
 	return build_seamless_mesh(v_arr)
 
-static func build_ogre_forearm_mesh(is_right: bool) -> ArrayMesh:
+static func build_ogre_forearm_mesh_outfit1(is_right: bool) -> ArrayMesh:
 	var voxels: Dictionary = {}
 
 	# 1. Thick Forearm Muscle with Leather Bracers (y: -6..0)
@@ -4677,7 +5328,7 @@ static func build_ogre_forearm_mesh(is_right: bool) -> ArrayMesh:
 		v_arr.append([k.x, k.y, k.z, voxels[k]])
 	return build_seamless_mesh(v_arr)
 
-static func build_ogre_thigh_mesh() -> ArrayMesh:
+static func build_ogre_thigh_mesh_outfit1() -> ArrayMesh:
 	var voxels: Dictionary = {}
 	# Heavy muscular pillar leg (y: -9..0)
 	for y in range(-9, 1):
@@ -4709,7 +5360,7 @@ static func build_ogre_thigh_mesh() -> ArrayMesh:
 		v_arr.append([k.x, k.y, k.z, voxels[k]])
 	return build_seamless_mesh(v_arr)
 
-static func build_ogre_shin_mesh() -> ArrayMesh:
+static func build_ogre_shin_mesh_outfit1() -> ArrayMesh:
 	var voxels: Dictionary = {}
 	# 1. Thick Muscular Calf & Rawhide Wraps (y: -7..0)
 	for y in range(-7, 1):
@@ -4754,7 +5405,7 @@ static func build_ogre_shin_mesh() -> ArrayMesh:
 		v_arr.append([k.x, k.y, k.z, voxels[k]])
 	return build_seamless_mesh(v_arr)
 
-static func build_ogre_mace_mesh() -> ArrayMesh:
+static func build_ogre_mace_mesh_outfit1() -> ArrayMesh:
 	var voxels: Dictionary = {}
 
 	# 1. Gnarled Hardwood Timber Shaft with Bark (y: -18..18)

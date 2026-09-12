@@ -1,0 +1,60 @@
+# Edmund's dev blog for gay nerds: The Binding of Isaac Gameplay explained
+URL: https://edmundmcmillen.blogspot.com/2011/09/binding-of-isaac-gameplay-explained.html
+Published: 2011-09-11
+Author: Posted by
+ 
+ 
+ 
+ Edmund
+
+Edmund's dev blog for gay nerds: The Binding of Isaac Gameplay explained
+
+## Sunday, September 11, 2011
+
+### The Binding of Isaac Gameplay explained 
+
+ So, I've obv iously been seriously neglecting this dev blog due to crunch time with The Binding of Isaac, but things are currently slowing down due to the game being basically finished minus some more testing and polish so i thought it would be a great time to do my 1st in depth blog post about the design of Isaac. 
+
+ For the past month we have been heavily testing Isaac with other devs, the response is extremely positive and the majority of testers are fully hooked, but there is one core issue.
+
+The 1st time people play they don't understand that the game was meant to be played multiple times with different results.
+
+ I've tried to push the title " Roguelike" around a lot to get across how the game plays, but I'm now realizing that a majority have no clue what that means, they see something that looks like a zelda shooter and right away assume it's going to be a linear experience and then become frustrated by their 1st death when they respawn back at start. 
+
+So here is my attempt at explaining the game :) I think I'll call it...
+
+Randomly Generated Content! it's good for you!
+
+The goal with Isaac was simple, I wanted to design a game that would feel totally fresh and new every time you play it. Now on paper this might seem very hard to do, but by pulling from the roguelike formula I was able to do this pretty easily.
+
+On the surface the first thing most people will notice after playing once and dying is that the maps are generated randomly. 
+
+ Every map consists of 4 core rooms, and between 5-20 non-core rooms. 
+
+The 4 core rooms are:
+
+ Treasure Room: where you will always find an item
+
+ Boss Room: where you fight the boss end exit the map
+
+ Shop: where you can buy items
+
+ Secret Room: its a secret!
+
+ The 4 core rooms will ALWAYS appear in a map, they are the foundation of the games "leveling" system and should be looked at as the goals of each level. Even though these rooms always appear, their contents, enemies, look, design and any "surprises" within them are randomly picked from a slew of alternates. 
+
+The non-core rooms are randomly selected from a pre-designed group of 1000+ rooms that are arranged by difficulty and chapter. the majority of these rooms consist of small arena battles that make the bulk of the game play, but they are also peppered with bonus rooms with mini puzzles, prizes, traps and a few surprises here and there. 
+
+Aside from these rooms there are also a set of context sensitive rooms:
+
+ The Arcade: A room filled with mini games that cost coins (only appears when you have enough money) 
+
+ The Challenge Room: Fight off waves of enemies for a prize. (only appears when you play well)
+
+ Mini boss room: a mini boss appears! 
+
+ Mystery Room1: it's a secret! 
+
+ Mystery Room2: it's a secret!
+
+ These uncommon rooms are meant to spice up game play and add small alternate goals and o

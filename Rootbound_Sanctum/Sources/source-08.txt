@@ -1,0 +1,343 @@
+    How moving from 2D to 3D shaped the design of Risk of Rain 2                                  
+
+Together, we power an unparalleled network of 220+ online properties covering 10,000+ granular topics, serving an audience of 50+ million professionals with original, objective content from trusted sources. We help you gain critical insights and make more informed decisions across your business priorities.
+
+Informa PLC|ABOUT US|INVESTOR RELATIONS|TALENT
+
+This site is operated by a business or businesses owned by Informa PLC and all copyright resides with them. Informa PLC's registered office is 5 Howick Place, London SW1P 1WG. Registered in England and Wales. Number 8860726.
+
+Game Market ResearchWatch GDC Talks on GDC VaultAttend or Exhibit at GDCAdvertise
+
+Newsletter Sign-Up
+
+Newsletter Sign-Up
+
+Trending
+
+Related Topics
+
+▫️ Layoffs & Studio Closures
+
+▫️ GDC Festival of Gaming
+
+▫️ Generative AI & ML
+
+▫️ Industry Lawsuits
+
+▫️ Development Tools
+
+▫️ Culture & Dev Communities
+
+Recent in Trending
+Top Stories
+
+Production
+
+'Ship a good game, learn from it, and build from there:' Lessons from going indie after a decade at id Software'Ship a good game, learn from it, and build from there:' Lessons from going indie after a decade at id Software
+
+byChris Kerr
+
+Sep 10, 2026
+
+6 Min Read
+
+Business
+
+Riot Games is considering making premium titles, says co-founderRiot Games is considering making premium titles, says co-founder
+
+byBryant Francis
+
+Sep 8, 2026
+
+4 Min Read
+
+Latest News
+
+Related Topics
+
+▫️ Weekly News Highlights
+
+▫️ News Deep Dives
+
+▫️ GD Collective Research
+
+Recent in Latest News
+
+Business
+
+An honest opinion or defamation? A solicitor outlines the legal nuanceAn honest opinion or defamation? A solicitor outlines the legal nuance
+
+byChris Kerr
+
+Sep 11, 2026
+
+4 Min Read
+
+Production
+
+Rockstar and fired GTA developers outline core arguments during union busting tribunalRockstar and fired GTA developers outline core arguments during union busting tribunal
+
+byChris Kerr
+
+Sep 11, 2026
+
+8 Min Read
+
+[GDC]
+
+Related Topics
+
+▫️ Talks & Interviews
+
+▫️ GDC News
+
+▫️ GDC Vault: Editor Picks
+
+▫️ Register for GDC
+
+▫️ GDC Vault: Full Library 
+
+▫️ Dev Surveys, Data, & Insights
+
+Recent in [GDC]
+Learn More
+
+Production
+
+'Ship a good game, learn from it, and build from there:' Lessons from going indie after a decade at id Software'Ship a good game, learn from it, and build from there:' Lessons from going indie after a decade at id Software
+
+byChris Kerr
+
+Sep 10, 2026
+
+6 Min Read
+
+Business
+
+Riot Games is considering making premium titles, says co-founderRiot Games is considering making premium titles, says co-founder
+
+byBryant Francis
+
+Sep 8, 2026
+
+4 Min Read
+
+Game Developer Podcast
+
+Game Design
+
+Programming
+
+More
+
+Related Topics
+
+▫️ Developer Interviews
+
+▫️ Game Dev Deep Dives
+
+▫️ Video Game Postmortems
+
+▫️ Partner Perspectives
+
+Recent in More
+Read More
+
+Production
+
+'Ship a good game, learn from it, and build from there:' Lessons from going indie after a decade at id Software'Ship a good game, learn from it, and build from there:' Lessons from going indie after a decade at id Software
+
+byChris Kerr
+
+Sep 10, 2026
+
+6 Min Read
+
+Business
+
+Riot Games is considering making premium titles, says co-founderRiot Games is considering making premium titles, says co-founder
+
+byBryant Francis
+
+Sep 8, 2026
+
+4 Min Read
+
+Design
+
+News
+
+How moving from 2D to 3D shaped the design of Risk of Rain 2
+Risk of Rain 2 developer Hopoo Games opens up about the process of taking its acclaimed 2D roguelike into 3D, and what it takes to build a great roguelike with a small team.
+
+John Harris,Contributor
+August 14, 2019
+
+8 Min Read
+
+It's not easy to ship a hit indie game, and it's even harder to follow up that hit with an outstanding sequel.
+
+But that's what Hopoo Games seems to have done with Risk of Rain 2, which it launched on Steam's Early Access service earlier this year and sold more than a million in its first month.
+
+A follow-up to Risk of Rain, the studio's 2D critically acclaimed 2013 roguelike, Rain 2 is a remarkable project. Whereas many devs seem to either avoid sequels entirely or double down on the same mechanics and modes which made their original game successful, Hopoo instead took what worked about Risk of Rain and brought it into a new dimension: 3D.
+
+This is Hopoo's first 3D game, and in a recent conversation with Gamasutra the team explained that the shift into three dimensions and a behind-the-back perspective required a lot of work -- but also opened up a lot of new and interesting opportunities.
+
+Who are you, and what is Risk of Rain 2?
+
+We’re Hopoo Games, a small team who started out as two students from the University of Washington with our first game, Risk of Rain in 2013. After that we decided to continue building video games with our next title Deadbolt in 2016.
+
+Now a team of three, we’ve been hard at work on the sequel to Risk of Rain which took the big jump to 3D and third person shooter mechanics.
+
+The original Risk of Rain was very popular as a intense 2D platforming action/RPG. Why switch to 3D, with the inevitable navigation issues it contributes?
+
+This is our first experience in making a 3D project. We thought it was a great way to evolve on the core experience of Risk of Rain, staying true to the experience, while having fans feel like it was an evolution worthy of a sequel.
+
+The original Risk of Rain (2013)
+
+As self-taught developers, we're always looking for opportunities to expand our knowledge and expertise - 3D gameplay, to us, was a key thing we wanted to try. We are really happy with the way the game has turned out so far and there are so many more options for us to explore in 3D.
+
+Both RoR and RoR 2 use premade levels (with variations), with randomly selected objects and enemies, instead of the usual roguelite procedural terrain. Did you consider going with full-random terrain this time? What informed your decision to use premade maps?
+
+Procedural generation is something we messed around with for awhile for Risk 2 but the level of difficulty needed to make interesting / memorable procedural maps in 3D was too much for our team size.
+
+However, we knew that players would be playing the same stages multiple times even in a single run so we wanted to provide as much variation on each map as possible. In 3D it has been a lot easier to turn on and off certain map elements that can have a huge impact on the moment to moment gameplay.
+
+Let's talk about item design. RoR had 100 items; RoR 2 currently has 75. There's a huge variety of items in the game, from the ultra-powerful (like the amazingly great Ukelele) to the Monster Tooth, which just drops a very minor healing item when you kill an enemy. How do you brainstorm new items, and is there a tendency to make items that just adjust variables a bit (like the Soldier's Syringe) over those that require creating new game objects like missiles, banners and auras?
+
+Exciting item variety in Risk of Rain 2 has always been something that we strived for. All of the items that we end up adding to the game start with a specific purpose in mind. Like you mentioned, the Monster Tooth, while not being the most exciting item in the game serves the vital purpose of keeping the playing in the fight by rewarding them with healing after every kill.
+
+We could have implemented this item as a simple gain X health for every monster death but that cuts out a lot of the design and player choice. As you are killing more monsters the orbs start to stack up on around the map and you can pick and choose when to run around and collect them for a heal at the right moment. Giving players a choice is always something we want to weave into our item designs whenever possible.
+
+Risk 2 being in 3D has given us a ton of new design space for item effects and uses. Most of the items that we bring over from the original Risk of Rain need to be redesigned to fit into a 3D world. Some of our favorite new items and equipment like the ‘Royal Capacitor’ that targets a specific enemy for a massive lightning strike is only possible since we switched to 3D.
+
+Of course, balancing items is a difficult act, giving them a mix of uses and coming up with new ways to vary the game. It might be helpful to other developers to have some insight into your philosophy in balancing items.
+
+Item balance is something we talk a lot about in the office. With so many variations of items and different tiers there is always something we need to tweak. Thankfully for us, the game is all PVE so our balance comes more from how the items make players feel and making sure they are all rewarding.
+
+Since we are in Early Access, the community has also played a huge role in giving us feedback on items and character balance to make sure any content we release is surpassing both our own and players expectations.
+
+One danger with a roguelike with such high-value randomized items is a sense in some games, most visible perhaps in Binding of Issac, that your success is more due to what you find than how you play. Have you observed this happening in the RoR games, and do you think it needs to be countered by the designer, to encourage players to try out more things?
+
+That is something that we as players have noticed in some games and are actively trying to design around. One of the more major ways we are trying to stray players away from those feelings is with the character system and how skill takes a front seat in being successful in Risk of Rain 2.
+
+Even if the player doesn’t get a specific item or equipment at the start of the game they can extend their run by playing smart and actively influencing certain outcomes in the game to help them bridge that gap.
+
+One of the interesting gameplay aspects of both games is the timed difficulty increase, where enemies get harder the longer the run continues, and quick advancement through the game is rewarded by easier opposition. I especially enjoy how this interacts with the game's natural regeneration, where stalling and running away from battle will restore health to you, but at the cost of increased difficulty in the long term.
+
+We really enjoy this aspect of the game design and it is core to the feeling of the game. The player never really feels safe, or like they can take a deep breath, and that is something that can keep you playing for hours at a time and not even realize it. There is always a balancing act to take time gathering more items to power up or racing against the timer to stay ahead of the difficulty curve that the player is always aware of.
+
+One of the entertaining things about RoR 2 is how the items you collect are visible on your character. How does the game go about placing the additions to the player's model? Is there a limit to the number of things that can be displayed at once?
+
+Being able to show the items collected on the player character is one of the driving forces for us switching to 3D. We wanted to make sure that the player felt like when they started the game with no items and their weakest, and then progressed naturally into the game that they visually see how those items and equipment were impacting their character.
+
+We have a pretty solid system build up for placing items on characters and displaying them, even with every item in the game showing at once. It gives you a true sense of progression to see your character standing at the Obelisk decked out in random items.
+
+Finally, there is multiplayer. We have got to know about multiplayer. How does RoR 2 change when there's more players? Which is the canonical way to play, solo or with friends? Which is the easiest way to play? With so much action potentially going on at once, was it difficult keeping everyone's systems synced?
+
+Those are all great questions! We are very proud of the fact that we were able to get online improved so much for Risk 2 and make it seamless for the player to connect with others online.
+
+Something we often think about when adding new characters and items into the game is how they will affect both single and multiplayer games. We always want to make sure that the game is as fun as a single player game as it is playing with a group of friends, so we consider both to be the full Risk 2 experience.
+
+The game has some internal logic to scale the difficulty by the number of players online so it always keeps things challenging. When playing online there are going to be small differences in player skill and items but we try to keep the balance in check so everyone has a good time.
+
+About the Author
+
+John Harris
+
+Contributor
+
+John Harris writes the column @Play for GameSetWatch, and the series Game Design Essentials for Gamasutra. He has written computer games since the days of the Commodore 64. He also maintains the comics blog Roasted Peanuts.
+
+See more from John Harris
+
+Daily news, dev blogs, and stories from Game Developer straight to your inbox
+
+Stay Updated
+
+Latest NewsMore News
+
+Business
+
+An honest opinion or defamation? A solicitor outlines the legal nuanceAn honest opinion or defamation? A solicitor outlines the legal nuance
+
+byChris Kerr
+
+Sep 11, 2026
+
+4 Min Read
+
+Keep up with the latest News, Interviews, and Talk Coverage from GDC Festival of Gaming right here on Game Developer
+
+READ ON
+
+Latest Podcasts
+
+Production
+Strategically making Star Wars Zero Company, ft. Greg Foertsch
+Sep 4, 2026
+
+Audio
+GDC Side Quest - Inside Austin Wintory's Collaborative Composing Process
+Aug 28, 2026
+
+Programming
+We're finally talking about AI, ft. David 'Rez' Graham and Luke Dicken
+Aug 21, 2026
+
+Production
+What devs need to know about localization, ft. Concha Fernandez Alvarez, Aurelie Perrin, and Guido Di Carlo
+Aug 7, 2026
+
+See all
+
+Game Developer CollectiveMore
+
+Business
+
+Games that sell DLC and in-app purchases appear to benefit most from subscription servicesGames that sell DLC and in-app purchases appear to benefit most from subscription services
+
+byBryant Francis
+
+Jan 27, 2026
+
+3 Min Read
+
+Business
+
+Devs are more worried than ever that generative AI will lower the quality of gamesDevs are more worried than ever that generative AI will lower the quality of games
+
+byBryant Francis
+
+Sep 16, 2025
+
+4 Min Read
+
+Game Design & Marketing HighlightsSee More
+
+Business
+
+Trump Administration takes down Tetris clone after company warns it takes copyright violation 'very seriously'Trump Administration takes down Tetris clone after company warns it takes copyright violation 'very seriously'
+
+Design
+
+Paradox Interactive's Afterworld wants to entice new players to grand strategy with tasty RPG hooksParadox Interactive's Afterworld wants to entice new players to grand strategy with tasty RPG hooks
+
+More from GD
+Blog with Game DeveloperBlogging GuidelinesGame Developer PodcastSubmit a Tip
+
+Connect
+About UsAdvertiseContact Us
+
+Join Us
+
+Newsletter Sign-Up
+
+Follow Us
+
+Copyright © 2026 Informa. This website is owned and operated by Informa. Informa PLC's registered office is 5 Howick Place, London SW1P 1WG.
+
+About Informa|Contact Informa|Privacy|Terms
+
+Your Privacy Choices
+

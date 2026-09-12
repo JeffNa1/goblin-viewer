@@ -1,0 +1,1777 @@
+0:04 Hello everyone.
+0:05 Um, thank you so much for being here and
+0:07 thank you for console for inviting me
+0:10 over. It's been a long trip, but um, I'm
+0:13 super glad that it worked out and that I
+0:15 was able to be here in person.
+0:17 Um,
+0:18 today I'm going to be talking about uh,
+0:21 a game called Hades
+0:23 and the content design in the game
+0:25 um,
+0:26 and how we transitioned Supergiant's
+0:29 linear uh, RPG design into
+0:33 the roguelike genre
+0:35 which includes
+0:36 a lot of variants and dynamic content.
+0:39 Um,
+0:39 so without further ado,
+0:42 I'll introduce myself. So my name is Ed.
+0:44 I go by Ed,
+0:47 Eduardo, both work.
+0:49 I am a game designer at Supergiant
+0:52 Games. Supergiant Games has been around
+0:56 for over 10 years creating games such as
+0:58 Bastion, Transistor, Pyre, and most
+1:01 recently Hades.
+1:02 Um,
+1:04 prior to Supergiant Games, I
+1:07 got my start in the industry at
+1:08 Gazillion.
+1:09 Gazillion was the creator of Marvel
+1:12 Heroes Omega which was a
+1:15 free-to-play action RPG
+1:17 um,
+1:18 that was around for a couple of years.
+1:20 Before that, I studied at
+1:23 Digipen Institute of Technology in
+1:25 Redmond, Washington. I got a Bachelor of
+1:27 Science in Computer Science and Game
+1:29 Design there. So a lot of my education
+1:32 was focused specifically around making
+1:33 games.
+1:35 Um,
+1:35 at Digipen,
+1:37 we worked on a couple of student
+1:38 projects. My senior project was Garden
+1:41 of the Gears which uh,
+1:43 we had the honor of taking to IGF
+1:45 student showcase and E3.
+1:48 Um,
+1:49 uh, and yeah, so
+1:52 after Gazillion,
+1:53 I joined Supergiant at the start of
+1:55 development for Hades around
+1:57 pre-production. Um,
+2:00 the design team at
+2:02 Supergiant consists of five people. Um,
+2:05 for my role on the design team
+2:07 specifically, I tend to focus on the
+2:09 game's level design, the enemy design,
+2:12 the encounters, and the boss fights of
+2:14 the game. Supergiant is a really small
+2:16 team. We shipped Hades with just under
+2:19 20 people. Um, so we all wear a lot of
+2:22 hats, uh, but we each have our
+2:24 discipline which we are
+2:26 uh,
+2:27 primarily responsible for.
+2:31 So what is this talk going to be? We're
+2:33 going to be talking about
+2:35 the content of Hades and how we uh,
+2:38 found a balance between handcrafted
+2:39 design and dynamic content. Um,
+2:44 first off, we're going to be looking at
+2:45 constraints and how Supergiant
+2:47 approaches uh, finding the limitations
+2:50 of our game and the aspirations of the
+2:52 game. And from there we're going to be
+2:54 looking at the successes and the uh,
+2:57 attempts we had at finding that variance
+3:00 within chambers, encounters, and finally
+3:02 the boss
+3:04 and end game.
+3:05 So without further ado,
+3:09 uh, for those of you who might not know,
+3:11 Hades is a roguelike action dungeon
+3:13 crawler where you play as Zagreus, son
+3:15 of Hades, attempting to fight his way to
+3:17 the surface.
+3:18 Um,
+3:19 that is Lord Hades
+3:21 and this is Zagreus, the player
+3:23 character.
+3:24 Um,
+3:26 here is a quick view of the gameplay
+3:30 style. So throughout your escapes of the
+3:33 underworld, you will be encountering
+3:34 Olympian gods who present you with their
+3:36 boons that upgrade your various
+3:38 abilities. Um, you move through the
+3:41 ever-shifting underworld from chamber to
+3:44 chamber slaying the enemies you find in
+3:46 these chambers
+3:48 collecting your rewards and trying to
+3:50 make it as far as you can
+3:52 to try and reach the surface.
+3:54 Um,
+3:57 yeah.
+3:58 When you die in Hades, you return home.
+4:00 Uh, the hub is where you spend the
+4:03 resources you collect in the game
+4:05 and it was important to us to make
+4:08 returning home uh,
+4:11 as
+4:12 exciting as possible and making it feel
+4:14 like
+4:15 death was just a natural part of this
+4:18 world.
+4:23 So what is a roguelike? A roguelike is a
+4:25 subgenre of role-playing game
+4:27 characterized by a dungeon crawl through
+4:29 procedurally
+4:30 generated levels, turn-based gameplay,
+4:32 grid-based movement, permanent death and
+4:35 of the player character. That's straight
+4:37 out of Wikipedia. Um,
+4:40 a lot of people describe Hades as a
+4:41 roguelite
+4:43 which focus on some but not necessarily
+4:45 all of those principles. Um,
+4:48 with Hades in particular for instance,
+4:51 we knew that we weren't going to be a
+4:52 turn-based game.
+4:53 But we
+4:55 wanted to explore some of these concepts
+4:56 such as permanent death and procedurally
+4:59 generated content. Um,
+5:02 and we took inspiration from a lot of
+5:04 games. I'm just going to point out a
+5:05 few. Rogue Legacy,
+5:08 Enter the Gungeon, Dead Cells
+5:10 all took interesting approaches to uh,
+5:14 roguelike genres. Um,
+5:17 for Dead Cells for instance, we
+5:19 we really thought they did a great job
+5:21 with the combat and action-oriented
+5:22 nature of the gameplay.
+5:24 Rogue Legacy, we looked at the um,
+5:27 how the content changed over time as you
+5:30 took on different heroes with different
+5:32 attributes.
+5:33 Um,
+5:34 so uh,
+5:36 after we looked at what others had done
+5:37 in the genre, we tried to find our take.
+5:39 Like what was Supergiant's roguelike
+5:42 going to be? Um,
+5:45 at Supergiant, we we have a perception
+5:47 of constraints as positive. It's a way
+5:49 for us to focus the creative development
+5:52 towards the things that we can do and
+5:54 the things that we want to do rather
+5:56 than as a negative.
+5:59 So the first thing that we knew Hades
+6:02 was going to be about is you're going to
+6:03 die and you're going to die a lot. But
+6:06 our goal is to make sure that you're
+6:07 getting better both mathematically and
+6:09 skillfully.
+6:10 And what this meant was that we had a
+6:12 philosophy that every run should count
+6:14 in one way or another. When you die in
+6:16 Hades, our hope is that you are looking
+6:19 forward to progressing your
+6:21 relationships with
+6:23 the other inhabitants of the underworld.
+6:25 You want to spend your current currency
+6:28 on
+6:28 new abilities or upgrading your home.
+6:32 We wanted to provide multiple avenues
+6:34 to make sure that it was an interesting
+6:36 experience going back, trying again. But
+6:39 what this also meant is every time you
+6:40 go back into the run, we wanted to make
+6:42 sure that it had variance, that
+6:44 it was fun and interesting and
+6:46 unique in different ways and that it
+6:49 could potentially
+6:51 be interesting to do over tens or
+6:53 hundreds of runs.
+6:55 So one of the early defining
+6:58 uh, mindsets that we had actually came
+7:00 from a conversation with Robin Walker, a
+7:03 friend from Valve. Um,
+7:06 they said that roguelike design has a
+7:08 high dynamic range with runs that
+7:10 diverge early. This really helped shape
+7:13 how we approached our decision-making.
+7:15 Um,
+7:17 because it gave us
+7:19 goals to achieve
+7:21 rather than just creating content. Um,
+7:25 so
+7:25 uh, where did the variance come from?
+7:28 Uh, player abilities and rewards, the
+7:30 upgrades the player gets will then
+7:32 drastically change how you uh,
+7:35 um,
+7:36 fight in a run. Narrative it keeps
+7:38 progressing every time you die, it
+7:40 advances in certain ways and where this
+7:42 talk is going to focus which is on the
+7:44 content, the chambers, encounters, and
+7:45 bosses.
+7:48 So the first thing when approaching
+7:50 level design was to learn about how
+7:52 levels were generated in other games.
+7:55 Spelunky has well-documented map
+7:57 generator with a lot of information
+7:59 online.
+8:01 It describes how rules are used to
+8:04 stitch together templates of a of a
+8:07 a map together. Uh,
+8:10 with still some design intent
+8:12 having a path from the entrance to the
+8:16 exit making sure that there's some uh,
+8:20 spacing between how often you get
+8:21 rewards and how often you get shops and
+8:23 stuff. Heat Signature is another example
+8:26 of a game that takes templates
+8:29 and stitches them together into larger
+8:30 maps.
+8:31 Um,
+8:33 Binding of Isaac uh,
+8:35 is a game that
+8:36 approaches chambers in an interesting
+8:38 way. It locks you in and forces you to
+8:40 fight the enemies within that chamber
+8:42 kind of forcing the player to experience
+8:44 that difficulty.
+8:45 Um, so
+8:48 uh,
+8:49 we
+8:50 taking taking what others have made, we
+8:53 ask ourselves uh,
+8:55 why are constraints what are what are
+8:57 our constraints and what are they going
+8:58 to help us achieve? So questions we ask
+9:01 at Supergiant is what games can this
+9:02 team make? Supergiant builds uh,
+9:05 the games that we're going to make
+9:07 around the skills and aspirations of the
+9:09 team at Supergiant. Um,
+9:12 we also have our own custom engine and
+9:14 our custom technology and it allows us
+9:17 to make exactly what we want to make,
+9:18 but it also means that we have to make
+9:20 games within
+9:21 our capabilities. Um, and
+9:24 uh,
+9:25 from there every time we make a design
+9:27 decision, we ask ourselves how can we
+9:29 fit those under those constraints?
+9:31 So the first of those is that Hades has
+9:33 hand-painted chambers. So this is a GIF
+9:37 of
+9:38 uh,
+9:38 the editor. So our programmer Dexter
+9:42 made a tool that every
+9:43 couple
+9:45 of minutes, the editor will take a
+9:46 screenshot of whatever the designer or
+9:48 artist is working on
+9:50 and at the end of the project, we can
+9:51 time lapse it all together. One thing
+9:55 that's interesting to note here is at
+9:57 the start of the GIF you see
+9:59 the the gray box design and it actually
+10:02 only spends
+10:03 a couple
+10:04 of days
+10:06 and weeks in design before it gets
+10:08 handed over to the artist but notice how
+10:10 quickly it goes from uh
+10:13 the gray box to the first pass and then
+10:15 how long it takes
+10:17 in the in the polished state where small
+10:20 tweaks are being made, things are being
+10:22 added to the foreground.
+10:23 Um So, this kind of shows how the
+10:26 environment artist actually just
+10:27 thousands of painted assets layered over
+10:29 one another. Um
+10:32 This is a very hand-crafted approach but
+10:35 it gets that visual fidelity that
+10:36 Supergiant aspires for.
+10:39 Um
+10:40 Our lighting and our collision is also
+10:42 for the most part placed by hand.
+10:43 There's there's some dynamic lighting
+10:45 and collision but
+10:46 uh
+10:48 uh this just goes hand in hand with
+10:50 trying to get the exact uh
+10:52 uh image that the artist is going for.
+10:55 So, what's the result of this? Um
+10:57 modifying any chambers was extremely
+10:59 costly. If we wanted to change the
+11:02 interior cover to be taller or lower,
+11:06 it required the artist to go in and re
+11:08 uh
+11:09 uh uh draw a lot a large portion of the
+11:11 level
+11:12 um and taking down a portion of a wall
+11:14 to create a secret chamber behind that
+11:16 just wasn't feasible with the style of
+11:19 uh chamber that we were shooting for.
+11:22 Um and in our early prototypes of more
+11:26 dynamic chambers where you could
+11:28 uh
+11:29 stitch together different pieces or tear
+11:32 down walls, we actually noticed that the
+11:34 credit quote-unquote that you get from
+11:36 the player
+11:38 as far as how different the map feels is
+11:40 not that high for the amount of cost
+11:43 it's taking us in time to create
+11:46 a room that looks and feels good. Um
+11:49 We found that spending our time building
+11:51 whole new maps and having more of those
+11:52 maps to show the player would actually
+11:54 get us a lot further in making the game
+11:56 feel fresh
+11:57 because it allowed us to make sure that
+11:58 you don't see every room every run.
+12:00 There's enough rooms
+12:02 to surprise you from time to time.
+12:05 Uh
+12:06 Next we looked at run structure. So,
+12:08 what have others done? One of the things
+12:10 that we looked at was Slay the Spire.
+12:11 The chamber-to-chamber
+12:13 design of Slay the Spire was interesting
+12:15 to us because it aligned with our hope
+12:18 that Hades would be a fast-paced push
+12:21 forward design.
+12:23 And in Slay the Spire you make your way
+12:25 through
+12:27 a varied dungeon but you're only going
+12:29 in one direction. Um so, our our next
+12:32 constraint was no backtracking.
+12:35 Since we can't stitch huge rooms
+12:36 together, we made the design decision to
+12:39 create this constraint that you can't go
+12:41 backwards for the most part.
+12:43 Um
+12:43 Styx is going to break a lot of rules
+12:45 and that's going to be a theme
+12:45 throughout this talk.
+12:47 Styx is the last chamber of the or the
+12:49 last biome of the the game and that's
+12:51 kind of where we
+12:53 broke a lot of our own rules but for the
+12:56 most part you can't go backwards and
+12:58 this is
+12:59 uh this builds on our previous decisions
+13:02 because if we're going to have a linear
+13:04 game, going backwards is going to feel
+13:07 uh it's going to really ruin the pace.
+13:09 Uh
+13:10 So,
+13:12 in order to keep the fast-paced action
+13:13 um
+13:15 uh we we had this desire but it wasn't a
+13:17 guarantee cuz we weren't sure if this
+13:19 was going to be enough to be interesting
+13:21 uh
+13:22 for a large run and then for multiple
+13:25 runs. It wasn't a guarantee that that
+13:28 was going to be enough to make the world
+13:29 feel like it was
+13:31 shifting and new each time.
+13:35 So, the result uh if you can't uh
+13:39 go backwards then we have to make sure
+13:40 that you're experiencing in combat. The
+13:42 the danger can't be in getting past the
+13:44 enemies, it has to be in actually
+13:45 fighting the enemies. So, every enemy
+13:47 has to be killable. You can't we can't
+13:49 place enemies hiding in the like
+13:52 very strategic position that can only be
+13:54 killed by ranged attacks because
+13:57 uh
+13:58 the player might not have ranged
+14:00 attacks.
+14:01 This also meant no puzzles.
+14:03 Puzzles tend to have like the setup and
+14:05 then the search for a solution and the
+14:07 execution once you have the eureka
+14:10 moment
+14:11 but if you can't go backwards you can't
+14:12 really go for that
+14:14 exploration and we didn't like the
+14:16 feeling of missing out. So, the idea of
+14:18 having things locked behind certain
+14:21 uh god effects
+14:23 wasn't interesting because you would
+14:24 just encounter it, realize that you
+14:26 don't have it and kind of move on.
+14:28 So, that was just a decision that we
+14:30 wanted to uh avoid.
+14:34 Uh
+14:35 I kind of touched on this unreliable
+14:36 player abilities. In Hades the player
+14:38 chooses what weapon they use and what
+14:40 abilities they get for the most part
+14:43 and it's never guaranteed what that
+14:45 skill set will be on the content side.
+14:48 So, we can't make an enemy that can only
+14:50 be killed by a single solution whether
+14:52 that's ranged or melee
+14:53 or specific effect. Every enemy has to
+14:56 be killable by multiple different player
+14:59 builds and approaches.
+15:01 Uh finally we have active enemy caps.
+15:03 So, in Hades we can only ever have a max
+15:05 of eight fully animated enemies at one
+15:07 time
+15:09 but we can have many more as long as it
+15:11 has a very simple animation set. So,
+15:13 these two enemies here, the wretched
+15:14 thug and the numbskull,
+15:16 they're two enemies that you encounter
+15:17 early in Tartarus. The thug has
+15:21 full animations, big windup,
+15:24 a
+15:25 a full follow-through
+15:26 uh
+15:27 a very awesome looking enemy.
+15:29 Um
+15:30 The numbskull on the other hand,
+15:32 all of its animations are actually
+15:33 single frames.
+15:35 So, the cost of that enemy is so much
+15:36 lower that we're able to swarm the
+15:38 player with a bunch of them.
+15:40 So, this is just a limitation that we
+15:42 had to work through. Um
+15:45 Similarly, the number of preloaded
+15:47 animations. So,
+15:48 this enemy has a memory cost that's much
+15:51 higher than this enemy.
+15:53 We can only have a certain amount of
+15:55 animations at a time
+15:57 and that's just normal for any game.
+15:59 So, for us
+16:01 uh we just had to keep that in account
+16:03 and of course it's always a moving
+16:04 target during development. So, when
+16:05 you're designing an encounter, sometimes
+16:07 you have to go back and uh make
+16:09 adjustments. Um
+16:11 but the biggest impact that this
+16:13 actually had on how we designed enemies
+16:16 in Hades is we can't swap weapons or
+16:19 skins on bosses or enemies
+16:22 just at random. Um For instance, if we
+16:25 wanted to give this guy a big axe that
+16:27 he throws instead of a big club,
+16:29 that would be essentially the cost of an
+16:31 entirely new enemy
+16:33 because we would have to create whole
+16:34 new animations for that and take those
+16:37 out separately.
+16:38 So, it just kind of uh
+16:40 focused our design decisions around
+16:43 making uh
+16:45 working within the visual design of a
+16:47 single enemy rather than making super
+16:49 modular enemies. So, with all that said,
+16:52 let's jump into what we actually
+16:56 uh
+16:56 did inside of chambers. Um
+17:00 So, first off is exit door reward
+17:03 previews.
+17:04 It was really important for us that the
+17:06 player was making decisions on what they
+17:08 were going to get because we wanted the
+17:09 player to have agency over what build
+17:12 they were working towards.
+17:14 So, the the the variance in the exit
+17:17 door rewards didn't come from what you
+17:20 would get but what the consequences of
+17:23 your choices of what you were going to
+17:25 go for. So,
+17:27 um
+17:27 the mystery
+17:29 uh
+17:30 behind picking a
+17:32 uh
+17:33 upgrade that's going to make your player
+17:34 better is are you going to get a combat
+17:37 encounter or are you going to get lucky
+17:38 and are you going to get a fountain
+17:40 room? Um
+17:43 Uh
+17:44 This meant that over time players kind
+17:47 of intuitively started to get to know
+17:48 the possibility space of what's behind
+17:50 certain door rewards. Um And that's
+17:53 actually okay because what we found is
+17:56 the key to keep the anticipation high
+17:58 and keep the tension is that
+18:01 the result of what those limited
+18:03 possibilities are have a huge impact on
+18:06 how the player has to react and has to
+18:07 adapt to that result.
+18:10 So, as long as
+18:11 uh
+18:13 the
+18:14 the end result was impactful, it was
+18:17 okay for it to be a limited amount of
+18:18 things. It still felt interesting and
+18:21 varied every time you went through a
+18:23 door.
+18:25 Um sometimes we do telegraph what's
+18:27 behind a door.
+18:29 So, if if you have these,
+18:31 that usually means you're going to mini
+18:32 boss fight
+18:33 and that's just to help make sure that
+18:35 the player knows what they're getting
+18:37 into but which mini boss fight you're
+18:39 going to get is still uh
+18:41 up in the air.
+18:43 Um
+18:45 This is an example of the the fountain
+18:47 room, nice easy free room. When you get
+18:49 that as a player you feel like you kind
+18:50 of cheated Hades a bit. You got a free
+18:53 reward.
+18:55 This is a mini boss fight,
+18:56 uh
+18:57 much harder
+19:00 encounter
+19:01 with the telegraph of knowing that
+19:02 you're about to to have to face that.
+19:05 Um
+19:09 Uh the other thing we did in chambers is
+19:11 predetermined points of randomization.
+19:13 So, if we can't modify the whole level,
+19:15 what we did is we picked very specific
+19:17 points inside of chambers that we knew
+19:20 that we could
+19:21 swap. So, the art whenever I put this
+19:24 table down in
+19:26 a gray box map,
+19:27 uh the artist would be able to know,
+19:29 okay, I don't want to block this with
+19:31 any visual stuff. I know that it could
+19:34 have a well on top of it, a taller cell
+19:37 shop
+19:38 or a treasure trove. Um This gives us
+19:41 some flexibility. Um
+19:44 We did similar things for floor doors.
+19:46 So, these are portals that take you to
+19:48 other uh
+19:50 zones of the underworld.
+19:52 Breakables, we swapped them
+19:55 with higher value ones. Fishing points
+19:58 can layer over rivers.
+20:00 The thing to note here is like
+20:01 everything has the same footprint, which
+20:03 means that when this is placed in the
+20:05 gray box level, the artist can draw
+20:07 around it and make sure that it looks
+20:10 good and no matter what spawns on top of
+20:12 it, we know that there won't be any
+20:14 uh
+20:15 weird looking
+20:17 after effects. Um
+20:20 A lot of this is invisible to player,
+20:22 where these can spawn.
+20:24 It's predetermined by the designer, but
+20:26 uh in in if it's if it's working right,
+20:30 the player won't notice that it was a
+20:32 predetermined spot. So, this is actually
+20:34 a view into our editor.
+20:35 Um
+20:37 These are spawn points placed around the
+20:39 map
+20:40 and these are like
+20:42 guaranteed safe spaces for an enemy to
+20:44 spawn.
+20:45 So, we don't actually have an algorithm
+20:47 for like finding a place with no
+20:50 collision and no
+20:52 it's all hand placed,
+20:53 but there's enough of them around the
+20:55 map that
+20:56 uh
+20:57 for the player it should feel like any
+20:59 enemy can spawn anywhere.
+21:01 But then we have rules surrounding where
+21:03 enemies can spawn. So, the first thing
+21:05 that's a little hard to see here, but a
+21:07 lot of these spawn points have types.
+21:09 So, this for instance is a ranged spawn
+21:11 point. This is a support spawn point and
+21:14 here is a melee spawn point. Um
+21:17 We treated these as preferences. So, if
+21:19 possible, we want
+21:22 enemy that is ranged to spawn
+21:25 in more uh
+21:27 harder to reach areas like this little
+21:29 island up here. And if possible, we want
+21:31 support units to spawn in the middle of
+21:33 maps where they might be backed up by
+21:35 other enemies.
+21:36 Um
+21:38 But there's more rules attached to that
+21:40 that actually take priority.
+21:42 So, the player is going to be moving
+21:43 around. So, this is all ideal if we know
+21:45 that the player is coming in through
+21:47 this side of the map, but as soon as the
+21:49 player starts fighting over here,
+21:51 suddenly what used to be an advantage is
+21:53 range position might not be so anymore.
+21:55 What's more important actually is how
+21:57 close or how far away the
+21:59 the spawn point is from the player.
+22:02 So, if you can imagine like Zagreus is
+22:05 here, there's a minimum spawn distance
+22:07 where we don't want enemies to spawn on
+22:08 top of you. We want them to spawn a
+22:11 little bit further away,
+22:13 but there's also a max distance. We
+22:14 don't want them to spawn off screen.
+22:16 So, there's almost like a donut
+22:17 following Zagreus around as you're
+22:20 making your way through the underworld
+22:21 and that donut is like the green zone of
+22:23 where enemies are allowed to spawn. Um
+22:27 The main reason we don't want enemies to
+22:28 spawn far away is because of that
+22:30 immediacy. We want the combat encounters
+22:32 to be quick and fast. And if enemies are
+22:35 spawning off screen, what ended up
+22:36 happening is the players were
+22:38 backtracking a lot through the levels
+22:39 trying to search for the enemy and we
+22:41 didn't want that. We wanted the
+22:42 encounters to be quick and challenging.
+22:48 Map flipping.
+22:50 This
+22:51 happens all throughout Hades. So, if we
+22:54 if we design the map in one orientation,
+22:58 our engine is able to just flip this
+23:01 uh
+23:03 and make it look like it was designed in
+23:05 the other direction as well.
+23:07 This was uh
+23:09 an easy one for us because
+23:11 it subcon like it it feels like a
+23:13 different room when you're going through
+23:14 it and if you don't see this room more
+23:16 than once per run,
+23:18 next time you're in Tartarus, if you see
+23:21 the room in this orientation,
+23:23 your brain actually tricks you into
+23:24 feeling like it's a different room. Um
+23:27 Which was super effective and basically
+23:29 free. Um
+23:31 What this also did is it helped us keep
+23:33 exit continuity. So, if we're going to
+23:35 serve content dynamically,
+23:37 uh
+23:38 we still need to find a way to make sure
+23:39 that the whole
+23:41 uh
+23:41 underworld feels like a cohesive place.
+23:43 We wanted to make it feel like a real
+23:44 place.
+23:46 And part of that
+23:47 was to make sure that if you exit a room
+23:50 from down here to up here, we want to
+23:54 make sure that you're entering the next
+23:55 room from that same direction. So, it
+23:56 feels like you went from that same room
+23:59 to the next one.
+24:00 And what map flipping lets us do is if a
+24:02 room only has an entrance from one
+24:05 direction, we can flip it and suddenly
+24:07 that exit is in the other direction. So,
+24:09 every room can match up with any other
+24:11 room,
+24:13 which helps keep that continuity of
+24:15 space.
+24:17 Um So, chambers fairly limited in how
+24:21 much we could vary within them.
+24:23 So, they were uh
+24:25 handcrafted the way we would design any
+24:27 other linear game, but we had discrete
+24:30 points of randomization within those
+24:32 chambers where we could serve a set of
+24:36 known possibility spaces for the
+24:39 uh
+24:39 player. Um as long as we kept the
+24:42 results of what you would get within
+24:44 that limited space really high impact,
+24:47 it would maintain the tension. But next
+24:51 up we had encounters and encounters is
+24:52 where we really kind of had
+24:54 uh
+24:55 the opportunity to do a lot of
+24:56 procedurally procedurally generated
+24:59 decisions and give the designers a lot
+25:01 more knobs to turn.
+25:04 But this this presented a whole new set
+25:06 of problems for us to solve.
+25:09 Most importantly is how do we make
+25:10 things interesting when everything is
+25:11 possible?
+25:13 Um
+25:14 We started off Hades making every
+25:17 encounter by hand. So, we would say
+25:20 an early easy Tartarus encounter has
+25:23 these two enemy types and this amount of
+25:25 enemies
+25:26 because that's how Supergiant had
+25:27 designed games in the past.
+25:29 In
+25:31 a linear game you design
+25:32 each encounter and you make sure that
+25:34 the tension is ramping up over time. Um
+25:37 And new content is being introduced at a
+25:39 good pace.
+25:41 Um
+25:41 But we've quickly realized as we added
+25:43 more and more stuff is that we were
+25:44 creating every combination of enemy
+25:47 encounter anyways.
+25:49 There was very few instances where we
+25:51 never where we didn't want uh
+25:54 this enemy to be in the same room as the
+25:55 other enemy.
+25:57 So, as we added more and more stuff, we
+26:00 realized that we need more parts of this
+26:02 process to be procedural
+26:04 because that's going to give us the the
+26:05 widest range of possibilities. Um
+26:09 That said, there's very few rare cases
+26:11 in the game where we still have
+26:13 handcrafted encounters.
+26:14 The first time you start Hades, the
+26:16 first room you get is our tutorial where
+26:18 we
+26:19 guarantee that you'll get a certain
+26:21 amount of enemies
+26:22 and certain types. Um
+26:26 But uh
+26:27 starting to make uh
+26:29 more parts of the process procedural,
+26:31 the question was
+26:32 how much control is the designer going
+26:34 to have over the algorithm? What knobs
+26:36 are we going to need to make sure that
+26:38 encounters don't just feel like
+26:40 random things, but actually
+26:43 uh
+26:44 have uh
+26:46 pace behind them.
+26:47 So, we're going to go through our
+26:49 encounters uh generator. Um
+26:53 Encounters are actually created on
+26:54 demand. We create encounters when we're
+26:57 going to serve them. So, if you're
+26:58 entering a room,
+27:00 uh
+27:01 the encounter can take into account your
+27:02 current game state
+27:04 and present something that is relevant
+27:07 to the current state of the game. So, an
+27:09 encounter is given a difficulty rating
+27:11 based on your current position in a
+27:14 biome.
+27:15 So, if you are deep into Tartarus, you
+27:17 will have a higher difficulty rating.
+27:19 That encounter then is filled by enemies
+27:21 and enemy types have
+27:24 a difficulty rating as well, which is
+27:26 used
+27:27 to take up part of that difficulty pie.
+27:30 Um
+27:33 That encounter's difficulty pie is then
+27:35 split across waves. So, this is actually
+27:37 just a screenshot directly out of our
+27:39 scripts.
+27:40 This means that a single wave encounter
+27:41 will have 100% of the difficulty rating.
+27:44 Two wave encounter will split the
+27:46 difficulty 50% first wave, 50% second
+27:48 wave.
+27:49 Uh
+27:50 Three wave encounters, 30% will be in
+27:52 the first wave, then you'll have like a
+27:54 little valley
+27:55 with only 15% of the difficulty and then
+27:57 we always want the final wave to be the
+27:59 highest. As you can see here, I crossed
+28:01 out five wave encounters. At some point
+28:03 those existed in Hades and they felt
+28:04 like the game was never going to end
+28:06 because you were stuck in the same room
+28:07 for minutes.
+28:09 So,
+28:10 we kept those there on the off chance
+28:12 that we would eventually want them. We
+28:13 ended up never using them. Um
+28:17 Uh
+28:18 These were like these values
+28:22 would change very slightly, but they
+28:24 like whenever we changed anything here,
+28:27 it would actually have a huge
+28:28 ramification across the whole game's
+28:29 feel.
+28:31 So, the later we got into the project,
+28:34 the more we like stopped touching
+28:37 these values. Um Once we found the
+28:39 pacing that we wanted, this actually
+28:42 became its own constraint of like
+28:44 we know we want this amount of
+28:46 difficulty rating at this point in
+28:48 Tartarus.
+28:49 So, if we wanted to change that, um we
+28:51 would have to
+28:53 uh
+28:54 modify the enemies rather than
+28:56 the values.
+28:57 Um
+28:59 So, uh
+29:01 The encounter generator in Hades has two
+29:03 styles of encounter that it can
+29:04 generate. Um
+29:06 As we mentioned earlier, when
+29:08 transitioning from handcrafted, the
+29:09 first thing we did
+29:11 uh
+29:12 was just to randomly pair all enemies
+29:14 together
+29:15 and spread them across all the
+29:16 encounters.
+29:17 Um
+29:18 These kind of became
+29:20 known as family encounters, which are
+29:22 single wave encounters with a random set
+29:24 of two or three enemies.
+29:25 There's very little structure to it. But
+29:27 what we learned is that when everything
+29:28 is 100% random, it has the adverse
+29:31 effect of making it so that
+29:33 it doesn't feel unique. It doesn't feel
+29:34 interesting cuz you're seeing everything
+29:36 all the time. Um
+29:40 That's why we
+29:43 visualization
+29:44 three enemy types in in a wave. So, how
+29:47 can we provide a little bit more of that
+29:49 hand-designed structure that you would
+29:50 have in a linear game uh
+29:53 into an algorithm that's randomly
+29:55 pairing enemies. Um, and what we got was
+29:58 highlight encounters. So highlight
+30:00 encounters are multi-wave encounters um
+30:02 where one unit type is picked as a
+30:03 constant uh and the first wave is always
+30:06 that unit alone.
+30:07 Um, and then in subsequent waves it will
+30:10 have backup.
+30:11 Um, so visualization visualization of
+30:13 that wave one will have one enemy type
+30:16 and you will only see them. Then we'll
+30:17 throw a different enemy type into the
+30:19 mix to try try and change the context.
+30:21 And then wave three will have two new
+30:23 enemy types which don't necessarily have
+30:24 to be the same as
+30:26 the supporting ones of wave two,
+30:28 but the highlight enemy is always there.
+30:31 Uh, what this does is it gives the
+30:32 encounters a like a theme. Uh, and
+30:35 uh it's it's subtle but the it's it's
+30:38 noticeable because uh
+30:41 with your build you're approaching
+30:42 fighting that enemy in a unique way and
+30:44 if you now have to take into account uh
+30:46 a different context um
+30:48 it builds on that knowledge rather than
+30:50 just throwing two completely different
+30:52 enemies uh into the mix.
+30:54 Uh, this uh went hand-in-hand with our
+30:57 intro encounters. So the first time you
+30:58 see an enemy in Hades
+31:00 you always see them alone and that's
+31:02 because in traditional RPG design that's
+31:05 uh
+31:06 that that tends to be the best practice.
+31:08 You don't want to introduce some a new
+31:10 challenge uh
+31:12 when you the player is distracted by
+31:14 other things. You want to make sure that
+31:15 they have full time to uh
+31:18 learn what uh the enemy can do before uh
+31:21 muddying the waters and throwing
+31:23 throwing in new context.
+31:25 Um,
+31:29 uh our general encounters uh
+31:33 also uh
+31:34 had rules based around uh
+31:36 enemies. Uh, so
+31:38 it was burden on the enemy to say when
+31:41 they could or could not be eligible.
+31:43 Um,
+31:43 and they had a lot of data requirements
+31:45 that would allow them to modify how they
+31:47 would be be incorporated into
+31:48 encounters.
+31:50 Uh, this guy here is a shield crystal.
+31:52 Uh, its only job is to uh protect uh all
+31:56 of its friends um
+31:57 but alone it can't really do anything to
+31:59 the player.
+32:00 Um, so we would have uh things like
+32:02 block solo. So an encounter will never
+32:04 generate a highlight encounter with the
+32:06 shield crystal because we don't want it
+32:08 to appear alone. Um,
+32:10 but it can come into any other encounter
+32:12 as a support unit. Uh, similarly we have
+32:14 max count. Uh, we use this on things
+32:16 like spawners. Uh, we never want more
+32:18 than two or three spawners in a a map uh
+32:21 because those are are exponential uh
+32:24 enemy generators. Uh, so we can limit
+32:26 how many of each enemy type is in there.
+32:28 Uh, hate we also increase the active
+32:31 enemy counts and the max enemy types uh
+32:33 you see the deeper you get into a biome.
+32:35 Uh, so you'll see more enemies at the
+32:37 same time and more types of enemies
+32:40 um
+32:40 as we want the pacing to increase uh
+32:42 with the difficulty. And similarly that
+32:45 uh chambers uh we want the chambers to
+32:47 reflect the encounter that's going into
+32:49 them. So if uh we have smaller
+32:51 encounters early in the biome we also
+32:52 want them to be appear in smaller
+32:54 chambers uh and larger ones later. Uh,
+32:57 this helps preserve the uh
+33:01 the pacing and make sure that the player
+33:02 isn't searching large maps for just the
+33:05 one or two enemies that we want to
+33:07 spawn.
+33:11 So another note on difficulty ratings uh
+33:13 we're going to go through an example uh
+33:14 at least in the encounter here. Uh,
+33:17 570 is the uh
+33:19 difficulty rating that this rolled. Uh,
+33:21 but uh difficulty ratings are actually
+33:24 ended up being more of a minimum. Uh,
+33:26 the reason for this is that as enemies
+33:28 are added into an encounter they take up
+33:30 part of the difficulty pie. Um,
+33:33 but we always want to make sure that at
+33:34 least one of the enemy types that is
+33:36 chosen
+33:37 um is in there. Uh, so often times that
+33:40 will mean if a large enemy is the last
+33:42 one to get added into an encounter uh
+33:44 it'll overflow. But that's okay. Uh, as
+33:46 soon as it overflows it stops. Uh, but
+33:48 that at least guarantees that every
+33:49 enemy is represented uh at least once.
+33:52 Um,
+33:53 so here we go. Uh, this is Elysium the
+33:55 third biome of the game.
+33:57 Uh, the first wave uh selected the
+33:59 strongbow as the highlight unit. Here
+34:00 you can see you're fighting three of
+34:01 them. I'm also using cheat mode so I'm
+34:03 dealing way way too much damage.
+34:05 Uh, um wave two
+34:07 you'll get the strongbow here with an
+34:09 elite brightsword to back it up. Uh,
+34:12 notice that wave two is a lot smaller
+34:13 just two enemies. And then finally wave
+34:15 three uh
+34:17 incorporates two whole new enemies the
+34:18 shield uh and uh a witch uh
+34:22 uh supporting the one strongbow.
+34:24 Um,
+34:26 this is uh
+34:27 all throughout the game
+34:28 um but kind of provides that uh
+34:32 designer uh influence on an algorithm
+34:35 um
+34:36 to keep uh some sort of structure behind
+34:38 it.
+34:39 Um,
+34:42 so and elites uh elites uh starting at
+34:45 depth three can be uh introduced in a
+34:48 level. Um,
+34:50 initially they were just simple stat
+34:51 boost but we uh kept adding to them and
+34:53 actually by the end of Hades development
+34:56 elites have unique abilities that
+34:58 actually uh
+35:00 um change their behavior. Um,
+35:02 elites and regular versions of enemies
+35:04 can't appear in the same encounter. Uh
+35:05 the reason behind this is that we don't
+35:07 want
+35:08 uh an enemy to surprise a player because
+35:10 they missed uh some key visual
+35:13 uh indicator. So elites have a yellow
+35:15 outline but in the middle of combat that
+35:16 might be hard to see. So if they're
+35:18 going to have different abilities we
+35:19 want to make sure that two enemies with
+35:21 the same uh silhouette aren't behaving
+35:24 differently.
+35:25 Um,
+35:25 so
+35:27 uh they kind of block that and enemies
+35:28 can
+35:29 have the ability to block any other
+35:31 enemy type from being in in the
+35:33 encounter with them. It's kind of a
+35:34 first come first serve system so if one
+35:36 enemy uh shows up uh and you don't want
+35:39 it uh with another enemy type uh it'll
+35:41 get first dibs.
+35:43 Um,
+35:45 elites have a really really good effect
+35:47 on pacing. Um, so if we just linearly
+35:49 create bigger and bigger uh encounters
+35:52 as you go through the the game uh
+35:54 it won't uh
+35:56 it won't feel exciting. Uh, it'll just
+35:58 be a straight curve rather than having
+36:00 the peaks and valleys that you want. Uh,
+36:01 elites help us uh
+36:04 maintain the difficulty increase but
+36:06 uh vary how how many enemies you see at
+36:08 any one time. So an elite will take a
+36:10 larger portion of the difficulty pie um
+36:14 uh and keep the enemy count low in
+36:16 certain encounters.
+36:18 Uh, and then finally special encounters.
+36:20 So uh in order uh
+36:23 to keep uh
+36:25 new things coming at the player we have
+36:26 one-time encounters.
+36:28 Um, we found that uh milestones are the
+36:30 most memorable parts of a run.
+36:32 Um,
+36:33 you might not remember every every
+36:35 encounter but you'll remember uh
+36:37 the things that only happened once. Um,
+36:40 so large stretches of our combat are
+36:41 broken in up by our rare special
+36:43 encounters.
+36:44 Um, some examples of this are survival
+36:47 encounters where you have to survive for
+36:49 a certain number of seconds. Uh, trial
+36:50 of the gods where you have to choose
+36:52 between two gods the one you don't
+36:53 choose gets angry at you and upgrades
+36:55 your
+36:56 uh foes. Uh, Erebus challenges where you
+36:58 have to clear the whole encounter
+36:59 without getting hit. Uh, Thanatos you
+37:01 have to
+37:02 uh compete for the most kills.
+37:05 Um, so uh a thing to notice for these uh
+37:09 encounters is that they're asking you to
+37:11 change your play style uh which is
+37:13 important to break the player out of
+37:15 that uh
+37:16 that um
+37:18 flow because the player will will
+37:21 uh
+37:22 will tend to do whatever easiest uh to
+37:24 complete a combat encounter. But an
+37:25 Erebus encounter will ask players
+37:28 uh who are tend who tend to just dive in
+37:30 headfirst uh take a couple hits but
+37:32 they'll take the enemy out before they
+37:33 die.
+37:34 Um,
+37:35 it's asking them to play more cautiously
+37:37 and Thanatos competing for the most
+37:39 kills is doing the opposite. It's asking
+37:41 cautious players to maybe play a little
+37:43 bit more aggressively than they would
+37:44 have otherwise um to try and uh make
+37:46 sure that they get the the final blow on
+37:48 the enemy for the kill. Um,
+37:50 so pushing the player to uh go out of
+37:52 their comfort zone
+37:54 um
+37:55 keeps them uh engaged when they go back
+37:57 into their
+37:58 um their flow. Uh,
+38:00 and then finally mini bosses were huge
+38:03 to making biomes feel unique and that's
+38:04 why we put a lot of effort into making
+38:06 sure making sure there's at least uh two
+38:08 or three options of mini bosses. Uh, so
+38:10 you never know which one you're going to
+38:11 get and they tend to challenge different
+38:13 play styles.
+38:14 Uh, so sometimes you'll get the one
+38:15 that's easier for your current build and
+38:17 sometimes you'll get the one that's
+38:18 harder.
+38:21 Uh,
+38:22 so how do we space encounters in uh a
+38:24 biome? Let's look at example with
+38:26 Tartarus. Uh, so after room three uh you
+38:30 can get a fountain room. After room four
+38:32 you can get an NPC story room. After
+38:34 room uh between five and eight you can
+38:36 get a shop.
+38:37 Between six and 10 you can get a mini
+38:39 boss fight.
+38:40 Uh,
+38:40 at room 12 you will always get the
+38:42 pre-boss and at uh room 13 uh you'll get
+38:45 the uh Fury fight. Um,
+38:48 an interesting thing to note here is the
+38:49 gaps where no special encounter can
+38:52 spawn. So that's at the start of the run
+38:54 and uh right before the boss. Uh,
+38:57 we want to guarantee that the player is
+38:59 still having those like standard
+39:01 portions of combat uh so that they're
+39:03 not just going from special room to
+39:05 special room and not really uh playing
+39:07 uh the difficulty of the game. Um,
+39:10 so we have those gaps. The other thing
+39:12 to note is that a lot of these are
+39:14 guaranteed to be offered but not
+39:16 required to be taken. So for instance
+39:17 the shop and the mini boss in the middle
+39:19 of the run uh they will always be
+39:21 offered at some point in your run.
+39:24 Uh, but if you have a a room with
+39:26 multiple doors you can choose not to
+39:27 take it if that's uh the choice you want
+39:29 to make on that run.
+39:32 So encounters became our most dynamic
+39:34 content. We had a lot of knobs we could
+39:36 change them in a lot of ways uh
+39:38 but we found that putting rules uh and
+39:41 and knobs in place uh
+39:43 helped us add some design intent to an
+39:44 otherwise completely random system
+39:47 and emulate some of those decisions that
+39:48 would be made in a game where we had
+39:50 full control over the pacing.
+39:52 Um
+39:54 At the end of each biome the player
+39:55 faces a boss fight
+39:57 and as we discussed the milestones are
+39:59 the most memorable parts of a run. So we
+40:00 asked ourselves what can we do to make
+40:02 sure that these
+40:04 pieces of content that you will see
+40:05 every single run
+40:07 will remain interesting over the long
+40:09 term. So
+40:10 bosses in Hades have phases that get
+40:13 triggered at certain health thresholds
+40:16 and during those phase transitions
+40:18 that's
+40:19 where they can gain or lose abilities.
+40:22 Um
+40:23 So for instance
+40:25 Megara here she will get the most screen
+40:28 time by default because she's the first
+40:30 boss you'll see in the game.
+40:31 So what what can we do to make her
+40:33 interesting?
+40:34 Well
+40:35 at the
+40:37 at the first phase phase transition she
+40:39 will pick between two ability sets.
+40:41 She'll either get the projectile storm
+40:43 or the lightning patterns on the floor.
+40:45 These challenge very different build
+40:47 styles
+40:48 but whichever one she doesn't get she'll
+40:49 get at the final phase of her fight.
+40:53 Um
+40:54 So these these small changes make it so
+40:56 that it doesn't feel exactly the same
+40:57 every time you go in but they don't have
+40:58 a huge impact on how you approach a
+41:01 biome.
+41:02 So that's where we decided that if
+41:04 you're going to see the first boss a lot
+41:06 what better way to make it varied than
+41:08 just add two other bosses.
+41:11 Um
+41:11 So
+41:13 uh
+41:14 the Fury sisters Alecto and Tisiphone
+41:17 also show up. Their boss fights are
+41:19 completely different rooms. They have
+41:21 completely different ability sets and
+41:23 this kind of mirrors our discovery that
+41:24 we had with chambers where small
+41:26 variations on an existing
+41:29 boss will feel a little different and a
+41:31 little interesting but the the best bang
+41:35 for your buck you can get is if you have
+41:37 the budget to just create
+41:40 whole different variations that will
+41:41 challenge the player in different ways.
+41:43 Um and then just serve it randomly
+41:46 so you don't know which one you're going
+41:47 to get.
+41:49 Uh similar to encounters the Hydra
+41:53 uh
+41:54 was
+41:55 similar problem where you don't want to
+41:56 show everything you can do every time
+41:58 you get to it.
+41:59 Um
+42:00 The role of the Hydra changed a lot over
+42:02 the course of development because when
+42:03 we shipped early access that was the
+42:04 final boss of the game. We only had the
+42:06 two biomes
+42:07 and then we added Elysium and Styx on
+42:09 top of that.
+42:10 So its role in the pacing of a run
+42:13 actually changed over time
+42:15 but where it landed was
+42:17 in that middle phase. So we want to make
+42:18 sure that middle phase
+42:20 um
+42:21 has a decent amount of variation so we
+42:23 gave it five different head types each
+42:25 with different abilities. Here you see
+42:26 the spawner the the wave maker and the
+42:29 the head slammer.
+42:31 But similar to encounters where you
+42:33 don't want to see every enemy every time
+42:36 you don't want to see every head every
+42:37 time. So out of the five heads only
+42:39 three will be chosen for any one
+42:41 instance of the fight.
+42:42 Um
+42:44 Theseus and the Minotaur
+42:46 similar attempts at varying their
+42:48 abilities at the second phase Theseus
+42:50 gets upgraded by a god the same way that
+42:52 Zagreus does but the god that's chosen
+42:55 is always the one that is that you
+42:57 haven't encountered that run yet. And
+42:59 the reason for that is for visual
+43:00 clarity. We don't want to make sure that
+43:02 if you're using in this case Demeter
+43:05 abilities
+43:07 we don't want to make we want to make
+43:08 sure that it's not confusing which ones
+43:09 are going to be damaging and which ones
+43:11 are going to be friendly. So
+43:13 it also guarantees that you're seeing
+43:15 more gods throughout the run.
+43:18 Finally once we had added all the
+43:21 content to Hades
+43:23 we could play a a run from beginning to
+43:25 end and we had it in a state where we
+43:27 found that it was interesting
+43:29 and for that new player experience
+43:32 it was enough variety to get them
+43:34 through their first win. But now our
+43:36 question was how do we provide
+43:38 this variance for potentially hundreds
+43:41 of runs for the long term.
+43:45 Our attempt at this was variety through
+43:46 challenge. So up to this point it was
+43:48 variety in
+43:50 how we serve content.
+43:53 Is there a way we can make it so that
+43:55 uh how hard the content is is what
+44:00 is keeping it unique.
+44:02 So a lot of these features
+44:05 that you can turn on are things that we
+44:08 thought were interesting that could add
+44:09 variance to the game but maybe it wasn't
+44:12 like
+44:13 interesting for a player who was just
+44:15 getting to know Hades who was just
+44:16 getting to know the game.
+44:19 We didn't want to complicate
+44:21 the mechanics too much while the player
+44:23 was still getting their bearings. But at
+44:24 this point we know you've completed the
+44:26 game once
+44:27 you might be ready for a little bit more
+44:30 complicated uh
+44:32 mechanics.
+44:33 But we also acknowledge that challenge
+44:35 isn't for everybody.
+44:37 Not everyone gets enjoyment out of just
+44:39 making the game harder and harder.
+44:41 So we tried to incorporate different
+44:44 methods of increasing difficulty
+44:47 but we also
+44:49 added rewards to small increases in
+44:52 difficulty. So each time you go through
+44:54 the game with different weapons and and
+44:58 and attributes
+45:00 uh
+45:01 you get rewards for turning on
+45:03 bounties but they reset when you switch
+45:05 weapons
+45:07 and this kind of naturally
+45:09 uh
+45:10 encourages the player to
+45:12 increase the difficulty but also turn it
+45:13 back down
+45:15 and then experiment with the different
+45:18 uh uh
+45:20 conditions.
+45:21 Um this was actually kind of
+45:24 nerve-wracking because
+45:26 what was it going to be successful to
+45:28 give the player control over their own
+45:29 variance?
+45:31 It's not something
+45:32 that is guaranteed to work. So a lot of
+45:35 our systems behind the rewards of this
+45:37 are to are there to encourage the player
+45:38 to not just turn it up to 11 and keep it
+45:41 there but try and play around with the
+45:43 system a bit more.
+45:45 Um
+45:46 So some examples of this that
+45:48 went to the game benefits package
+45:51 we always ask ourselves how can we make
+45:52 it elites more difficult more
+45:54 interesting more varied.
+45:55 Uh
+45:56 In the back to punishment you can turn
+45:58 on this on and it gives elites things
+46:01 called
+46:02 elite attributes.
+46:04 Um
+46:04 The player has mastery over the enemy
+46:07 abilities. How do we challenge that? Um
+46:11 But also how do we keep it fair?
+46:14 So our first rule was all elite
+46:15 attributes had to be
+46:17 visible at a glance because we can't as
+46:20 we said earlier with our constraints
+46:22 we can't change the the look of the
+46:25 enemy.
+46:26 We can't add things to them. So all the
+46:30 upgrades need to be visible at a glance
+46:31 and usually this was done through visual
+46:33 effects
+46:34 or UI but if this enemy has an attack
+46:37 boost then it would have a red aura
+46:39 around it. Um Another thing that we
+46:42 were able to do is not every attribute
+46:44 has to work with any enemy. So this is
+46:46 the skull crusher here. His whole thing
+46:48 is that he likes to launch himself up
+46:49 into the air
+46:51 kind of zoom around the top of you with
+46:53 a big shadow and then pick a point to
+46:56 drop down.
+46:57 And one of our elite attributes is uh
+47:00 teleportation. So we definitely didn't
+47:02 want an enemy that you couldn't target
+47:04 to be teleporting while it's up in the
+47:06 sky
+47:08 or teleporting once it was already
+47:09 slammed on the floor so it blocked that.
+47:12 The other thing is
+47:14 enemies could have multiple elite
+47:15 attributes but not every attribute had
+47:17 to work with one another. This
+47:20 was really great because certain
+47:23 combinations felt extremely unfair. So
+47:25 if you have a teleporting enemies all
+47:26 over the place but then you also have
+47:28 lasers linking all the enemies together.
+47:31 If enemies are are doing both of those
+47:32 things then you will just get blindsided
+47:35 by
+47:36 by hits that you can't really control.
+47:38 So those two things block one another.
+47:41 And finally uh
+47:43 another instance of if we threw every
+47:46 thing into every encounter it wouldn't
+47:48 feel interesting. So if every enemy was
+47:50 getting these attributes you would end
+47:52 up basically seeing every attribute
+47:54 every room.
+47:55 So this is another instance where we
+47:57 limited how much you see per room. So
+47:58 only one enemy type gets chosen per room
+48:01 to be upgraded and that limits how much
+48:03 you see at a time so that uh it spreads
+48:07 it out over the course of the encounter
+48:09 or the run.
+48:11 Extreme measures. So as the player grows
+48:13 power grows bosses have the potential to
+48:15 become less threatening.
+48:17 Um
+48:18 So extreme measures offers often
+48:20 difficulty
+48:21 and variance in the player in the bosses
+48:23 abilities.
+48:25 Um
+48:26 This was actually a really fun part of
+48:27 the design process because this came in
+48:29 after the first iteration of the whole
+48:32 run was there. So this was a chance for
+48:34 us to look back at our older content and
+48:36 see what did we miss now that we like
+48:39 know so much more about our game which
+48:41 is not always an opportunity you get. Um
+48:45 So for instance for the Furies
+48:49 now not only do you not know which Fury
+48:51 you're going to face
+48:52 but now the other ones can show up in
+48:54 any random combination to support one
+48:56 another. Um
+48:58 In this instance all three showed up to
+49:01 fight you in the same room. Um
+49:04 Other examples is
+49:07 Lernie the the bone Hydra
+49:09 will get whole new room littered with
+49:12 more lava rivers and then a nice fun
+49:15 surprise at the end is
+49:17 before
+49:18 they were tethered
+49:20 to their specific spot in the final
+49:23 phase of this fight they get unleashed
+49:26 so they they can zoom around the map
+49:28 which is something that they couldn't do
+49:29 before and
+49:31 change up the ability uh
+49:34 uh power.
+49:35 Um Theseus and the Minotaur get new new
+49:40 toys to play with. Uh,
+49:42 it's intentionally small. It's kind of a
+49:43 spoiler, but they they get they kind of
+49:45 go go nuts.
+49:47 Um,
+49:47 Hades will restrict your your uh,
+49:50 view uh, making the encounter harder. It
+49:53 will uh, add a whole new face of the
+49:55 fight. Um, and it introduced the concept
+49:58 of super elites, which basically upgrade
+50:00 any of the elites from earlier in the
+50:02 game to super elites so that they're
+50:03 challenging with end game builds. Um,
+50:08 and that's basically Hades. Um, that uh,
+50:11 are that's the approach that we took uh,
+50:13 to make
+50:14 uh,
+50:15 Hades uh, feel interesting hopefully uh,
+50:18 over many many runs. Um,
+50:21 so just a quick summary of uh, what we
+50:23 learned. Uh, first off we uh, embrace
+50:26 our constraints. Uh, they helped focus
+50:28 the decisions around what we can do. Um,
+50:32 making a dynamic uh,
+50:34 game was new for Supergiant. It was like
+50:36 kind of a spiritual exploration of like
+50:38 is this something that we're comfortable
+50:40 with? Um,
+50:42 so what we learned is if we're going to
+50:44 have handcrafted uh, content we want to
+50:46 have methods of serving it dynamically.
+50:49 Um,
+50:51 and uh, a big way we can make that uh,
+50:54 interesting is to serve um,
+50:56 a small number of uh, possibilities uh,
+50:59 but make sure that they all have uh,
+51:01 high impact uh, on the player decision
+51:03 making. Um, which makes the runs less
+51:05 predictable and increases its dynamic
+51:07 range. Uh, another thing is if we're
+51:09 going to have a randomization uh, it's
+51:11 actually more interesting to uh, have
+51:13 rules um,
+51:15 and uh, intention behind it uh, because
+51:18 if you see everything all the time it
+51:19 makes everything feel the same. Uh,
+51:22 and variety is more perceivable when
+51:24 constraints um,
+51:26 uh, are within a certain possibility
+51:27 range. Um,
+51:29 and finally player control challenge uh,
+51:32 we found was interesting and for the
+51:34 most part it added a multiplier to all
+51:36 our efforts previously because as you
+51:39 uh,
+51:39 play around with the possibility space
+51:41 um,
+51:42 it changes how you approach uh, all the
+51:44 other pieces of content.
+51:47 Um,
+51:48 and that's my talk. Thank you so much
+51:49 for being here.
+52:01 Thank you so much Eduardo and we have a
+52:03 few minutes for questions if anyone
+52:04 would like to uh, come down to the front
+52:06 and ask anything.
+52:15 Uh, Tisiphone.
+52:17 Uh, Tisiphone is the Fury sister uh,
+52:21 who's in charge of punishing uh, the
+52:23 murders of uh, the Greek uh, uh,
+52:27 uh, the Greek heroes and uh,
+52:30 that chamber was extremely fun to design
+52:31 because uh, it's a chamber that actually
+52:34 constricts over time so it's as if she's
+52:37 uh, gripping you, but yeah.
+52:40 Uh, hi. Hello. So um, yeah, that's a
+52:44 two-part question actually. So uh, I get
+52:47 this
+52:48 vibe that the story is so like heavy and
+52:51 emotional and about fixing family
+52:53 relations and all that.
+52:55 So uh, how come you guys came up with
+52:58 that? And second part why uh, Greek
+53:02 mythology?
+53:03 Why Greek yeah. Uh, that's a great
+53:05 question. Um,
+53:08 Uh,
+53:09 uh, Greg uh,
+53:10 is our narrative designer um, and
+53:12 creative director. Um,
+53:14 he's probably the best person to an-
+53:15 answer this. Uh,
+53:17 but in general um,
+53:20 our our goal was to explore um,
+53:24 a lot of the themes uh, behind uh, the
+53:27 idea of death and what it means to be in
+53:30 a um,
+53:33 uh,
+53:33 an underworld but also uh,
+53:36 Greek mythology has a lot of family
+53:38 dynamics uh, which were interesting and
+53:40 I think uh,
+53:41 we thought that we had a unique
+53:43 perspective to offer uh,
+53:45 of what that uh,
+53:47 what those stories meant. Um, so uh,
+53:51 that's a great question that I
+53:53 unfortunately don't have the perfect
+53:55 answer to, but Greg um,
+53:57 uh,
+53:57 would be happy to answer that.
+54:01 There's one question from the stream.
+54:04 Um,
+54:04 what was it like to experience the
+54:06 massive success of Hades and was it
+54:08 overwhelming?
+54:10 Uh, it was uh, definitely uh,
+54:12 overwhelming uh, in a in a great way.
+54:16 Um,
+54:17 we knew that we had a game that we
+54:20 enjoyed to play over the course of
+54:21 development, which was kind of rare uh,
+54:23 from the very get-go uh, we had fun
+54:25 playing Hades. Um,
+54:27 so we knew that we had something that
+54:29 was at least interesting to people uh,
+54:31 like us, but the response that it got
+54:34 was completely overwhelming. Um,
+54:37 the the amount of uh,
+54:39 love that we see online for it and uh,
+54:42 for us it's just it there there's so
+54:43 many people who said they brought them
+54:45 happiness during a a very otherwise uh,
+54:49 dark time. So that's the most we could
+54:51 ask for and it was uh,
+54:52 very surprising but very humbling.
+54:55 Thank you.
+54:58 Uh,
+54:59 hello. Um,
+55:00 I
+55:02 I your levels were all um,
+55:04 hand painted and uh, I'm sure
+55:07 what was like the biggest challenges and
+55:09 stuff you would have changed with the
+55:11 process if you were to do the game again
+55:14 from your experiences today?
+55:17 Um,
+55:19 that's a good question. Um,
+55:26 There was there was always the
+55:27 possibility of like randomizing the
+55:29 traps as well as the enemies. Um,
+55:32 and I think that would be uh, a really
+55:34 interesting thing to still be able to
+55:36 explore. Um,
+55:39 we didn't really
+55:41 leave too much on the back burner. Like
+55:43 everything that we wanted to put into
+55:44 the game we were able to
+55:46 put in uh, to Hades. Um,
+55:49 so I can't say for certain that there's
+55:50 something that I would have done
+55:51 completely differently. Um,
+55:55 but
+55:56 um,
+56:00 yeah. Uh,
+56:01 it it if we if we had a method of
+56:03 changing uh, the traps uh, within a a an
+56:07 encounter I think that would have also
+56:08 given given rooms a very different
+56:10 personality. Um, so it would have been
+56:12 uh, fun to explore that, but yeah.
+56:15 Thank you. Yeah, thank you.
+56:20 Hi. So one of the most interesting parts
+56:23 of Hades for me are the weapons cuz
+56:25 there are six different weapons and all
+56:27 of them have four different forms they
+56:29 can take on. And then they are different
+56:31 based on the powers that you pick up
+56:33 during the runs. And I was wondering how
+56:35 it was to design with so many different
+56:38 capabilities of a run.
+56:41 Uh, yeah, that's a great question. So
+56:43 uh,
+56:45 uh,
+56:47 the weapons are definitely designed to
+56:48 have a to to
+56:50 uh, play towards very different player
+56:51 styles. Um,
+56:53 so uh,
+56:55 some of them are uh, more aggressive,
+56:58 more in your face and some of them are
+57:00 uh, more uh, reserved play safe shoot
+57:03 from afar. Um, and uh,
+57:06 it was it was important to us to have
+57:09 uh, those uh,
+57:10 it was important for us for Hades to
+57:13 have something for someone. Uh, so not
+57:15 every weapon had to be um, everyone's
+57:17 favorite as long as uh, it was
+57:19 somebody's favorite. Um,
+57:21 and uh, for on the content side it was
+57:24 just the content's job to support uh,
+57:27 that and make sure that there was
+57:29 not every encounter had to be the most
+57:31 difficult or the most interesting for
+57:32 any particular weapon type. Uh, but
+57:34 certain encounters and maps were
+57:36 definitely designed uh, around uh, it
+57:39 being more interesting. So for example
+57:40 Asphodel is a lot harder as a melee uh,
+57:44 weapon because uh, you have to take into
+57:47 account where you're standing a lot
+57:48 more. Whereas if you have a ranged
+57:50 weapon you're probably able to pick out
+57:51 a safer spot. Um,
+57:53 but in Elysium enemies are really good
+57:55 at chasing you down, which means that
+57:57 uh, if you if you're a ranged player now
+58:00 you have to be a little bit more on the
+58:01 move. Um,
+58:02 so it kind of goes hand in hand. The
+58:04 weapons provide a play style and the
+58:06 content hopefully provides different
+58:07 contexts to challenge that play style.
+58:10 Yeah, thank you very much.
+58:11 Yeah, thank you.
+58:15 I was actually a bit curious about the
+58:17 Thanatos challenges because when you
+58:20 enter such a room you can have a very
+58:23 you cannot be have a lot of damage per
+58:26 second or very little. Is there any sort
+58:28 of constraints that change how often he
+58:31 attacks in that mode or
+58:33 Um, we we definitely
+58:36 like we we went through a lot of
+58:37 iterations of Thanatos. Um,
+58:40 we
+58:42 we knew like it was a very particular
+58:44 balance of uh,
+58:48 how fair it felt for him to be able to
+58:50 steal hits and how often he attacked.
+58:52 Uh, so we only really has two main
+58:54 ability sets. Uh, the first one is he
+58:55 marks an enemy uh, who's who's marked
+58:58 for death and then there's also the uh,
+59:00 AoE that will kill any enemy after like
+59:03 4 seconds. Uh, so the the the knobs that
+59:05 we had there were how long those like
+59:08 telegraphs existed uh, before they one
+59:11 shot killed the enemies. Um,
+59:14 and the balance there was finding um,
+59:18 how
+59:20 how long most builds would would take to
+59:22 take down a certain enemy, but certainly
+59:24 like burst builds tended to be better
+59:26 against him than uh, damage over time
+59:29 builds. Uh, Uh, and that was just part
+59:31 of the the nature of um, encountering
+59:34 him. Sometimes you will completely like
+59:37 take every kill, and sometimes it'll be
+59:39 a close race, and sometimes you do lose
+59:40 to him.
+59:41 Um, but
+59:43 uh, a key thing there was uh, the the
+59:45 reward that you chose for that room is
+59:46 independent on whether you win. It's
+59:48 actually just a bonus. Um,
+59:50 so you'll still get the reward for
+59:51 finishing encounter. Uh,
+59:54 and you'll be rewarded if you played
+59:56 aggressively and got the kills.
+59:58 Uh, but that
+59:59 uh,
+1:00:01 reward the player, not punish the
+1:00:02 player, makes it so that your perception
+1:00:04 of the NPC is also positive. Because if
+1:00:06 he showed up, beat you, and took your
+1:00:08 reward,
+1:00:09 he wouldn't be a very likable character.
+1:00:12 Uh, he would be closer to Theseus. So,
+1:00:14 He's very likable.
+1:00:15 Exactly. That's that's the hope that we
+1:00:17 wanted for for him.
+1:00:18 But I was a bit more curious, uh, like
+1:00:21 these constraints, are these determined?
+1:00:23 Like do you have an estimate that this
+1:00:25 weapon type with this primary god deals
+1:00:29 this and this aggressive, or is this
+1:00:31 something you measure throughout the
+1:00:33 game? Like
+1:00:34 this player and kills enemies this fast
+1:00:37 and so on. Um, we didn't have specific
+1:00:41 uh,
+1:00:42 stats on that just because there's so
+1:00:44 many variations of
+1:00:46 uh, builds you can make uh, with the
+1:00:48 weapon and god combinations. So, we had
+1:00:51 like a uh, gut feeling.
+1:00:53 Um, but we didn't necessarily know that
+1:00:57 certain builds would have
+1:00:58 um, X amount of damage. And we don't
+1:01:00 modify the encounters based on the
+1:01:02 player abilities. Um, we design the
+1:01:05 encounters to be
+1:01:06 uh,
+1:01:07 uh,
+1:01:08 varied so that
+1:01:10 different encounters will challenge
+1:01:11 things, but sometimes
+1:01:13 uh, it'll just be a little bit too hard
+1:01:14 or a little bit too easy, and that's
+1:01:15 kind of the fun of the the variance. Um,
+1:01:18 yeah. Thank you. Yeah. Thank you.

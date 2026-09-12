@@ -1,0 +1,47 @@
+# Q&A: The guns and dungeons of Enter the Gungeon
+URL: https://www.gamedeveloper.com/design/q-a-the-guns-and-dungeons-of-i-enter-the-gungeon-i-
+Published: 2016-04-19
+
+Q&A: The guns and dungeons of Enter the Gungeon
+
+# Q&A: The guns and dungeons of Enter the Gungeon
+
+"The biggest challenges for making a procedural dungeon are 1) making it fun but fair, and 2) giving it a sense of structure. I like to say that we tried to teach our game to make Zelda dungeons."
+
+Tim W., Blogger
+
+April 19, 2016
+
+Dodge Roll's Enter the Gungeon is a twin-stick shooter and roguelike that has a lovely pixel art style and an astonishing array of weaponry. Players really seem to love the way its procedurally generated dungeons throw wave after wave of bad guys and bizarre bosses at them--according to Steamspy, it has sold over 200,000 copies on Steam alone in less than two weeks. (It's also available on PS4, GOG, and the Humble store.)
+
+We spoke to Dave Crooks of Dodge Roll for more background on the design decisions that went into making this surreal dungeon crawler. (Beginning with an explanation of its unique name.)
+
+# Can you tell us the idea behind the game? How did you come up with it?
+
+CROOKS: I was listening to Doseone and Kozilekâs Gun Godz soundtrack, and the next day the word âgungeonâ popped into my head.
+
+I asked a buddy what about a game called âEnter the Gungeonâ and he just said: â Yes. Now, what is it?â
+
+We hashed out the basic lore of the game over lunch, and the rest slowly fell into place over the first weeks of development.
+
+# Were there games that you drew inspiration from?
+
+Absolutely. Binding of Isaac is one of the most wonderfully designed games I have ever played and it was easily the biggest influence on Enter the Gungeon.
+
+Sitting above my desk is a signed boxed copy of Super Meat Boy. Edmund McMillen is a personal hero of mine.
+
+Other influences include Wasteland Kings (Nuclear Throne), Spelunky, Dark Souls and Metal Gear Solid.
+
+# Was it challenging to come up with the procedural generation algorithm for a dungeon crawl game? How do ensure that whatever room that comes out of that procedural generation is fun to play with?
+
+It came out of a great deal of trial and error.
+
+We quickly realized that the game was going to be more fun and more fair if we hand designed the rooms. This made teaching the generator layouts a bit simpler. We created a room and played it over and over again, and then structured floor layouts based on rules that we think make good dungeon designs.
+
+ "These designs are very much influenced by the Legend of Zelda, with a splash of D&D."
+
+The biggest challenges for making a procedural dungeon are: 1) making it fun but fair, and 2) making it have a sense of structure. I like to say that we tried to teach our game to make Zelda dungeons. I donât think we quite hit that mark, but Zelda dungeons and the layouts of the Gungeon share various similarities in structure.
+
+# How did you come up with the designs for the guns?
+
+We honestly just messed around over the course of two years. Many of the funnier or wacky guns came came from our artist. I would get into work one day and he would just say

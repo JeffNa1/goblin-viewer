@@ -1,0 +1,834 @@
+{
+  "status": "REVIEW ONLY \u2014 no playable game implementation",
+  "unit": "U = provisional player-footprint planning unit; not a voxel",
+  "rooms": [
+    {
+      "id": "01",
+      "name": "Boat Landing",
+      "kind": "start",
+      "box": [
+        465,
+        1540,
+        260,
+        120
+      ],
+      "role": "Arrive; learn movement without pressure.",
+      "pack": "None.",
+      "layout": "An irregular landing follows the riverbank. The paved arrival apron stays broad; a side dock carries the boat.",
+      "rule": "No damage hazards or random enemies. The landing must identify the return point.",
+      "family": "shoreline landing",
+      "label": [
+        607,
+        1608
+      ],
+      "outline": "M540 1540 H585 L625 1560 H700 L725 1585 V1620 L700 1635 L650 1618 L600 1658 L550 1640 L525 1610 L465 1625 V1585 L500 1560 H540 Z",
+      "blockers": []
+    },
+    {
+      "id": "02",
+      "name": "Sluice Gate",
+      "kind": "combat",
+      "box": [
+        490,
+        1285,
+        295,
+        180
+      ],
+      "role": "Introduce the first melee and ranged pairing.",
+      "pack": "Suggested: warriors first; one archer in a later wave.",
+      "layout": "A skewed, splayed gatehouse opens into a broad diagonal combat lane. The two low blocks sit outside the entry and exit lines.",
+      "rule": "No ranged enemy on an unreachable ledge. Keep the entrance landing clear.",
+      "family": "splayed gatehouse",
+      "label": [
+        642,
+        1394
+      ],
+      "outline": "M560 1285 H615 L690 1310 L785 1370 L735 1420 L690 1465 H645 L565 1430 L520 1410 L490 1360 L515 1315 Z",
+      "blockers": [
+        [
+          548,
+          1330,
+          30,
+          25
+        ],
+        [
+          705,
+          1375,
+          26,
+          25
+        ]
+      ]
+    },
+    {
+      "id": "03",
+      "name": "Root Court",
+      "kind": "combat",
+      "box": [
+        380,
+        950,
+        340,
+        280
+      ],
+      "role": "First landmark encounter; reveal the route decision.",
+      "pack": "Suggested: warriors and one shaman. Do not introduce all roles together.",
+      "layout": "An oval court wraps a small root island. The two branches leave different curved shoulders; the perimeter remains a broad combat circuit.",
+      "rule": "Open the west and east exits after combat. Show shop and elite-reward symbols before the choice.",
+      "family": "oval root court",
+      "label": [
+        550,
+        1165
+      ],
+      "outline": "M505 955 H555 C620 955 685 995 700 1040 L720 1065 V1105 C700 1170 670 1215 600 1215 H530 C460 1220 395 1200 380 1125 V1065 C385 1000 445 960 505 955 Z",
+      "blockers": [
+        [
+          520,
+          1054,
+          58,
+          57
+        ]
+      ]
+    },
+    {
+      "id": "04",
+      "name": "Barracks",
+      "kind": "combat",
+      "box": [
+        45,
+        995,
+        275,
+        210
+      ],
+      "role": "Practice flanking around low obstacles.",
+      "pack": "Suggested: warriors with one archer.",
+      "layout": "The barracks fan outward from an oblique rear wall. Bunks follow the wall, while the wider eastern apron supports flanking and the court entrance.",
+      "rule": "Every ranged position needs a melee approach. A clue marks the optional secret door.",
+      "family": "splayed barracks",
+      "label": [
+        201,
+        1147
+      ],
+      "outline": "M45 1050 L160 1005 L185 995 H235 L275 1025 L320 1080 V1160 L270 1205 H135 L90 1180 Z",
+      "blockers": [
+        [
+          101,
+          1060,
+          28,
+          25
+        ],
+        [
+          145,
+          1045,
+          28,
+          25
+        ],
+        [
+          143,
+          1111,
+          50,
+          15
+        ]
+      ]
+    },
+    {
+      "id": "05",
+      "name": "Ember Smithy",
+      "kind": "shop",
+      "box": [
+        90,
+        785,
+        220,
+        140
+      ],
+      "role": "Offer a predictable spending opportunity on the safer route.",
+      "pack": "None.",
+      "layout": "A rounded forge bay joins a straight counter wing. The north-to-south walking lane stays outside the work area.",
+      "rule": "Optional purchases never block progression. This room is not on the risky route.",
+      "family": "keyhole smithy",
+      "label": [
+        213,
+        872
+      ],
+      "outline": "M165 785 H205 L230 808 H280 Q310 808 310 842 V883 Q310 910 280 910 L260 925 H215 L195 910 C135 930 90 900 90 855 C90 815 125 788 165 785 Z",
+      "blockers": [
+        [
+          120,
+          834,
+          35,
+          38
+        ],
+        [
+          241,
+          831,
+          39,
+          17
+        ]
+      ]
+    },
+    {
+      "id": "06",
+      "name": "Hunter Cloister",
+      "kind": "combat",
+      "box": [
+        65,
+        490,
+        225,
+        210
+      ],
+      "role": "Test target selection and pursuit.",
+      "pack": "Suggested: archers with one rogue after an arrival pause.",
+      "layout": "A wide L-shaped cloister surrounds an open garden corner. Its bend breaks a long firing line without turning the combat space into a narrow maze.",
+      "rule": "No immediate surround on entry. Keep flank paths wider than the player footprint.",
+      "family": "L-shaped cloister",
+      "label": [
+        165,
+        649
+      ],
+      "outline": "M65 490 H160 V560 H290 V640 H225 V700 H65 Z",
+      "blockers": [
+        [
+          97,
+          573,
+          20,
+          20
+        ],
+        [
+          191,
+          654,
+          20,
+          20
+        ]
+      ]
+    },
+    {
+      "id": "07",
+      "name": "Quiet Sanctuary",
+      "kind": "rest",
+      "box": [
+        375,
+        590,
+        250,
+        190
+      ],
+      "role": "Merge the routes and provide a one-use recovery offer.",
+      "pack": "None.",
+      "layout": "A round recovery sanctuary has four short vestibules. The fountain sits north of the crossing; the return lever remains in the south vestibule.",
+      "rule": "G1 opens only when reached from a valid branch. The recovery cannot be farmed by re-entry.",
+      "family": "four-port rotunda",
+      "label": [
+        500,
+        712
+      ],
+      "outline": "M475 590 H525 V605 Q585 605 600 660 H625 V710 H600 Q585 765 525 765 V780 H475 V765 Q415 765 400 710 H375 V660 H400 Q415 605 475 605 Z",
+      "blockers": [
+        [
+          479,
+          632,
+          42,
+          34
+        ]
+      ]
+    },
+    {
+      "id": "08",
+      "name": "Flooded Archive",
+      "kind": "combat",
+      "box": [
+        790,
+        975,
+        280,
+        285
+      ],
+      "role": "Offer a clearly signposted environmental risk.",
+      "pack": "Suggested: warriors and an archer; add the hazard only after the basic encounter works.",
+      "layout": "A crescent gallery follows an eroded water inlet. The inward bay creates a clear shoreline; the dry western band connects both doors without a thin bridge.",
+      "rule": "Bright shallow water is decorative in the first graybox. Any future damage zone needs a distinct warning.",
+      "family": "crescent archive",
+      "label": [
+        893,
+        1181
+      ],
+      "outline": "M905 980 H955 Q1040 985 1060 1045 L1050 1065 Q1010 1045 975 1070 Q945 1100 948 1135 Q950 1170 1010 1205 L995 1240 Q870 1265 805 1150 L790 1110 V1060 L815 1025 Q850 990 905 980 Z",
+      "blockers": [
+        [
+          850,
+          1117,
+          25,
+          30
+        ],
+        [
+          969,
+          1014,
+          28,
+          18
+        ]
+      ]
+    },
+    {
+      "id": "09",
+      "name": "Blood Vault",
+      "kind": "elite",
+      "box": [
+        800,
+        710,
+        235,
+        195
+      ],
+      "role": "Optional harder encounter that earns the branch reward.",
+      "pack": "Suggested: one enhanced warrior with shaman support. Exact tuning is untested.",
+      "layout": "A faceted ritual vault has splayed corners and a broad open center. Edge monuments frame the encounter rather than divide it into corridors.",
+      "rule": "Clearing this encounter unlocks both the reward in 10 and G2. The safer route must not bypass the elite.",
+      "family": "faceted ritual vault",
+      "label": [
+        917,
+        839
+      ],
+      "outline": "M885 710 H945 L1035 780 V830 L945 905 H885 L800 830 V780 Z",
+      "blockers": [
+        [
+          834,
+          786,
+          20,
+          20
+        ],
+        [
+          984,
+          786,
+          20,
+          20
+        ]
+      ]
+    },
+    {
+      "id": "10",
+      "name": "Sealed Spoils",
+      "kind": "reward",
+      "box": [
+        815,
+        540,
+        200,
+        105
+      ],
+      "role": "Pay off the elite commitment before route convergence.",
+      "pack": "None.",
+      "layout": "A small rounded apse holds the reward. Its western vestibule still meets the gated return into the sanctuary.",
+      "rule": "The chest and G2 stay locked until 09 is cleared. Re-entry does not create more rewards.",
+      "family": "apsidal reward bay",
+      "label": [
+        923,
+        610
+      ],
+      "outline": "M835 540 H915 Q1015 540 1015 590 Q1015 645 945 645 H900 Q815 645 815 615 V570 Q815 540 835 540 Z",
+      "blockers": [
+        [
+          890,
+          559,
+          57,
+          21
+        ]
+      ]
+    },
+    {
+      "id": "11",
+      "name": "Choir Hall",
+      "kind": "combat",
+      "box": [
+        335,
+        300,
+        340,
+        220
+      ],
+      "role": "Final normal encounter; combine previously taught roles.",
+      "pack": "Suggested: staged warrior, archer, and rogue groups.",
+      "layout": "A cruciform hall combines a north apse, a broad transept, and a clear central nave. Side arms offer flanking space instead of decorative dead corridors.",
+      "rule": "Do not spawn every group at once. Give a quiet interval before the boss door.",
+      "family": "cruciform choir",
+      "label": [
+        505,
+        438
+      ],
+      "outline": "M475 300 H535 Q575 315 575 365 H655 L675 385 V435 L655 455 H575 V500 L555 520 H455 L435 500 V455 H355 L335 435 V385 L355 365 H435 Q435 315 475 300 Z",
+      "blockers": [
+        [
+          382,
+          387,
+          22,
+          22
+        ],
+        [
+          608,
+          387,
+          22,
+          22
+        ],
+        [
+          486,
+          325,
+          38,
+          18
+        ]
+      ]
+    },
+    {
+      "id": "12",
+      "name": "Spore Grotto",
+      "kind": "boss",
+      "box": [
+        450,
+        10,
+        500,
+        270
+      ],
+      "role": "A visually distinct finale with a Chieftain encounter.",
+      "pack": "Suggested: Chieftain. Add helpers only after the solo pattern is readable.",
+      "layout": "An asymmetrical, multi-lobed grotto forms the finale. Recessed pools and rocky shoulders stay peripheral; a large continuous dry center supports the Chieftain encounter.",
+      "rule": "Keep the center mostly empty. Show attack warnings beneath effects. The exit unlocks after the boss.",
+      "family": "eroded grotto",
+      "label": [
+        722,
+        207
+      ],
+      "outline": "M548 45 L615 28 L676 38 Q720 10 762 24 L801 48 L853 39 L890 63 L882 89 L915 106 L905 137 L935 159 L922 200 L880 222 H844 L840 255 H790 L754 239 L707 252 L674 237 L643 251 L620 238 H565 L534 251 L496 233 L485 206 L460 190 L473 167 L458 139 L481 107 L505 101 L499 78 Z",
+      "blockers": [
+        [
+          500,
+          118,
+          36,
+          38
+        ],
+        [
+          842,
+          112,
+          30,
+          39
+        ]
+      ]
+    },
+    {
+      "id": "13",
+      "name": "Hidden Cache",
+      "kind": "secret",
+      "box": [
+        70,
+        1310,
+        150,
+        145
+      ],
+      "role": "Reward exploration without making it mandatory.",
+      "pack": "None.",
+      "layout": "A tapered crypt widens beyond its concealed threshold. The shape suggests an older excavation, not another standard reward box.",
+      "rule": "Use a deliberate interaction, not an assumed terrain-destruction system. Secret access cannot gate the boss.",
+      "family": "tapered crypt",
+      "label": [
+        150,
+        1420
+      ],
+      "outline": "M140 1310 H185 L220 1415 L200 1455 H70 V1410 Z",
+      "blockers": [
+        [
+          128,
+          1381,
+          44,
+          22
+        ]
+      ]
+    },
+    {
+      "id": "14",
+      "name": "Ascent",
+      "kind": "exit",
+      "box": [
+        895,
+        335,
+        150,
+        135
+      ],
+      "role": "Finish the floor and mark the next destination.",
+      "pack": "None.",
+      "layout": "A compact dogleg stair folds around the rock face. It is an exit landmark, not an extra rectangular combat chamber.",
+      "rule": "Entry requires the Chieftain clear flag. Do not put another combat encounter here.",
+      "family": "dogleg ascent",
+      "label": [
+        982,
+        448
+      ],
+      "outline": "M950 335 H990 V380 H1045 V435 Q1045 470 1010 470 H920 V425 H965 V405 H895 V375 H950 Z",
+      "blockers": []
+    }
+  ],
+  "links": [
+    {
+      "a": "01",
+      "b": "02",
+      "route": "shared",
+      "points": [
+        [
+          560,
+          1540
+        ],
+        [
+          560,
+          1505
+        ],
+        [
+          670,
+          1505
+        ],
+        [
+          670,
+          1465
+        ]
+      ]
+    },
+    {
+      "a": "02",
+      "b": "03",
+      "route": "shared",
+      "points": [
+        [
+          590,
+          1285
+        ],
+        [
+          590,
+          1250
+        ],
+        [
+          550,
+          1250
+        ],
+        [
+          550,
+          1215
+        ]
+      ]
+    },
+    {
+      "a": "03",
+      "b": "04",
+      "route": "safe",
+      "points": [
+        [
+          380,
+          1085
+        ],
+        [
+          352,
+          1085
+        ],
+        [
+          352,
+          1130
+        ],
+        [
+          320,
+          1130
+        ]
+      ]
+    },
+    {
+      "a": "04",
+      "b": "05",
+      "route": "safe",
+      "points": [
+        [
+          210,
+          995
+        ],
+        [
+          210,
+          960
+        ],
+        [
+          240,
+          960
+        ],
+        [
+          240,
+          925
+        ]
+      ]
+    },
+    {
+      "a": "05",
+      "b": "06",
+      "route": "safe",
+      "points": [
+        [
+          180,
+          785
+        ],
+        [
+          180,
+          700
+        ]
+      ]
+    },
+    {
+      "a": "06",
+      "b": "07",
+      "route": "safe",
+      "points": [
+        [
+          290,
+          605
+        ],
+        [
+          330,
+          605
+        ],
+        [
+          330,
+          685
+        ],
+        [
+          375,
+          685
+        ]
+      ]
+    },
+    {
+      "a": "03",
+      "b": "08",
+      "route": "risk",
+      "points": [
+        [
+          720,
+          1085
+        ],
+        [
+          790,
+          1085
+        ]
+      ]
+    },
+    {
+      "a": "08",
+      "b": "09",
+      "route": "risk",
+      "points": [
+        [
+          930,
+          980
+        ],
+        [
+          930,
+          945
+        ],
+        [
+          915,
+          945
+        ],
+        [
+          915,
+          905
+        ]
+      ]
+    },
+    {
+      "a": "09",
+      "b": "10",
+      "route": "risk",
+      "points": [
+        [
+          915,
+          710
+        ],
+        [
+          915,
+          675
+        ],
+        [
+          920,
+          675
+        ],
+        [
+          920,
+          645
+        ]
+      ],
+      "gate": "elite09"
+    },
+    {
+      "a": "10",
+      "b": "07",
+      "route": "risk",
+      "points": [
+        [
+          815,
+          590
+        ],
+        [
+          730,
+          590
+        ],
+        [
+          675,
+          685
+        ],
+        [
+          625,
+          685
+        ]
+      ],
+      "gate": "elite09",
+      "label": "G2"
+    },
+    {
+      "a": "07",
+      "b": "03",
+      "route": "shortcut",
+      "points": [
+        [
+          500,
+          780
+        ],
+        [
+          500,
+          830
+        ],
+        [
+          530,
+          890
+        ],
+        [
+          530,
+          955
+        ]
+      ],
+      "gate": "sanctuary07",
+      "label": "G1"
+    },
+    {
+      "a": "07",
+      "b": "11",
+      "route": "shared",
+      "points": [
+        [
+          500,
+          590
+        ],
+        [
+          500,
+          555
+        ],
+        [
+          505,
+          555
+        ],
+        [
+          505,
+          520
+        ]
+      ]
+    },
+    {
+      "a": "11",
+      "b": "12",
+      "route": "shared",
+      "points": [
+        [
+          505,
+          300
+        ],
+        [
+          505,
+          275
+        ],
+        [
+          590,
+          275
+        ],
+        [
+          590,
+          238
+        ]
+      ]
+    },
+    {
+      "a": "12",
+      "b": "14",
+      "route": "shared",
+      "points": [
+        [
+          815,
+          255
+        ],
+        [
+          815,
+          292
+        ],
+        [
+          970,
+          292
+        ],
+        [
+          970,
+          335
+        ]
+      ],
+      "gate": "boss12"
+    },
+    {
+      "a": "04",
+      "b": "13",
+      "route": "secret",
+      "points": [
+        [
+          185,
+          1205
+        ],
+        [
+          185,
+          1255
+        ],
+        [
+          160,
+          1255
+        ],
+        [
+          160,
+          1310
+        ]
+      ],
+      "gate": "discover13"
+    }
+  ],
+  "routes": {
+    "safe": [
+      "01",
+      "02",
+      "03",
+      "04",
+      "05",
+      "06",
+      "07",
+      "11",
+      "12",
+      "14"
+    ],
+    "risk": [
+      "01",
+      "02",
+      "03",
+      "08",
+      "09",
+      "10",
+      "07",
+      "11",
+      "12",
+      "14"
+    ]
+  },
+  "assumptions": {
+    "camera": "Fixed elevated three-quarter view; north stays consistent",
+    "player_footprint_U": 1,
+    "dash_U": 4,
+    "door_width_U": 4,
+    "corridor_width_U": 4,
+    "target_floor_minutes": [
+      12,
+      18
+    ],
+    "verified_in_game": false
+  }
+}

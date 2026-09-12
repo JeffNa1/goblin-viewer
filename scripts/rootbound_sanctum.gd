@@ -14,6 +14,7 @@ var gate_button: Button
 var inspection_open: bool = true
 
 func _ready() -> void:
+	get_window().title = "Rootbound Sanctum — B"
 	layout = JSON.parse_string(FileAccess.get_file_as_string("res://data/rootbound_layout.json"))
 	builder = Builder.new(layout)
 	builder.build(self)
@@ -174,7 +175,7 @@ func focus_room(index: int) -> void:
 func focus_overview() -> void:
 	selection.select(-1)
 	selection.text = "All rooms"
-	target = builder.world_point([557, 866])
+	target = builder.world_point([557, 866]) - Vector3.RIGHT * 30.0
 	camera.size = 223.0
 	overhead = true
 	detail.text = "14 approved spaces  ·  All reference monsters keep their original scene scale"

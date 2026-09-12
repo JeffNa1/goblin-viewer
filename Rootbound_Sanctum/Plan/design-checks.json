@@ -1,0 +1,11 @@
+{
+  "rooms": 14,
+  "links": 15,
+  "primary_routes": 2,
+  "room_envelope_overlaps": 0,
+  "all_rooms_reachable_with_prerequisites": true,
+  "elite_reward_blocked_without_clear": true,
+  "boss_exit_blocked_without_clear": true,
+  "svg_xml_parses": true,
+  "gameplay_tested": false
+}

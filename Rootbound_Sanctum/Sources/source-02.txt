@@ -1,0 +1,512 @@
+
+
+
+
+
+
+	
+		Deepnight Games | The Level Design of Dead Cells
+
+	  	
+
+		
+
+		
+
+		
+
+	
+
+
+
+				
+
+
+
+
+
+
+		deepnight.net
+
+
+
+	
+
+		
+
+		
+
+		
+
+
+
+		
+
+Bluesky
+
+Discord
+
+Itch.io
+
+Github
+
+	
+
+	
+
+Games
+
+Who am I?
+
+Art
+
+Tutorials
+
+Blog
+
+	
+
+	
+
+Tenjutsu
+
+Nuclear Blaze
+
+LDtk
+
+RPG Map
+
+GameBase
+
+	
+
+
+
+
+
+	
+
+
+
+						Back
+
+			
+				Feb
+				15
+				2020
+
+
+			The Level Design of Dead Cells
+
+			
+				10							
+
+		
+
+		
+
+			
+
+This article was originally posted on Gamasutra.
+
+During my time at Motion Twin, I’m was the Lead Designer on Dead Cells, a procedurally generated Metroidvania.
+
+As you would expect, questions about the quality of our procedural generation pop up very regularly, with both players and other devs. After recent high profile procedural generation controversies, we can’t blame people for being sceptical. This is particularly obvious when talking about a genre that relies on meticulous level design at its core. So we’d like to acknowledge these concerns and take a deep dive into how we’re planning to bring rogue-lite re-playability to a metroidvania. If you’re more a video guy, we also released a “lighter” version (still rather technical (read “boring”) though) of this dev diary on youtube. 
+
+Before looking at the how of the matter, let’s discuss the why, the reasons we chose to involve procedural generation in a genre known for painstaking level design. 
+
+At first, about two years ago when we began to design and build a prototype for Dead Cells, we went for the traditional, handmade way of doing things. Unfortunately, we quickly realised that we wouldn’t have the time to do it properly, considering the modest size of our team.
+
+From there, we knew we had to find alternatives. Before Dead Cells, we had already done quite a lot of browser games, most of them involving randomized elements and procedural generation so we were already quite familiar with the core concepts of procedural generation. On top of this, great use of procedural generation was being shown off by a bunch of critically and commercially successful games: Isaac, Minecraft, Starbound, etc. In light of this, it seemed like an obvious choice to at least build a prototype to test out the idea for Dead Cells. 
+
+And it worked well, bringing more replay value, a significant improvement for a game with any type of permadeath mechanic. Even better, we found that it fundamentally altered the feeling of the combat of the game, placing the emphasis on the player’s instincts and reflexes rather than relying on rote learning a level in order to progress. Overall, it felt really good.
+
+There was of course a catch. While the core gameplay feeling was improved by the freshness of new enemy placement, the level design took a great big hit. In short it was illogical, chaotic and left you with no feeling of consistency or immersion in the world.
+
+Not satisfied with either full handcrafting or full procedural generation, we could feel that there was a way to find a middle ground that would work. 
+
+Here, we’d like to thank the guys behind Spelunky, who came up with some interesting solutions to the same problem. You can find a brief explanation of how that works here, if you’re interested. But to sum it up, they used a hybrid approach between procedural generation and handmade levels, giving them that consistent feeling while maintaining a lot of diversity. 
+
+Before we get into the technical details of how this hybrid approach is implemented in our game, I want to mention two other sources of inspiration for Dead Cells.
+ 
+The first one is Faster Than Light, which we regard as a model when it comes to a game allying procedural generation with a well orchestrated plot and a very consistent universe. 
+
+The second one is Left For Dead. Unexpected right? Well, it’s something of a trace left over from “that time Dead Cells was a zombie tower defense game” but we definitely took some lessons from their underlying ideas. In LFD, Valve designed the levels to be dynamically modified through its “AI Director” system. Have a look over here for the basic explanation of the concept, it’s really quite interesting. 
+
+At the time, we began to develop our own “AI Director”, adapted for Dead Cells. While there is very little of that AID in the current version, we kept the underlying philosophy: building the level’s generation system around dramatic peaks and relaxing “breaks” to ensure an interesting game pacing and keep the player enthralled.
+
+So to sum up, the challenge was to build a partially procedurally generated world to create a feeling of change and diversity, excellent replay value and difficulty which is based on the players reaction to an evolving situation rather than rote learning. And we had to do this while keeping a feeling of consistency between runs and levels. Learning from previous games, and after many trials, errors, adjustments and a stack of tweaking, we’ve got six steps that we hope will help you approach procedural generation with quality level design as the underpinning rule.
+
+1. First, we place the fixed elements, acting a bit like a frame in which the procedural generation can express itself. The overall design of the map of the island, how the different levels are interconnected, where the keys to unlock new paths for your future runs are located etc. All of this never changes no matter the loaded variant (seed) of the game. In short the overall world layout is fixed and designed by hand.
+
+2. Then we hand design a bunch of level “tiles” chunks of carefully designed rooms with a certain amount of variations possible in each of them depending on their configuration. Here’s some examples of the CastleDB software we use to create the tiles:
+
+In practice, each tile has a specific layout of platforms designed for a specific purpose. A room designed to host a hidden treasure won’t be the same as another hosting a merchant, and both will be very different from the rooms designed around combat. As mentioned there are variations possible in the handmade tiles. These are defined by a handful of parameters, mainly the numbers of entrances and exits available and the room’s purpose. 
+
+Each room also pertains to a specific biome: for instance rooms used in the prison aren’t reused in the sewers. This allows us to give each level its own strongly defined identity. For example the sewers are very tight, restricting the ability to jump and dodge and forcing the player to think about their mob management.
+
+3. Ok so we’ve got a bunch of tiles that are fun to play, now we need to arrange them in a logical, interesting way. So we create a concept graph for each level (our “biomes”). A graph is a schematic visual display of the layout of the tiles inside a biome, represented here by nodes. We start by placing the entrance and exit of the level, then we add the special rooms (treasure, merchants, etc.) and finally the tiles in between where you fight and explore. 
+
+This graph acts like a set of instruction to the procedural generation algorithm describing the: length of the level, number of specials tiles, how much of the biome will be a labyrinthine, how many tiles separate the entrance from the nearest exit, etc. Again, each biome has a different graph to make it consistent with the part of the island it’s supposed to represent. For instance, we made the ramparts much more straightforward and linear than the sewers. 
+
+4. Only once we’ve laid down all of these constraints and set out the overall level design do we let the procedural generation algorithm loose… For each node, the algorithm tries a random room, among the ones dedicated for this particular biome, and tests to see if it complies with the instructions given by the graph (location and number of entrances, type, etc). If it doesn’t match, the algorithm tries another room until it finds one. And voilà! But wait… there’s more. 
+
+5. Next comes the reason to keep looking around. You need something to fight. The number of monsters in one level is defined by the total length of the combat based tiles in the level. Taking some random numbers, let’s say we have 250 combat based tiles in a procedurally generated sewers level. We then define the number of monsters that should appear per combat tiles, so say for example it’s 1 monster for every 5 tiles, you’ll have 50 monsters to place in the level.
+
+Each type of monster has its own constraints and parameters: for instance, some monsters being more dangerous than the others will count for 10 tiles, some can’t be used more than once per tile or level, some can’t be with other monsters on the same platform, some are placed where there is a lot of space to move and fight, etc. 
+
+6. The final step is to generate the gold, cells and loot, but the recipe for that is kept secret. Legend has it that each dev only has access to one file controlling one loot in order to avoid abuse…
+
+Well, congratulations for making it through the wall of text trial! We shared our method here, in the hope that someone else will be able to get something out of our take on procedural generation. I’m also hoping to encourage others devs to take risks – like wedding two seemingly incompatible ideas. Sometimes, it might just work.  
+
+If you have any questions or ideas, just leave me a comment and I’ll be glad to get back to you as soon as I can.
+
+			
+
+
+
+	10 Comments	
+
+
+
+
+
+
+
+
+
+
+
+	
+
+			
+
+		
+Leave a Reply Cancel reply
+Your email address will not be published. Required fields are marked *
+
+Comment * 
+
+Name 
+
+Email 
+
+Please answer this: 4 + 5 = ? 
+
+ 
+
+Δ
+
+	
+
+	
+
+			
+
+									
+
+
+
+
+
+
+				Sergei:
+
+There is a cool algorithm that would fit your use case I think. It's called wave function collapse.
+
+It sounds very complex, but in reality it just lets you match up tiles easily. E.g. if you have a tile with an exit on the right and you want to put another tile to the right, it will only consider tiles that have an exit on the left.
+
+It can work with arbitrary tiles, it's not limited to just 2d. Ultimately I think it accomplishes the same result, but it's more efficient.
+
+
+
+September 6, 2022 at 15:23
+
+				
+
+
+
+
+
+				
+
+
+
+
+
+
+				Sébastien Bénard:
+
+Hi, thanks for sharing this! Actually, the final algorithm was modified the way you described, as porting to the Switch proved to be a little bit tricky. The initial brute force approach wasn't that great ;)
+
+
+
+September 6, 2022 at 21:27
+
+				
+
+
+
+
+
+				
+
+
+
+
+
+
+				Daniel:
+
+Ok!,thanx
+
+
+
+October 7, 2021 at 01:12
+
+				
+
+
+
+
+
+				
+
+
+
+
+
+
+				Daniel:
+
+Great tutorial! pls iam work on a similar proj on Godot,can I know whether path is carved BTW 2 rooms & if so,how?
+
+
+
+October 5, 2021 at 19:48
+
+				
+
+
+
+
+
+				
+
+
+
+
+
+
+				Sébastien Bénard:
+
+It's technically possible but please note that the technique explained here is mostly "brute-force" trying with a few optimizations.
+
+
+
+October 5, 2021 at 22:24
+
+				
+
+
+
+
+
+				
+
+
+
+
+
+
+				Daniel:
+
+I know this is hard a make games my self but could you add multiplayer
+
+
+
+November 18, 2020 at 19:43
+
+				
+
+
+
+
+
+				
+
+
+
+
+
+
+				Lokesh Dhakar:
+
+I love the tooling around the world map and level graphs! It seems like a great way to allow a designer to focus on pacing, flow, and other criteria that span more than just an individual tile or encounter.
+
+
+
+October 7, 2020 at 01:36
+
+				
+
+
+
+
+
+				
+
+
+
+
+
+
+				mike:
+
+I'd like to have the tools they used to create the base game on their hands …
+
+
+
+May 28, 2020 at 15:02
+
+				
+
+
+
+
+
+				
+
+
+
+
+
+
+				Janek:
+
+Patrick Holleman's book "Reverse Design: Diablo II" also has a very interesting discussion of procedural map design (pages 61-63 and 69-74).
+
+
+
+March 16, 2020 at 19:04
+
+				
+
+
+
+
+
+				
+
+
+
+
+
+
+				A Fan:
+
+I am happy to see you are making more tutorials , it feels great to learn from the best !
+
+
+
+February 15, 2020 at 19:31
+
+				
+
+
+
+
+
+				
+
+
+
+
+
+			
+
+	
+
+	
+
+
+
+	
+
+
+
+
+				© 2014-2026 Deepnight Games, all rights reserved.
+
+
+
+
+				If you read this, you're awesome. Have a nice day!
+
+
+
+
+
+
+
+    
+
+    
+
+        
+
+            
+
+            
+
+            
+
+        
+
+        
+
+            
+
+                
+
+                
+
+                
+
+                
+
+                    
+
+                        
+
+                            
+
+                        
+
+                    
+
+                
+
+            
+
+            
+
+                
+
+                
+
+            
+
+            
+
+            
+
+                
+
+            
+
+        
+
+    
+
+	

@@ -147,10 +147,14 @@ func _start() -> void:
 	print(">>> ALL CLEAN FOOTAGE RECORDED SUCCESSFULLY! Total frames: 1440 <<<")
 	quit(0)
 
+var current_yaw: float = 20.0
+
 func _run_camera_frames(frame_count: int, base_yaw: float, sway_amplitude: float, monster_rot_speed: float) -> void:
 	for i in range(frame_count):
 		var sway = sin(float(i) * 0.06) * sway_amplitude
-		viewer.yaw = base_yaw + sway
+		var target = base_yaw + sway
+		current_yaw = lerpf(current_yaw, target, 0.12)
+		viewer.yaw = current_yaw
 		viewer._update_camera_transform()
 
 		if current_monster and monster_rot_speed != 0.0:

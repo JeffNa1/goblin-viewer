@@ -1,0 +1,12 @@
+{
+  "layout": true,
+  "progression": true,
+  "rooms": true,
+  "research": true,
+  "hide-routes": true,
+  "hide-labels": true,
+  "show-markers": true,
+  "roomBriefs": 14,
+  "brokenCitations": 0,
+  "mobileOverflow": false
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   AbsoluteFill,
+  Audio,
   OffthreadVideo,
   staticFile,
   useCurrentFrame,
@@ -271,18 +272,36 @@ export const VoxelPixelShowcase: React.FC = () => {
         : {
             type: 'MOVEMENT',
             name: 'HEAVY TITAN WALK CYCLE',
-            detail: 'EARTH-QUAKING STOMP FOOTSTEPS OF THE COLOSSUS',
+            detail: 'SHOULDER-HOISTED MACE STRIDE & FOOTSTEPS OF THE COLOSSUS',
           },
       stats: { hp: 100, atk: 98, def: 92, spd: 40 },
     };
   }
 
-  // Flash when switching outfits
-  const isOutfitSwitch =
-    (frame >= 118 && frame <= 124) ||
-    (frame >= 358 && frame <= 364) ||
-    (frame >= 658 && frame <= 664) ||
-    (frame >= 958 && frame <= 964);
+  // Smooth Character Transition (±10 frames around character switches)
+  const charBoundaries = [240, 540, 840, 1140];
+  let charTransitionFade = 0;
+  for (const b of charBoundaries) {
+    const dist = Math.abs(frame - b);
+    if (dist <= 10) {
+      const curve = (1 + Math.cos((dist / 10) * Math.PI)) / 2;
+      charTransitionFade = Math.max(charTransitionFade, curve);
+    }
+  }
+
+  // Smooth Outfit Transition (±8 frames around outfit switches)
+  const outfitBoundaries = [120, 360, 660, 960];
+  let outfitTransitionFade = 0;
+  for (const b of outfitBoundaries) {
+    const dist = Math.abs(frame - b);
+    if (dist <= 8) {
+      const curve = (1 + Math.cos((dist / 8) * Math.PI)) / 2;
+      outfitTransitionFade = Math.max(outfitTransitionFade, curve);
+    }
+  }
+
+  // UI opacity eases with character transitions
+  const uiOpacity = Math.max(0, 1 - charTransitionFade * 1.25);
 
   // Render 10 discrete pixel pips for stat bars
   const renderPixelStatBar = (label: string, value: number, color: string) => {
@@ -333,7 +352,7 @@ export const VoxelPixelShowcase: React.FC = () => {
         overflow: 'hidden',
       }}
     >
-      {/* 1. In-Engine Clean 3D Video Footage */}
+      {/* 1. In-Engine Clean 3D Video Footage (Muted) */}
       <OffthreadVideo
         src={staticFile('assets/clean_footage.mp4')}
         style={{
@@ -341,20 +360,53 @@ export const VoxelPixelShowcase: React.FC = () => {
           height: '100%',
           objectFit: 'cover',
         }}
+        muted
       />
 
-      {/* Outfit Switch Flash */}
-      {isOutfitSwitch && (
+      {/* 1B. Perfectly Mastered 48.0s BGM Audio Track */}
+      <Audio
+        src={staticFile('assets/bgm_showcase.mp3')}
+        volume={0.85}
+      />
+
+      {/* Smooth Cinematic Character Transition Dip to Dark */}
+      {charTransitionFade > 0 && (
         <div
           style={{
             position: 'absolute',
             inset: 0,
-            backgroundColor: '#ffffff',
-            opacity: 0.35,
+            backgroundColor: '#07090e',
+            opacity: charTransitionFade,
             pointerEvents: 'none',
+            zIndex: 10,
           }}
         />
       )}
+
+      {/* Smooth Subtle Outfit Transition Dip */}
+      {outfitTransitionFade > 0 && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundColor: '#000000',
+            opacity: outfitTransitionFade * 0.4,
+            pointerEvents: 'none',
+            zIndex: 5,
+          }}
+        />
+      )}
+
+      {/* UI OVERLAY LAYER (Smoothly fades during character transitions) */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          opacity: uiOpacity,
+          pointerEvents: 'none',
+          zIndex: 20,
+        }}
+      >
 
       {/* 2. PIXELATED ARCHER CROSSHAIR (Stepped Retro Pixel Art Reticle) */}
       {isArcherAiming && (
@@ -706,19 +758,7 @@ export const VoxelPixelShowcase: React.FC = () => {
         {renderPixelStatBar('DEF', data.stats.def, '#3b82f6')}
         {renderPixelStatBar('SPD', data.stats.spd, '#10b981')}
       </div>
-
-      {/* 7. Subtle Retro Scanline Overlay (Optional arcade feel) */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage:
-            'linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%)',
-          backgroundSize: '100% 4px',
-          pointerEvents: 'none',
-          opacity: 0.45,
-        }}
-      />
+      </div>
     </AbsoluteFill>
   );
 };

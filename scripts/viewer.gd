@@ -265,6 +265,11 @@ func _ready() -> void:
 			_update_outfit_ui()
 			_update_ui_state()
 		)
+	if m_chieftain and m_chieftain.has_signal("outfit_changed"):
+		m_chieftain.outfit_changed.connect(func(_id): 
+			_update_outfit_ui()
+			_update_ui_state()
+		)
 	
 	_setup_stance_editor()
 	switch_monster("warrior")
@@ -322,7 +327,7 @@ func _select_archer_outfit(id: int) -> void:
 func _update_outfit_ui() -> void:
 	if not btn_outfit1 or not btn_outfit2:
 		return
-	var has_outfit = (active_monster_type in ["warrior", "archer", "shaman", "rogue"])
+	var has_outfit = (active_monster_type in ["warrior", "archer", "shaman", "rogue", "chieftain"])
 	var sep = sub_group_stances.get_node_or_null("OutfitSep")
 	if sep:
 		sep.visible = has_outfit
@@ -354,6 +359,11 @@ func _update_outfit_ui() -> void:
 			btn_outfit1.tooltip_text = "Bộ đồ 1: Dã nhân rình rập (khăn bố gai, khố da thú, dao đá & nanh thú) [Phím O]"
 			btn_outfit2.text = "🥷 Đồ 2 (Sát Thủ)"
 			btn_outfit2.tooltip_text = "Bộ đồ 2: Sát thủ bóng đêm (giáp da viền cowl, phi đao, song dao răng cưa tẩm độc) [Phím O]"
+		elif active_monster_type == "chieftain":
+			btn_outfit1.text = "👹 Đồ 1 (Nguyên Thủy)"
+			btn_outfit1.tooltip_text = "Bộ đồ 1: Mace Ogre dã tính nguyên thủy (da thú xù lông, đại chùy đá gai, nanh heo rừng) [Phím O]"
+			btn_outfit2.text = "🛡️ Đồ 2 (Thiết Giáp)"
+			btn_outfit2.tooltip_text = "Bộ đồ 2: Thiết Giáp Ma Thú (Full giáp sắt hạng nặng, mũ chiến trận giác đấu, đại chùy thép 8 cánh hủy diệt) [Phím O]"
 
 func _on_stance_btn_pressed(idx: int) -> void:
 	if not current_monster_node or not current_monster_node.has_method("get_stance_definitions"):
@@ -1218,12 +1228,27 @@ func _update_ui_state() -> void:
 		var o_label = "Đồ 1: Thô Sơ" if m_archer.current_outfit == 1 else "Đồ 2: Ranger"
 		archer_name = "Goblin Archer [%s]" % o_label
 		
+	var shaman_name = "Goblin Shaman (Pháp Sư)"
+	if m_shaman and "current_outfit" in m_shaman:
+		var s_label = "Đồ 1: Thầy Mo" if m_shaman.current_outfit == 1 else "Đồ 2: Đại Pháp Sư"
+		shaman_name = "Goblin Shaman [%s]" % s_label
+
+	var rogue_name = "Goblin Rogue (Sát Thủ)"
+	if m_rogue and "current_outfit" in m_rogue:
+		var r_label = "Đồ 1: Thô Sơ" if m_rogue.current_outfit == 1 else "Đồ 2: Sát Thủ"
+		rogue_name = "Goblin Rogue [%s]" % r_label
+
+	var ogre_name = "Mace Ogre (Boss)"
+	if m_chieftain and "current_outfit" in m_chieftain:
+		var og_label = "Đồ 1: Nguyên Thủy" if m_chieftain.current_outfit == 1 else "Đồ 2: Thiết Giáp"
+		ogre_name = "Mace Ogre [%s]" % og_label
+		
 	var m_names = {
 		"warrior": warrior_name,
 		"archer": archer_name,
-		"shaman": "Goblin Shaman (Pháp Sư)",
-		"rogue": "Goblin Rogue (Sát Thủ)",
-		"chieftain": "Mace Ogre (Boss)"
+		"shaman": shaman_name,
+		"rogue": rogue_name,
+		"chieftain": ogre_name
 	}
 	
 	var cur_status = cur.to_upper()
