@@ -14,6 +14,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.618, 0)
 
 [node name="TorsoMesh" type="MeshInstance3D" parent="VisualRoot/Hips/Torso"]
 
+[node name="Cloak" type="Node3D" parent="VisualRoot/Hips/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.44, -0.16)
+
+[node name="CloakMesh" type="MeshInstance3D" parent="VisualRoot/Hips/Torso/Cloak"]
+visible = false
+
 [node name="Head" type="Node3D" parent="VisualRoot/Hips/Torso"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.51, 0)
 
@@ -65,7 +71,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.27, 0)
 [node name="RightShinMesh" type="MeshInstance3D" parent="VisualRoot/Hips/RightThigh/RightShin"]
 
 [node name="TotemSpawn" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.55, 0, 0.40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.40, 0, 0.90)
 
 [node name="TotemMesh" type="MeshInstance3D" parent="TotemSpawn"]
 visible = false

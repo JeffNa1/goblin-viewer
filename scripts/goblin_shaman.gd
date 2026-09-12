@@ -26,6 +26,10 @@ extends Node3D
 @onready var right_thigh_mesh: MeshInstance3D = $VisualRoot/Hips/RightThigh/RightThighMesh
 @onready var right_shin_mesh: MeshInstance3D = $VisualRoot/Hips/RightThigh/RightShin/RightShinMesh
 
+@onready var cloak: Node3D = $VisualRoot/Hips/Torso/Cloak
+@onready var cloak_mesh: MeshInstance3D = $VisualRoot/Hips/Torso/Cloak/CloakMesh
+var cloak_current_rot: Vector3 = Vector3.ZERO
+
 @onready var totem_spawn: Node3D = $TotemSpawn
 @onready var totem_mesh: MeshInstance3D = $TotemSpawn/TotemMesh
 
@@ -56,6 +60,15 @@ var stance_configs: Dictionary = {}
 # Stun Stars
 const StunStarsScript = preload("res://scripts/stun_stars.gd")
 var stun_stars: Node3D = null
+
+# Magic Projectile
+const ShamanProjectileScript = preload("res://scripts/shaman_projectile.gd")
+var hex_projectile_launched: bool = false
+
+# Outfit System
+var current_outfit: int = 1
+var outfit_meshes: Dictionary = {}
+signal outfit_changed(outfit_id: int)
 
 signal anim_changed(anim_name: String)
 
@@ -118,10 +131,10 @@ func _init_default_stances() -> void:
 			"right_arm_rot": Vector3(-88.0, -10.0, 18.0),
 			"right_forearm_rot": Vector3(-10.0, 0.0, 0.0),
 			"staff_rot": Vector3(88.0, 10.0, 0.0),
-			"left_arm_rot": Vector3(28.0, 0.0, -26.0),
-			"left_forearm_rot": Vector3(-40.0, 0.0, 0.0),
-			"torso_rot": Vector3(12.0, -22.0, 0.0),
-			"head_rot": Vector3(-4.0, 12.0, 0.0)
+			"left_arm_rot": Vector3(-62.0, -18.0, -16.0),
+			"left_forearm_rot": Vector3(-25.0, 0.0, 0.0),
+			"torso_rot": Vector3(12.0, -20.0, 0.0),
+			"head_rot": Vector3(-4.0, 14.0, 0.0)
 		},
 		"hurt": {
 			"right_arm_rot": Vector3(-36.0, 0.0, 28.0),
@@ -188,8 +201,9 @@ func get_stance_definitions() -> Array:
 	]
 
 func get_weapon_info() -> Dictionary:
+	var title = "🔮 VƯƠNG TRƯỢNG RỒNG TÍM (HƯỚNG TRƯỢNG)" if current_outfit == 2 else "🦯 QUYỀN TRƯỢNG BỘ LẠC (HƯỚNG TRƯỢNG)"
 	return {
-		"title": "🦯 QUYỀN TRƯỢNG (HƯỚNG TRƯỢNG)",
+		"title": title,
 		"prop": "staff_rot"
 	}
 
@@ -272,18 +286,60 @@ func _lerp_angles(a: Vector3, b: Vector3, weight: float) -> Vector3:
 	)
 
 func generate_voxel_meshes() -> void:
-	head_mesh.mesh = VoxelBuilder.build_shaman_head_mesh()
-	torso_mesh.mesh = VoxelBuilder.build_shaman_torso_mesh()
-	staff_mesh.mesh = VoxelBuilder.build_shaman_staff_mesh()
 	totem_mesh.mesh = VoxelBuilder.build_totem_mesh()
-	left_arm_mesh.mesh = VoxelBuilder.build_shaman_upper_arm_mesh()
-	left_forearm_mesh.mesh = VoxelBuilder.build_shaman_forearm_mesh(false)
-	right_arm_mesh.mesh = VoxelBuilder.build_shaman_upper_arm_mesh()
-	right_forearm_mesh.mesh = VoxelBuilder.build_shaman_forearm_mesh(true)
-	left_thigh_mesh.mesh = VoxelBuilder.build_shaman_thigh_mesh()
-	left_shin_mesh.mesh = VoxelBuilder.build_shaman_shin_mesh()
-	right_thigh_mesh.mesh = VoxelBuilder.build_shaman_thigh_mesh()
-	right_shin_mesh.mesh = VoxelBuilder.build_shaman_shin_mesh()
+	
+	# Pre-build meshes for Outfit 1 (Thầy Mo Bộ Lạc / Feral Tribal Witch Doctor)
+	outfit_meshes[1] = {
+		"head": VoxelBuilder.build_shaman_head_mesh(1),
+		"torso": VoxelBuilder.build_shaman_torso_mesh(1),
+		"upper_arm": VoxelBuilder.build_shaman_upper_arm_mesh(1),
+		"left_forearm": VoxelBuilder.build_shaman_forearm_mesh(false, 1),
+		"right_forearm": VoxelBuilder.build_shaman_forearm_mesh(true, 1),
+		"staff": VoxelBuilder.build_shaman_staff_mesh(1),
+		"thigh": VoxelBuilder.build_shaman_thigh_mesh(1),
+		"shin": VoxelBuilder.build_shaman_shin_mesh(1),
+		"cloak": null
+	}
+	
+	# Pre-build meshes for Outfit 2 (Đại Pháp Sư Tím / Grand Arch-Shaman Magenta)
+	outfit_meshes[2] = {
+		"head": VoxelBuilder.build_shaman_head_mesh(2),
+		"torso": VoxelBuilder.build_shaman_torso_mesh(2),
+		"upper_arm": VoxelBuilder.build_shaman_upper_arm_mesh(2),
+		"left_forearm": VoxelBuilder.build_shaman_forearm_mesh(false, 2),
+		"right_forearm": VoxelBuilder.build_shaman_forearm_mesh(true, 2),
+		"staff": VoxelBuilder.build_shaman_staff_mesh(2),
+		"thigh": VoxelBuilder.build_shaman_thigh_mesh(2),
+		"shin": VoxelBuilder.build_shaman_shin_mesh(2),
+		"cloak": VoxelBuilder.build_shaman_cloak_mesh()
+	}
+	
+	apply_outfit(current_outfit)
+
+func set_outfit(outfit_id: int) -> void:
+	current_outfit = clamp(outfit_id, 1, 2)
+	apply_outfit(current_outfit)
+	outfit_changed.emit(current_outfit)
+
+func apply_outfit(outfit_id: int) -> void:
+	if not outfit_meshes.has(outfit_id):
+		return
+	var m: Dictionary = outfit_meshes[outfit_id]
+	head_mesh.mesh = m["head"]
+	torso_mesh.mesh = m["torso"]
+	left_arm_mesh.mesh = m["upper_arm"]
+	left_forearm_mesh.mesh = m["left_forearm"]
+	right_arm_mesh.mesh = m["upper_arm"]
+	right_forearm_mesh.mesh = m["right_forearm"]
+	staff_mesh.mesh = m["staff"]
+	left_thigh_mesh.mesh = m["thigh"]
+	left_shin_mesh.mesh = m["shin"]
+	right_thigh_mesh.mesh = m["thigh"]
+	right_shin_mesh.mesh = m["shin"]
+	if cloak_mesh:
+		var cm = m.get("cloak", null)
+		cloak_mesh.mesh = cm
+		cloak_mesh.visible = (cm != null)
 
 func _init_stun_stars() -> void:
 	stun_stars = StunStarsScript.new()
@@ -299,6 +355,9 @@ func play_anim(anim_name: String) -> void:
 	
 	if current_anim in ["idle", "walk", "run", "chant", "stunned"]:
 		base_anim = current_anim
+		
+	if current_anim == "hex":
+		hex_projectile_launched = false
 		
 	if stun_stars:
 		stun_stars.set_active(current_anim == "stunned")
@@ -330,6 +389,9 @@ func _process(delta: float) -> void:
 			emit_signal("anim_changed", current_anim)
 	elif current_anim == "hex":
 		action_time += dt
+		if not hex_projectile_launched and action_time >= 0.38:
+			hex_projectile_launched = true
+			_spawn_hex_projectile()
 		if action_time >= HEX_DURATION:
 			current_anim = base_anim
 			action_time = 0.0
@@ -359,6 +421,83 @@ func _process(delta: float) -> void:
 		current_pose = target_pose
 		
 	_apply_pose(current_pose)
+	_update_cloak_physics(dt)
+
+func _update_cloak_physics(delta: float) -> void:
+	if not cloak or not cloak_mesh or not cloak_mesh.visible:
+		return
+		
+	var target_rot = Vector3.ZERO
+	
+	match current_anim:
+		"idle":
+			# Majestic slow breathing and gentle ambient breeze
+			var t = anim_time * 2.2
+			target_rot.x = 5.0 + sin(t) * 3.2 + sin(t * 0.45) * 1.5
+			target_rot.z = sin(t * 0.7) * 2.5
+			target_rot.y = cos(t * 0.35) * 1.8
+		"walk":
+			# Pacing stride: trailing behind with rhythmic step counter-sway
+			var t = anim_time * 4.5
+			target_rot.x = 13.0 + sin(t * 2.0) * 4.5
+			target_rot.z = sin(t) * 6.5
+			target_rot.y = cos(t) * 3.5
+		"run":
+			# High speed charging sprint: lifted high backward with aerodynamic wave ripples
+			var t = anim_time * 5.5
+			target_rot.x = 28.0 + sin(t * 2.2) * 6.5 + sin(t * 3.7) * 2.8
+			target_rot.z = sin(t) * 8.0
+			target_rot.y = cos(t) * 4.5
+		"chant":
+			# Levitation mana vortex: floats outward and up as mystical energy surges
+			var t = anim_time * 3.0
+			target_rot.x = -9.0 + sin(t) * 5.5
+			target_rot.z = sin(t * 0.8) * 4.0
+			target_rot.y = cos(t * 0.5) * 3.0
+		"summon":
+			# Wind shockwave during totem ground slam
+			var tau = clampf(action_time / SUMMON_DURATION, 0.0, 1.0)
+			if tau < 0.36:
+				target_rot.x = 10.0 + sin(tau / 0.36 * PI) * 8.0
+				target_rot.z = sin(tau * 15.0) * 3.0
+			elif tau < 0.70:
+				var shock_u = (tau - 0.36) / 0.34
+				target_rot.x = 30.0 * (1.0 - shock_u) + 6.0
+				target_rot.z = sin(shock_u * PI * 3.5) * 9.0 * (1.0 - shock_u)
+			else:
+				var settle_u = (tau - 0.70) / 0.30
+				target_rot.x = lerpf(6.0, 5.0, settle_u)
+				target_rot.z = sin(settle_u * PI) * 2.0
+		"hex":
+			# Snap thrust backward trail then recoil settle
+			var tau = clampf(action_time / HEX_DURATION, 0.0, 1.0)
+			if tau < 0.30:
+				target_rot.x = -4.0 * (tau / 0.30)
+			elif tau < 0.50:
+				var snap_u = (tau - 0.30) / 0.20
+				target_rot.x = lerpf(-4.0, 26.0, snap_u)
+				target_rot.z = snap_u * 6.0
+			elif tau < 0.75:
+				var recoil_u = (tau - 0.50) / 0.25
+				target_rot.x = 26.0 * (1.0 - recoil_u) + 5.0
+				target_rot.z = 6.0 * (1.0 - recoil_u)
+			else:
+				target_rot.x = 5.0
+		"hurt":
+			var tau = clampf(action_time / HURT_DURATION, 0.0, 1.0)
+			target_rot.x = 20.0 * sin(tau * PI)
+			target_rot.z = -12.0 * sin(tau * PI)
+		"stunned":
+			var t = anim_time * 2.5
+			target_rot.x = 3.0 + sin(t) * 2.5
+			target_rot.z = sin(t * 0.8) * 5.0
+		_:
+			target_rot.x = 5.0
+			
+	# Smooth physical damping with inertia
+	var follow_speed = 8.0
+	cloak_current_rot = cloak_current_rot.lerp(target_rot, clampf(delta * follow_speed, 0.0, 1.0))
+	cloak.rotation_degrees = cloak_current_rot
 
 func _update_totem_spawn(t_s: float) -> void:
 	var tau = clampf(t_s / SUMMON_DURATION, 0.0, 1.0)
@@ -367,19 +506,37 @@ func _update_totem_spawn(t_s: float) -> void:
 		totem_mesh.visible = true
 		var rise_s = clampf((tau - 0.36) / 0.18, 0.0, 1.0)
 		var smooth_rise = smoothstep(0.0, 1.0, rise_s)
-		# Erupts from Y = -1.2m below ground to Y = 0.0m
-		totem_spawn.position.y = lerp(-1.2, 0.0, smooth_rise)
-		if rise_s < 1.0:
-			totem_spawn.position.x = 0.55 + sin(t_s * 55.0) * 0.02
-		else:
-			totem_spawn.position.x = 0.55
+		# Erupts from Y = -1.5m below ground to Y = 0.0m
+		totem_spawn.position.y = lerp(-1.5, 0.0, smooth_rise)
+		var tremor = (1.0 - rise_s) * 0.015
+		totem_spawn.position.x = 0.40 + sin(t_s * 55.0) * tremor
+		totem_spawn.position.z = 0.90 + cos(t_s * 45.0) * tremor
 	elif tau >= 0.94:
 		var sink_s = clampf((tau - 0.94) / 0.06, 0.0, 1.0)
-		totem_spawn.position.y = lerp(0.0, -1.2, smoothstep(0.0, 1.0, sink_s))
+		totem_spawn.position.y = lerp(0.0, -1.5, smoothstep(0.0, 1.0, sink_s))
+		totem_spawn.position.x = 0.40
+		totem_spawn.position.z = 0.90
 		if tau >= 0.99:
 			totem_mesh.visible = false
 	else:
 		totem_mesh.visible = false
+
+func _spawn_hex_projectile() -> void:
+	var tip_pos: Vector3
+	if staff:
+		# Staff top is at approx y = 1.02m along local staff Y axis
+		tip_pos = staff.global_transform * Vector3(0.0, 1.02, 0.0)
+	else:
+		tip_pos = global_transform.origin + Vector3(0.0, 1.0, 0.8)
+		
+	# Forward direction in world coordinates with subtle upward elevation
+	var fwd = global_transform.basis.z.normalized()
+	var launch_dir = Vector3(fwd.x, fwd.y + 0.04, fwd.z).normalized()
+	
+	var proj = ShamanProjectileScript.new()
+	var target_parent = get_parent() if get_parent() else self
+	target_parent.add_child(proj)
+	proj.launch(tip_pos, launch_dir, current_outfit)
 
 func _compute_pose(anim: String, time_val: float) -> Dictionary:
 	match anim:
@@ -701,102 +858,158 @@ func _compute_summon(t_s: float) -> Dictionary:
 		
 	return p
 
-# --- 6. HEX BOLT (Spellcaster Kinetic Chain: Coil Mana -> Snap Forward Aiming Demon Skull Orb -> Recoil -> Settle, ZERO CLIPPING) ---
+# --- 6. HEX BOLT (Spellcaster Kinetic Chain: Coil Mana -> Snap Forward Aiming Demon Skull Orb -> Damped Recoil -> Settle, ZERO CLIPPING) ---
 func _compute_hex(t_h: float) -> Dictionary:
 	var p: Dictionary = {}
 	var tau = clampf(t_h / HEX_DURATION, 0.0, 1.0)
-	var cfg = stance_configs.get("hex", default_stance_configs.get("hex", {}))
-	var base_staff: Vector3 = cfg.get("staff_rot", Vector3(88.0, 10.0, 0.0))
-	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-88.0, -10.0, 18.0))
-	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-10.0, 0.0, 0.0))
-	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(28.0, 0.0, -26.0))
-	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-40.0, 0.0, 0.0))
+	
+	# Base Stance (Idle / Recovery Target)
+	var cfg_idle = stance_configs.get("idle", default_stance_configs.get("idle", {}))
+	var idle_r_arm: Vector3 = cfg_idle.get("right_arm_rot", Vector3(-12.0, 6.0, 20.0))
+	var idle_r_fore: Vector3 = cfg_idle.get("right_forearm_rot", Vector3(-35.0, 0.0, 0.0))
+	var idle_staff: Vector3 = cfg_idle.get("staff_rot", Vector3(12.0, 12.0, -8.0))
+	var idle_l_arm: Vector3 = cfg_idle.get("left_arm_rot", Vector3(-25.0, 15.0, -26.0))
+	var idle_l_fore: Vector3 = cfg_idle.get("left_forearm_rot", Vector3(-65.0, 0.0, 0.0))
+	var idle_torso: Vector3 = cfg_idle.get("torso_rot", Vector3(6.0, 0.0, 0.0))
+	var idle_head: Vector3 = cfg_idle.get("head_rot", Vector3(-4.0, 0.0, 0.0))
+	var idle_l_thigh: Vector3 = Vector3(-4.0, 0.0, -3.5)
+	var idle_l_shin: Vector3 = Vector3(6.0, 0.0, 0.0)
+	var idle_r_thigh: Vector3 = Vector3(4.0, 0.0, 3.5)
+	var idle_r_shin: Vector3 = Vector3(4.0, 0.0, 0.0)
+	
+	# Configured Hex Apex Cast Pose
+	var cfg_hex = stance_configs.get("hex", default_stance_configs.get("hex", {}))
+	var cast_staff: Vector3 = cfg_hex.get("staff_rot", Vector3(88.0, 10.0, 0.0))
+	var cast_r_arm: Vector3 = cfg_hex.get("right_arm_rot", Vector3(-88.0, -10.0, 18.0))
+	var cast_r_fore: Vector3 = cfg_hex.get("right_forearm_rot", Vector3(-10.0, 0.0, 0.0))
+	var cast_l_arm: Vector3 = cfg_hex.get("left_arm_rot", Vector3(-62.0, -18.0, -16.0))
+	var cast_l_fore: Vector3 = cfg_hex.get("left_forearm_rot", Vector3(-25.0, 0.0, 0.0))
+	var cast_torso: Vector3 = cfg_hex.get("torso_rot", Vector3(12.0, -20.0, 0.0))
+	var cast_head: Vector3 = cfg_hex.get("head_rot", Vector3(-4.0, 14.0, 0.0))
+	
+	# Key Pose 1: Windup / Mana Coil Peak (tau = 0.30)
+	var windup_hips_pos = Vector3(0.0, ground_hips_y - 0.015, -0.045)
+	var windup_hips_rot = Vector3(0.0, 20.0, 0.0)
+	var windup_torso_rot = Vector3(4.0, 22.0, 0.0)
+	var windup_head_rot = Vector3(-2.0, -20.0, 0.0)
+	var windup_r_arm = Vector3(-38.0, 24.0, 32.0)
+	var windup_r_fore = Vector3(-60.0, 0.0, 0.0)
+	var windup_staff = Vector3(55.0, 12.0, -8.0)
+	var windup_l_arm = Vector3(-70.0, -16.0, -10.0)
+	var windup_l_fore = Vector3(-25.0, 0.0, 0.0)
+	var windup_l_thigh = Vector3(-12.0, 0.0, -4.0)
+	var windup_l_shin = Vector3(18.0, 0.0, 0.0)
+	var windup_r_thigh = Vector3(8.0, 0.0, 4.0)
+	var windup_r_shin = Vector3(12.0, 0.0, 0.0)
+	
+	# Key Pose 2: Snap Cast Apex (tau = 0.50)
+	var cast_hips_pos = Vector3(0.0, ground_hips_y - 0.026, 0.09)
+	var cast_hips_rot = Vector3(2.0, -14.0, 0.0)
+	var cast_l_thigh = Vector3(-22.0, 0.0, -5.0)
+	var cast_l_shin = Vector3(28.0, 0.0, 0.0)
+	var cast_r_thigh = Vector3(14.0, 0.0, 5.0)
+	var cast_r_shin = Vector3(20.0, 0.0, 0.0)
+	
+	# Key Pose 3: Recoil Absorption Peak (tau = 0.72)
+	var recoil_hips_pos = Vector3(0.0, ground_hips_y - 0.012, 0.025)
+	var recoil_hips_rot = Vector3(-1.0, -4.0, 0.0)
+	var recoil_torso_rot = Vector3(5.0, -6.0, 0.0)
+	var recoil_head_rot = Vector3(2.0, 4.0, 0.0)
+	var recoil_r_arm = cast_r_arm + Vector3(20.0, 0.0, 2.0)
+	var recoil_r_fore = cast_r_fore + Vector3(-18.0, 0.0, 0.0)
+	var recoil_staff = cast_staff + Vector3(-16.0, 0.0, 0.0)
+	var recoil_l_arm = cast_l_arm + Vector3(12.0, 6.0, -8.0)
+	var recoil_l_fore = cast_l_fore + Vector3(-14.0, 0.0, 0.0)
+	var recoil_l_thigh = Vector3(-14.0, 0.0, -4.0)
+	var recoil_l_shin = Vector3(18.0, 0.0, 0.0)
+	var recoil_r_thigh = Vector3(8.0, 0.0, 4.0)
+	var recoil_r_shin = Vector3(12.0, 0.0, 0.0)
 	
 	if tau < 0.30:
-		# PHASE 1: Siphoning Mana (0.0s - 0.28s): Twisting torso right, pulling staff back OUTSIDE shoulder
+		# PHASE 1: Mana Coil (0.0s - 0.285s)
 		var s = smoothstep(0.0, 1.0, tau / 0.30)
-		p["hips_pos"] = Vector3(0.0, ground_hips_y, lerp(0.0, -0.05, s))
-		p["hips_rot"] = Vector3(0.0, lerp(0.0, 22.0, s), 0.0)
-		p["torso_rot"] = Vector3(lerp(6.0, 2.0, s), lerp(0.0, 24.0, s), 0.0)
-		p["head_rot"] = Vector3(0.0, lerp(0.0, -26.0, s), 0.0)
+		p["hips_pos"] = Vector3(0.0, ground_hips_y, 0.0).lerp(windup_hips_pos, s)
+		p["hips_rot"] = _lerp_angles(Vector3.ZERO, windup_hips_rot, s)
+		p["torso_rot"] = _lerp_angles(idle_torso, windup_torso_rot, s)
+		p["head_rot"] = _lerp_angles(idle_head, windup_head_rot, s)
 		
-		# Staff drawn back outside right shoulder
-		p["right_arm_rot"] = _lerp_angles(Vector3(-12.0, 6.0, 20.0), Vector3(-42.0, 28.0, 38.0), s)
-		p["right_forearm_rot"] = _lerp_angles(Vector3(-35.0, 0.0, 0.0), Vector3(-95.0, 0.0, 0.0), s)
-		p["staff_rot"] = _lerp_angles(Vector3(12.0, 12.0, -8.0), Vector3(65.0, 12.0, -8.0), s)
+		p["right_arm_rot"] = _lerp_angles(idle_r_arm, windup_r_arm, s)
+		p["right_forearm_rot"] = _lerp_angles(idle_r_fore, windup_r_fore, s)
+		p["staff_rot"] = _lerp_angles(idle_staff, windup_staff, s)
 		
-		# Left hand locks onto the target
-		p["left_arm_rot"] = _lerp_angles(Vector3(-25.0, 15.0, -26.0), Vector3(-75.0, -18.0, -10.0), s)
-		p["left_forearm_rot"] = _lerp_angles(Vector3(-65.0, 0.0, 0.0), Vector3(-20.0, 0.0, 0.0), s)
+		p["left_arm_rot"] = _lerp_angles(idle_l_arm, windup_l_arm, s)
+		p["left_forearm_rot"] = _lerp_angles(idle_l_fore, windup_l_fore, s)
 		
-		p["left_thigh_rot"] = Vector3(-10.0, 0.0, -4.0)
-		p["left_shin_rot"] = Vector3(16.0, 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(8.0, 0.0, 4.0)
-		p["right_shin_rot"] = Vector3(12.0, 0.0, 0.0)
+		p["left_thigh_rot"] = _lerp_angles(idle_l_thigh, windup_l_thigh, s)
+		p["left_shin_rot"] = _lerp_angles(idle_l_shin, windup_l_shin, s)
+		p["right_thigh_rot"] = _lerp_angles(idle_r_thigh, windup_r_thigh, s)
+		p["right_shin_rot"] = _lerp_angles(idle_r_shin, windup_r_shin, s)
 		
 	elif tau < 0.50:
-		# PHASE 2: Eldritch Snap Cast (0.28s - 0.48s): Uncoil forward pointing soul orb directly at foe!
+		# PHASE 2: Snap Eldritch Thrust (0.285s - 0.475s)
 		var s = smoothstep(0.0, 1.0, (tau - 0.30) / 0.20)
-		p["hips_pos"] = Vector3(0.0, ground_hips_y, lerp(-0.05, 0.10, s))
-		p["hips_rot"] = Vector3(0.0, lerp(22.0, -16.0, s), 0.0)
-		p["torso_rot"] = Vector3(12.0, lerp(24.0, -22.0, s), 0.0)
-		p["head_rot"] = Vector3(-4.0, lerp(-26.0, 12.0, s), 0.0)
+		p["hips_pos"] = windup_hips_pos.lerp(cast_hips_pos, s)
+		p["hips_rot"] = _lerp_angles(windup_hips_rot, cast_hips_rot, s)
+		p["torso_rot"] = _lerp_angles(windup_torso_rot, cast_torso, s)
+		p["head_rot"] = _lerp_angles(windup_head_rot, cast_head, s)
 		
-		# Staff thrust forward, pointing along the line of fire
-		p["right_arm_rot"] = _lerp_angles(Vector3(-42.0, 28.0, 38.0), base_r_arm, s)
-		p["right_forearm_rot"] = _lerp_angles(Vector3(-95.0, 0.0, 0.0), base_r_fore, s)
-		p["staff_rot"] = _lerp_angles(Vector3(65.0, 12.0, -8.0), base_staff, s)
+		p["right_arm_rot"] = _lerp_angles(windup_r_arm, cast_r_arm, s)
+		p["right_forearm_rot"] = _lerp_angles(windup_r_fore, cast_r_fore, s)
+		p["staff_rot"] = _lerp_angles(windup_staff, cast_staff, s)
 		
-		# Left arm sweeps back with flexing elbow
-		p["left_arm_rot"] = _lerp_angles(Vector3(-75.0, -18.0, -10.0), base_l_arm, s)
-		p["left_forearm_rot"] = _lerp_angles(Vector3(-20.0, 0.0, 0.0), base_l_fore, s)
+		p["left_arm_rot"] = _lerp_angles(windup_l_arm, cast_l_arm, s)
+		p["left_forearm_rot"] = _lerp_angles(windup_l_fore, cast_l_fore, s)
 		
-		p["left_thigh_rot"] = Vector3(lerp(-10.0, -24.0, s), 0.0, -4.0)
-		p["left_shin_rot"] = Vector3(lerp(16.0, 30.0, s), 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(lerp(8.0, 14.0, s), 0.0, 4.0)
-		p["right_shin_rot"] = Vector3(lerp(12.0, 20.0, s), 0.0, 0.0)
+		p["left_thigh_rot"] = _lerp_angles(windup_l_thigh, cast_l_thigh, s)
+		p["left_shin_rot"] = _lerp_angles(windup_l_shin, cast_l_shin, s)
+		p["right_thigh_rot"] = _lerp_angles(windup_r_thigh, cast_r_thigh, s)
+		p["right_shin_rot"] = _lerp_angles(windup_r_shin, cast_r_shin, s)
 		
-	elif tau < 0.70:
-		# PHASE 3: Magic Recoil (0.48s - 0.68s): Rebound shockwave pushes body back
-		var s = smoothstep(0.0, 1.0, (tau - 0.50) / 0.20)
-		var recoil_trem = sin(t_h * 50.0) * 1.5
-		p["hips_pos"] = Vector3(0.0, ground_hips_y, lerp(0.10, 0.02, s))
-		p["hips_rot"] = Vector3(0.0, lerp(-16.0, -4.0, s), 0.0)
-		p["torso_rot"] = Vector3(lerp(12.0, 4.0, s) + recoil_trem, lerp(-22.0, -6.0, s), 0.0)
-		p["head_rot"] = Vector3(lerp(-4.0, 2.0, s), lerp(12.0, 4.0, s), 0.0)
+	elif tau < 0.72:
+		# PHASE 3: Damped Recoil & Mana Shockwave (0.475s - 0.684s)
+		var u = (tau - 0.50) / 0.22
+		var s = smoothstep(0.0, 1.0, u)
+		# Damped envelope ensures tremor starts and ends smoothly at 0.0
+		var envelope = sin(u * PI)
+		var recoil_trem = sin((tau - 0.50) * 48.0) * envelope * 1.2
 		
-		p["right_arm_rot"] = base_r_arm + Vector3(lerp(0.0, 23.0, s), 0.0, 0.0)
-		p["right_forearm_rot"] = base_r_fore + Vector3(lerp(0.0, -20.0, s), 0.0, 0.0)
-		p["staff_rot"] = base_staff + Vector3(lerp(0.0, -18.0, s), 0.0, 0.0)
+		p["hips_pos"] = cast_hips_pos.lerp(recoil_hips_pos, s)
+		p["hips_rot"] = _lerp_angles(cast_hips_rot, recoil_hips_rot, s)
+		p["torso_rot"] = _lerp_angles(cast_torso, recoil_torso_rot, s) + Vector3(recoil_trem, 0.0, 0.0)
+		p["head_rot"] = _lerp_angles(cast_head, recoil_head_rot, s)
 		
-		p["left_arm_rot"] = base_l_arm
-		p["left_forearm_rot"] = base_l_fore
+		p["right_arm_rot"] = _lerp_angles(cast_r_arm, recoil_r_arm, s)
+		p["right_forearm_rot"] = _lerp_angles(cast_r_fore, recoil_r_fore, s)
+		p["staff_rot"] = _lerp_angles(cast_staff, recoil_staff, s)
 		
-		p["left_thigh_rot"] = Vector3(lerp(-24.0, -12.0, s), 0.0, -4.0)
-		p["left_shin_rot"] = Vector3(lerp(30.0, 16.0, s), 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(lerp(14.0, 8.0, s), 0.0, 4.0)
-		p["right_shin_rot"] = Vector3(lerp(20.0, 12.0, s), 0.0, 0.0)
+		p["left_arm_rot"] = _lerp_angles(cast_l_arm, recoil_l_arm, s)
+		p["left_forearm_rot"] = _lerp_angles(cast_l_fore, recoil_l_fore, s)
+		
+		p["left_thigh_rot"] = _lerp_angles(cast_l_thigh, recoil_l_thigh, s)
+		p["left_shin_rot"] = _lerp_angles(cast_l_shin, recoil_l_shin, s)
+		p["right_thigh_rot"] = _lerp_angles(cast_r_thigh, recoil_r_thigh, s)
+		p["right_shin_rot"] = _lerp_angles(cast_r_shin, recoil_r_shin, s)
 		
 	else:
-		# PHASE 4: Settling Back to Stance (0.68s - 0.95s)
-		var s = smoothstep(0.0, 1.0, (tau - 0.70) / 0.30)
-		p["hips_pos"] = Vector3(0.0, ground_hips_y, lerp(0.02, 0.0, s))
-		p["hips_rot"] = Vector3(0.0, lerp(-4.0, 0.0, s), 0.0)
-		p["torso_rot"] = Vector3(lerp(4.0, 6.0, s), lerp(-6.0, 0.0, s), 0.0)
-		p["head_rot"] = Vector3(lerp(2.0, 0.0, s), lerp(4.0, 0.0, s), 0.0)
+		# PHASE 4: Smooth Recovery Settle to Stance (0.684s - 0.950s)
+		var s = smoothstep(0.0, 1.0, (tau - 0.72) / 0.28)
+		p["hips_pos"] = recoil_hips_pos.lerp(Vector3(0.0, ground_hips_y, 0.0), s)
+		p["hips_rot"] = _lerp_angles(recoil_hips_rot, Vector3.ZERO, s)
+		p["torso_rot"] = _lerp_angles(recoil_torso_rot, idle_torso, s)
+		p["head_rot"] = _lerp_angles(recoil_head_rot, idle_head, s)
 		
-		var idle_cfg = stance_configs.get("idle", default_stance_configs.get("idle", {}))
-		p["right_arm_rot"] = _lerp_angles(base_r_arm + Vector3(23.0, 0.0, 0.0), idle_cfg.get("right_arm_rot", Vector3(-12.0, 6.0, 20.0)), s)
-		p["right_forearm_rot"] = _lerp_angles(base_r_fore + Vector3(-20.0, 0.0, 0.0), idle_cfg.get("right_forearm_rot", Vector3(-35.0, 0.0, 0.0)), s)
-		p["staff_rot"] = _lerp_angles(base_staff + Vector3(-18.0, 0.0, 0.0), idle_cfg.get("staff_rot", Vector3(12.0, 12.0, -8.0)), s)
+		p["right_arm_rot"] = _lerp_angles(recoil_r_arm, idle_r_arm, s)
+		p["right_forearm_rot"] = _lerp_angles(recoil_r_fore, idle_r_fore, s)
+		p["staff_rot"] = _lerp_angles(recoil_staff, idle_staff, s)
 		
-		p["left_arm_rot"] = _lerp_angles(base_l_arm, idle_cfg.get("left_arm_rot", Vector3(-25.0, 15.0, -26.0)), s)
-		p["left_forearm_rot"] = _lerp_angles(base_l_fore, idle_cfg.get("left_forearm_rot", Vector3(-65.0, 0.0, 0.0)), s)
+		p["left_arm_rot"] = _lerp_angles(recoil_l_arm, idle_l_arm, s)
+		p["left_forearm_rot"] = _lerp_angles(recoil_l_fore, idle_l_fore, s)
 		
-		p["left_thigh_rot"] = Vector3(lerp(-12.0, -4.0, s), 0.0, -3.5)
-		p["left_shin_rot"] = Vector3(lerp(16.0, 6.0, s), 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(lerp(8.0, 4.0, s), 0.0, 3.5)
-		p["right_shin_rot"] = Vector3(lerp(12.0, 4.0, s), 0.0, 0.0)
+		p["left_thigh_rot"] = _lerp_angles(recoil_l_thigh, idle_l_thigh, s)
+		p["left_shin_rot"] = _lerp_angles(recoil_l_shin, idle_l_shin, s)
+		p["right_thigh_rot"] = _lerp_angles(recoil_r_thigh, idle_r_thigh, s)
+		p["right_shin_rot"] = _lerp_angles(recoil_r_shin, idle_r_shin, s)
+		
 	return p
 
 # --- 7. HURT (Visceral Elastic Shockwave, ZERO CLIPPING) ---

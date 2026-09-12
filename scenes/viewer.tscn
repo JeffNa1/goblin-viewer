@@ -295,7 +295,7 @@ custom_minimum_size = Vector2(148, 30)
 layout_mode = 2
 theme_override_colors/font_color = Color(1.0, 0.85, 0.3, 1)
 theme_override_font_sizes/font_size = 11
-text = "👑 TÙ TRƯỞNG BOSS (F5)"
+text = "👹 MACE OGRE (F5)"
 
 [node name="BottomDock" type="PanelContainer" parent="UI"]
 anchors_preset = 7

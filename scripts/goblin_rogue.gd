@@ -36,8 +36,8 @@ var anim_speed: float = 1.0
 
 # Action Timers
 var action_time: float = 0.0
-const SLASH_DURATION: float = 0.75
-const BACKSTAB_DURATION: float = 0.95
+const SLASH_DURATION: float = 1.05
+const BACKSTAB_DURATION: float = 1.30
 const PARRY_DURATION: float = 0.85
 const HURT_DURATION: float = 0.45
 
@@ -57,11 +57,22 @@ var stance_configs: Dictionary = {}
 const StunStarsScript = preload("res://scripts/stun_stars.gd")
 var stun_stars: Node3D = null
 
+# Weapon Trails
+const WeaponTrailScript = preload("res://scripts/weapon_trail.gd")
+var right_weapon_trail: Node3D = null
+var left_weapon_trail: Node3D = null
+
+# Outfit System: 1 = Thô Sơ (Primitive Scavenger), 2 = Sát Thủ (Shadow Assassin)
+var current_outfit: int = 1
+var outfit_meshes: Dictionary = {}
+signal outfit_changed(outfit_id: int)
+
 signal anim_changed(anim_name: String)
 
 func _ready() -> void:
 	generate_voxel_meshes()
 	_init_stun_stars()
+	_init_weapon_trails()
 	_init_default_stances()
 	load_stance_config()
 	current_pose = _compute_pose(current_anim, 0.0)
@@ -70,94 +81,114 @@ func _ready() -> void:
 func _init_default_stances() -> void:
 	default_stance_configs = {
 		"idle": {
-			"right_arm_rot": Vector3(-18.0, 10.0, 16.0),
-			"right_forearm_rot": Vector3(-55.0, 0.0, 0.0),
-			"right_dagger_rot": Vector3(20.0, 0.0, 0.0),
-			"left_arm_rot": Vector3(-16.0, -10.0, -16.0),
-			"left_forearm_rot": Vector3(-52.0, 0.0, 0.0),
+			"right_arm_rot": Vector3(-15.0, 15.0, 18.0),
+			"right_forearm_rot": Vector3(-62.0, 0.0, 0.0),
+			"right_dagger_rot": Vector3(-85.0, 15.0, -15.0),
+			"left_arm_rot": Vector3(-15.0, -15.0, -18.0),
+			"left_forearm_rot": Vector3(-62.0, 0.0, 0.0),
+			"left_dagger_rot": Vector3(-85.0, -15.0, 15.0),
+			"torso_rot": Vector3(22.0, 0.0, 0.0),
+			"head_rot": Vector3(-16.0, 0.0, 0.0)
+		},
+		"dual_guard": {
+			"right_arm_rot": Vector3(-42.0, -15.0, 12.0),
+			"right_forearm_rot": Vector3(-85.0, 0.0, 0.0),
+			"right_dagger_rot": Vector3(80.0, -25.0, 40.0),
+			"left_arm_rot": Vector3(-40.0, 15.0, -12.0),
+			"left_forearm_rot": Vector3(-85.0, 0.0, 0.0),
+			"left_dagger_rot": Vector3(80.0, 25.0, -40.0),
+			"torso_rot": Vector3(14.0, 0.0, 0.0),
+			"head_rot": Vector3(-8.0, 0.0, 0.0)
+		},
+		"reverse": {
+			"right_arm_rot": Vector3(-15.0, 15.0, 18.0),
+			"right_forearm_rot": Vector3(-62.0, 0.0, 0.0),
+			"right_dagger_rot": Vector3(-85.0, 15.0, -15.0),
+			"left_arm_rot": Vector3(-15.0, -15.0, -18.0),
+			"left_forearm_rot": Vector3(-62.0, 0.0, 0.0),
+			"left_dagger_rot": Vector3(-85.0, -15.0, 15.0),
+			"torso_rot": Vector3(22.0, 0.0, 0.0),
+			"head_rot": Vector3(-16.0, 0.0, 0.0)
+		},
+		"forward": {
+			"right_arm_rot": Vector3(-25.0, -10.0, 16.0),
+			"right_forearm_rot": Vector3(-65.0, 0.0, 0.0),
+			"right_dagger_rot": Vector3(85.0, -15.0, 15.0),
+			"left_arm_rot": Vector3(-25.0, 10.0, -16.0),
+			"left_forearm_rot": Vector3(-65.0, 0.0, 0.0),
+			"left_dagger_rot": Vector3(85.0, 15.0, -15.0),
 			"torso_rot": Vector3(18.0, 0.0, 0.0),
 			"head_rot": Vector3(-12.0, 0.0, 0.0)
 		},
 		"walk": {
-			"right_arm_rot": Vector3(-18.0, 10.0, 16.0),
-			"right_forearm_rot": Vector3(-55.0, 0.0, 0.0),
-			"right_dagger_rot": Vector3(20.0, 0.0, 0.0),
-			"left_arm_rot": Vector3(-16.0, -10.0, -16.0),
-			"left_forearm_rot": Vector3(-52.0, 0.0, 0.0),
-			"torso_rot": Vector3(16.0, 0.0, 0.0),
-			"head_rot": Vector3(-14.0, 0.0, 0.0)
+			"right_arm_rot": Vector3(-15.0, 15.0, 18.0),
+			"right_forearm_rot": Vector3(-62.0, 0.0, 0.0),
+			"right_dagger_rot": Vector3(-85.0, 15.0, -15.0),
+			"left_arm_rot": Vector3(-15.0, -15.0, -18.0),
+			"left_forearm_rot": Vector3(-62.0, 0.0, 0.0),
+			"left_dagger_rot": Vector3(-85.0, -15.0, 15.0),
+			"torso_rot": Vector3(18.0, 0.0, 0.0),
+			"head_rot": Vector3(-16.0, 0.0, 0.0)
 		},
 		"scurry": {
-			"right_arm_rot": Vector3(-18.0, 10.0, 16.0),
-			"right_forearm_rot": Vector3(-55.0, 0.0, 0.0),
-			"right_dagger_rot": Vector3(20.0, 0.0, 0.0),
-			"left_arm_rot": Vector3(-16.0, -10.0, -16.0),
-			"left_forearm_rot": Vector3(-52.0, 0.0, 0.0),
-			"torso_rot": Vector3(20.0, 0.0, 0.0),
-			"head_rot": Vector3(-24.0, 0.0, 0.0)
+			"right_arm_rot": Vector3(-20.0, 18.0, 20.0),
+			"right_forearm_rot": Vector3(-68.0, 0.0, 0.0),
+			"right_dagger_rot": Vector3(-85.0, 15.0, -15.0),
+			"left_arm_rot": Vector3(-20.0, -18.0, -20.0),
+			"left_forearm_rot": Vector3(-68.0, 0.0, 0.0),
+			"left_dagger_rot": Vector3(-85.0, -15.0, 15.0),
+			"torso_rot": Vector3(24.0, 0.0, 0.0),
+			"head_rot": Vector3(-22.0, 0.0, 0.0)
 		},
 		"dual_slash": {
-			"right_arm_rot": Vector3(-55.0, -35.0, -15.0),
-			"right_forearm_rot": Vector3(-110.0, 0.0, 0.0),
-			"right_dagger_rot": Vector3(120.0, 0.0, 0.0),
-			"left_arm_rot": Vector3(-55.0, 35.0, 15.0),
-			"left_forearm_rot": Vector3(-110.0, 0.0, 0.0),
-			"torso_rot": Vector3(24.0, 0.0, 0.0),
-			"head_rot": Vector3(-18.0, 0.0, 0.0)
+			"right_arm_rot": Vector3(-15.0, 15.0, 18.0),
+			"right_forearm_rot": Vector3(-62.0, 0.0, 0.0),
+			"right_dagger_rot": Vector3(-85.0, 15.0, -15.0),
+			"left_arm_rot": Vector3(-15.0, -15.0, -18.0),
+			"left_forearm_rot": Vector3(-62.0, 0.0, 0.0),
+			"left_dagger_rot": Vector3(-85.0, -15.0, 15.0),
+			"torso_rot": Vector3(22.0, 0.0, 0.0),
+			"head_rot": Vector3(-16.0, 0.0, 0.0)
 		},
 		"backstab": {
 			"right_arm_rot": Vector3(-135.0, 0.0, 15.0),
 			"right_forearm_rot": Vector3(-25.0, 0.0, 0.0),
-			"right_dagger_rot": Vector3(180.0, 0.0, 0.0),
+			"right_dagger_rot": Vector3(170.0, -10.0, 10.0),
 			"left_arm_rot": Vector3(-135.0, 0.0, -15.0),
 			"left_forearm_rot": Vector3(-25.0, 0.0, 0.0),
+			"left_dagger_rot": Vector3(170.0, 10.0, -10.0),
 			"torso_rot": Vector3(-45.0, 0.0, 0.0),
 			"head_rot": Vector3(15.0, 0.0, 0.0)
 		},
 		"parry": {
-			"right_arm_rot": Vector3(-45.0, 15.0, 30.0),
+			"right_arm_rot": Vector3(-45.0, -15.0, 25.0),
 			"right_forearm_rot": Vector3(-65.0, 0.0, 0.0),
-			"right_dagger_rot": Vector3(45.0, 0.0, 0.0),
-			"left_arm_rot": Vector3(-45.0, -15.0, -30.0),
+			"right_dagger_rot": Vector3(80.0, -30.0, 35.0),
+			"left_arm_rot": Vector3(-45.0, 15.0, -25.0),
 			"left_forearm_rot": Vector3(-65.0, 0.0, 0.0),
+			"left_dagger_rot": Vector3(80.0, 30.0, -35.0),
 			"torso_rot": Vector3(10.0, 0.0, 0.0),
 			"head_rot": Vector3(-6.0, 0.0, 0.0)
 		},
 		"hurt": {
 			"right_arm_rot": Vector3(-30.0, 0.0, 35.0),
 			"right_forearm_rot": Vector3(-75.0, 0.0, 0.0),
-			"right_dagger_rot": Vector3(35.0, 0.0, 0.0),
+			"right_dagger_rot": Vector3(65.0, -15.0, 20.0),
 			"left_arm_rot": Vector3(-30.0, 0.0, -35.0),
 			"left_forearm_rot": Vector3(-75.0, 0.0, 0.0),
+			"left_dagger_rot": Vector3(65.0, 15.0, -20.0),
 			"torso_rot": Vector3(-20.0, -10.0, 0.0),
 			"head_rot": Vector3(16.0, -14.0, 0.0)
 		},
 		"stunned": {
 			"right_arm_rot": Vector3(12.0, 0.0, 20.0),
 			"right_forearm_rot": Vector3(-12.0, 0.0, 0.0),
-			"right_dagger_rot": Vector3(20.0, 0.0, 0.0),
+			"right_dagger_rot": Vector3(45.0, -10.0, 10.0),
 			"left_arm_rot": Vector3(15.0, 0.0, -20.0),
 			"left_forearm_rot": Vector3(-15.0, 0.0, 0.0),
+			"left_dagger_rot": Vector3(45.0, 10.0, -10.0),
 			"torso_rot": Vector3(12.0, 0.0, 0.0),
 			"head_rot": Vector3(-8.0, 0.0, 0.0)
-		},
-		"dual_guard": {
-			"right_arm_rot": Vector3(-42.0, -15.0, 12.0),
-			"right_forearm_rot": Vector3(-90.0, 0.0, 0.0),
-			"right_dagger_rot": Vector3(65.0, 30.0, -25.0),
-			"left_arm_rot": Vector3(-40.0, 15.0, -12.0),
-			"left_forearm_rot": Vector3(-88.0, 0.0, 0.0),
-			"torso_rot": Vector3(14.0, 0.0, 0.0),
-			"head_rot": Vector3(-8.0, 0.0, 0.0)
-		},
-		"reverse": {
-			"right_arm_rot": Vector3(15.0, 20.0, 25.0),
-			"right_forearm_rot": Vector3(-70.0, 0.0, 0.0),
-			"right_dagger_rot": Vector3(180.0, 0.0, 0.0),
-			"left_arm_rot": Vector3(12.0, -20.0, -25.0),
-			"left_forearm_rot": Vector3(-68.0, 0.0, 0.0),
-			"torso_rot": Vector3(22.0, 0.0, 0.0),
-			"head_rot": Vector3(-16.0, 0.0, 0.0)
 		}
 	}
 
@@ -187,27 +218,28 @@ func load_stance_config() -> void:
 						if not stance_configs.has(s_key):
 							stance_configs[s_key] = {}
 						var s_dict = d[s_key]
-						for prop in ["right_arm_rot", "right_forearm_rot", "right_dagger_rot", "left_arm_rot", "left_forearm_rot", "torso_rot", "head_rot"]:
+						for prop in ["right_arm_rot", "right_forearm_rot", "right_dagger_rot", "left_arm_rot", "left_forearm_rot", "left_dagger_rot", "torso_rot", "head_rot"]:
 							if s_dict.has(prop) and s_dict[prop] is Array and s_dict[prop].size() == 3:
 								stance_configs[s_key][prop] = Vector3(float(s_dict[prop][0]), float(s_dict[prop][1]), float(s_dict[prop][2]))
 
 func get_stance_definitions() -> Array:
 	return [
-		{"id": "idle", "name": "Rình Rập", "shortcut": "[ 1 ]"},
+		{"id": "idle", "name": "Dao Ngược", "shortcut": "[ Q ]"},
+		{"id": "dual_guard", "name": "Bắt Chéo X", "shortcut": "[ W ]"},
+		{"id": "forward", "name": "Dao Xuôi", "shortcut": "[ E ]"},
 		{"id": "walk", "name": "Lẻn Đi", "shortcut": "[ 2 ]"},
 		{"id": "scurry", "name": "Lướt Nhanh", "shortcut": "[ 3 ]"},
 		{"id": "dual_slash", "name": "Chém Chéo X", "shortcut": "[ 4 ]"},
 		{"id": "backstab", "name": "Đâm Lén", "shortcut": "[ 5 ]"},
 		{"id": "parry", "name": "Gạt Dao", "shortcut": "[ 6 ]"},
 		{"id": "hurt", "name": "Trúng Đòn", "shortcut": "[ 7 ]"},
-		{"id": "stunned", "name": "Choáng", "shortcut": "[ 8 ]"},
-		{"id": "dual_guard", "name": "Bắt Chéo X", "shortcut": "[ W ]"},
-		{"id": "reverse", "name": "Dao Ngược", "shortcut": "[ E ]"}
+		{"id": "stunned", "name": "Choáng", "shortcut": "[ 8 ]"}
 	]
 
 func get_weapon_info() -> Dictionary:
+	var title = "🥷 SONG DAO GĂM SÁT THỦ (GÓC LƯỠI DAO)" if current_outfit == 2 else "🗡️ DAO XƯƠNG & ĐÁ ĐẼO (GÓC LƯỠI DAO)"
 	return {
-		"title": "🗡 SONG DAO GĂM (GÓC LƯỠI DAO)",
+		"title": title,
 		"prop": "right_dagger_rot"
 	}
 
@@ -218,6 +250,8 @@ func copy_weapon_from_idle(target_anim: String) -> void:
 	var dst = stance_configs[target_anim]
 	if src.has("right_dagger_rot"):
 		dst["right_dagger_rot"] = src["right_dagger_rot"]
+	if src.has("left_dagger_rot"):
+		dst["left_dagger_rot"] = src["left_dagger_rot"]
 
 func serialize_stances() -> Dictionary:
 	var out: Dictionary = {
@@ -251,7 +285,7 @@ func save_stance_config() -> bool:
 
 func _serialize_stance(s: Dictionary) -> Dictionary:
 	var out = {}
-	for k in ["right_arm_rot", "right_forearm_rot", "right_dagger_rot", "left_arm_rot", "left_forearm_rot", "torso_rot", "head_rot"]:
+	for k in ["right_arm_rot", "right_forearm_rot", "right_dagger_rot", "left_arm_rot", "left_forearm_rot", "left_dagger_rot", "torso_rot", "head_rot"]:
 		var v: Vector3 = s.get(k, Vector3.ZERO)
 		out[k] = [snappedf(v.x, 0.1), snappedf(v.y, 0.1), snappedf(v.z, 0.1)]
 	return out
@@ -289,27 +323,133 @@ func _lerp_angles(a: Vector3, b: Vector3, weight: float) -> Vector3:
 	)
 
 func generate_voxel_meshes() -> void:
-	head_mesh.mesh = VoxelBuilder.build_rogue_head_mesh()
-	torso_mesh.mesh = VoxelBuilder.build_torso_mesh()
-	left_dagger_mesh.mesh = VoxelBuilder.build_dagger_mesh()
-	right_dagger_mesh.mesh = VoxelBuilder.build_dagger_mesh()
-	left_arm_mesh.mesh = VoxelBuilder.build_upper_arm_mesh()
-	left_forearm_mesh.mesh = VoxelBuilder.build_forearm_mesh(false)
-	right_arm_mesh.mesh = VoxelBuilder.build_upper_arm_mesh()
-	right_forearm_mesh.mesh = VoxelBuilder.build_forearm_mesh(false)
-	left_thigh_mesh.mesh = VoxelBuilder.build_thigh_mesh()
-	left_shin_mesh.mesh = VoxelBuilder.build_shin_mesh()
-	right_thigh_mesh.mesh = VoxelBuilder.build_thigh_mesh()
-	right_shin_mesh.mesh = VoxelBuilder.build_shin_mesh()
+	# Pre-build meshes for Outfit 1 (Thô Sơ / Primitive Scavenger)
+	outfit_meshes[1] = {
+		"head": VoxelBuilder.build_rogue_head_mesh(1),
+		"torso": VoxelBuilder.build_rogue_torso_mesh(1),
+		"left_arm": VoxelBuilder.build_rogue_upper_arm_mesh(1),
+		"left_forearm": VoxelBuilder.build_rogue_forearm_mesh(false, 1),
+		"right_arm": VoxelBuilder.build_rogue_upper_arm_mesh(1),
+		"right_forearm": VoxelBuilder.build_rogue_forearm_mesh(true, 1),
+		"left_dagger": VoxelBuilder.build_dagger_mesh(1),
+		"right_dagger": VoxelBuilder.build_dagger_mesh(1),
+		"left_thigh": VoxelBuilder.build_rogue_thigh_mesh(1),
+		"left_shin": VoxelBuilder.build_rogue_shin_mesh(1),
+		"right_thigh": VoxelBuilder.build_rogue_thigh_mesh(1),
+		"right_shin": VoxelBuilder.build_rogue_shin_mesh(1)
+	}
+	# Pre-build meshes for Outfit 2 (Sát Thủ / Shadow Assassin)
+	outfit_meshes[2] = {
+		"head": VoxelBuilder.build_rogue_head_mesh(2),
+		"torso": VoxelBuilder.build_rogue_torso_mesh(2),
+		"left_arm": VoxelBuilder.build_rogue_upper_arm_mesh(2),
+		"left_forearm": VoxelBuilder.build_rogue_forearm_mesh(false, 2),
+		"right_arm": VoxelBuilder.build_rogue_upper_arm_mesh(2),
+		"right_forearm": VoxelBuilder.build_rogue_forearm_mesh(true, 2),
+		"left_dagger": VoxelBuilder.build_dagger_mesh(2),
+		"right_dagger": VoxelBuilder.build_dagger_mesh(2),
+		"left_thigh": VoxelBuilder.build_rogue_thigh_mesh(2),
+		"left_shin": VoxelBuilder.build_rogue_shin_mesh(2),
+		"right_thigh": VoxelBuilder.build_rogue_thigh_mesh(2),
+		"right_shin": VoxelBuilder.build_rogue_shin_mesh(2)
+	}
+	apply_outfit(current_outfit)
+
+func set_outfit(outfit_id: int) -> void:
+	current_outfit = clamp(outfit_id, 1, 2)
+	apply_outfit(current_outfit)
+	outfit_changed.emit(current_outfit)
+
+func apply_outfit(outfit_id: int) -> void:
+	if not outfit_meshes.has(outfit_id):
+		return
+	var m: Dictionary = outfit_meshes[outfit_id]
+	head_mesh.mesh = m["head"]
+	torso_mesh.mesh = m["torso"]
+	left_arm_mesh.mesh = m["left_arm"]
+	left_forearm_mesh.mesh = m["left_forearm"]
+	right_arm_mesh.mesh = m["right_arm"]
+	right_forearm_mesh.mesh = m["right_forearm"]
+	left_dagger_mesh.mesh = m["left_dagger"]
+	right_dagger_mesh.mesh = m["right_dagger"]
+	left_thigh_mesh.mesh = m["left_thigh"]
+	left_shin_mesh.mesh = m["left_shin"]
+	right_thigh_mesh.mesh = m["right_thigh"]
+	right_shin_mesh.mesh = m["right_shin"]
 
 func _init_stun_stars() -> void:
 	stun_stars = StunStarsScript.new()
 	stun_stars.name = "StunStarsFX"
 	head.add_child(stun_stars)
 
+func _init_weapon_trails() -> void:
+	right_weapon_trail = WeaponTrailScript.new()
+	right_weapon_trail.name = "RightWeaponTrail"
+	right_weapon_trail.tip_offset = Vector3(0.0, 0.46, 0.15)
+	right_weapon_trail.base_offset = Vector3(0.0, 0.04, 0.0)
+	$VisualRoot.add_child(right_weapon_trail)
+	right_weapon_trail.set_target(right_dagger)
+	
+	left_weapon_trail = WeaponTrailScript.new()
+	left_weapon_trail.name = "LeftWeaponTrail"
+	left_weapon_trail.tip_offset = Vector3(0.0, 0.46, 0.15)
+	left_weapon_trail.base_offset = Vector3(0.0, 0.04, 0.0)
+	$VisualRoot.add_child(left_weapon_trail)
+	left_weapon_trail.set_target(left_dagger)
+
+func _update_weapon_trails(t_act: float) -> void:
+	if not right_weapon_trail or not left_weapon_trail:
+		return
+		
+	if current_anim == "dual_slash":
+		var tau = clampf(t_act / SLASH_DURATION, 0.0, 1.0)
+		var col_tip = Color(0.35, 1.0, 0.80, 0.98) if current_outfit == 1 else Color(0.25, 1.0, 0.95, 0.98)
+		var col_base = Color(0.06, 0.65, 0.35, 0.85) if current_outfit == 1 else Color(0.08, 0.45, 0.40, 0.85)
+		
+		# Strike 1: Right Upward Slash (tau in [0.16, 0.38])
+		if tau >= 0.16 and tau < 0.38:
+			if not right_weapon_trail.is_emitting:
+				right_weapon_trail.start_trail(col_tip, col_base, 0.22)
+		else:
+			if right_weapon_trail.is_emitting:
+				right_weapon_trail.stop_trail()
+				
+		# Strike 2: Left Upward Slash (tau in [0.50, 0.72])
+		if tau >= 0.50 and tau < 0.72:
+			if not left_weapon_trail.is_emitting:
+				left_weapon_trail.start_trail(col_tip, col_base, 0.22)
+		else:
+			if left_weapon_trail.is_emitting:
+				left_weapon_trail.stop_trail()
+				
+	elif current_anim == "backstab":
+		var tau = clampf(t_act / BACKSTAB_DURATION, 0.0, 1.0)
+		var blood_tip = Color(1.0, 0.22, 0.30, 0.98)
+		var blood_base = Color(0.65, 0.04, 0.10, 0.85)
+		# Thrust & Lateral Tear Outward (tau in [0.26, 0.74])
+		if tau >= 0.26 and tau < 0.74:
+			if not right_weapon_trail.is_emitting:
+				right_weapon_trail.start_trail(blood_tip, blood_base, 0.28)
+			if not left_weapon_trail.is_emitting:
+				left_weapon_trail.start_trail(blood_tip, blood_base, 0.28)
+		else:
+			if right_weapon_trail.is_emitting:
+				right_weapon_trail.stop_trail()
+			if left_weapon_trail.is_emitting:
+				left_weapon_trail.stop_trail()
+	else:
+		_stop_all_weapon_trails()
+
+func _stop_all_weapon_trails() -> void:
+	if right_weapon_trail and right_weapon_trail.is_emitting:
+		right_weapon_trail.stop_trail()
+	if left_weapon_trail and left_weapon_trail.is_emitting:
+		left_weapon_trail.stop_trail()
+
 func play_anim(anim_name: String) -> void:
 	if current_anim == anim_name and current_anim not in ["dual_slash", "backstab", "parry", "hurt"]:
 		return
+	_stop_all_weapon_trails()
 	_start_blend()
 	current_anim = anim_name
 	action_time = 0.0
@@ -336,14 +476,18 @@ func _process(delta: float) -> void:
 	
 	if current_anim == "dual_slash":
 		action_time += dt
+		_update_weapon_trails(action_time)
 		if action_time >= SLASH_DURATION:
+			_stop_all_weapon_trails()
 			current_anim = base_anim
 			action_time = 0.0
 			_start_blend()
 			emit_signal("anim_changed", current_anim)
 	elif current_anim == "backstab":
 		action_time += dt
+		_update_weapon_trails(action_time)
 		if action_time >= BACKSTAB_DURATION:
+			_stop_all_weapon_trails()
 			current_anim = base_anim
 			action_time = 0.0
 			_start_blend()
@@ -384,7 +528,8 @@ func _compute_pose(anim: String, time_val: float) -> Dictionary:
 	match anim:
 		"idle": return _compute_idle(time_val)
 		"dual_guard": return _compute_dual_guard(time_val)
-		"reverse": return _compute_reverse(time_val)
+		"reverse": return _compute_idle(time_val)
+		"forward": return _compute_forward(time_val)
 		"walk": return _compute_walk(time_val)
 		"scurry": return _compute_scurry(time_val)
 		"dual_slash": return _compute_dual_slash(action_time)
@@ -394,33 +539,33 @@ func _compute_pose(anim: String, time_val: float) -> Dictionary:
 		"stunned": return _compute_stunned(time_val)
 		_: return _compute_idle(time_val)
 
-# --- 1. IDLE (Low Stalking Crouch) ---
+# --- 1. IDLE (Low Stalking Reverse Grip Crouch - Default Stance) ---
 func _compute_idle(time_val: float) -> Dictionary:
 	var p: Dictionary = {}
-	var t = time_val * 3.0
+	var t = time_val * 3.2
 	var bob = sin(t) * 0.012
 	var cfg = stance_configs.get("idle", default_stance_configs.get("idle", {}))
 	
 	p["hips_pos"] = Vector3(0.0, ground_hips_y + bob, 0.0)
-	p["hips_rot"] = Vector3(8.0, sin(t * 0.5) * 4.0, 0.0)
-	p["torso_rot"] = cfg.get("torso_rot", Vector3(18.0, 0.0, 0.0)) + Vector3(sin(t) * 2.0, 0, 0)
-	p["head_rot"] = cfg.get("head_rot", Vector3(-12.0, 0.0, 0.0)) + Vector3(0, sin(t * 0.8) * 12.0, 0)
+	p["hips_rot"] = Vector3(12.0, sin(t * 0.5) * 5.0, 0.0)
+	p["torso_rot"] = cfg.get("torso_rot", Vector3(22.0, 0.0, 0.0)) + Vector3(sin(t) * 1.8, 0, 0)
+	p["head_rot"] = cfg.get("head_rot", Vector3(-16.0, 0.0, 0.0)) + Vector3(0, sin(t * 0.7) * 8.0, 0)
 	
-	p["left_arm_rot"] = cfg.get("left_arm_rot", Vector3(-16.0, -10.0, -16.0)) + Vector3(-bob * 30.0, 0, 0)
-	p["left_forearm_rot"] = cfg.get("left_forearm_rot", Vector3(-52.0, 0.0, 0.0))
-	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(20.0, 0.0, 0.0))
-	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", Vector3(base_dag_r.x, -base_dag_r.y, -base_dag_r.z))
+	p["left_arm_rot"] = cfg.get("left_arm_rot", Vector3(-15.0, -15.0, -18.0)) + Vector3(-bob * 20.0, 0, 0)
+	p["left_forearm_rot"] = cfg.get("left_forearm_rot", Vector3(-62.0, 0.0, 0.0))
+	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(-85.0, 15.0, -15.0))
+	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", Vector3(-85.0, -15.0, 15.0))
 	p["left_dagger_rot"] = base_dag_l
 	
-	p["right_arm_rot"] = cfg.get("right_arm_rot", Vector3(-18.0, 10.0, 16.0)) + Vector3(bob * 30.0, 0, 0)
-	p["right_forearm_rot"] = cfg.get("right_forearm_rot", Vector3(-55.0, 0.0, 0.0))
+	p["right_arm_rot"] = cfg.get("right_arm_rot", Vector3(-15.0, 15.0, 18.0)) + Vector3(bob * 20.0, 0, 0)
+	p["right_forearm_rot"] = cfg.get("right_forearm_rot", Vector3(-62.0, 0.0, 0.0))
 	p["right_dagger_rot"] = base_dag_r
 	
-	# Low crouch knees
-	p["left_thigh_rot"] = Vector3(-16.0, 0.0, -6.0)
-	p["left_shin_rot"] = Vector3(26.0, 0.0, 0.0)
-	p["right_thigh_rot"] = Vector3(10.0, 0.0, 6.0)
-	p["right_shin_rot"] = Vector3(22.0, 0.0, 0.0)
+	# Low athletic predatory crouch
+	p["left_thigh_rot"] = Vector3(-18.0, 0.0, -8.0)
+	p["left_shin_rot"] = Vector3(28.0, 0.0, 0.0)
+	p["right_thigh_rot"] = Vector3(12.0, 0.0, 8.0)
+	p["right_shin_rot"] = Vector3(24.0, 0.0, 0.0)
 	return p
 
 # --- DUAL GUARD (Bắt Chéo X) ---
@@ -435,15 +580,15 @@ func _compute_dual_guard(time_val: float) -> Dictionary:
 	p["torso_rot"] = cfg.get("torso_rot", Vector3(14.0, 0.0, 0.0)) + Vector3(sin(t) * 1.5, 0, 0)
 	p["head_rot"] = cfg.get("head_rot", Vector3(-8.0, 0.0, 0.0))
 	
-	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(65.0, 30.0, -25.0))
-	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", Vector3(base_dag_r.x, -base_dag_r.y, -base_dag_r.z))
+	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(80.0, -25.0, 40.0))
+	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", Vector3(80.0, 25.0, -40.0))
 	
 	p["left_arm_rot"] = cfg.get("left_arm_rot", Vector3(-40.0, 15.0, -12.0))
-	p["left_forearm_rot"] = cfg.get("left_forearm_rot", Vector3(-88.0, 0.0, 0.0))
+	p["left_forearm_rot"] = cfg.get("left_forearm_rot", Vector3(-85.0, 0.0, 0.0))
 	p["left_dagger_rot"] = base_dag_l
 	
 	p["right_arm_rot"] = cfg.get("right_arm_rot", Vector3(-42.0, -15.0, 12.0))
-	p["right_forearm_rot"] = cfg.get("right_forearm_rot", Vector3(-90.0, 0.0, 0.0))
+	p["right_forearm_rot"] = cfg.get("right_forearm_rot", Vector3(-85.0, 0.0, 0.0))
 	p["right_dagger_rot"] = base_dag_r
 	
 	p["left_thigh_rot"] = Vector3(-12.0, 0.0, -6.0)
@@ -452,36 +597,39 @@ func _compute_dual_guard(time_val: float) -> Dictionary:
 	p["right_shin_rot"] = Vector3(18.0, 0.0, 0.0)
 	return p
 
-# --- REVERSE (Dao Ngược) ---
+# --- REVERSE (Dao Ngược - Alias to Idle) ---
 func _compute_reverse(time_val: float) -> Dictionary:
+	return _compute_idle(time_val)
+
+# --- FORWARD GRIP (Dao Xuôi) ---
+func _compute_forward(time_val: float) -> Dictionary:
 	var p: Dictionary = {}
-	var t = time_val * 3.2
-	var bob = sin(t) * 0.01
-	var cfg = stance_configs.get("reverse", default_stance_configs.get("reverse", {}))
+	var t = time_val * 3.0
+	var bob = sin(t) * 0.012
+	var cfg = stance_configs.get("forward", default_stance_configs.get("forward", {}))
 	
 	p["hips_pos"] = Vector3(0.0, ground_hips_y + bob, 0.0)
-	p["hips_rot"] = Vector3(12.0, sin(t * 0.5) * 6.0, 0.0)
-	p["torso_rot"] = cfg.get("torso_rot", Vector3(22.0, 0.0, 0.0)) + Vector3(sin(t) * 2.0, 0, 0)
-	p["head_rot"] = cfg.get("head_rot", Vector3(-16.0, 0.0, 0.0)) + Vector3(0, sin(t * 0.8) * 14.0, 0)
+	p["hips_rot"] = Vector3(8.0, sin(t * 0.5) * 4.0, 0.0)
+	p["torso_rot"] = cfg.get("torso_rot", Vector3(18.0, 0.0, 0.0)) + Vector3(sin(t) * 2.0, 0, 0)
+	p["head_rot"] = cfg.get("head_rot", Vector3(-12.0, 0.0, 0.0)) + Vector3(0, sin(t * 0.8) * 12.0, 0)
 	
-	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(180.0, 0.0, 0.0))
-	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", Vector3(base_dag_r.x, -base_dag_r.y, -base_dag_r.z))
-	
-	p["left_arm_rot"] = cfg.get("left_arm_rot", Vector3(12.0, -20.0, -25.0))
-	p["left_forearm_rot"] = cfg.get("left_forearm_rot", Vector3(-68.0, 0.0, 0.0))
+	p["left_arm_rot"] = cfg.get("left_arm_rot", Vector3(-25.0, 10.0, -16.0)) + Vector3(-bob * 30.0, 0, 0)
+	p["left_forearm_rot"] = cfg.get("left_forearm_rot", Vector3(-65.0, 0.0, 0.0))
+	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(85.0, -15.0, 15.0))
+	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", Vector3(85.0, 15.0, -15.0))
 	p["left_dagger_rot"] = base_dag_l
 	
-	p["right_arm_rot"] = cfg.get("right_arm_rot", Vector3(15.0, 20.0, 25.0))
-	p["right_forearm_rot"] = cfg.get("right_forearm_rot", Vector3(-70.0, 0.0, 0.0))
+	p["right_arm_rot"] = cfg.get("right_arm_rot", Vector3(-25.0, -10.0, 16.0)) + Vector3(bob * 30.0, 0, 0)
+	p["right_forearm_rot"] = cfg.get("right_forearm_rot", Vector3(-65.0, 0.0, 0.0))
 	p["right_dagger_rot"] = base_dag_r
 	
-	p["left_thigh_rot"] = Vector3(-18.0, 0.0, -8.0)
-	p["left_shin_rot"] = Vector3(28.0, 0.0, 0.0)
-	p["right_thigh_rot"] = Vector3(12.0, 0.0, 8.0)
-	p["right_shin_rot"] = Vector3(24.0, 0.0, 0.0)
+	p["left_thigh_rot"] = Vector3(-16.0, 0.0, -6.0)
+	p["left_shin_rot"] = Vector3(26.0, 0.0, 0.0)
+	p["right_thigh_rot"] = Vector3(10.0, 0.0, 6.0)
+	p["right_shin_rot"] = Vector3(22.0, 0.0, 0.0)
 	return p
 
-# --- 2. WALK (Silent Prowling Stride) ---
+# --- 2. WALK (Silent Prowling Stride - Reverse Grip) ---
 func _compute_walk(time_val: float) -> Dictionary:
 	var p: Dictionary = {}
 	var t = time_val * 4.8
@@ -489,8 +637,8 @@ func _compute_walk(time_val: float) -> Dictionary:
 	
 	p["hips_pos"] = Vector3(0.0, ground_hips_y + abs(sin(t * 2.0)) * 0.018, 0.0)
 	p["hips_rot"] = Vector3(12.0, s_leg * 8.0, 0.0)
-	p["torso_rot"] = Vector3(16.0, -s_leg * 6.0, 0.0)
-	p["head_rot"] = Vector3(-14.0, 0.0, 0.0)
+	p["torso_rot"] = Vector3(18.0, -s_leg * 6.0, 0.0)
+	p["head_rot"] = Vector3(-16.0, 0.0, 0.0)
 	
 	p["left_thigh_rot"] = Vector3(-s_leg * 30.0, 0.0, 0.0)
 	p["left_shin_rot"] = Vector3(maxf(0.0, s_leg * 36.0), 0.0, 0.0)
@@ -499,12 +647,12 @@ func _compute_walk(time_val: float) -> Dictionary:
 	
 	var st_key = "walk" if stance_configs.has("walk") else current_stance
 	var cfg = stance_configs.get(st_key, default_stance_configs.get(st_key, default_stance_configs.get("idle", {})))
-	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(20.0, 0.0, 0.0))
-	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", Vector3(base_dag_r.x, -base_dag_r.y, -base_dag_r.z))
-	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-18.0, 10.0, 16.0))
-	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-55.0, 0.0, 0.0))
-	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(-16.0, -10.0, -16.0))
-	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-52.0, 0.0, 0.0))
+	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(-85.0, 15.0, -15.0))
+	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", Vector3(-85.0, -15.0, 15.0))
+	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-15.0, 15.0, 18.0))
+	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-62.0, 0.0, 0.0))
+	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(-15.0, -15.0, -18.0))
+	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-62.0, 0.0, 0.0))
 	
 	p["left_arm_rot"] = base_l_arm + Vector3(-s_leg * 16.0, 0.0, 0.0)
 	p["left_forearm_rot"] = base_l_fore
@@ -515,7 +663,7 @@ func _compute_walk(time_val: float) -> Dictionary:
 	p["right_dagger_rot"] = base_dag_r + Vector3(sin(t) * 3.0, 0.0, 0.0)
 	return p
 
-# --- 3. SCURRY (Low Profile Ninja Sprint) ---
+# --- 3. SCURRY (Low Profile Ninja Sprint - Reverse Grip) ---
 func _compute_scurry(time_val: float) -> Dictionary:
 	var p: Dictionary = {}
 	var t = time_val * 8.5
@@ -523,8 +671,8 @@ func _compute_scurry(time_val: float) -> Dictionary:
 	
 	p["hips_pos"] = Vector3(0.0, ground_hips_y - 0.04 + abs(sin(t * 2.0)) * 0.025, 0.0)
 	p["hips_rot"] = Vector3(22.0, s_leg * 14.0, 0.0)
-	p["torso_rot"] = Vector3(20.0, -s_leg * 12.0, 0.0) # Leaning far forward
-	p["head_rot"] = Vector3(-24.0, 0.0, 0.0)
+	p["torso_rot"] = Vector3(24.0, -s_leg * 12.0, 0.0)
+	p["head_rot"] = Vector3(-22.0, 0.0, 0.0)
 	
 	p["left_thigh_rot"] = Vector3(-s_leg * 48.0, 0.0, 0.0)
 	p["left_shin_rot"] = Vector3(maxf(0.0, s_leg * 58.0), 0.0, 0.0)
@@ -533,12 +681,12 @@ func _compute_scurry(time_val: float) -> Dictionary:
 	
 	var st_key = "scurry" if stance_configs.has("scurry") else current_stance
 	var cfg = stance_configs.get(st_key, default_stance_configs.get(st_key, default_stance_configs.get("idle", {})))
-	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(20.0, 0.0, 0.0))
-	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", Vector3(base_dag_r.x, -base_dag_r.y, -base_dag_r.z))
-	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-18.0, 10.0, 16.0))
-	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-55.0, 0.0, 0.0))
-	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(-16.0, -10.0, -16.0))
-	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-52.0, 0.0, 0.0))
+	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(-85.0, 15.0, -15.0))
+	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", Vector3(-85.0, -15.0, 15.0))
+	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-20.0, 18.0, 20.0))
+	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-68.0, 0.0, 0.0))
+	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(-20.0, -18.0, -20.0))
+	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-68.0, 0.0, 0.0))
 	
 	p["left_arm_rot"] = base_l_arm + Vector3(-s_leg * 28.0, 0.0, 0.0)
 	p["left_forearm_rot"] = base_l_fore
@@ -549,166 +697,315 @@ func _compute_scurry(time_val: float) -> Dictionary:
 	p["right_dagger_rot"] = base_dag_r + Vector3(sin(t) * 6.0, 0.0, 0.0)
 	return p
 
-# --- 4. DUAL SLASH (X-Cross Scissor Slash) ---
+# --- 4. DUAL SLASH (2-Hit Sequential Reverse UPWARD Diagonal Slash Combo) ---
+# Strike 1: Right hand upward diagonal rip from below right hip up past chin/left shoulder
+# Strike 2: Left hand upward diagonal rip from below left hip up past chin/right shoulder
+# Weight: Low scoop dips, explosive upward rising momentum, dynamic torso uncoiling & grounded combat lunges
 func _compute_dual_slash(t_s: float) -> Dictionary:
 	var p: Dictionary = {}
 	var tau = clampf(t_s / SLASH_DURATION, 0.0, 1.0)
-	var st_key = "dual_slash" if stance_configs.has("dual_slash") else current_stance
-	var cfg = stance_configs.get(st_key, default_stance_configs.get(st_key, default_stance_configs.get("idle", {})))
-	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(20.0, 0.0, 0.0))
-	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", base_dag_r)
-	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-18.0, 10.0, 16.0))
-	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-55.0, 0.0, 0.0))
-	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(-16.0, -10.0, -16.0))
-	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-52.0, 0.0, 0.0))
 	
-	if tau < 0.25:
-		# WINDUP CROSS (0.0s - 0.18s): Cross arms in front of chest
-		var s = smoothstep(0.0, 1.0, tau / 0.25)
-		p["hips_pos"] = Vector3(0.0, ground_hips_y - 0.02, lerp(0.0, -0.05, s))
-		p["hips_rot"] = Vector3(12.0, 0.0, 0.0)
-		p["torso_rot"] = Vector3(16.0, 0.0, 0.0)
-		p["head_rot"] = Vector3(-12.0, 0.0, 0.0)
+	var st_key = "idle"
+	var cfg = stance_configs.get(st_key, default_stance_configs.get(st_key, {}))
+	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(-85.0, 15.0, -15.0))
+	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", Vector3(-85.0, -15.0, 15.0))
+	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-15.0, 15.0, 18.0))
+	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-62.0, 0.0, 0.0))
+	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(-15.0, -15.0, -18.0))
+	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-62.0, 0.0, 0.0))
+	var base_torso: Vector3 = cfg.get("torso_rot", Vector3(22.0, 0.0, 0.0))
+	var base_head: Vector3 = cfg.get("head_rot", Vector3(-16.0, 0.0, 0.0))
+	
+	if tau < 0.16:
+		# PHASE 1: WINDUP & SCOOP DIP RIGHT (0.00s - 0.168s)
+		# Drops low into crouching scoop on right flank, pulls right reverse blade low and back behind hip
+		var u = tau / 0.16
+		var s = smoothstep(0.0, 1.0, u)
 		
-		# Arms crossed
-		p["left_arm_rot"] = _lerp_angles(base_l_arm, Vector3(-55.0, 35.0, 15.0), s)
-		p["left_forearm_rot"] = _lerp_angles(base_l_fore, Vector3(-110.0, 0.0, 0.0), s)
-		p["left_dagger_rot"] = _lerp_angles(base_dag_l, Vector3(90.0, 0.0, 0.0), s)
+		p["hips_pos"] = Vector3(0.0, ground_hips_y - 0.04 * s, -0.05 * s)
+		p["hips_rot"] = Vector3(12.0, 14.0 * s, 0.0)
+		p["torso_rot"] = Vector3(lerp(base_torso.x, 26.0, s), lerp(base_torso.y, 22.0, s), lerp(base_torso.z, 6.0, s))
+		p["head_rot"] = Vector3(lerp(base_head.x, -16.0, s), lerp(base_head.y, -22.0, s), 0.0)
 		
-		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(-55.0, -35.0, -15.0), s)
-		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-110.0, 0.0, 0.0), s)
-		p["right_dagger_rot"] = _lerp_angles(base_dag_r, Vector3(90.0, 0.0, 0.0), s)
+		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(18.0, 18.0, 18.0), s)
+		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-45.0, 0.0, 0.0), s)
+		p["right_dagger_rot"] = _lerp_angles(base_dag_r, Vector3(-85.0, 15.0, -15.0), s)
 		
-		p["left_thigh_rot"] = Vector3(-16.0, 0.0, -6.0)
-		p["left_shin_rot"] = Vector3(26.0, 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(10.0, 0.0, 6.0)
-		p["right_shin_rot"] = Vector3(22.0, 0.0, 0.0)
+		p["left_arm_rot"] = _lerp_angles(base_l_arm, Vector3(-35.0, -10.0, -15.0), s)
+		p["left_forearm_rot"] = _lerp_angles(base_l_fore, Vector3(-75.0, 0.0, 0.0), s)
+		p["left_dagger_rot"] = _lerp_angles(base_dag_l, Vector3(-85.0, -15.0, 15.0), s)
+		
+		p["left_thigh_rot"] = Vector3(lerp(-18.0, -24.0, s), 0.0, -8.0)
+		p["left_shin_rot"] = Vector3(lerp(28.0, 36.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(12.0, 18.0, s), 0.0, 8.0)
+		p["right_shin_rot"] = Vector3(lerp(24.0, 38.0, s), 0.0, 0.0)
+		
+	elif tau < 0.38:
+		# PHASE 2: STRIKE 1 - RIGHT UPWARD DIAGONAL SLASH (0.168s - 0.399s)
+		# Explosive rising surge: Legs drive upward-forward, torso uncoils from +22° to -25°, right reverse blade rips up from below
+		var u = (tau - 0.16) / 0.22
+		var whip_curve: float = 0.0
+		if u < 0.65:
+			var strike_sub = u / 0.65
+			whip_curve = 1.0 - pow(1.0 - strike_sub, 3.5)
+		else:
+			var follow_sub = (u - 0.65) / 0.35
+			whip_curve = 1.0 + sin(follow_sub * PI * 0.5) * 0.08
+			
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.04, ground_hips_y - 0.015, whip_curve), lerp(-0.05, 0.14, whip_curve))
+		p["hips_rot"] = Vector3(lerp(12.0, 8.0, whip_curve), lerp(14.0, -18.0, whip_curve), 0.0)
+		p["torso_rot"] = Vector3(lerp(26.0, 12.0, whip_curve), lerp(22.0, -25.0, whip_curve), lerp(6.0, -12.0, whip_curve))
+		p["head_rot"] = Vector3(lerp(-16.0, -10.0, whip_curve), lerp(-22.0, 22.0, whip_curve), 0.0)
+		
+		# Right reverse dagger rips up-diagonally across from low right past chin to high left
+		p["right_arm_rot"] = Vector3(lerp(18.0, -105.0, whip_curve), lerp(18.0, -10.0, whip_curve), lerp(18.0, -15.0, whip_curve))
+		p["right_forearm_rot"] = Vector3(lerp(-45.0, -35.0, whip_curve), 0.0, 0.0)
+		p["right_dagger_rot"] = Vector3(-85.0, 15.0, -15.0)
+		
+		# Left arm draws down/back to left ribs in counter-balance, coiling for Strike 2
+		p["left_arm_rot"] = Vector3(lerp(-35.0, 12.0, whip_curve), lerp(-10.0, -15.0, whip_curve), lerp(-15.0, -18.0, whip_curve))
+		p["left_forearm_rot"] = Vector3(lerp(-75.0, -65.0, whip_curve), 0.0, 0.0)
+		p["left_dagger_rot"] = Vector3(-85.0, -15.0, 15.0)
+		
+		# Deep forward combat lunge on front left foot
+		p["left_thigh_rot"] = Vector3(lerp(-24.0, -30.0, whip_curve), 0.0, -8.0)
+		p["left_shin_rot"] = Vector3(lerp(36.0, 42.0, whip_curve), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(18.0, 20.0, whip_curve), 0.0, 8.0)
+		p["right_shin_rot"] = Vector3(lerp(38.0, 18.0, whip_curve), 0.0, 0.0)
 		
 	elif tau < 0.50:
-		# EXPLOSIVE CROSS SLASH (0.25s - 0.38s): Fling arms outward in X-slash
-		var s = smoothstep(0.0, 1.0, (tau - 0.25) / 0.25)
-		p["hips_pos"] = Vector3(0.0, ground_hips_y - 0.05, lerp(-0.05, 0.12, s))
-		p["hips_rot"] = Vector3(18.0, 0.0, 0.0)
-		p["torso_rot"] = Vector3(24.0, 0.0, 0.0)
-		p["head_rot"] = Vector3(-18.0, 0.0, 0.0)
+		# PHASE 3: KINETIC TRANSITION & SCOOP DIP LEFT (0.399s - 0.525s)
+		# Momentum of Strike 1 whips torso left, right arm lowers to high guard, left arm drops low and back behind hip
+		var u = (tau - 0.38) / 0.12
+		var s = smoothstep(0.0, 1.0, u)
 		
-		# Outward scissor slash
-		p["left_arm_rot"] = Vector3(lerp(-55.0, -25.0, s), lerp(35.0, -15.0, s), lerp(15.0, -65.0, s))
-		p["left_forearm_rot"] = Vector3(lerp(-110.0, -15.0, s), 0.0, 0.0)
-		p["left_dagger_rot"] = Vector3(120.0, 0.0, 0.0)
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.015, ground_hips_y - 0.04, s), lerp(0.14, 0.12, s))
+		p["hips_rot"] = Vector3(lerp(8.0, 12.0, s), lerp(-18.0, -14.0, s), 0.0)
+		p["torso_rot"] = Vector3(lerp(12.0, 26.0, s), lerp(-25.0, -22.0, s), lerp(-12.0, -6.0, s))
+		p["head_rot"] = Vector3(lerp(-10.0, -16.0, s), lerp(22.0, 22.0, s), 0.0)
 		
-		p["right_arm_rot"] = Vector3(lerp(-55.0, -25.0, s), lerp(-35.0, 15.0, s), lerp(-15.0, 65.0, s))
-		p["right_forearm_rot"] = Vector3(lerp(-110.0, -15.0, s), 0.0, 0.0)
-		p["right_dagger_rot"] = Vector3(120.0, 0.0, 0.0)
+		# Right arm retracts into mid/high guard
+		p["right_arm_rot"] = Vector3(lerp(-105.0, -35.0, s), lerp(-10.0, 10.0, s), lerp(-15.0, 15.0, s))
+		p["right_forearm_rot"] = Vector3(lerp(-35.0, -75.0, s), 0.0, 0.0)
+		p["right_dagger_rot"] = Vector3(-85.0, 15.0, -15.0)
 		
-		p["left_thigh_rot"] = Vector3(lerp(-16.0, -28.0, s), 0.0, -8.0)
-		p["left_shin_rot"] = Vector3(lerp(26.0, 38.0, s), 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(lerp(10.0, 16.0, s), 0.0, 8.0)
-		p["right_shin_rot"] = Vector3(lerp(22.0, 26.0, s), 0.0, 0.0)
+		# Left arm drops low and back behind left hip, cocked for upward rip
+		p["left_arm_rot"] = Vector3(lerp(12.0, 18.0, s), lerp(-15.0, -18.0, s), lerp(-18.0, -18.0, s))
+		p["left_forearm_rot"] = Vector3(lerp(-65.0, -45.0, s), 0.0, 0.0)
+		p["left_dagger_rot"] = Vector3(-85.0, -15.0, 15.0)
+		
+		p["left_thigh_rot"] = Vector3(lerp(-30.0, 18.0, s), 0.0, -8.0)
+		p["left_shin_rot"] = Vector3(lerp(42.0, 38.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(20.0, -24.0, s), 0.0, 8.0)
+		p["right_shin_rot"] = Vector3(lerp(18.0, 36.0, s), 0.0, 0.0)
+		
+	elif tau < 0.72:
+		# PHASE 4: STRIKE 2 - LEFT UPWARD DIAGONAL SLASH (0.525s - 0.756s)
+		# Explosive counter-whip from -22° across to +25°, left reverse blade rips up from below across right shoulder
+		var u = (tau - 0.50) / 0.22
+		var whip_curve: float = 0.0
+		if u < 0.65:
+			var strike_sub = u / 0.65
+			whip_curve = 1.0 - pow(1.0 - strike_sub, 3.5)
+		else:
+			var follow_sub = (u - 0.65) / 0.35
+			whip_curve = 1.0 + sin(follow_sub * PI * 0.5) * 0.08
+			
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.04, ground_hips_y - 0.015, whip_curve), lerp(0.12, 0.18, whip_curve))
+		p["hips_rot"] = Vector3(lerp(12.0, 8.0, whip_curve), lerp(-14.0, 18.0, whip_curve), 0.0)
+		p["torso_rot"] = Vector3(lerp(26.0, 12.0, whip_curve), lerp(-22.0, 25.0, whip_curve), lerp(-6.0, 12.0, whip_curve))
+		p["head_rot"] = Vector3(lerp(-16.0, -10.0, whip_curve), lerp(22.0, -22.0, whip_curve), 0.0)
+		
+		# Left reverse dagger rips up-diagonally across from low left past chin to high right
+		p["left_arm_rot"] = Vector3(lerp(18.0, -105.0, whip_curve), lerp(-18.0, 10.0, whip_curve), lerp(-18.0, 15.0, whip_curve))
+		p["left_forearm_rot"] = Vector3(lerp(-45.0, -35.0, whip_curve), 0.0, 0.0)
+		p["left_dagger_rot"] = Vector3(-85.0, -15.0, 15.0)
+		
+		# Right arm anchors at ribs in reverse guard
+		p["right_arm_rot"] = Vector3(lerp(-35.0, 12.0, whip_curve), lerp(10.0, 15.0, whip_curve), lerp(15.0, 18.0, whip_curve))
+		p["right_forearm_rot"] = Vector3(lerp(-75.0, -65.0, whip_curve), 0.0, 0.0)
+		p["right_dagger_rot"] = Vector3(-85.0, 15.0, -15.0)
+		
+		# Powerful combat lunge planting onto right foot
+		p["right_thigh_rot"] = Vector3(lerp(-24.0, -30.0, whip_curve), 0.0, 8.0)
+		p["right_shin_rot"] = Vector3(lerp(36.0, 42.0, whip_curve), 0.0, 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(18.0, 20.0, whip_curve), 0.0, -8.0)
+		p["left_shin_rot"] = Vector3(lerp(38.0, 18.0, whip_curve), 0.0, 0.0)
 		
 	else:
-		# RECOVERY (0.50s - 0.75s)
-		var s = smoothstep(0.0, 1.0, (tau - 0.50) / 0.50)
-		p["hips_pos"] = Vector3(0.0, ground_hips_y, lerp(0.12, 0.0, s))
-		p["hips_rot"] = Vector3(lerp(18.0, 8.0, s), 0.0, 0.0)
-		p["torso_rot"] = Vector3(lerp(24.0, 14.0, s), 0.0, 0.0)
-		p["head_rot"] = Vector3(-12.0, 0.0, 0.0)
+		# PHASE 5: FOLLOW-THROUGH FLOURISH & RESET TO REVERSE IDLE (0.756s - 1.05s)
+		# Decelerates blades with crisp wrist flourish, springs back into low stalking reverse stance
+		var u = (tau - 0.72) / 0.28
+		var s = smoothstep(0.0, 1.0, u)
 		
-		p["left_arm_rot"] = _lerp_angles(Vector3(-25.0, -15.0, -65.0), base_l_arm, s)
-		p["left_forearm_rot"] = _lerp_angles(Vector3(-15.0, 0.0, 0.0), base_l_fore, s)
-		p["left_dagger_rot"] = _lerp_angles(Vector3(120.0, 0.0, 0.0), base_dag_l, s)
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.015, ground_hips_y, s), lerp(0.18, 0.0, s))
+		p["hips_rot"] = Vector3(lerp(8.0, 12.0, s), lerp(18.0, 0.0, s), 0.0)
+		p["torso_rot"] = Vector3(lerp(12.0, base_torso.x, s), lerp(25.0, base_torso.y, s), lerp(12.0, base_torso.z, s))
+		p["head_rot"] = Vector3(lerp(-10.0, base_head.x, s), lerp(-22.0, base_head.y, s), 0.0)
 		
-		p["right_arm_rot"] = _lerp_angles(Vector3(-25.0, 15.0, 65.0), base_r_arm, s)
-		p["right_forearm_rot"] = _lerp_angles(Vector3(-15.0, 0.0, 0.0), base_r_fore, s)
-		p["right_dagger_rot"] = _lerp_angles(Vector3(120.0, 0.0, 0.0), base_dag_r, s)
+		p["left_arm_rot"] = _lerp_angles(Vector3(-105.0, 10.0, 15.0), base_l_arm, s)
+		p["left_forearm_rot"] = _lerp_angles(Vector3(-35.0, 0.0, 0.0), base_l_fore, s)
+		p["left_dagger_rot"] = _lerp_angles(Vector3(-85.0, -15.0, 15.0), base_dag_l, s)
 		
-		p["left_thigh_rot"] = Vector3(lerp(-28.0, -16.0, s), 0.0, -6.0)
-		p["left_shin_rot"] = Vector3(lerp(38.0, 26.0, s), 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(lerp(16.0, 10.0, s), 0.0, 6.0)
-		p["right_shin_rot"] = Vector3(lerp(26.0, 22.0, s), 0.0, 0.0)
+		p["right_arm_rot"] = _lerp_angles(Vector3(12.0, 15.0, 18.0), base_r_arm, s)
+		p["right_forearm_rot"] = _lerp_angles(Vector3(-65.0, 0.0, 0.0), base_r_fore, s)
+		p["right_dagger_rot"] = _lerp_angles(Vector3(-85.0, 15.0, -15.0), base_dag_r, s)
+		
+		p["right_thigh_rot"] = Vector3(lerp(-30.0, 12.0, s), 0.0, 8.0)
+		p["right_shin_rot"] = Vector3(lerp(42.0, 24.0, s), 0.0, 0.0)
+		p["left_thigh_rot"] = Vector3(lerp(20.0, -18.0, s), 0.0, -8.0)
+		p["left_shin_rot"] = Vector3(lerp(18.0, 28.0, s), 0.0, 0.0)
+		
 	return p
 
-# --- 5. BACKSTAB LEAP (High Leap Somersault Downward Plunge) ---
+# --- 5. BACKSTAB (Lethal Ambush: Shadow Stalk & Grip Flip to Dao Xuôi, Explosive Forward Lunge & Deep Impale, Brutal Twist Tear & Recovery) ---
 func _compute_backstab(t_b: float) -> Dictionary:
 	var p: Dictionary = {}
 	var tau = clampf(t_b / BACKSTAB_DURATION, 0.0, 1.0)
-	var st_key = "backstab" if stance_configs.has("backstab") else current_stance
-	var cfg = stance_configs.get(st_key, default_stance_configs.get(st_key, default_stance_configs.get("idle", {})))
-	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(20.0, 0.0, 0.0))
-	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", base_dag_r)
-	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-18.0, 10.0, 16.0))
-	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-55.0, 0.0, 0.0))
-	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(-16.0, -10.0, -16.0))
-	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-52.0, 0.0, 0.0))
+	var st_key = "idle"
+	var cfg = stance_configs.get(st_key, default_stance_configs.get(st_key, {}))
+	var base_dag_r: Vector3 = cfg.get("right_dagger_rot", Vector3(-85.0, 15.0, -15.0))
+	var base_dag_l: Vector3 = cfg.get("left_dagger_rot", Vector3(-85.0, -15.0, 15.0))
+	var base_r_arm: Vector3 = cfg.get("right_arm_rot", Vector3(-15.0, 15.0, 18.0))
+	var base_r_fore: Vector3 = cfg.get("right_forearm_rot", Vector3(-62.0, 0.0, 0.0))
+	var base_l_arm: Vector3 = cfg.get("left_arm_rot", Vector3(-15.0, -15.0, -18.0))
+	var base_l_fore: Vector3 = cfg.get("left_forearm_rot", Vector3(-62.0, 0.0, 0.0))
+	var base_torso: Vector3 = cfg.get("torso_rot", Vector3(22.0, 0.0, 0.0))
+	var base_head: Vector3 = cfg.get("head_rot", Vector3(-16.0, 0.0, 0.0))
 	
-	if tau < 0.45:
-		# LEAP UP & FORWARD (0.0s - 0.42s)
-		var s = tau / 0.45
-		var y_rise = sin(s * PI) * 0.35
-		var z_fwd = s * 0.28
+	# Forward Grip (Dao Xuôi) targets for lethal backstab
+	var fwd_dag_r = Vector3(88.0, -10.0, 12.0)
+	var fwd_dag_l = Vector3(88.0, 10.0, -12.0)
+	
+	if tau < 0.26:
+		# PHASE 1: SHADOW STALK, GRIP FLIP TO DAO XUÔI & COILED WINDUP (0.00s - 0.338s)
+		# Sinks low, steps back with right foot to load weight, wrists snap daggers to FORWARD GRIP
+		var u = tau / 0.26
+		var s = smoothstep(0.0, 1.0, u)
 		
-		p["hips_pos"] = Vector3(0.0, ground_hips_y + y_rise, z_fwd)
-		p["hips_rot"] = Vector3(lerp(8.0, -35.0, s), 0.0, 0.0)
-		p["torso_rot"] = Vector3(lerp(14.0, -45.0, s), 0.0, 0.0)
-		p["head_rot"] = Vector3(15.0, 0.0, 0.0)
+		# Hips sink and coil back
+		p["hips_pos"] = Vector3(0.0, ground_hips_y - 0.06 * s, -0.05 * s)
+		p["hips_rot"] = Vector3(lerp(12.0, 14.0, s), lerp(0.0, 18.0, s), 0.0)
 		
-		# Daggers raised overhead ready to impale
-		p["left_arm_rot"] = _lerp_angles(base_l_arm, Vector3(-135.0, 0.0, -15.0), s)
-		p["left_forearm_rot"] = _lerp_angles(base_l_fore, Vector3(-25.0, 0.0, 0.0), s)
-		p["left_dagger_rot"] = _lerp_angles(base_dag_l, Vector3(180.0, 0.0, 0.0), s)
+		# Torso coils back and twists heavily right (+28° yaw, -8° roll, 14° pitch)
+		p["torso_rot"] = Vector3(lerp(base_torso.x, 14.0, s), lerp(0.0, 28.0, s), lerp(0.0, -8.0, s))
+		p["head_rot"] = Vector3(lerp(base_head.x, -14.0, s), lerp(0.0, -22.0, s), 0.0) # Head locks on victim
 		
-		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(-135.0, 0.0, 15.0), s)
-		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-25.0, 0.0, 0.0), s)
-		p["right_dagger_rot"] = _lerp_angles(base_dag_r, Vector3(180.0, 0.0, 0.0), s)
+		# Grip Flip: Wrists flip daggers smoothly from reverse grip to forward grip
+		var flip_u = clampf((u - 0.25) / 0.60, 0.0, 1.0)
+		var flip_s = smoothstep(0.0, 1.0, flip_u)
+		p["right_dagger_rot"] = _lerp_angles(base_dag_r, fwd_dag_r, flip_s)
+		p["left_dagger_rot"] = _lerp_angles(base_dag_l, fwd_dag_l, flip_s)
 		
-		p["left_thigh_rot"] = Vector3(-35.0, 0.0, -6.0)
-		p["left_shin_rot"] = Vector3(55.0, 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(-25.0, 0.0, 6.0)
-		p["right_shin_rot"] = Vector3(50.0, 0.0, 0.0)
+		# Right arm cocks far back behind ribs, elbow pulled back high (coiling for spear thrust)
+		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(34.0, 26.0, 22.0), s)
+		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-88.0, 0.0, 0.0), s)
 		
-	elif tau < 0.70:
-		# DOWNWARD PLUNGE SLAM (0.45s - 0.66s): Drive daggers straight down
-		var s = smoothstep(0.0, 1.0, (tau - 0.45) / 0.25)
-		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y + 0.15, ground_hips_y - 0.08, s), 0.28)
-		p["hips_rot"] = Vector3(lerp(-35.0, 28.0, s), 0.0, 0.0)
-		p["torso_rot"] = Vector3(lerp(-45.0, 36.0, s), 0.0, 0.0)
-		p["head_rot"] = Vector3(-12.0, 0.0, 0.0)
+		# Left arm reaches far forward and wide to grapple/pin target's shoulder
+		p["left_arm_rot"] = _lerp_angles(base_l_arm, Vector3(-32.0, -18.0, -24.0), s)
+		p["left_forearm_rot"] = _lerp_angles(base_l_fore, Vector3(-38.0, 0.0, 0.0), s)
 		
-		# Drive daggers down
-		p["left_arm_rot"] = Vector3(lerp(-135.0, -35.0, s), 0.0, -10.0)
-		p["left_forearm_rot"] = Vector3(lerp(-25.0, -75.0, s), 0.0, 0.0)
-		p["left_dagger_rot"] = Vector3(180.0, 0.0, 0.0)
+		# Stance loading onto rear foot
+		p["left_thigh_rot"] = Vector3(lerp(-18.0, -24.0, s), 0.0, -10.0)
+		p["left_shin_rot"] = Vector3(lerp(28.0, 38.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(12.0, 24.0, s), 0.0, 10.0)
+		p["right_shin_rot"] = Vector3(lerp(24.0, 16.0, s), 0.0, 0.0)
 		
-		p["right_arm_rot"] = Vector3(lerp(-135.0, -35.0, s), 0.0, 10.0)
-		p["right_forearm_rot"] = Vector3(lerp(-25.0, -75.0, s), 0.0, 0.0)
-		p["right_dagger_rot"] = Vector3(180.0, 0.0, 0.0)
+	elif tau < 0.50:
+		# PHASE 2: EXPLOSIVE FORWARD LUNGE & DEEP FORWARD IMPALE (0.338s - 0.650s)
+		# Pushes off back foot, surges forward (+0.46m!), torso uncoils, arm reaches FULL EXTENSION with forward blade
+		var u = (tau - 0.26) / 0.24
+		var thrust_curve: float = 0.0
+		if u < 0.65:
+			var strike_sub = u / 0.65
+			thrust_curve = 1.0 - pow(1.0 - strike_sub, 3.5)
+		else:
+			# Deep penetration resistance hold & micro impact shudder
+			var sub = (u - 0.65) / 0.35
+			thrust_curve = 1.0 + sin(sub * PI) * 0.03
+			
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.06, ground_hips_y - 0.05, thrust_curve), lerp(-0.05, 0.46, thrust_curve))
+		p["hips_rot"] = Vector3(lerp(14.0, 10.0, thrust_curve), lerp(18.0, -14.0, thrust_curve), 0.0)
 		
-		p["left_thigh_rot"] = Vector3(lerp(-35.0, -32.0, s), 0.0, -8.0)
-		p["left_shin_rot"] = Vector3(lerp(55.0, 45.0, s), 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(lerp(-25.0, 20.0, s), 0.0, 8.0)
-		p["right_shin_rot"] = Vector3(lerp(50.0, 32.0, s), 0.0, 0.0)
+		# Torso drives upper body weight into the thrust: leans forward 36°, rotates from +28° to -16°
+		p["torso_rot"] = Vector3(lerp(14.0, 36.0, thrust_curve), lerp(28.0, -16.0, thrust_curve), lerp(-8.0, 8.0, thrust_curve))
+		p["head_rot"] = Vector3(lerp(-14.0, -24.0, thrust_curve), lerp(-22.0, 14.0, thrust_curve), 0.0)
+		
+		# Both daggers strictly in DAO XUÔI (Forward Grip)
+		p["right_dagger_rot"] = fwd_dag_r
+		p["left_dagger_rot"] = fwd_dag_l
+		
+		# Right arm punches straight through with maximum wide extension!
+		p["right_arm_rot"] = Vector3(lerp(34.0, -68.0, thrust_curve), lerp(26.0, -10.0, thrust_curve), lerp(22.0, 8.0, thrust_curve))
+		p["right_forearm_rot"] = Vector3(lerp(-88.0, -14.0, thrust_curve), 0.0, 0.0) # Almost completely straightened arm!
+		
+		# Left arm grasps target and drives secondary forward dagger into flank
+		p["left_arm_rot"] = Vector3(lerp(-32.0, -56.0, thrust_curve), lerp(-18.0, 14.0, thrust_curve), lerp(-24.0, -14.0, thrust_curve))
+		p["left_forearm_rot"] = Vector3(lerp(-38.0, -42.0, thrust_curve), 0.0, 0.0)
+		
+		# Deep combat lunge planting onto lead left foot
+		p["left_thigh_rot"] = Vector3(lerp(-24.0, -44.0, thrust_curve), 0.0, -10.0)
+		p["left_shin_rot"] = Vector3(lerp(38.0, 60.0, thrust_curve), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(24.0, 32.0, thrust_curve), 0.0, 10.0)
+		p["right_shin_rot"] = Vector3(lerp(16.0, 10.0, thrust_curve), 0.0, 0.0)
+		
+	elif tau < 0.74:
+		# PHASE 3: BRUTAL INTERNAL TWIST & LATERAL RIPPING TEAR (0.650s - 0.962s)
+		# Drives full body weight deeper (torso 42°), twists forward blades 90°, violently wrenches arms outward
+		var u = (tau - 0.50) / 0.24
+		var rip_curve = 1.0 - pow(1.0 - u, 2.5)
+		
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.05, ground_hips_y - 0.07, rip_curve), lerp(0.46, 0.48, rip_curve))
+		p["hips_rot"] = Vector3(10.0, -14.0, 0.0)
+		p["torso_rot"] = Vector3(lerp(36.0, 42.0, rip_curve), lerp(-16.0, -18.0, rip_curve), 8.0)
+		p["head_rot"] = Vector3(-24.0, 14.0, 0.0)
+		
+		# Wrists twist blades to expand wound
+		p["right_dagger_rot"] = Vector3(82.0, lerp(-10.0, 25.0, rip_curve), lerp(12.0, 45.0, rip_curve))
+		p["left_dagger_rot"] = Vector3(82.0, lerp(10.0, -25.0, rip_curve), lerp(-12.0, -45.0, rip_curve))
+		
+		# Broad, forceful lateral extraction rip
+		p["right_arm_rot"] = Vector3(lerp(-68.0, -42.0, rip_curve), lerp(-10.0, 32.0, rip_curve), lerp(8.0, 40.0, rip_curve))
+		p["right_forearm_rot"] = Vector3(lerp(-14.0, -58.0, rip_curve), 0.0, 0.0)
+		
+		p["left_arm_rot"] = Vector3(lerp(-56.0, -42.0, rip_curve), lerp(14.0, -32.0, rip_curve), lerp(-14.0, -40.0, rip_curve))
+		p["left_forearm_rot"] = Vector3(lerp(-42.0, -58.0, rip_curve), 0.0, 0.0)
+		
+		p["left_thigh_rot"] = Vector3(-44.0, 0.0, -10.0)
+		p["left_shin_rot"] = Vector3(60.0, 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(32.0, 0.0, 10.0)
+		p["right_shin_rot"] = Vector3(10.0, 0.0, 0.0)
 		
 	else:
-		# LANDING RECOVERY & SPRING BACK (0.70s - 0.95s)
-		var s = smoothstep(0.0, 1.0, (tau - 0.70) / 0.30)
-		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.08, ground_hips_y, s), lerp(0.28, 0.0, s))
-		p["hips_rot"] = Vector3(lerp(28.0, 8.0, s), 0.0, 0.0)
-		p["torso_rot"] = Vector3(lerp(36.0, 14.0, s), 0.0, 0.0)
-		p["head_rot"] = Vector3(-12.0, 0.0, 0.0)
+		# PHASE 4: RECOIL EXTRACTION, BLOOD FLICK & FLIP BACK TO REVERSE IDLE (0.962s - 1.30s)
+		# Springs back from front foot to neutral, stylish wrist snap flicks blood, daggers spin back to DAO NGƯỢC
+		var u = (tau - 0.74) / 0.26
+		var s = smoothstep(0.0, 1.0, u)
 		
-		p["left_arm_rot"] = _lerp_angles(Vector3(-35.0, -15.0, -10.0), base_l_arm, s)
-		p["left_forearm_rot"] = _lerp_angles(Vector3(-75.0, 0.0, 0.0), base_l_fore, s)
-		p["left_dagger_rot"] = _lerp_angles(Vector3(180.0, 0.0, 0.0), base_dag_l, s)
+		p["hips_pos"] = Vector3(0.0, lerp(ground_hips_y - 0.07, ground_hips_y, s), lerp(0.48, 0.0, s))
+		p["hips_rot"] = Vector3(lerp(10.0, 12.0, s), lerp(-14.0, 0.0, s), 0.0)
+		p["torso_rot"] = Vector3(lerp(42.0, base_torso.x, s), lerp(-18.0, base_torso.y, s), lerp(8.0, base_torso.z, s))
+		p["head_rot"] = Vector3(lerp(-24.0, base_head.x, s), lerp(14.0, base_head.y, s), 0.0)
 		
-		p["right_arm_rot"] = _lerp_angles(Vector3(-35.0, -12.0, 10.0), base_r_arm, s)
-		p["right_forearm_rot"] = _lerp_angles(Vector3(-75.0, 0.0, 0.0), base_r_fore, s)
-		p["right_dagger_rot"] = _lerp_angles(Vector3(180.0, 0.0, 0.0), base_dag_r, s)
+		# Grip Flip Back: Daggers flip smoothly from forward grip back to reverse grip
+		var unflip_u = clampf((u - 0.35) / 0.55, 0.0, 1.0)
+		var unflip_s = smoothstep(0.0, 1.0, unflip_u)
+		p["right_dagger_rot"] = _lerp_angles(Vector3(82.0, 25.0, 45.0), base_dag_r, unflip_s)
+		p["left_dagger_rot"] = _lerp_angles(Vector3(82.0, -25.0, -45.0), base_dag_l, unflip_s)
 		
-		p["left_thigh_rot"] = Vector3(lerp(-32.0, -16.0, s), 0.0, -6.0)
-		p["left_shin_rot"] = Vector3(lerp(45.0, 26.0, s), 0.0, 0.0)
-		p["right_thigh_rot"] = Vector3(lerp(20.0, 10.0, s), 0.0, 6.0)
-		p["right_shin_rot"] = Vector3(lerp(32.0, 22.0, s), 0.0, 0.0)
+		p["right_arm_rot"] = _lerp_angles(Vector3(-42.0, 32.0, 40.0), base_r_arm, s)
+		p["right_forearm_rot"] = _lerp_angles(Vector3(-58.0, 0.0, 0.0), base_r_fore, s)
+		
+		p["left_arm_rot"] = _lerp_angles(Vector3(-42.0, -32.0, -40.0), base_l_arm, s)
+		p["left_forearm_rot"] = _lerp_angles(Vector3(-58.0, 0.0, 0.0), base_l_fore, s)
+		
+		p["left_thigh_rot"] = Vector3(lerp(-44.0, -18.0, s), 0.0, -8.0)
+		p["left_shin_rot"] = Vector3(lerp(60.0, 28.0, s), 0.0, 0.0)
+		p["right_thigh_rot"] = Vector3(lerp(32.0, 12.0, s), 0.0, 8.0)
+		p["right_shin_rot"] = Vector3(lerp(10.0, 24.0, s), 0.0, 0.0)
+		
 	return p
+
 
 # --- 6. PARRY REACTION (Knocked Back from Clashing Daggers) ---
 func _compute_parry(t_p: float) -> Dictionary:

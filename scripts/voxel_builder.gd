@@ -1187,23 +1187,21 @@ static func build_meadow_mesh() -> ArrayMesh:
 static func build_forest_mesh() -> ArrayMesh:
 	var voxels = []
 	
-	# Layered Forest Glade: Giant Sentinels (5.0m - 6.5m) + Mid-Canopy Pines (3.2m - 4.0m)
+	# Layered Forest Glade: Giant Sentinels & Pines pushed back to frame the clearing
 	# Format: [tx, tz, th] (scale 0.10m per voxel)
 	var trees = [
-		# Mid-ground trees (Lush green canopies framing right above goblin's head)
-		Vector3i(0, 36, -26),      # Center mid-tree (3.6m tall)
-		Vector3i(-18, 38, -24),    # Left mid-tree (3.8m tall)
-		Vector3i(18, 38, -24),     # Right mid-tree (3.8m tall)
-		Vector3i(-32, 34, -10),    # Left flank tree (3.4m tall)
-		Vector3i(32, 34, -10),     # Right flank tree (3.4m tall)
+		# Mid-ground backdrop trees (Pushed back to keep clearing 100% open)
+		Vector3i(0, 42, -42),      # Center deep backdrop tree (4.2m tall)
+		Vector3i(-24, 42, -38),    # Left backdrop tree
+		Vector3i(24, 42, -38),     # Right backdrop tree
+		Vector3i(-44, 44, -28),    # Wide left flank tree
+		Vector3i(44, 44, -28),     # Wide right flank tree
 		
-		# Towering Colossus Sentinels in the background (5.0m - 6.5m)
-		Vector3i(-12, 65, -45),    # Deep giant sentinel (6.5m tall!)
-		Vector3i(12, 64, -45),     # Deep giant sentinel (6.4m tall!)
-		Vector3i(-28, 55, -36),    # Deep-left colossus (5.5m tall)
-		Vector3i(28, 56, -36),     # Deep-right colossus (5.6m tall)
-		Vector3i(-42, 46, 2),      # Foreground-left framing colossus (4.6m tall)
-		Vector3i(42, 48, 2)        # Foreground-right framing colossus (4.8m tall)
+		# Towering Colossus Sentinels in the deep background (5.0m - 6.5m)
+		Vector3i(-14, 65, -55),    # Deep giant sentinel
+		Vector3i(14, 64, -55),     # Deep giant sentinel
+		Vector3i(-32, 55, -48),    # Deep-left colossus
+		Vector3i(32, 56, -48)      # Deep-right colossus
 	]
 	
 	for t in trees:
