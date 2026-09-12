@@ -57,12 +57,16 @@ var stance_configs: Dictionary = {}
 const StunStarsScript = preload("res://scripts/stun_stars.gd")
 var stun_stars: Node3D = null
 
-const WeaponTrailScript = preload("res://scripts/weapon_trail.gd")
+const WeaponTrailScript = preload("res://scripts/ogre_weapon_trail.gd")
 var weapon_trail: Node3D = null
 var earthshaker_impacted: bool = false
 var stagger_planted: bool = false
 
+var current_outfit: int = 1
+var outfit_meshes: Dictionary = {}
+
 signal anim_changed(anim_name: String)
+signal outfit_changed(outfit_id: int)
 
 func _ready() -> void:
 	generate_voxel_meshes()
@@ -74,17 +78,48 @@ func _ready() -> void:
 	_apply_pose(current_pose)
 
 func generate_voxel_meshes() -> void:
-	head_mesh.mesh = VoxelBuilder.build_ogre_head_mesh()
-	torso_mesh.mesh = VoxelBuilder.build_ogre_torso_mesh()
-	warhammer_mesh.mesh = VoxelBuilder.build_ogre_mace_mesh()
-	left_arm_mesh.mesh = VoxelBuilder.build_ogre_upper_arm_mesh()
-	left_forearm_mesh.mesh = VoxelBuilder.build_ogre_forearm_mesh(false)
-	right_arm_mesh.mesh = VoxelBuilder.build_ogre_upper_arm_mesh()
-	right_forearm_mesh.mesh = VoxelBuilder.build_ogre_forearm_mesh(true)
-	left_thigh_mesh.mesh = VoxelBuilder.build_ogre_thigh_mesh()
-	left_shin_mesh.mesh = VoxelBuilder.build_ogre_shin_mesh()
-	right_thigh_mesh.mesh = VoxelBuilder.build_ogre_thigh_mesh()
-	right_shin_mesh.mesh = VoxelBuilder.build_ogre_shin_mesh()
+	outfit_meshes[1] = {
+		"head": VoxelBuilder.build_ogre_head_mesh(1),
+		"torso": VoxelBuilder.build_ogre_torso_mesh(1),
+		"warhammer": VoxelBuilder.build_ogre_mace_mesh(1),
+		"upper_arm": VoxelBuilder.build_ogre_upper_arm_mesh(1),
+		"left_forearm": VoxelBuilder.build_ogre_forearm_mesh(false, 1),
+		"right_forearm": VoxelBuilder.build_ogre_forearm_mesh(true, 1),
+		"thigh": VoxelBuilder.build_ogre_thigh_mesh(1),
+		"shin": VoxelBuilder.build_ogre_shin_mesh(1)
+	}
+	outfit_meshes[2] = {
+		"head": VoxelBuilder.build_ogre_head_mesh(2),
+		"torso": VoxelBuilder.build_ogre_torso_mesh(2),
+		"warhammer": VoxelBuilder.build_ogre_mace_mesh(2),
+		"upper_arm": VoxelBuilder.build_ogre_upper_arm_mesh(2),
+		"left_forearm": VoxelBuilder.build_ogre_forearm_mesh(false, 2),
+		"right_forearm": VoxelBuilder.build_ogre_forearm_mesh(true, 2),
+		"thigh": VoxelBuilder.build_ogre_thigh_mesh(2),
+		"shin": VoxelBuilder.build_ogre_shin_mesh(2)
+	}
+	apply_outfit(current_outfit)
+
+func set_outfit(outfit_id: int) -> void:
+	current_outfit = clamp(outfit_id, 1, 2)
+	apply_outfit(current_outfit)
+	outfit_changed.emit(current_outfit)
+
+func apply_outfit(outfit_id: int) -> void:
+	if not outfit_meshes.has(outfit_id):
+		return
+	var m: Dictionary = outfit_meshes[outfit_id]
+	head_mesh.mesh = m["head"]
+	torso_mesh.mesh = m["torso"]
+	left_arm_mesh.mesh = m["upper_arm"]
+	left_forearm_mesh.mesh = m["left_forearm"]
+	right_arm_mesh.mesh = m["upper_arm"]
+	right_forearm_mesh.mesh = m["right_forearm"]
+	warhammer_mesh.mesh = m["warhammer"]
+	left_thigh_mesh.mesh = m["thigh"]
+	left_shin_mesh.mesh = m["shin"]
+	right_thigh_mesh.mesh = m["thigh"]
+	right_shin_mesh.mesh = m["shin"]
 
 func _init_stun_stars() -> void:
 	stun_stars = StunStarsScript.new()
@@ -103,18 +138,18 @@ func _init_weapon_trail() -> void:
 func _init_default_stances() -> void:
 	default_stance_configs = {
 		"idle": {
-			"right_arm_rot": Vector3(-32.0, 25.0, 35.0),
+			"right_arm_rot": Vector3(-32.0, 18.0, 48.0),
 			"right_forearm_rot": Vector3(-115.0, 0.0, 0.0),
-			"warhammer_rot": Vector3(65.0, 0.0, -30.0),
+			"warhammer_rot": Vector3(65.0, 0.0, -52.0),
 			"left_arm_rot": Vector3(15.0, 0.0, -15.0),
 			"left_forearm_rot": Vector3(-25.0, 0.0, 0.0),
 			"torso_rot": Vector3(6.0, 0.0, 0.0),
 			"head_rot": Vector3(-4.0, 0.0, 0.0)
 		},
 		"walk": {
-			"right_arm_rot": Vector3(-32.0, 25.0, 35.0),
+			"right_arm_rot": Vector3(-32.0, 18.0, 48.0),
 			"right_forearm_rot": Vector3(-115.0, 0.0, 0.0),
-			"warhammer_rot": Vector3(65.0, 0.0, -30.0),
+			"warhammer_rot": Vector3(65.0, 0.0, -52.0),
 			"left_arm_rot": Vector3(10.0, 0.0, -18.0),
 			"left_forearm_rot": Vector3(-25.0, 0.0, 0.0),
 			"torso_rot": Vector3(10.0, 0.0, 0.0),
@@ -157,18 +192,18 @@ func _init_default_stances() -> void:
 			"head_rot": Vector3(-10.0, 0.0, 0.0)
 		},
 		"stagger": {
-			"right_arm_rot": Vector3(-42.0, 18.0, 36.0),
-			"right_forearm_rot": Vector3(-60.0, 0.0, 0.0),
-			"warhammer_rot": Vector3(48.0, 22.0, 12.0),
+			"right_arm_rot": Vector3(-28.0, 12.0, 62.0),
+			"right_forearm_rot": Vector3(-35.0, 0.0, 0.0),
+			"warhammer_rot": Vector3(78.0, 20.0, -55.0),
 			"left_arm_rot": Vector3(-10.0, 0.0, -48.0),
 			"left_forearm_rot": Vector3(-25.0, 0.0, 0.0),
 			"torso_rot": Vector3(-14.0, 15.0, -6.0),
 			"head_rot": Vector3(-15.0, 8.0, 0.0)
 		},
 		"parry": {
-			"right_arm_rot": Vector3(-42.0, 18.0, 36.0),
-			"right_forearm_rot": Vector3(-60.0, 0.0, 0.0),
-			"warhammer_rot": Vector3(48.0, 22.0, 12.0),
+			"right_arm_rot": Vector3(-28.0, 12.0, 62.0),
+			"right_forearm_rot": Vector3(-35.0, 0.0, 0.0),
+			"warhammer_rot": Vector3(78.0, 20.0, -55.0),
 			"left_arm_rot": Vector3(-10.0, 0.0, -48.0),
 			"left_forearm_rot": Vector3(-25.0, 0.0, 0.0),
 			"torso_rot": Vector3(-14.0, 15.0, -6.0),
@@ -184,9 +219,9 @@ func _init_default_stances() -> void:
 			"head_rot": Vector3(-8.0, 0.0, 0.0)
 		},
 		"shoulder": {
-			"right_arm_rot": Vector3(-32.0, 25.0, 35.0),
+			"right_arm_rot": Vector3(-32.0, 18.0, 48.0),
 			"right_forearm_rot": Vector3(-115.0, 0.0, 0.0),
-			"warhammer_rot": Vector3(65.0, 0.0, -30.0),
+			"warhammer_rot": Vector3(65.0, 0.0, -52.0),
 			"left_arm_rot": Vector3(15.0, 0.0, -15.0),
 			"left_forearm_rot": Vector3(-25.0, 0.0, 0.0),
 			"torso_rot": Vector3(6.0, 0.0, 0.0),
@@ -1029,24 +1064,25 @@ func _compute_parry(t_p: float) -> Dictionary:
 	var p: Dictionary = {}
 	var tau = clampf(t_p / PARRY_DURATION, 0.0, 1.0)
 	var base_cfg = _get_base_stance_cfg()
-	var base_hammer = base_cfg.get("warhammer_rot", Vector3(65.0, 0.0, -30.0))
-	var base_r_arm = base_cfg.get("right_arm_rot", Vector3(-32.0, 25.0, 35.0))
+	var base_hammer = base_cfg.get("warhammer_rot", Vector3(65.0, 0.0, -52.0))
+	var base_r_arm = base_cfg.get("right_arm_rot", Vector3(-32.0, 18.0, 48.0))
 	var base_r_fore = base_cfg.get("right_forearm_rot", Vector3(-115.0, 0.0, 0.0))
 	var base_l_arm = base_cfg.get("left_arm_rot", Vector3(15.0, 0.0, -15.0))
 	var base_l_fore = base_cfg.get("left_forearm_rot", Vector3(-25.0, 0.0, 0.0))
 	
 	if tau < 0.18:
-		# PHASE 1: Violent Clash & Explosive Weapon Deflection
-		var s = 1.0 - pow(1.0 - (tau / 0.18), 2.5)
+		# PHASE 1: Violent Clash & Explosive Deflection Outward to Right Flank
+		var s = 1.0 - pow(1.0 - (tau / 0.18), 1.6)
 		p["hips_pos"] = Vector3(0.0, ground_hips_y + 0.010 * s, -0.10 * s)
 		p["hips_rot"] = Vector3(lerp(4.0, -12.0, s), lerp(0.0, 10.0, s), 0.0)
 		p["torso_rot"] = Vector3(lerp(6.0, -22.0, s), lerp(0.0, 20.0, s), lerp(0.0, -6.0, s))
 		p["head_rot"] = Vector3(lerp(-4.0, -28.0, s), lerp(0.0, 14.0, s), 0.0)
 		
-		# Mace deflected sharply backward & upward over right shoulder
-		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(-68.0, 22.0, 42.0), s)
-		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-35.0, 0.0, 0.0), s)
-		p["warhammer_rot"] = _lerp_angles(base_hammer, Vector3(25.0, 25.0, 20.0), s)
+		# Right arm and mace blown outward and backward to right flank (zero head clipping)
+		var arm_z = lerp(base_r_arm.z, 68.0, s)
+		p["right_arm_rot"] = Vector3(lerp(base_r_arm.x, -20.0, s), lerp(base_r_arm.y, 10.0, s), arm_z)
+		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-15.0, 0.0, 0.0), s)
+		p["warhammer_rot"] = _lerp_angles(base_hammer, Vector3(88.0, 30.0, -55.0), s)
 		
 		# Left arm blown off grip, splayed outward for balance
 		p["left_arm_rot"] = _lerp_angles(base_l_arm, Vector3(-20.0, -10.0, -60.0), s)
@@ -1058,7 +1094,7 @@ func _compute_parry(t_p: float) -> Dictionary:
 		p["right_shin_rot"] = Vector3(lerp(7.0, 24.0, s), 0.0, 0.0)
 		
 	elif tau < 0.50:
-		# PHASE 2: Heavy Backward Stumble & Poise Breakdown
+		# PHASE 2: Heavy Backward Stumble & Poise Breakdown (Mace Wide on Flank)
 		var prog = (tau - 0.18) / 0.32
 		var s = smoothstep(0.0, 1.0, prog)
 		var dip = sin(prog * PI) * 0.025
@@ -1070,10 +1106,10 @@ func _compute_parry(t_p: float) -> Dictionary:
 		p["torso_rot"] = Vector3(lerp(-22.0, -14.0, s) + shock, lerp(20.0, 15.0, s), -6.0)
 		p["head_rot"] = Vector3(lerp(-28.0, -15.0, s), lerp(14.0, 8.0, s), 0.0)
 		
-		# Right arm strained fighting the recoiling mace
-		p["right_arm_rot"] = Vector3(lerp(-68.0, -42.0, s) + shock, 18.0, lerp(42.0, 36.0, s))
-		p["right_forearm_rot"] = Vector3(lerp(-35.0, -60.0, s), 0.0, 0.0)
-		p["warhammer_rot"] = Vector3(lerp(25.0, 48.0, s), 22.0, lerp(20.0, 12.0, s) + shock * 1.5)
+		# Right arm strained fighting the recoiling mace, kept safe away from head
+		p["right_arm_rot"] = Vector3(lerp(-20.0, -28.0, s) + shock, 12.0, lerp(68.0, 62.0, s))
+		p["right_forearm_rot"] = Vector3(lerp(-15.0, -35.0, s), 0.0, 0.0)
+		p["warhammer_rot"] = Vector3(lerp(88.0, 78.0, s), lerp(30.0, 20.0, s), -55.0 + shock * 1.5)
 		
 		# Left arm flailing wide for counterbalance
 		p["left_arm_rot"] = Vector3(lerp(-20.0, -10.0, s), 0.0, lerp(-60.0, -48.0, s))
@@ -1086,20 +1122,20 @@ func _compute_parry(t_p: float) -> Dictionary:
 		p["left_shin_rot"] = Vector3(lerp(10.0, 15.0, s), 0.0, 0.0)
 		
 	elif tau < 0.74:
-		# PHASE 3: Regaining Balance & Firm Heel Stomp
+		# PHASE 3: Regaining Balance & Firm Heel Stomp (Lowering Outside Shoulder)
 		var prog = (tau - 0.50) / 0.24
 		var s = smoothstep(0.0, 1.0, prog)
-		var head_shake = sin(prog * 3.0 * PI) * 5.0
+		var head_shake_z = sin(prog * 3.0 * PI) * 4.0
 		
 		p["hips_pos"] = Vector3(lerp(-0.04, 0.0, s), ground_hips_y, lerp(-0.22, -0.12, s))
 		p["hips_rot"] = Vector3(lerp(-8.0, 4.0, s), lerp(12.0, 4.0, s), lerp(-3.0, 0.0, s))
 		p["torso_rot"] = Vector3(lerp(-14.0, 10.0, s), lerp(15.0, 4.0, s), lerp(-6.0, 0.0, s))
-		p["head_rot"] = Vector3(lerp(-15.0, -6.0, s), head_shake, 0.0)
+		p["head_rot"] = Vector3(lerp(-15.0, -6.0, s), lerp(8.0, 0.0, s), head_shake_z)
 		
-		# Both hands clamp back toward mace shaft
-		p["right_arm_rot"] = _lerp_angles(Vector3(-42.0, 18.0, 36.0), Vector3(-35.0, 20.0, 34.0), s)
-		p["right_forearm_rot"] = _lerp_angles(Vector3(-60.0, 0.0, 0.0), Vector3(-95.0, 0.0, 0.0), s)
-		p["warhammer_rot"] = _lerp_angles(Vector3(48.0, 22.0, 12.0), Vector3(60.0, 10.0, -15.0), s)
+		# Right arm guides mace back outside shoulder line
+		p["right_arm_rot"] = _lerp_angles(Vector3(-28.0, 12.0, 62.0), Vector3(-32.0, 16.0, 55.0), s)
+		p["right_forearm_rot"] = _lerp_angles(Vector3(-35.0, 0.0, 0.0), Vector3(-105.0, 0.0, 0.0), s)
+		p["warhammer_rot"] = _lerp_angles(Vector3(78.0, 20.0, -55.0), Vector3(66.0, 5.0, -54.0), s)
 		p["left_arm_rot"] = _lerp_angles(Vector3(-10.0, 0.0, -48.0), Vector3(10.0, 0.0, -20.0), s)
 		p["left_forearm_rot"] = _lerp_angles(Vector3(-25.0, 0.0, 0.0), Vector3(-30.0, 0.0, 0.0), s)
 		
@@ -1118,9 +1154,9 @@ func _compute_parry(t_p: float) -> Dictionary:
 		p["torso_rot"] = Vector3(lerp(10.0, 6.0, s), lerp(4.0, 0.0, s), 0.0)
 		p["head_rot"] = Vector3(lerp(-6.0, -4.0, s), 0.0, 0.0)
 		
-		p["right_arm_rot"] = _lerp_angles(Vector3(-35.0, 20.0, 34.0), base_r_arm, s)
-		p["right_forearm_rot"] = _lerp_angles(Vector3(-95.0, 0.0, 0.0), base_r_fore, s)
-		p["warhammer_rot"] = _lerp_angles(Vector3(60.0, 10.0, -15.0), base_hammer, s)
+		p["right_arm_rot"] = _lerp_angles(Vector3(-32.0, 16.0, 55.0), base_r_arm, s)
+		p["right_forearm_rot"] = _lerp_angles(Vector3(-105.0, 0.0, 0.0), base_r_fore, s)
+		p["warhammer_rot"] = _lerp_angles(Vector3(66.0, 5.0, -54.0), base_hammer, s)
 		p["left_arm_rot"] = _lerp_angles(Vector3(10.0, 0.0, -20.0), base_l_arm, s)
 		p["left_forearm_rot"] = _lerp_angles(Vector3(-30.0, 0.0, 0.0), base_l_fore, s)
 		
