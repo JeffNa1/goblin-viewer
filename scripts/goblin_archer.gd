@@ -70,7 +70,7 @@ var arrow_timer: float = 0.0
 const StunStarsScript = preload("res://scripts/stun_stars.gd")
 var stun_stars: Node3D = null
 
-# Outfits: 1 = Thô Sơ (Primitive Hunter), 2 = Ranger (Xạ Thủ Kiểm Lâm)
+# Outfits: 1 = Thô Sơ (Primitive Hunter), 2 = Ranger (Xạ Thủ Kiểm Lâm), 3 = Hoàng Kim (Imperial Golden Marksman), 3 = Hoàng Kim (Imperial Golden Marksman)
 var current_outfit: int = 1
 var outfit_meshes: Dictionary = {}
 
@@ -286,6 +286,11 @@ func set_live_ground_hips_y(val: float) -> void:
 	_apply_pose(current_pose)
 
 func generate_voxel_meshes() -> void:
+	var std_bow_rest = VoxelBuilder.build_bow_mesh(false)
+	var std_bow_drawn = VoxelBuilder.build_bow_mesh(true)
+	var std_quiver = VoxelBuilder.build_quiver_mesh()
+	var std_arrow = VoxelBuilder.build_arrow_mesh()
+
 	# Pre-build meshes for Outfit 1 (Thô Sơ / Primitive Hunter)
 	outfit_meshes[1] = {
 		"torso": VoxelBuilder.build_archer_torso_mesh(1),
@@ -294,7 +299,11 @@ func generate_voxel_meshes() -> void:
 		"left_forearm": VoxelBuilder.build_archer_forearm_mesh(false, 1),
 		"right_forearm": VoxelBuilder.build_archer_forearm_mesh(true, 1),
 		"thigh": VoxelBuilder.build_archer_thigh_mesh(1),
-		"shin": VoxelBuilder.build_archer_shin_mesh(1)
+		"shin": VoxelBuilder.build_archer_shin_mesh(1),
+		"bow_rest": std_bow_rest,
+		"bow_drawn": std_bow_drawn,
+		"quiver": std_quiver,
+		"arrow": std_arrow
 	}
 	
 	# Pre-build meshes for Outfit 2 (Ranger / Xạ Thủ Kiểm Lâm)
@@ -305,28 +314,45 @@ func generate_voxel_meshes() -> void:
 		"left_forearm": VoxelBuilder.build_archer_forearm_mesh(false, 2),
 		"right_forearm": VoxelBuilder.build_archer_forearm_mesh(true, 2),
 		"thigh": VoxelBuilder.build_archer_thigh_mesh(2),
-		"shin": VoxelBuilder.build_archer_shin_mesh(2)
+		"shin": VoxelBuilder.build_archer_shin_mesh(2),
+		"bow_rest": std_bow_rest,
+		"bow_drawn": std_bow_drawn,
+		"quiver": std_quiver,
+		"arrow": std_arrow
+	}
+
+	# Pre-build meshes for Outfit 3 (Hoàng Kim / Imperial Golden Marksman)
+	outfit_meshes[3] = {
+		"torso": VoxelBuilder.build_archer_torso_mesh(3),
+		"head": VoxelBuilder.build_archer_head_mesh(3),
+		"upper_arm": VoxelBuilder.build_archer_upper_arm_mesh(3),
+		"left_forearm": VoxelBuilder.build_archer_forearm_mesh(false, 3),
+		"right_forearm": VoxelBuilder.build_archer_forearm_mesh(true, 3),
+		"thigh": VoxelBuilder.build_archer_thigh_mesh(3),
+		"shin": VoxelBuilder.build_archer_shin_mesh(3),
+		"bow_rest": VoxelBuilder.build_imperial_bow_mesh(false),
+		"bow_drawn": VoxelBuilder.build_imperial_bow_mesh(true),
+		"quiver": VoxelBuilder.build_imperial_quiver_mesh(),
+		"arrow": VoxelBuilder.build_imperial_arrow_mesh()
 	}
 	
-	quiver_mesh.mesh = VoxelBuilder.build_quiver_mesh()
-	
-	bow_rest_mesh = VoxelBuilder.build_bow_mesh(false)
-	bow_drawn_mesh = VoxelBuilder.build_bow_mesh(true)
+	quiver_mesh.mesh = std_quiver
+	bow_rest_mesh = std_bow_rest
+	bow_drawn_mesh = std_bow_drawn
 	bow_mesh.mesh = bow_rest_mesh
-	
-	arrow_mesh.mesh = VoxelBuilder.build_arrow_mesh()
+	arrow_mesh.mesh = std_arrow
 	arrow.visible = false
 	
 	if not flying_arrow:
 		flying_arrow = MeshInstance3D.new()
-		flying_arrow.mesh = VoxelBuilder.build_arrow_mesh()
+		flying_arrow.mesh = std_arrow
 		flying_arrow.visible = false
 		get_parent().call_deferred("add_child", flying_arrow)
 		
 	apply_outfit(current_outfit)
 
 func set_outfit(outfit_id: int) -> void:
-	current_outfit = clamp(outfit_id, 1, 2)
+	current_outfit = clamp(outfit_id, 1, 3)
 	apply_outfit(current_outfit)
 	outfit_changed.emit(current_outfit)
 
@@ -344,6 +370,17 @@ func apply_outfit(outfit_id: int) -> void:
 	left_shin_mesh.mesh = m["shin"]
 	right_thigh_mesh.mesh = m["thigh"]
 	right_shin_mesh.mesh = m["shin"]
+
+	if m.has("bow_rest") and m.has("bow_drawn"):
+		bow_rest_mesh = m["bow_rest"]
+		bow_drawn_mesh = m["bow_drawn"]
+		bow_mesh.mesh = bow_drawn_mesh if (current_pose and current_pose.get("is_drawn", false)) else bow_rest_mesh
+	if m.has("quiver"):
+		quiver_mesh.mesh = m["quiver"]
+	if m.has("arrow"):
+		arrow_mesh.mesh = m["arrow"]
+		if flying_arrow:
+			flying_arrow.mesh = m["arrow"]
 
 func _init_stun_stars() -> void:
 	stun_stars = StunStarsScript.new()

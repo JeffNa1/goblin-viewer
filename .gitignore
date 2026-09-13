@@ -1,5 +1,6 @@
 # Godot 4+ specific
 .godot/
+*.import
 *.translation
 
 # Node & Remotion
@@ -13,9 +14,14 @@ showcase/dist/
 *.avi
 *.mp4
 *.mkv
+*.zip
 *_out.txt
 capture_out.txt
 test_out.txt
+err_*.txt
+out_*.txt
+*.report.txt
+tools/*_report.txt
 
 # Python caches
 __pycache__/

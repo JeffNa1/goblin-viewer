@@ -1,0 +1,432 @@
+[
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-0.902823, 1.704, 81.66493)",
+		"height": 900,
+		"id": "01",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/01_shoulder.png",
+		"view": "shoulder",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-4.56, 1.704, 79.44)",
+		"height": 900,
+		"id": "01",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/01_eye_level.png",
+		"view": "eye_level",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(30.6, 46.8, 96.24)",
+		"height": 900,
+		"id": "01",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/01_overview.png",
+		"view": "overview",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(2.617777, 1.704, 58.00233)",
+		"height": 900,
+		"id": "02",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/02_shoulder.png",
+		"view": "shoulder",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(4.559999, 1.704, 53.52)",
+		"height": 900,
+		"id": "02",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/02_eye_level.png",
+		"view": "eye_level",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(39.45, 53.1, 77.28)",
+		"height": 900,
+		"id": "02",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/02_overview.png",
+		"view": "overview",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-0.560042, 1.704, 30.5428)",
+		"height": 900,
+		"id": "03",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/03_shoulder.png",
+		"view": "shoulder",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(3.6, 1.704, 25.92)",
+		"height": 900,
+		"id": "03",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/03_eye_level.png",
+		"view": "eye_level",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(33.48, 61.2, 56.16)",
+		"height": 900,
+		"id": "03",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/03_overview.png",
+		"view": "overview",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-49.9326, 1.704, 24.70723)",
+		"height": 900,
+		"id": "04",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/04_shoulder.png",
+		"view": "shoulder",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-49.2, 1.704, 20.4)",
+		"height": 900,
+		"id": "04",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/04_eye_level.png",
+		"view": "eye_level",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-17.31, 49.5, 48.12)",
+		"height": 900,
+		"id": "04",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/04_overview.png",
+		"view": "overview",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-51.51171, 1.704, -33.02768)",
+		"height": 900,
+		"id": "06",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/06_shoulder.png",
+		"view": "shoulder",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-49.68, 1.704, -37.44)",
+		"height": 900,
+		"id": "06",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/06_eye_level.png",
+		"view": "eye_level",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-22.89, 40.5, -12.6)",
+		"height": 900,
+		"id": "06",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/06_overview.png",
+		"view": "overview",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-3.201799, 1.704, -22.99793)",
+		"height": 900,
+		"id": "07",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/07_shoulder.png",
+		"view": "shoulder",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-1.44, 1.704, -28.32)",
+		"height": 900,
+		"id": "07",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/07_eye_level.png",
+		"view": "eye_level",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(18.3, 45, -4.200001)",
+		"height": 900,
+		"id": "07",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/07_overview.png",
+		"view": "overview",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(48.54178, 1.704, -7.031991)",
+		"height": 900,
+		"id": "09",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/09_shoulder.png",
+		"view": "shoulder",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(52.56, 1.704, -9.84)",
+		"height": 900,
+		"id": "09",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/09_eye_level.png",
+		"view": "eye_level",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(66.93, 42.3, 11.1)",
+		"height": 900,
+		"id": "09",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/09_overview.png",
+		"view": "overview",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(46.60854, 1.704, -36.30593)",
+		"height": 900,
+		"id": "10",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/10_shoulder.png",
+		"view": "shoulder",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(47.28, 1.704, -40.56)",
+		"height": 900,
+		"id": "10",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/10_eye_level.png",
+		"view": "eye_level",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(62.88, 36, -26.7)",
+		"height": 900,
+		"id": "10",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/10_overview.png",
+		"view": "overview",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-5.8379, 1.704, -59.69799)",
+		"height": 900,
+		"id": "11",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/11_shoulder.png",
+		"view": "shoulder",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-2.64, 1.704, -64.32)",
+		"height": 900,
+		"id": "11",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/11_eye_level.png",
+		"view": "eye_level",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(28.2, 61.2, -33.36)",
+		"height": 900,
+		"id": "11",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/11_overview.png",
+		"view": "overview",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(31.01471, 1.704, -84.55269)",
+		"height": 900,
+		"id": "12",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/12_shoulder.png",
+		"view": "shoulder",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(36.96, 1.704, -87.36)",
+		"height": 900,
+		"id": "12",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/12_eye_level.png",
+		"view": "eye_level",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(67.8, 90, -58.44)",
+		"height": 900,
+		"id": "12",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/12_overview.png",
+		"view": "overview",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-51.86641, 1.704, 61.83737)",
+		"height": 900,
+		"id": "13",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/13_shoulder.png",
+		"view": "shoulder",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-48.72, 1.704, 60)",
+		"height": 900,
+		"id": "13",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/13_eye_level.png",
+		"view": "eye_level",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-34.38, 27, 73.38)",
+		"height": 900,
+		"id": "13",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/13_overview.png",
+		"view": "overview",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-44.44389, 1.704, -2.482482)",
+		"height": 900,
+		"id": "05",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/05_shoulder.png",
+		"view": "shoulder",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-49.92, 1.704, -2.4)",
+		"height": 900,
+		"id": "05",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/05_eye_level.png",
+		"view": "eye_level",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(-20.76, 39.6, 9.36)",
+		"height": 900,
+		"id": "05",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/05_overview.png",
+		"view": "overview",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(50.8498, 1.704, -66.6705)",
+		"height": 900,
+		"id": "14",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/14_shoulder.png",
+		"view": "shoulder",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(54.96, 1.704, -64.32)",
+		"height": 900,
+		"id": "14",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/14_eye_level.png",
+		"view": "eye_level",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(64.5, 27, -45.54)",
+		"height": 900,
+		"id": "14",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/14_overview.png",
+		"view": "overview",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(110, 240, 220)",
+		"height": 900,
+		"id": "map",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/map_overview.png",
+		"view": "overview",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(37.26915, 1.704, 32.97351)",
+		"height": 900,
+		"id": "08",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/08_shoulder.png",
+		"view": "shoulder",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(50.16, 1.704, 34.08)",
+		"height": 900,
+		"id": "08",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/08_eye_level.png",
+		"view": "eye_level",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"camera_fov": 68,
+		"camera_position": "(72.96, 51.3, 60.18)",
+		"height": 900,
+		"id": "08",
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Renders/08_overview.png",
+		"view": "overview",
+		"width": 1600
+	}
+]

@@ -219,7 +219,11 @@ func get_stance_definitions() -> Array:
 	]
 
 func get_weapon_info() -> Dictionary:
-	var title = "🔨 THIẾT CHÙY CHIẾN TRẬN (VỊ TRÍ & GÓC)" if current_outfit == 2 else "🏏 CHÙY GAI (VỊ TRÍ & GÓC)"
+	var title = "🏏 CHÙY GAI (VỊ TRÍ & GÓC)"
+	if current_outfit == 2:
+		title = "🔨 THIẾT CHÙY CHIẾN TRẬN (VỊ TRÍ & GÓC)"
+	elif current_outfit == 3:
+		title = "👑 HOÀNG KIM THẦN CHÙY (VỊ TRÍ & GÓC)"
 	return {
 		"title": title,
 		"prop": "club_rot"
@@ -319,10 +323,22 @@ func generate_voxel_meshes() -> void:
 		"shin": VoxelBuilder.build_shin_mesh(2)
 	}
 	
+	# Pre-build meshes for Outfit 3 (Chiến Tướng Hoàng Kim / Imperial Golden Sovereign)
+	outfit_meshes[3] = {
+		"head": VoxelBuilder.build_head_mesh(3),
+		"torso": VoxelBuilder.build_torso_mesh(3),
+		"upper_arm": VoxelBuilder.build_upper_arm_mesh(3),
+		"left_forearm": VoxelBuilder.build_forearm_mesh(false, 3),
+		"right_forearm": VoxelBuilder.build_forearm_mesh(true, 3),
+		"club": VoxelBuilder.build_club_mesh(3),
+		"thigh": VoxelBuilder.build_thigh_mesh(3),
+		"shin": VoxelBuilder.build_shin_mesh(3)
+	}
+	
 	apply_outfit(current_outfit)
 
 func set_outfit(outfit_id: int) -> void:
-	current_outfit = clamp(outfit_id, 1, 2)
+	current_outfit = clamp(outfit_id, 1, 3)
 	apply_outfit(current_outfit)
 	outfit_changed.emit(current_outfit)
 
@@ -349,7 +365,7 @@ func _process(delta: float) -> void:
 	if current_anim in ["smash", "cleave"]:
 		attack_time += dt
 		_update_attack_trails(attack_time)
-		var cur_attack_dur: float = COMBO_DURATION if (current_anim == "smash" and current_outfit == 2) else ATTACK_DURATION
+		var cur_attack_dur: float = COMBO_DURATION if (current_anim == "smash" and current_outfit in [2, 3]) else ATTACK_DURATION
 		if attack_time >= cur_attack_dur:
 			if weapon_trail:
 				weapon_trail.stop_trail()
@@ -401,7 +417,10 @@ func _update_attack_trails(t_atk: float) -> void:
 		return
 		
 	if current_anim == "smash":
-		if current_outfit == 2:
+		if current_outfit == 3:
+			_update_imperial_combo_trails(t_atk)
+			return
+		elif current_outfit == 2:
 			_update_combo_trails(t_atk)
 			return
 			
@@ -476,6 +495,51 @@ func _update_combo_trails(t_atk: float) -> void:
 				Color(0.70, 0.95, 1.0, 1.0), # Crystal Ice-Cyan tip
 				Color(1.0, 0.45, 0.10, 0.88), # Radiant Molten Solar base
 				0.28
+			)
+		if t_atk >= 2.00 and combo_impact_step == 1:
+			combo_impact_step = 2
+			var impact_pos = club.to_global(Vector3(0.0, 0.88, 0.0))
+			impact_pos.y = 0.038
+			weapon_trail.trigger_ground_impact(impact_pos)
+	else:
+		if weapon_trail.is_emitting:
+			weapon_trail.stop_trail()
+
+func _update_imperial_combo_trails(t_atk: float) -> void:
+	if not weapon_trail:
+		return
+		
+	# Hit 1: Imperial Overhead Slam (0.32s -> 0.50s) - Blinding Pure Sun Gold Arc
+	if t_atk >= 0.32 and t_atk < 0.50:
+		if not weapon_trail.is_emitting:
+			weapon_trail.start_trail(
+				Color(1.0, 0.98, 0.65, 1.0), # Diamond-bright Sun Gold tip
+				Color(1.0, 0.60, 0.05, 0.95), # Radiant Molten Amber base
+				0.20
+			)
+	elif t_atk >= 0.50 and t_atk < 0.60:
+		if weapon_trail.is_emitting:
+			weapon_trail.stop_trail()
+		if combo_impact_step == 0:
+			combo_impact_step = 1
+			var impact_pos = club.to_global(Vector3(0.0, 0.88, 0.0))
+			impact_pos.y = 0.038
+			weapon_trail.trigger_ground_impact(impact_pos)
+	# Hit 2: 180° Horizontal Cleave (0.95s -> 1.35s) - Imperial Ruby-Gold Crescent Ribbon
+	elif t_atk >= 0.95 and t_atk < 1.35:
+		if not weapon_trail.is_emitting:
+			weapon_trail.start_trail(
+				Color(1.0, 0.40, 0.65, 1.0), # Radiant Imperial Ruby tip
+				Color(0.95, 0.10, 0.30, 0.90), # Deep Royal Velvet Crimson base
+				0.28
+			)
+	# Hit 3: Explosive Reverse Cleave (Left -> Right, 1.75s -> 2.20s) - Divine Solar Starburst
+	elif t_atk >= 1.75 and t_atk < 2.20:
+		if not weapon_trail.is_emitting:
+			weapon_trail.start_trail(
+				Color(1.0, 1.0, 0.95, 1.0), # Celestial Diamond Light tip
+				Color(1.0, 0.82, 0.15, 0.98), # Pure Sunburst Divine Gold base
+				0.30
 			)
 		if t_atk >= 2.00 and combo_impact_step == 1:
 			combo_impact_step = 2
@@ -660,7 +724,7 @@ func _compute_pose(anim: String, time_val: float, stance: String) -> Dictionary:
 		p["club_rot"] = w["club_rot"]
 		
 	elif anim == "smash":
-		if current_outfit == 2:
+		if current_outfit in [2, 3]:
 			p = _compute_attack_smash_combo(attack_time)
 		else:
 			p = _compute_attack_smash(attack_time)

@@ -1,0 +1,137 @@
+{
+  "method": "Direct visual inspection of actual Godot PNGs and per-room contact sheets. Revised captures were re-inspected.",
+  "rooms": [
+    {
+      "id": "01",
+      "views_reviewed": [
+        "eye_level",
+        "overview",
+        "shoulder"
+      ],
+      "notes": "Skiff and stepped river edge are visible in eye-level and overview; shoulder figure establishes the dock scale."
+    },
+    {
+      "id": "02",
+      "views_reviewed": [
+        "eye_level",
+        "overview",
+        "shoulder"
+      ],
+      "notes": "Bronze wheel and raised watergate are readable. The close views and overview show the chamber footprint."
+    },
+    {
+      "id": "03",
+      "views_reviewed": [
+        "eye_level",
+        "overview",
+        "shoulder"
+      ],
+      "notes": "Branching root island provides a tall focal point. The surrounding floor remains visibly open."
+    },
+    {
+      "id": "04",
+      "views_reviewed": [
+        "eye_level",
+        "overview",
+        "shoulder"
+      ],
+      "notes": "Double bunks, company banners and weapon racks distinguish the barracks from the shrine rooms."
+    },
+    {
+      "id": "05",
+      "views_reviewed": [
+        "eye_level",
+        "overview",
+        "shoulder"
+      ],
+      "notes": "The revised eye-level pose shows the ember furnace mouth. Shoulder and overview retain the forge context."
+    },
+    {
+      "id": "06",
+      "views_reviewed": [
+        "eye_level",
+        "overview",
+        "shoulder"
+      ],
+      "notes": "Hunter reliefs, banners and broken upper stonework distinguish the cloister; a pier provides foreground framing."
+    },
+    {
+      "id": "07",
+      "views_reviewed": [
+        "eye_level",
+        "overview",
+        "shoulder"
+      ],
+      "notes": "The connected review uses the approved fountain, roots and shrine architecture. The original sample source is unchanged."
+    },
+    {
+      "id": "08",
+      "views_reviewed": [
+        "eye_level",
+        "overview",
+        "shoulder"
+      ],
+      "notes": "The shoulder capture shows the book galleries. The final eye-level capture shows the water court with a foreground pier on the right; the overview shows the crescent shoreline."
+    },
+    {
+      "id": "09",
+      "views_reviewed": [
+        "eye_level",
+        "overview",
+        "shoulder"
+      ],
+      "notes": "Blood obelisks and red banners remain readable. The central ritual floor is visibly open."
+    },
+    {
+      "id": "10",
+      "views_reviewed": [
+        "eye_level",
+        "overview",
+        "shoulder"
+      ],
+      "notes": "The bronze reliquary and gilded apse provide the reward-room focal point."
+    },
+    {
+      "id": "11",
+      "views_reviewed": [
+        "eye_level",
+        "overview",
+        "shoulder"
+      ],
+      "notes": "The pipe organ and suspended lights are readable, with a clear ceremonial nave."
+    },
+    {
+      "id": "12",
+      "views_reviewed": [
+        "eye_level",
+        "overview",
+        "shoulder"
+      ],
+      "notes": "Large luminous mushroom canopies distinguish the boss arena. The overview shows the full lobed footprint."
+    },
+    {
+      "id": "13",
+      "views_reviewed": [
+        "eye_level",
+        "overview",
+        "shoulder"
+      ],
+      "notes": "Relic chest, crypt ornaments and wall niches provide a distinct cache treatment."
+    },
+    {
+      "id": "14",
+      "views_reviewed": [
+        "eye_level",
+        "overview",
+        "shoulder"
+      ],
+      "notes": "Revised close views face the stair approach and luminous threshold; the overview retains the dogleg footprint."
+    }
+  ],
+  "map_overview": "The complete connected layout fits within the frame. The overview is not the close-camera quality test.",
+  "reviewed_capture_count": 43,
+  "limits": [
+    "Subjective art review, not user approval of the new rooms.",
+    "No claim of combat readiness or complete traversal coverage."
+  ]
+}

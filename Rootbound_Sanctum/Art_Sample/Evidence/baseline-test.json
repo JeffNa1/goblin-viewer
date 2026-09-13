@@ -1,0 +1,5 @@
+{
+  "output": "Godot Engine v4.3.stable.official.77dcf97d8 - https://godotengine.org\r\n\r\nERROR: Attempt to open script 'res://tools/test_rootbound_sanctum.gd' resulted in error 'File not found'.\r\n   at: (modules/gdscript/gdscript.cpp:1094)\r\nERROR: Failed loading resource: res://tools/test_rootbound_sanctum.gd. Make sure resources have been imported by opening the project in the editor at least once.\r\n   at: (core/io/resource_loader.cpp:283)\r\nERROR: Can't load script: res://tools/test_rootbound_sanctum.gd\r\n   at: (main/main.cpp:3530)",
+  "exit_code": 1,
+  "error": null
+}

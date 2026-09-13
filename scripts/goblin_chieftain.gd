@@ -26,6 +26,10 @@ extends Node3D
 @onready var right_thigh_mesh: MeshInstance3D = $VisualRoot/Hips/RightThigh/RightThighMesh
 @onready var right_shin_mesh: MeshInstance3D = $VisualRoot/Hips/RightThigh/RightShin/RightShinMesh
 
+@onready var cape: Node3D = $VisualRoot/Hips/Torso/Cape if has_node("VisualRoot/Hips/Torso/Cape") else null
+@onready var cape_mesh: MeshInstance3D = $VisualRoot/Hips/Torso/Cape/CapeMesh if has_node("VisualRoot/Hips/Torso/Cape/CapeMesh") else null
+var cape_current_rot: Vector3 = Vector3.ZERO
+
 # State
 var current_anim: String = "idle" # "idle", "walk", "cleave", "roar", "earthshaker", "whirlwind", "stagger", "stunned"
 var base_anim: String = "idle"
@@ -69,6 +73,7 @@ signal anim_changed(anim_name: String)
 signal outfit_changed(outfit_id: int)
 
 func _ready() -> void:
+	_init_cape()
 	generate_voxel_meshes()
 	_init_stun_stars()
 	_init_weapon_trail()
@@ -76,6 +81,20 @@ func _ready() -> void:
 	load_stance_config()
 	current_pose = _compute_pose(current_anim, 0.0)
 	_apply_pose(current_pose)
+
+func _init_cape() -> void:
+	if cape == null and torso != null:
+		cape = torso.get_node_or_null("Cape")
+		if cape == null:
+			cape = Node3D.new()
+			cape.name = "Cape"
+			cape.transform = Transform3D(Basis(), Vector3(0.0, 0.48, -0.215))
+			torso.add_child(cape)
+			cape_mesh = MeshInstance3D.new()
+			cape_mesh.name = "CapeMesh"
+			cape.add_child(cape_mesh)
+		else:
+			cape_mesh = cape.get_node_or_null("CapeMesh")
 
 func generate_voxel_meshes() -> void:
 	outfit_meshes[1] = {
@@ -86,7 +105,8 @@ func generate_voxel_meshes() -> void:
 		"left_forearm": VoxelBuilder.build_ogre_forearm_mesh(false, 1),
 		"right_forearm": VoxelBuilder.build_ogre_forearm_mesh(true, 1),
 		"thigh": VoxelBuilder.build_ogre_thigh_mesh(1),
-		"shin": VoxelBuilder.build_ogre_shin_mesh(1)
+		"shin": VoxelBuilder.build_ogre_shin_mesh(1),
+		"cape": null
 	}
 	outfit_meshes[2] = {
 		"head": VoxelBuilder.build_ogre_head_mesh(2),
@@ -96,12 +116,24 @@ func generate_voxel_meshes() -> void:
 		"left_forearm": VoxelBuilder.build_ogre_forearm_mesh(false, 2),
 		"right_forearm": VoxelBuilder.build_ogre_forearm_mesh(true, 2),
 		"thigh": VoxelBuilder.build_ogre_thigh_mesh(2),
-		"shin": VoxelBuilder.build_ogre_shin_mesh(2)
+		"shin": VoxelBuilder.build_ogre_shin_mesh(2),
+		"cape": null
+	}
+	outfit_meshes[3] = {
+		"head": VoxelBuilder.build_ogre_head_mesh(3),
+		"torso": VoxelBuilder.build_ogre_torso_mesh(3),
+		"warhammer": VoxelBuilder.build_ogre_mace_mesh(3),
+		"upper_arm": VoxelBuilder.build_ogre_upper_arm_mesh(3),
+		"left_forearm": VoxelBuilder.build_ogre_forearm_mesh(false, 3),
+		"right_forearm": VoxelBuilder.build_ogre_forearm_mesh(true, 3),
+		"thigh": VoxelBuilder.build_ogre_thigh_mesh(3),
+		"shin": VoxelBuilder.build_ogre_shin_mesh(3),
+		"cape": VoxelBuilder.build_ogre_cape_mesh(3)
 	}
 	apply_outfit(current_outfit)
 
 func set_outfit(outfit_id: int) -> void:
-	current_outfit = clamp(outfit_id, 1, 2)
+	current_outfit = clamp(outfit_id, 1, 3)
 	apply_outfit(current_outfit)
 	outfit_changed.emit(current_outfit)
 
@@ -120,6 +152,33 @@ func apply_outfit(outfit_id: int) -> void:
 	left_shin_mesh.mesh = m["shin"]
 	right_thigh_mesh.mesh = m["thigh"]
 	right_shin_mesh.mesh = m["shin"]
+	if cape_mesh:
+		if m.has("cape") and m["cape"] != null:
+			cape_mesh.mesh = m["cape"]
+			cape_mesh.visible = true
+		else:
+			cape_mesh.mesh = null
+			cape_mesh.visible = false
+	_update_weapon_trail_colors(outfit_id)
+
+func _update_weapon_trail_colors(outfit_id: int) -> void:
+	if weapon_trail == null:
+		return
+	if outfit_id == 3:
+		# Imperial Golden Titan Warlord: Radiant solar gold tip & royal crimson ruby base
+		weapon_trail.color_tip = Color(1.0, 0.96, 0.60, 1.0)
+		weapon_trail.color_base = Color(0.96, 0.12, 0.32, 0.95)
+		weapon_trail.shockwave_color = Color(1.0, 0.85, 0.25)
+	elif outfit_id == 2:
+		# Iron Legion Warlord: Fiery ember & heavy iron sparks
+		weapon_trail.color_tip = Color(1.0, 0.85, 0.40, 0.95)
+		weapon_trail.color_base = Color(0.90, 0.20, 0.05, 0.85)
+		weapon_trail.shockwave_color = Color(1.0, 0.55, 0.12)
+	else:
+		# Primitive Scavenger: Crude stone & dust trail
+		weapon_trail.color_tip = Color(1.0, 0.70, 0.30, 0.90)
+		weapon_trail.color_base = Color(0.80, 0.25, 0.05, 0.70)
+		weapon_trail.shockwave_color = Color(0.90, 0.45, 0.10)
 
 func _init_stun_stars() -> void:
 	stun_stars = StunStarsScript.new()
@@ -134,6 +193,7 @@ func _init_weapon_trail() -> void:
 	weapon_trail.tip_offset = Vector3(0.0, 0.58, 0.0)
 	weapon_trail.base_offset = Vector3(0.0, 0.18, 0.0)
 	weapon_trail.max_points = 110
+	_update_weapon_trail_colors(current_outfit)
 
 func _init_default_stances() -> void:
 	default_stance_configs = {
@@ -159,8 +219,8 @@ func _init_default_stances() -> void:
 			"right_arm_rot": Vector3(-55.0, -10.0, -15.0),
 			"right_forearm_rot": Vector3(-30.0, 0.0, 0.0),
 			"warhammer_rot": Vector3(90.0, 0.0, -75.0),
-			"left_arm_rot": Vector3(-50.0, 0.0, -35.0),
-			"left_forearm_rot": Vector3(-40.0, 0.0, 0.0),
+			"left_arm_rot": Vector3(-65.0, 28.0, 10.0),
+			"left_forearm_rot": Vector3(-5.0, 0.0, 0.0),
 			"torso_rot": Vector3(10.0, -45.0, -4.0),
 			"head_rot": Vector3(2.0, 22.0, 0.0)
 		},
@@ -524,6 +584,95 @@ func _process(delta: float) -> void:
 		current_pose = target_pose
 		
 	_apply_pose(current_pose)
+	_update_cape_physics(dt)
+
+func _update_cape_physics(delta: float) -> void:
+	if not cape or not cape_mesh or not cape_mesh.visible:
+		return
+
+	var target_rot: Vector3 = Vector3.ZERO
+
+	match current_anim:
+		"idle", "shoulder", "ground", "guard":
+			# Majestic slow breathing and ambient breeze
+			var t = anim_time * 2.2
+			target_rot.x = 4.5 + sin(t) * 2.2 + sin(t * 0.45) * 1.0
+			target_rot.z = sin(t * 0.75) * 2.2
+			target_rot.y = cos(t * 0.5) * 1.4
+
+		"walk":
+			# Pacing stride: trailing behind with rhythmic step counter-sway
+			var t = anim_time * 3.8
+			target_rot.x = 11.5 + sin(t * 2.0) * 4.2
+			target_rot.z = sin(t) * 6.5
+			target_rot.y = cos(t) * 3.5
+
+		"cleave":
+			# Heavy horizontal swing: windup drop, then explosive outward sweep & settle
+			var tau = clampf(action_time / CLEAVE_DURATION, 0.0, 1.0)
+			if tau < 0.28:
+				var u = tau / 0.28
+				target_rot.x = lerpf(4.5, -2.0, u)
+				target_rot.z = lerpf(0.0, -4.0, u)
+			elif tau < 0.62:
+				var u = (tau - 0.28) / 0.34
+				target_rot.x = lerpf(-2.0, 25.0, sin(u * PI * 0.85))
+				target_rot.z = lerpf(-4.0, 16.0, u)
+				target_rot.y = -8.0 * sin(u * PI)
+			else:
+				var u = (tau - 0.62) / 0.38
+				target_rot.x = lerpf(25.0, 4.5, u) + sin(u * PI * 2.0) * 3.5 * (1.0 - u)
+				target_rot.z = lerpf(16.0, 0.0, u) * (1.0 - u)
+
+		"earthshaker":
+			# Overhead hammer raise, then ground shockwave blast lifting cape upward
+			var tau = clampf(action_time / EARTHSHAKER_DURATION, 0.0, 1.0)
+			if tau < 0.35:
+				target_rot.x = -6.0 * (tau / 0.35)
+				target_rot.z = sin(tau * 10.0) * 2.0
+			elif tau < 0.52:
+				var shock_u = (tau - 0.35) / 0.17
+				target_rot.x = lerpf(-6.0, 30.0, shock_u)
+				target_rot.z = sin(shock_u * PI * 4.0) * 7.5
+			else:
+				var settle_u = (tau - 0.52) / 0.48
+				target_rot.x = lerpf(30.0, 4.5, settle_u) + sin(settle_u * PI * 3.0) * 4.5 * (1.0 - settle_u)
+				target_rot.z = sin(settle_u * PI * 2.0) * 4.0 * (1.0 - settle_u)
+
+		"whirlwind":
+			# Centrifugal cyclone spin: pulls cape high outward
+			var t = anim_time * 8.5
+			target_rot.x = 26.0 + sin(t) * 3.5
+			target_rot.z = 14.0 + cos(t) * 4.0
+			target_rot.y = -10.0
+
+		"roar":
+			# Chest arched into sky: acoustic vibrations flutter the cape
+			var tau = clampf(action_time / ROAR_DURATION, 0.0, 1.0)
+			if tau < 0.25:
+				target_rot.x = lerpf(4.5, -5.0, tau / 0.25)
+			elif tau < 0.75:
+				target_rot.x = -5.0 + sin(anim_time * 28.0) * 2.2
+				target_rot.z = sin(anim_time * 22.0) * 2.8
+			else:
+				var u = (tau - 0.75) / 0.25
+				target_rot.x = lerpf(-5.0, 4.5, u)
+
+		"stagger", "parry":
+			# Heavy impact shudder
+			var tau = clampf(action_time / PARRY_DURATION, 0.0, 1.0)
+			target_rot.x = 16.0 * sin(tau * PI) + 4.5
+			target_rot.z = -10.0 * sin(tau * PI)
+
+		"stunned":
+			# Dazed wobble
+			var t = anim_time * 2.5
+			target_rot.x = 3.0 + sin(t) * 3.5
+			target_rot.z = cos(t * 0.9) * 4.5
+
+	# Smooth cloth damping lerp
+	cape_current_rot = cape_current_rot.lerp(target_rot, delta * 6.5)
+	cape.rotation_degrees = cape_current_rot
 
 func _compute_pose(anim: String, time_val: float) -> Dictionary:
 	match anim:
@@ -745,11 +894,11 @@ func _compute_cleave(t_c: float) -> Dictionary:
 		p["head_rot"] = Vector3(lerp(-4.0, -2.0, s), lerp(0.0, -38.0, s), 0.0)
 		
 		# Both hands grip shaft back at right shoulder
-		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(-35.0, 25.0, 38.0), s)
-		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-95.0, 0.0, 0.0), s)
-		p["warhammer_rot"] = _lerp_angles(base_hammer, Vector3(65.0, 15.0, -20.0), s)
-		p["left_arm_rot"] = _lerp_angles(base_l_arm, Vector3(-45.0, 35.0, 18.0), s)
-		p["left_forearm_rot"] = _lerp_angles(base_l_fore, Vector3(-85.0, 0.0, 0.0), s)
+		p["right_arm_rot"] = _lerp_angles(base_r_arm, Vector3(-42.0, 18.0, 20.0), s)
+		p["right_forearm_rot"] = _lerp_angles(base_r_fore, Vector3(-90.0, 0.0, 0.0), s)
+		p["warhammer_rot"] = _lerp_angles(base_hammer, Vector3(65.0, 15.0, -18.0), s)
+		p["left_arm_rot"] = _lerp_angles(base_l_arm, Vector3(-78.0, 25.0, 20.0), s)
+		p["left_forearm_rot"] = _lerp_angles(base_l_fore, Vector3(-15.0, 0.0, 0.0), s)
 		
 		# Legs coil into loaded crouch stance
 		p["left_thigh_rot"] = Vector3(lerp(0.0, -12.0, s), 0.0, -6.5)
@@ -768,11 +917,11 @@ func _compute_cleave(t_c: float) -> Dictionary:
 		p["head_rot"] = Vector3(lerp(-2.0, 2.0, s), lerp(-38.0, 22.0, s), 0.0)
 		
 		# Both arms sweep mace forward and across in an athletic power arc
-		p["right_arm_rot"] = Vector3(lerp(-35.0, -55.0, s), lerp(25.0, -10.0, s), lerp(38.0, -15.0, s))
-		p["right_forearm_rot"] = Vector3(lerp(-95.0, -30.0, s), 0.0, 0.0)
-		p["warhammer_rot"] = Vector3(lerp(65.0, 90.0, s), lerp(15.0, 0.0, s), lerp(-20.0, -75.0, s))
-		p["left_arm_rot"] = Vector3(lerp(-45.0, -50.0, s), lerp(35.0, 0.0, s), lerp(18.0, -35.0, s))
-		p["left_forearm_rot"] = Vector3(lerp(-85.0, -40.0, s), 0.0, 0.0)
+		p["right_arm_rot"] = Vector3(lerp(-42.0, -55.0, s), lerp(18.0, -10.0, s), lerp(20.0, -15.0, s))
+		p["right_forearm_rot"] = Vector3(lerp(-90.0, -30.0, s), 0.0, 0.0)
+		p["warhammer_rot"] = Vector3(lerp(65.0, 90.0, s), lerp(15.0, 0.0, s), lerp(-18.0, -75.0, s))
+		p["left_arm_rot"] = Vector3(lerp(-78.0, -65.0, s), lerp(25.0, 28.0, s), lerp(20.0, 10.0, s))
+		p["left_forearm_rot"] = Vector3(lerp(-15.0, -5.0, s), 0.0, 0.0)
 		
 		p["left_thigh_rot"] = Vector3(lerp(-12.0, 10.0, s), 0.0, -6.5)
 		p["left_shin_rot"] = Vector3(lerp(18.0, 14.0, s), 0.0, 0.0)
@@ -792,8 +941,8 @@ func _compute_cleave(t_c: float) -> Dictionary:
 		p["right_arm_rot"] = Vector3(lerp(-55.0, -50.0, s), lerp(-10.0, -15.0, s), lerp(-15.0, -35.0, s))
 		p["right_forearm_rot"] = Vector3(lerp(-30.0, -20.0, s), 0.0, 0.0)
 		p["warhammer_rot"] = Vector3(lerp(90.0, 95.0, s), 0.0, lerp(-75.0, -85.0, s))
-		p["left_arm_rot"] = Vector3(lerp(-50.0, -35.0, s), lerp(0.0, -15.0, s), lerp(-35.0, -50.0, s))
-		p["left_forearm_rot"] = Vector3(lerp(-40.0, -55.0, s), 0.0, 0.0)
+		p["left_arm_rot"] = Vector3(lerp(-65.0, -2.0, s), lerp(28.0, 15.0, s), lerp(10.0, 32.0, s))
+		p["left_forearm_rot"] = Vector3(lerp(-5.0, -105.0, s), 0.0, 0.0)
 		
 		p["left_thigh_rot"] = Vector3(lerp(10.0, 12.0, s), 0.0, -6.5)
 		p["left_shin_rot"] = Vector3(lerp(14.0, 15.0, s), 0.0, 0.0)
@@ -813,8 +962,8 @@ func _compute_cleave(t_c: float) -> Dictionary:
 		p["right_arm_rot"] = _lerp_angles(Vector3(-50.0, -15.0, -35.0), base_r_arm, s)
 		p["right_forearm_rot"] = _lerp_angles(Vector3(-20.0, 0.0, 0.0), base_r_fore, s)
 		p["warhammer_rot"] = _lerp_angles(Vector3(95.0, 0.0, -85.0), base_hammer, s)
-		p["left_arm_rot"] = _lerp_angles(Vector3(-35.0, -15.0, -50.0), base_l_arm, s)
-		p["left_forearm_rot"] = _lerp_angles(Vector3(-55.0, 0.0, 0.0), base_l_fore, s)
+		p["left_arm_rot"] = _lerp_angles(Vector3(-2.0, 15.0, 32.0), base_l_arm, s)
+		p["left_forearm_rot"] = _lerp_angles(Vector3(-105.0, 0.0, 0.0), base_l_fore, s)
 		
 		p["left_thigh_rot"] = Vector3(lerp(12.0, 0.0, s), 0.0, -6.0)
 		p["left_shin_rot"] = Vector3(lerp(15.0, 7.0, s), 0.0, 0.0)

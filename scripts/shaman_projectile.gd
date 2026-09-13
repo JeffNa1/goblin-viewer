@@ -42,7 +42,12 @@ func launch(start_pos: Vector3, direction: Vector3, p_outfit: int = 1) -> void:
 	is_exploding = false
 	explode_time = 0.0
 	
-	if outfit == 2:
+	if outfit == 3:
+		# Imperial Golden Arch-Shaman: Radiant Solar Gold & Molten Ruby Flare
+		primary_color = Color(1.0, 0.86, 0.15, 0.99)   # Radiant solar imperial gold
+		secondary_color = Color(1.0, 0.22, 0.2, 0.95)  # Molten ruby flare
+		spark_color = Color(1.0, 0.98, 0.7, 1.0)       # Brilliant diamond gold glint
+	elif outfit == 2:
 		# Grand Arch-Shaman: Imperial Radiant Magenta & Soul Cyan
 		primary_color = Color(0.98, 0.15, 0.65, 0.98) # Hot magenta glow
 		secondary_color = Color(0.1, 0.9, 1.0, 0.95)   # Radiant soul cyan

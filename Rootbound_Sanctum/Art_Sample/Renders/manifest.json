@@ -1,0 +1,42 @@
+[
+	{
+		"camera_fov": 68,
+		"camera_position": "(-0.13, 1.704, 6.95)",
+		"height": 900,
+		"path": "res://Rootbound_Sanctum/Art_Sample/Renders/shoulder.png",
+		"view": "shoulder",
+		"width": 1600
+	},
+	{
+		"camera_fov": 68,
+		"camera_position": "(0.17, 1.704, 17.15)",
+		"height": 900,
+		"path": "res://Rootbound_Sanctum/Art_Sample/Renders/corridor.png",
+		"view": "corridor",
+		"width": 1600
+	},
+	{
+		"camera_fov": 68,
+		"camera_position": "(5.5, 1.7, 3.5)",
+		"height": 900,
+		"path": "res://Rootbound_Sanctum/Art_Sample/Renders/eye_level.png",
+		"view": "eye_level",
+		"width": 1600
+	},
+	{
+		"camera_fov": 68,
+		"camera_position": "(26, 29, 34)",
+		"height": 900,
+		"path": "res://Rootbound_Sanctum/Art_Sample/Renders/overview.png",
+		"view": "overview",
+		"width": 1600
+	},
+	{
+		"camera_fov": 68,
+		"camera_position": "(3.6, 1.65, -0.7)",
+		"height": 900,
+		"path": "res://Rootbound_Sanctum/Art_Sample/Renders/detail.png",
+		"view": "detail",
+		"width": 1600
+	}
+]

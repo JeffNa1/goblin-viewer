@@ -237,7 +237,7 @@ func get_stance_definitions() -> Array:
 	]
 
 func get_weapon_info() -> Dictionary:
-	var title = "🥷 SONG DAO GĂM SÁT THỦ (GÓC LƯỠI DAO)" if current_outfit == 2 else "🗡️ DAO XƯƠNG & ĐÁ ĐẼO (GÓC LƯỠI DAO)"
+	var title = "👑 SONG HOÀNG KIM ĐOẢN KIẾM (GÓC LƯỠI DAO)" if current_outfit == 3 else ("🥷 SONG DAO GĂM SÁT THỦ (GÓC LƯỠI DAO)" if current_outfit == 2 else "🗡️ DAO XƯƠNG & ĐÁ ĐẼO (GÓC LƯỠI DAO)")
 	return {
 		"title": title,
 		"prop": "right_dagger_rot"
@@ -369,10 +369,25 @@ func generate_voxel_meshes() -> void:
 		"right_thigh": VoxelBuilder.build_rogue_thigh_mesh(2),
 		"right_shin": VoxelBuilder.build_rogue_shin_mesh(2)
 	}
+	# Pre-build meshes for Outfit 3 (Hoàng Kim / Imperial Golden Assassin)
+	outfit_meshes[3] = {
+		"head": VoxelBuilder.build_rogue_head_mesh(3),
+		"torso": VoxelBuilder.build_rogue_torso_mesh(3),
+		"left_arm": VoxelBuilder.build_rogue_upper_arm_mesh(3),
+		"left_forearm": VoxelBuilder.build_rogue_forearm_mesh(false, 3),
+		"right_arm": VoxelBuilder.build_rogue_upper_arm_mesh(3),
+		"right_forearm": VoxelBuilder.build_rogue_forearm_mesh(true, 3),
+		"left_dagger": VoxelBuilder.build_dagger_mesh(3),
+		"right_dagger": VoxelBuilder.build_dagger_mesh(3),
+		"left_thigh": VoxelBuilder.build_rogue_thigh_mesh(3),
+		"left_shin": VoxelBuilder.build_rogue_shin_mesh(3),
+		"right_thigh": VoxelBuilder.build_rogue_thigh_mesh(3),
+		"right_shin": VoxelBuilder.build_rogue_shin_mesh(3)
+	}
 	apply_outfit(current_outfit)
 
 func set_outfit(outfit_id: int) -> void:
-	current_outfit = clamp(outfit_id, 1, 2)
+	current_outfit = clamp(outfit_id, 1, 3)
 	apply_outfit(current_outfit)
 	outfit_changed.emit(current_outfit)
 
@@ -419,8 +434,14 @@ func _update_weapon_trails(t_act: float) -> void:
 		
 	if current_anim == "dual_slash":
 		var tau = clampf(t_act / SLASH_DURATION, 0.0, 1.0)
-		var col_tip = Color(0.35, 1.0, 0.80, 0.98) if current_outfit == 1 else Color(0.25, 1.0, 0.95, 0.98)
-		var col_base = Color(0.06, 0.65, 0.35, 0.85) if current_outfit == 1 else Color(0.08, 0.45, 0.40, 0.85)
+		var col_tip = Color(0.35, 1.0, 0.80, 0.98)
+		var col_base = Color(0.06, 0.65, 0.35, 0.85)
+		if current_outfit == 3:
+			col_tip = Color(1.0, 0.88, 0.35, 0.98) # Radiant imperial gold
+			col_base = Color(0.95, 0.25, 0.15, 0.85) # Imperial ruby flame
+		elif current_outfit == 2:
+			col_tip = Color(0.25, 1.0, 0.95, 0.98)
+			col_base = Color(0.08, 0.45, 0.40, 0.85)
 		
 		# Strike 1: Right Upward Slash (tau in [0.16, 0.38])
 		if tau >= 0.16 and tau < 0.38:

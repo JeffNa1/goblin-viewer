@@ -6,8 +6,9 @@ extends Node3D
 @onready var m_shaman: Node3D = $Monsters/Shaman
 @onready var m_rogue: Node3D = $Monsters/Rogue
 @onready var m_chieftain: Node3D = $Monsters/Chieftain
+@onready var m_skeleton: Node3D = $Monsters/Skeleton
 
-var active_monster_type: String = "warrior" # "warrior", "archer", "shaman", "rogue", "chieftain"
+var active_monster_type: String = "warrior" # "warrior", "archer", "shaman", "rogue", "chieftain", "skeleton"
 var current_monster_node: Node3D = null
 
 # Environment & Camera
@@ -36,6 +37,7 @@ var current_monster_node: Node3D = null
 @onready var btn_sel_shaman: Button = $UI/MonsterSelectorBar/HBox/BtnSelShaman
 @onready var btn_sel_rogue: Button = $UI/MonsterSelectorBar/HBox/BtnSelRogue
 @onready var btn_sel_boss: Button = $UI/MonsterSelectorBar/HBox/BtnSelBoss
+@onready var btn_sel_skeleton: Button = $UI/MonsterSelectorBar/HBox/BtnSelSkeleton
 
 # Bottom Dock - Row 1 (Dynamic Actions)
 @onready var btn_act1: Button = $UI/BottomDock/VBox/Row1/BtnAct1
@@ -56,6 +58,7 @@ var current_monster_node: Node3D = null
 
 var btn_outfit1: Button = null
 var btn_outfit2: Button = null
+var btn_outfit3: Button = null
 
 @onready var lbl_speed: Label = $UI/BottomDock/VBox/Row2/HBoxSpeed/LblSpeed
 @onready var slider_speed: HSlider = $UI/BottomDock/VBox/Row2/HBoxSpeed/SpeedSlider
@@ -179,6 +182,16 @@ var monster_actions: Dictionary = {
 		{"anim": "roar", "label": "🦁 [ 6 ] GẦM THÉT", "color": Color(1.0, 0.85, 0.3)},
 		{"anim": "stagger", "label": "🛡 [ 7 ] BỊ PARRY", "color": Color(1.0, 0.45, 0.3)},
 		{"anim": "stunned", "label": "💫 [ 8 ] CHOÁNG", "color": Color(1.0, 0.9, 0.25)}
+	],
+	"skeleton": [
+		{"anim": "idle", "label": "[ 1 ] KHUA XƯƠNG", "color": Color(0.35, 1.0, 0.5)},
+		{"anim": "walk", "label": "[ 2 ] KHẬP KHIỄNG", "color": Color(0.35, 1.0, 0.5)},
+		{"anim": "run", "label": "[ 3 ] LAO CUỒNG NỘ", "color": Color(0.35, 1.0, 0.5)},
+		{"anim": "slash", "label": "⚔ [ 4 ] CHÉM KIẾM CŨ", "color": Color(1.0, 0.8, 0.25)},
+		{"anim": "thrust", "label": "🗡 [ 5 ] ĐÂM KIẾM RỈ", "color": Color(1.0, 0.55, 0.2)},
+		{"anim": "block", "label": "🛡 [ 6 ] CHẮN KHIÊN GỖ", "color": Color(0.4, 0.85, 1.0)},
+		{"anim": "hurt", "label": "💥 [ 7 ] RƠI VỤN BONE", "color": Color(1.0, 0.4, 0.4)},
+		{"anim": "stunned", "label": "💫 [ 8 ] RỤNG RỜI", "color": Color(1.0, 0.9, 0.25)}
 	]
 }
 
@@ -192,6 +205,7 @@ func _ready() -> void:
 	btn_sel_shaman.pressed.connect(func(): switch_monster("shaman"))
 	btn_sel_rogue.pressed.connect(func(): switch_monster("rogue"))
 	btn_sel_boss.pressed.connect(func(): switch_monster("chieftain"))
+	btn_sel_skeleton.pressed.connect(func(): switch_monster("skeleton"))
 	
 	# Action buttons (Row 1)
 	btn_act1.pressed.connect(func(): _trigger_action(0))
@@ -225,6 +239,8 @@ func _ready() -> void:
 	m_shaman.anim_changed.connect(func(_a): _update_ui_state())
 	m_rogue.anim_changed.connect(func(_a): _update_ui_state())
 	m_chieftain.anim_changed.connect(func(_a): _update_ui_state())
+	if m_skeleton:
+		m_skeleton.anim_changed.connect(func(_a): _update_ui_state())
 	
 	# Outfit switcher buttons for Archer
 	var sep = VSeparator.new()
@@ -244,6 +260,13 @@ func _ready() -> void:
 	btn_outfit2.tooltip_text = "Bộ đồ 2: Chiến binh thép [Phím O]"
 	btn_outfit2.pressed.connect(func(): _select_outfit(2))
 	sub_group_stances.add_child(btn_outfit2)
+
+	btn_outfit3 = Button.new()
+	btn_outfit3.name = "BtnOutfit3"
+	btn_outfit3.text = "👑 Đồ 3 (Hoàng Kim)"
+	btn_outfit3.tooltip_text = "Bộ đồ 3: Xạ thủ Hoàng Kim Đế Quốc (Giáp vàng ròng tinh xảo, vương miện cánh đại bàng, cung thần hoàng gia) [Phím O]"
+	btn_outfit3.pressed.connect(func(): _select_outfit(3))
+	sub_group_stances.add_child(btn_outfit3)
 	
 	if m_warrior and m_warrior.has_signal("outfit_changed"):
 		m_warrior.outfit_changed.connect(func(_id): 
@@ -276,16 +299,17 @@ func _ready() -> void:
 	if m_warrior:
 		m_warrior.play_anim("idle")
 	reset_camera()
-	# _capture_ogre_walk()
+	# _capture_warrior_outfit3()
 
 func switch_monster(m_type: String) -> void:
 	active_monster_type = m_type
 	
-	m_warrior.visible = (m_type == "warrior")
-	m_archer.visible = (m_type == "archer")
-	m_shaman.visible = (m_type == "shaman")
-	m_rogue.visible = (m_type == "rogue")
-	m_chieftain.visible = (m_type == "chieftain")
+	if m_warrior: m_warrior.visible = (m_type == "warrior")
+	if m_archer: m_archer.visible = (m_type == "archer")
+	if m_shaman: m_shaman.visible = (m_type == "shaman")
+	if m_rogue: m_rogue.visible = (m_type == "rogue")
+	if m_chieftain: m_chieftain.visible = (m_type == "chieftain")
+	if m_skeleton: m_skeleton.visible = (m_type == "skeleton")
 	
 	match m_type:
 		"warrior": current_monster_node = m_warrior
@@ -293,13 +317,15 @@ func switch_monster(m_type: String) -> void:
 		"shaman": current_monster_node = m_shaman
 		"rogue": current_monster_node = m_rogue
 		"chieftain": current_monster_node = m_chieftain
+		"skeleton": current_monster_node = m_skeleton
 		
 	# Update selector tabs styling
-	btn_sel_warrior.modulate = Color(0.2, 1.0, 0.6) if m_type == "warrior" else Color(0.8, 0.8, 0.8)
-	btn_sel_archer.modulate = Color(0.2, 1.0, 0.6) if m_type == "archer" else Color(0.8, 0.8, 0.8)
-	btn_sel_shaman.modulate = Color(0.2, 1.0, 0.6) if m_type == "shaman" else Color(0.8, 0.8, 0.8)
-	btn_sel_rogue.modulate = Color(0.2, 1.0, 0.6) if m_type == "rogue" else Color(0.8, 0.8, 0.8)
-	btn_sel_boss.modulate = Color(1.0, 0.8, 0.2) if m_type == "chieftain" else Color(0.8, 0.8, 0.8)
+	if btn_sel_warrior: btn_sel_warrior.modulate = Color(0.2, 1.0, 0.6) if m_type == "warrior" else Color(0.8, 0.8, 0.8)
+	if btn_sel_archer: btn_sel_archer.modulate = Color(0.2, 1.0, 0.6) if m_type == "archer" else Color(0.8, 0.8, 0.8)
+	if btn_sel_shaman: btn_sel_shaman.modulate = Color(0.2, 1.0, 0.6) if m_type == "shaman" else Color(0.8, 0.8, 0.8)
+	if btn_sel_rogue: btn_sel_rogue.modulate = Color(0.2, 1.0, 0.6) if m_type == "rogue" else Color(0.8, 0.8, 0.8)
+	if btn_sel_boss: btn_sel_boss.modulate = Color(1.0, 0.8, 0.2) if m_type == "chieftain" else Color(0.8, 0.8, 0.8)
+	if btn_sel_skeleton: btn_sel_skeleton.modulate = Color(0.3, 0.9, 1.0) if m_type == "skeleton" else Color(0.8, 0.8, 0.8)
 	
 	sub_group_stances.visible = true
 	_update_stance_ui()
@@ -333,37 +359,56 @@ func _update_outfit_ui() -> void:
 		sep.visible = has_outfit
 	btn_outfit1.visible = has_outfit
 	btn_outfit2.visible = has_outfit
+	if btn_outfit3:
+		btn_outfit3.visible = (active_monster_type in ["warrior", "archer", "shaman", "rogue", "chieftain"])
 	
 	if has_outfit and current_monster_node:
 		var cur = current_monster_node.get("current_outfit") if "current_outfit" in current_monster_node else 1
 		btn_outfit1.modulate = Color(0.2, 1.0, 0.5) if cur == 1 else Color(0.7, 0.7, 0.7)
 		btn_outfit2.modulate = Color(0.2, 1.0, 0.5) if cur == 2 else Color(0.7, 0.7, 0.7)
+		if btn_outfit3:
+			btn_outfit3.modulate = Color(1.0, 0.85, 0.2) if cur == 3 else Color(0.7, 0.7, 0.7)
 		
 		if active_monster_type == "warrior":
 			btn_outfit1.text = "⚔️ Đồ 1 (Thô Sơ)"
 			btn_outfit1.tooltip_text = "Bộ đồ 1: Dã nhân thô sơ (da thú rách, chùy gai gỗ) [Phím O]"
 			btn_outfit2.text = "🛡️ Đồ 2 (Chiến Binh)"
 			btn_outfit2.tooltip_text = "Bộ đồ 2: Chiến binh giáp sắt, mũ chiến trận, thiết chùy nâng cấp [Phím O]"
+			if btn_outfit3:
+				btn_outfit3.text = "👑 Đồ 3 (Hoàng Kim)"
+				btn_outfit3.tooltip_text = "Bộ đồ 3: Chiến Tướng Hoàng Kim, vương miện rồng, hoàng kim thần chùy [Phím O]"
 		elif active_monster_type == "archer":
 			btn_outfit1.text = "🏹 Đồ 1 (Thô Sơ)"
 			btn_outfit1.tooltip_text = "Bộ đồ 1: Thợ săn nguyên thủy (áo da thú, nanh vuốt hoang dã) [Phím O]"
 			btn_outfit2.text = "🌲 Đồ 2 (Ranger)"
 			btn_outfit2.tooltip_text = "Bộ đồ 2: Xạ thủ kiểm lâm (áo chẽn gambeson, giáp ngực plastron, ủng buộc dây) [Phím O]"
+			if btn_outfit3:
+				btn_outfit3.text = "👑 Đồ 3 (Hoàng Kim)"
+				btn_outfit3.tooltip_text = "Bộ đồ 3: Xạ thủ Hoàng Kim Đế Quốc (Giáp vàng ròng tinh xảo, vương miện cánh đại bàng, cung thần hoàng gia nâng cấp) [Phím O]"
 		elif active_monster_type == "shaman":
 			btn_outfit1.text = "🧙‍♂️ Đồ 1 (Thầy Mo)"
 			btn_outfit1.tooltip_text = "Bộ đồ 1: Thầy Mo Bộ Lạc (da thú dã tính, mặt nạ sọ quỷ thô sơ, trượng gỗ) [Phím O]"
 			btn_outfit2.text = "🔮 Đồ 2 (Đại Pháp Sư)"
 			btn_outfit2.tooltip_text = "Bộ đồ 2: Đại Pháp Sư Hoàng Gia (áo choàng Magenta dài thướt tha, sừng rồng uốn lượn, trượng ngọc quyền năng) [Phím O]"
+			if btn_outfit3:
+				btn_outfit3.text = "👑 Đồ 3 (Hoàng Kim)"
+				btn_outfit3.tooltip_text = "Bộ đồ 3: Pháp Vương Hoàng Kim Đế Quốc (Giáp vàng hoàng kim, sọ quỷ khổng lồ & sừng rồng vĩ đại, trượng thái dương & linh trụ đế vương) [Phím O]"
 		elif active_monster_type == "rogue":
 			btn_outfit1.text = "🗡️ Đồ 1 (Thô Sơ)"
 			btn_outfit1.tooltip_text = "Bộ đồ 1: Dã nhân rình rập (khăn bố gai, khố da thú, dao đá & nanh thú) [Phím O]"
 			btn_outfit2.text = "🥷 Đồ 2 (Sát Thủ)"
 			btn_outfit2.tooltip_text = "Bộ đồ 2: Sát thủ bóng đêm (giáp da viền cowl, phi đao, song dao răng cưa tẩm độc) [Phím O]"
+			if btn_outfit3:
+				btn_outfit3.text = "👑 Đồ 3 (Hoàng Kim)"
+				btn_outfit3.tooltip_text = "Bộ đồ 3: Sát Thủ Hoàng Kim Đế Quốc (Giáp vàng ròng tinh xảo, vương miện cánh đại bàng, song hoàng kim đoản kiếm nạm hồng ngọc) [Phím O]"
 		elif active_monster_type == "chieftain":
 			btn_outfit1.text = "👹 Đồ 1 (Nguyên Thủy)"
 			btn_outfit1.tooltip_text = "Bộ đồ 1: Mace Ogre dã tính nguyên thủy (da thú xù lông, đại chùy đá gai, nanh heo rừng) [Phím O]"
 			btn_outfit2.text = "🛡️ Đồ 2 (Thiết Giáp)"
-			btn_outfit2.tooltip_text = "Bộ đồ 2: Thiết Giáp Ma Thú (Full giáp sắt hạng nặng, mũ chiến trận giác đấu, đại chùy thép 8 cánh hủy diệt) [Phím O]"
+			btn_outfit2.tooltip_text = "Bộ đồ 2: Thiết Giáp Ma Thú (Full giáp sắt hạng nặng để lộ cơ bắp dã thú, mũ chiến trận giác đấu, đại chùy thép hủy diệt) [Phím O]"
+			if btn_outfit3:
+				btn_outfit3.text = "👑 Đồ 3 (Hoàng Kim)"
+				btn_outfit3.tooltip_text = "Bộ đồ 3: Đại Chiến Tướng Hoàng Kim Ogre (Giáp vàng ròng đế quốc nạm hồng ngọc, vương miện rồng, Đại Hoàng Kim Thần Chùy Thái Dương) [Phím O]"
 
 func _on_stance_btn_pressed(idx: int) -> void:
 	if not current_monster_node or not current_monster_node.has_method("get_stance_definitions"):
@@ -402,7 +447,10 @@ func _reconfigure_action_buttons() -> void:
 			var tooltip = ""
 			if active_monster_type == "warrior" and acts[i]["anim"] == "smash":
 				var w_outfit = m_warrior.current_outfit if m_warrior and "current_outfit" in m_warrior else 1
-				if w_outfit == 2:
+				if w_outfit == 3:
+					label = "👑 [ 4 ] THẦN KHÍ 1-2-3"
+					tooltip = "Combo 3 Đòn Thần Khí: Bổ Chùy Hoàng Kim -> Quét Thuận Hồng Ngọc -> Quét Ngược Thái Dương [Phím 4]"
+				elif w_outfit == 2:
 					label = "🔥 [ 4 ] COMBO 1-2-3"
 					tooltip = "Combo 3 Đòn: Bổ Chùy -> Quét Thuận -> Quét Ngược [Phím 4]"
 				else:
@@ -459,7 +507,7 @@ func _switch_editor_tab(st_name: String) -> void:
 	if current_monster_node:
 		if current_monster_node.has_method("play_anim"):
 			current_monster_node.play_anim(st_name)
-		if current_monster_node.has_method("set_stance") and st_name in ["low", "guard", "shoulder", "aim", "ready", "dual_guard", "reverse", "ground"]:
+		if current_monster_node.has_method("set_stance") and st_name in ["low", "guard", "shoulder", "aim", "ready", "dual_guard", "reverse", "ground", "high_guard", "low_drag"]:
 			current_monster_node.set_stance(st_name)
 	_update_stance_ui()
 	_update_ui_state()
@@ -475,7 +523,8 @@ func sync_editor_from_monster() -> void:
 		"archer": "CUNG THỦ",
 		"shaman": "PHÁP SƯ",
 		"rogue": "SÁT THỦ",
-		"chieftain": "MACE OGRE"
+		"chieftain": "MACE OGRE",
+		"skeleton": "CHIẾN BINH BỘ XƯƠNG"
 	}
 	ed_title.text = "🛠 BỘ CHỈNH TƯ THẾ & VŨ KHÍ: %s" % m_names.get(active_monster_type, "QUÁI VẬT")
 	
@@ -627,11 +676,62 @@ func _on_reset_stance_pressed() -> void:
 func _save_shot(filename: String) -> void:
 	var img = get_viewport().get_texture().get_image()
 	if img:
-		var brain_dir = "C:/Users/Administrator/.gemini/antigravity/brain/ec0b555c-b953-40a9-a69a-c4d1848bb995"
+		var brain_dir = "C:/Users/Administrator/.gemini/antigravity/brain/813ecea6-e167-4253-aed6-a8cd4321e1b5"
 		if DirAccess.dir_exists_absolute(brain_dir):
 			img.save_png(brain_dir + "/" + filename)
 		else:
 			img.save_png("user://" + filename)
+
+func _capture_warrior_outfit3() -> void:
+	await get_tree().create_timer(0.4).timeout
+	editor_panel.visible = false
+	switch_monster("warrior")
+	_select_outfit(3)
+	
+	# 1. Front Idle View - Full Imperial Regalia
+	m_warrior.play_anim("idle")
+	yaw = 25.0
+	pitch = -6.0
+	camera_distance = 2.8
+	_update_camera_transform()
+	await get_tree().create_timer(0.4).timeout
+	_save_shot("warrior_outfit3_idle_front.png")
+	
+	# 2. Side View - Close-up on Sunburst Divine War Mace
+	yaw = 78.0
+	pitch = -4.0
+	camera_distance = 2.4
+	_update_camera_transform()
+	await get_tree().create_timer(0.4).timeout
+	_save_shot("warrior_outfit3_mace_detail.png")
+	
+	# 3. Rear View - Swept Dragon Horns, Plume & Dorsal Wing Armor
+	yaw = 145.0
+	pitch = -8.0
+	camera_distance = 2.7
+	_update_camera_transform()
+	await get_tree().create_timer(0.4).timeout
+	_save_shot("warrior_outfit3_idle_rear.png")
+	
+	# 4. Action: Combo Hit 1 Overhead Slam with Solar Gold Shockwave
+	yaw = 35.0
+	pitch = -6.0
+	camera_distance = 3.0
+	_update_camera_transform()
+	m_warrior.play_anim("smash")
+	await get_tree().create_timer(0.45).timeout
+	_save_shot("warrior_outfit3_action_smash.png")
+	
+	# 5. Action: Combo Hit 2 Cleave with Imperial Ruby Ribbon
+	m_warrior.play_anim("cleave")
+	await get_tree().create_timer(0.42).timeout
+	_save_shot("warrior_outfit3_action_cleave.png")
+	
+	# 6. Reset to Outfit 3 Idle
+	m_warrior.play_anim("idle")
+	reset_camera()
+	await get_tree().create_timer(0.3).timeout
+	get_tree().quit(0)
 
 func _capture_warrior_outfits() -> void:
 	await get_tree().create_timer(0.4).timeout
@@ -1146,6 +1246,7 @@ func _input(event: InputEvent) -> void:
 			KEY_F3: switch_monster("shaman")
 			KEY_F4: switch_monster("rogue")
 			KEY_F5: switch_monster("chieftain")
+			KEY_F6: switch_monster("skeleton")
 			
 			KEY_1: _trigger_action(0)
 			KEY_2: _trigger_action(1)
@@ -1168,7 +1269,9 @@ func _input(event: InputEvent) -> void:
 			KEY_O:
 				if current_monster_node and current_monster_node.has_method("set_outfit"):
 					var cur_o = current_monster_node.get("current_outfit") if "current_outfit" in current_monster_node else 1
-					_select_outfit(2 if cur_o == 1 else 1)
+					var max_o = 3 if active_monster_type in ["warrior", "archer", "shaman", "rogue", "chieftain"] else 2
+					var next_o = (cur_o % max_o) + 1
+					_select_outfit(next_o)
 			KEY_H: toggle_help()
 			KEY_SPACE:
 				auto_rotate = not auto_rotate
@@ -1195,6 +1298,9 @@ func reset_camera() -> void:
 	if active_monster_type == "chieftain":
 		camera_distance = 4.8
 		camera_pivot.position.y = 0.85
+	elif active_monster_type == "skeleton":
+		camera_distance = 3.2
+		camera_pivot.position.y = 0.64
 	else:
 		camera_distance = 3.4
 		camera_pivot.position.y = 0.62
@@ -1220,41 +1326,46 @@ func _update_ui_state() -> void:
 			
 	var warrior_name = "Goblin Warrior (Chùy)"
 	if m_warrior and "current_outfit" in m_warrior:
-		var w_label = "Đồ 1: Thô Sơ" if m_warrior.current_outfit == 1 else "Đồ 2: Chiến Binh"
+		var w_label = "Đồ 1: Thô Sơ" if m_warrior.current_outfit == 1 else ("Đồ 2: Chiến Binh" if m_warrior.current_outfit == 2 else "Đồ 3: Hoàng Kim")
 		warrior_name = "Goblin Warrior [%s]" % w_label
 
 	var archer_name = "Goblin Archer (Cung)"
 	if m_archer and "current_outfit" in m_archer:
-		var o_label = "Đồ 1: Thô Sơ" if m_archer.current_outfit == 1 else "Đồ 2: Ranger"
+		var o_label = "Đồ 1: Thô Sơ" if m_archer.current_outfit == 1 else ("Đồ 2: Ranger" if m_archer.current_outfit == 2 else "Đồ 3: Hoàng Kim")
 		archer_name = "Goblin Archer [%s]" % o_label
 		
 	var shaman_name = "Goblin Shaman (Pháp Sư)"
 	if m_shaman and "current_outfit" in m_shaman:
-		var s_label = "Đồ 1: Thầy Mo" if m_shaman.current_outfit == 1 else "Đồ 2: Đại Pháp Sư"
+		var s_label = "Đồ 1: Thầy Mo" if m_shaman.current_outfit == 1 else ("Đồ 2: Đại Pháp Sư" if m_shaman.current_outfit == 2 else "Đồ 3: Hoàng Kim")
 		shaman_name = "Goblin Shaman [%s]" % s_label
 
 	var rogue_name = "Goblin Rogue (Sát Thủ)"
 	if m_rogue and "current_outfit" in m_rogue:
-		var r_label = "Đồ 1: Thô Sơ" if m_rogue.current_outfit == 1 else "Đồ 2: Sát Thủ"
+		var r_label = "Đồ 1: Thô Sơ" if m_rogue.current_outfit == 1 else ("Đồ 2: Sát Thủ" if m_rogue.current_outfit == 2 else "Đồ 3: Hoàng Kim")
 		rogue_name = "Goblin Rogue [%s]" % r_label
 
 	var ogre_name = "Mace Ogre (Boss)"
 	if m_chieftain and "current_outfit" in m_chieftain:
-		var og_label = "Đồ 1: Nguyên Thủy" if m_chieftain.current_outfit == 1 else "Đồ 2: Thiết Giáp"
+		var og_label = "Đồ 1: Nguyên Thủy" if m_chieftain.current_outfit == 1 else ("Đồ 2: Thiết Giáp" if m_chieftain.current_outfit == 2 else "Đồ 3: Hoàng Kim")
 		ogre_name = "Mace Ogre [%s]" % og_label
+		
+	var skeleton_name = "Chiến Binh Bộ Xương (Kiếm Cũ & Khiên Gỗ)"
 		
 	var m_names = {
 		"warrior": warrior_name,
 		"archer": archer_name,
 		"shaman": shaman_name,
 		"rogue": rogue_name,
-		"chieftain": ogre_name
+		"chieftain": ogre_name,
+		"skeleton": skeleton_name
 	}
 	
 	var cur_status = cur.to_upper()
 	if active_monster_type == "warrior" and cur == "smash":
 		var w_outfit = m_warrior.current_outfit if m_warrior and "current_outfit" in m_warrior else 1
-		if w_outfit == 2:
+		if w_outfit == 3:
+			cur_status = "BỔ HOÀNG KIM COMBO 1-2-3 (THẦN KHÍ)"
+		elif w_outfit == 2:
 			cur_status = "BỔ COMBO 1-2-3 (3 ĐÒN LIÊN HOÀN)"
 	status_lbl.text = "%s  •  %s" % [m_names.get(active_monster_type, "Goblin"), cur_status]
 

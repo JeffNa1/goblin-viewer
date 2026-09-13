@@ -1,0 +1,56 @@
+[
+	{
+		"collider": "Floor_09_-1_1_col:<StaticBody3D#112843560360>",
+		"grid_owner": "09",
+		"hit": true,
+		"offset": "(-0.00001, -0.00001)"
+	},
+	{
+		"collider": "",
+		"grid_owner": "09",
+		"hit": false,
+		"offset": "(-0.00001, 0)"
+	},
+	{
+		"collider": "Floor_00_7_-1_col:<StaticBody3D#175439356506>",
+		"grid_owner": "00",
+		"hit": true,
+		"offset": "(-0.00001, 0.00001)"
+	},
+	{
+		"collider": "Floor_09_-1_1_col:<StaticBody3D#112843560360>",
+		"grid_owner": "09",
+		"hit": true,
+		"offset": "(0, -0.00001)"
+	},
+	{
+		"collider": "",
+		"grid_owner": "09",
+		"hit": false,
+		"offset": "(0, 0)"
+	},
+	{
+		"collider": "Floor_00_7_-1_col:<StaticBody3D#175439356506>",
+		"grid_owner": "00",
+		"hit": true,
+		"offset": "(0, 0.00001)"
+	},
+	{
+		"collider": "Floor_09_-1_1_col:<StaticBody3D#112843560360>",
+		"grid_owner": "09",
+		"hit": true,
+		"offset": "(0.00001, -0.00001)"
+	},
+	{
+		"collider": "",
+		"grid_owner": "09",
+		"hit": false,
+		"offset": "(0.00001, 0)"
+	},
+	{
+		"collider": "Floor_00_7_-1_col:<StaticBody3D#175439356506>",
+		"grid_owner": "00",
+		"hit": true,
+		"offset": "(0.00001, 0.00001)"
+	}
+]

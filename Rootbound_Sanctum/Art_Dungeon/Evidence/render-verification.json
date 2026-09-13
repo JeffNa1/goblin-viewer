@@ -1,0 +1,12 @@
+{
+  "rooms": 14,
+  "new_rooms": 13,
+  "renders": 43,
+  "new_room_renders": 39,
+  "dimensions": [
+    1600,
+    900
+  ],
+  "unique_images": 43,
+  "review_sheets": 14
+}

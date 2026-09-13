@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/viewer.gd" id="1_viewer"]
 [ext_resource type="PackedScene" path="res://scenes/goblin.tscn" id="2_goblin"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/goblin_shaman.tscn" id="4_shaman"]
 [ext_resource type="PackedScene" path="res://scenes/goblin_rogue.tscn" id="5_rogue"]
 [ext_resource type="PackedScene" path="res://scenes/goblin_chieftain.tscn" id="6_chieftain"]
+[ext_resource type="PackedScene" path="res://scenes/skeleton_warrior.tscn" id="7_skeleton"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.2, 0.56, 0.94, 1)
@@ -96,6 +97,9 @@ visible = false
 visible = false
 
 [node name="Chieftain" parent="Monsters" instance=ExtResource("6_chieftain")]
+visible = false
+
+[node name="Skeleton" parent="Monsters" instance=ExtResource("7_skeleton")]
 visible = false
 
 [node name="CameraPivot" type="Node3D" parent="."]
@@ -215,7 +219,7 @@ layout_mode = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(0.2, 0.9, 0.7, 1)
 theme_override_font_sizes/font_size = 11
-text = "• [ F1 - F5 ]: Đổi nhanh 5 quái Tầng 1"
+text = "• [ F1 - F6 ]: Đổi nhanh 6 quái Tầng 1"
 
 [node name="H1" type="Label" parent="UI/HelpPopup/VBox"]
 layout_mode = 2
@@ -253,9 +257,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -390.0
+offset_left = -465.0
 offset_top = -146.0
-offset_right = 390.0
+offset_right = 465.0
 offset_bottom = -106.0
 grow_horizontal = 2
 grow_vertical = 0
@@ -263,39 +267,46 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_glass")
 
 [node name="HBox" type="HBoxContainer" parent="UI/MonsterSelectorBar"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 6
 alignment = 1
 
 [node name="BtnSelWarrior" type="Button" parent="UI/MonsterSelectorBar/HBox"]
-custom_minimum_size = Vector2(138, 30)
+custom_minimum_size = Vector2(136, 30)
 layout_mode = 2
 theme_override_font_sizes/font_size = 11
 text = "⚔ CHIẾN BINH (F1)"
 
 [node name="BtnSelArcher" type="Button" parent="UI/MonsterSelectorBar/HBox"]
-custom_minimum_size = Vector2(138, 30)
+custom_minimum_size = Vector2(136, 30)
 layout_mode = 2
 theme_override_font_sizes/font_size = 11
 text = "🏹 CUNG THỦ (F2)"
 
 [node name="BtnSelShaman" type="Button" parent="UI/MonsterSelectorBar/HBox"]
-custom_minimum_size = Vector2(138, 30)
+custom_minimum_size = Vector2(136, 30)
 layout_mode = 2
 theme_override_font_sizes/font_size = 11
 text = "🔮 PHÁP SƯ (F3)"
 
 [node name="BtnSelRogue" type="Button" parent="UI/MonsterSelectorBar/HBox"]
-custom_minimum_size = Vector2(138, 30)
+custom_minimum_size = Vector2(136, 30)
 layout_mode = 2
 theme_override_font_sizes/font_size = 11
 text = "🗡 SÁT THỦ (F4)"
 
 [node name="BtnSelBoss" type="Button" parent="UI/MonsterSelectorBar/HBox"]
-custom_minimum_size = Vector2(148, 30)
+custom_minimum_size = Vector2(146, 30)
 layout_mode = 2
 theme_override_colors/font_color = Color(1.0, 0.85, 0.3, 1)
 theme_override_font_sizes/font_size = 11
 text = "👹 MACE OGRE (F5)"
+
+[node name="BtnSelSkeleton" type="Button" parent="UI/MonsterSelectorBar/HBox"]
+custom_minimum_size = Vector2(146, 30)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "💀 BỘ XƯƠNG (F6)"
 
 [node name="BottomDock" type="PanelContainer" parent="UI"]
 anchors_preset = 7

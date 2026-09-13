@@ -1,0 +1,38 @@
+[
+  {
+    "path": "project.godot",
+    "baseline_sha256": "b09ccbb44ea117013a09332bab7190426dd0fca3dcb5e12ae302da94f7110d14",
+    "current_sha256": "b09ccbb44ea117013a09332bab7190426dd0fca3dcb5e12ae302da94f7110d14",
+    "unchanged": true
+  },
+  {
+    "path": "data/rootbound_layout.json",
+    "baseline_sha256": "73a584d96eb65c1f36933780a4f50d0a80b678938c941ed36c54ccffbfcdfd4c",
+    "current_sha256": "73a584d96eb65c1f36933780a4f50d0a80b678938c941ed36c54ccffbfcdfd4c",
+    "unchanged": true
+  },
+  {
+    "path": "docs/rootbound_sanctum.md",
+    "baseline_sha256": "ea8a9bb4ac4e9e0391bb522e33a5e67097dd1d9b0b160d9c2debd92bac02545d",
+    "current_sha256": "ea8a9bb4ac4e9e0391bb522e33a5e67097dd1d9b0b160d9c2debd92bac02545d",
+    "unchanged": true
+  },
+  {
+    "path": "scenes/rootbound_sanctum.tscn",
+    "baseline_sha256": "44362f0226af8132b35b6816cc31d8846eb2af2b6d379b5dd5b13678e4cd8d5a",
+    "current_sha256": "44362f0226af8132b35b6816cc31d8846eb2af2b6d379b5dd5b13678e4cd8d5a",
+    "unchanged": true
+  },
+  {
+    "path": "scripts/rootbound_builder.gd",
+    "baseline_sha256": "04a8007b44dd09de9b90ffb125f40269de26a403c315a38795a72b4903749d39",
+    "current_sha256": "04a8007b44dd09de9b90ffb125f40269de26a403c315a38795a72b4903749d39",
+    "unchanged": true
+  },
+  {
+    "path": "scripts/rootbound_sanctum.gd",
+    "baseline_sha256": "9c51531d1ed78ae73bb6a16278520915725c20e4e51dc95ff7a2887fb929f12a",
+    "current_sha256": "9c51531d1ed78ae73bb6a16278520915725c20e4e51dc95ff7a2887fb929f12a",
+    "unchanged": true
+  }
+]

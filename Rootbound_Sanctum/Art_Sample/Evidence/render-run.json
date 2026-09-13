@@ -1,0 +1,5 @@
+{
+  "output": "Godot Engine v4.3.stable.official.77dcf97d8 - https://godotengine.org\r\nVulkan 1.3.289 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce GTX 1660 SUPER\r\n\r\nSANCTUARY_ART_READY {\"batches\":57,\"block_instances\":2159,\"voxel_triangles\":133360}\r\nCAPTURED shoulder 1600x900\r\nCAPTURED corridor 1600x900\r\nCAPTURED eye_level 1600x900\r\nCAPTURED overview 1600x900\r\nCAPTURED detail 1600x900\r\nRENDER_COMPLETE 5 views; adapter=NVIDIA GeForce GTX 1660 SUPER",
+  "exit_code": 0,
+  "error": null
+}

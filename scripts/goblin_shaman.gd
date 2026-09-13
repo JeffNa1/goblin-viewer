@@ -201,7 +201,11 @@ func get_stance_definitions() -> Array:
 	]
 
 func get_weapon_info() -> Dictionary:
-	var title = "🔮 VƯƠNG TRƯỢNG RỒNG TÍM (HƯỚNG TRƯỢNG)" if current_outfit == 2 else "🦯 QUYỀN TRƯỢNG BỘ LẠC (HƯỚNG TRƯỢNG)"
+	var title = "🦯 QUYỀN TRƯỢNG BỘ LẠC (HƯỚNG TRƯỢNG)"
+	if current_outfit == 3:
+		title = "☀️ QUYỀN TRƯỢNG THÁI DƯƠNG HOÀNG KIM (HƯỚNG TRƯỢNG)"
+	elif current_outfit == 2:
+		title = "🔮 VƯƠNG TRƯỢNG RỒNG TÍM (HƯỚNG TRƯỢNG)"
 	return {
 		"title": title,
 		"prop": "staff_rot"
@@ -286,8 +290,6 @@ func _lerp_angles(a: Vector3, b: Vector3, weight: float) -> Vector3:
 	)
 
 func generate_voxel_meshes() -> void:
-	totem_mesh.mesh = VoxelBuilder.build_totem_mesh()
-	
 	# Pre-build meshes for Outfit 1 (Thầy Mo Bộ Lạc / Feral Tribal Witch Doctor)
 	outfit_meshes[1] = {
 		"head": VoxelBuilder.build_shaman_head_mesh(1),
@@ -298,7 +300,8 @@ func generate_voxel_meshes() -> void:
 		"staff": VoxelBuilder.build_shaman_staff_mesh(1),
 		"thigh": VoxelBuilder.build_shaman_thigh_mesh(1),
 		"shin": VoxelBuilder.build_shaman_shin_mesh(1),
-		"cloak": null
+		"cloak": null,
+		"totem": VoxelBuilder.build_totem_mesh(1)
 	}
 	
 	# Pre-build meshes for Outfit 2 (Đại Pháp Sư Tím / Grand Arch-Shaman Magenta)
@@ -311,13 +314,28 @@ func generate_voxel_meshes() -> void:
 		"staff": VoxelBuilder.build_shaman_staff_mesh(2),
 		"thigh": VoxelBuilder.build_shaman_thigh_mesh(2),
 		"shin": VoxelBuilder.build_shaman_shin_mesh(2),
-		"cloak": VoxelBuilder.build_shaman_cloak_mesh()
+		"cloak": VoxelBuilder.build_shaman_cloak_mesh(2),
+		"totem": VoxelBuilder.build_totem_mesh(2)
+	}
+	
+	# Pre-build meshes for Outfit 3 (Pháp Vương Hoàng Kim Đế Quốc / Imperial Sovereign Golden Archon)
+	outfit_meshes[3] = {
+		"head": VoxelBuilder.build_shaman_head_mesh(3),
+		"torso": VoxelBuilder.build_shaman_torso_mesh(3),
+		"upper_arm": VoxelBuilder.build_shaman_upper_arm_mesh(3),
+		"left_forearm": VoxelBuilder.build_shaman_forearm_mesh(false, 3),
+		"right_forearm": VoxelBuilder.build_shaman_forearm_mesh(true, 3),
+		"staff": VoxelBuilder.build_shaman_staff_mesh(3),
+		"thigh": VoxelBuilder.build_shaman_thigh_mesh(3),
+		"shin": VoxelBuilder.build_shaman_shin_mesh(3),
+		"cloak": VoxelBuilder.build_shaman_cloak_mesh(3),
+		"totem": VoxelBuilder.build_totem_mesh(3)
 	}
 	
 	apply_outfit(current_outfit)
 
 func set_outfit(outfit_id: int) -> void:
-	current_outfit = clamp(outfit_id, 1, 2)
+	current_outfit = clamp(outfit_id, 1, 3)
 	apply_outfit(current_outfit)
 	outfit_changed.emit(current_outfit)
 
@@ -340,6 +358,8 @@ func apply_outfit(outfit_id: int) -> void:
 		var cm = m.get("cloak", null)
 		cloak_mesh.mesh = cm
 		cloak_mesh.visible = (cm != null)
+	if totem_mesh and m.has("totem"):
+		totem_mesh.mesh = m["totem"]
 
 func _init_stun_stars() -> void:
 	stun_stars = StunStarsScript.new()

@@ -1,0 +1,32 @@
+[
+  {
+    "id": 12,
+    "file": "jungle-awakens.jpg",
+    "title": "MINECRAFT DUNGEONS / JUNGLE AWAKENS",
+    "credit": "Official Minecraft artwork",
+    "note": "Study: block foliage, stepped stone, palette clusters.",
+    "image_url": "https://www.minecraft.net/content/dam/minecraftnet/franchise/component-library/carouselN/jungle-awakens/MinecraftDungeons_JungleAwakens_2880x1320.jpg",
+    "page_url": "https://www.minecraft.net/en-us/store/minecraft-dungeons-jungle-awakens-dlc",
+    "sha256": "f67c73cd4fcdd2bc45b586eebc2761346f9bd615cbe3a672666071dbfb7dfd95"
+  },
+  {
+    "id": 6,
+    "file": "stylized-ruins.jpg",
+    "title": "STYLIZED MODULAR RUINS",
+    "credit": "80 Level / source artist credited in article",
+    "note": "Study: ruin silhouettes, pale stone and moss placement.",
+    "image_url": "https://cdn.80.lv/api/upload/content/e5/images/679135b067e26/widen_920x0.jpeg",
+    "page_url": "https://80.lv/articles/how-to-make-atmospheric-stylized-modular-ruins-with-zbrush-substance-3d",
+    "sha256": "a2d3736ee012b2646bd5d89768014ecdc1c3e19dab9c0942e5d0555027f11c26"
+  },
+  {
+    "id": 7,
+    "file": "forest-ruins.jpg",
+    "title": "DARK FANTASY FOREST RUINS",
+    "credit": "80 Level / source artist credited in article",
+    "note": "Study: a clear focal point and foreground framing.",
+    "image_url": "https://cdn.80.lv/api/upload/content/68/images/6a35eaa797b7b/widen_920x0.jpg",
+    "page_url": "https://80.lv/articles/breakdown-how-to-create-a-dark-fantasy-environment-of-ruins-in-a-forest",
+    "sha256": "292c99afd8d0e549652e2a8ec80a5bfa98519e69fd334a29f72bc5b596eaf575"
+  }
+]

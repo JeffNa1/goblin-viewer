@@ -1,0 +1,12 @@
+{
+  "path": "C:\\Users\\Administrator\\.gemini\\antigravity\\scratch\\goblin-viewer\\Rootbound_Sanctum\\Art_Dungeon\\Rootbound_All_Rooms_Review.zip",
+  "entries": 107,
+  "bytes": 37798419,
+  "sha256": "0654d60839d0905e10375fa0926c944344d3bf70763202777066f0037c025e3c",
+  "room_count": 14,
+  "new_room_count": 13,
+  "render_count": 43,
+  "new_room_render_count": 39,
+  "protected_files": 15,
+  "passed": true
+}

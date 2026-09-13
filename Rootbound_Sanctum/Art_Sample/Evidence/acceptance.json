@@ -1,0 +1,13 @@
+{
+	"camera_views": 5,
+	"failures": [],
+	"geometry": {
+		"batches": 57,
+		"block_instances": 2159,
+		"voxel_triangles": 133360
+	},
+	"passed": true,
+	"room_cells": 8035,
+	"room_id": "07",
+	"walking_samples": 90
+}
