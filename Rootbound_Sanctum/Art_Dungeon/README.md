@@ -2,6 +2,8 @@
 
 ## Scope
 
+Room 07 now loads the isolated carved art pass in `Polish07/`. Open `Polish07/Open_Room07.bat` for that room, or select 07 in the all-room viewer. Its before/after captures, checks, and review package are separate. The 43-image gallery and ZIP described below remain the earlier baseline; they do not show the new room 07 treatment.
+
 This pass builds the remaining 13 voxel room treatments and assembles all 14 original room footprints with the original 15 connections. The approved Quiet Sanctuary source remains unchanged and supplies the shared art primitives. The art viewer lives separately from the original map and character viewer.
 
 This is an environment-art review, not a combat build. The red figure is a scale proxy, not the production player. No character scripts or character assets are loaded by this art scene.

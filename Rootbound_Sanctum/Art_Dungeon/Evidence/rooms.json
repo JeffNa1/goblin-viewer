@@ -152,9 +152,11 @@
 	{
 		"floor_cells": 8086,
 		"geometry": {
-			"batches": 53,
-			"block_instances": 1708,
-			"voxel_triangles": 105388
+			"batches": 20,
+			"block_instances": 469,
+			"sculpted_batches": 173,
+			"sculpted_triangles": 146154,
+			"voxel_triangles": 75392
 		},
 		"id": "07",
 		"landmark": "Heartwood recovery fountain",

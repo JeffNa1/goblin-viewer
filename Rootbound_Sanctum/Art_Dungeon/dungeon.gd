@@ -2,6 +2,7 @@ extends Node3D
 
 const Grid = preload("res://Rootbound_Sanctum/Art_Dungeon/layout_grid.gd")
 const RoomArt = preload("res://Rootbound_Sanctum/Art_Dungeon/room_art.gd")
+const Room07 = preload("res://Rootbound_Sanctum/Art_Dungeon/Polish07/room_07.gd")
 const VIEW_NAMES = ["shoulder", "eye_level", "overview"]
 var plan
 var rooms: Dictionary = {}
@@ -39,7 +40,7 @@ func _ready() -> void:
 	for source in plan.data["rooms"]:
 		var id: String = source["id"]
 		label.text = "BUILDING " + id + " / " + source["name"].to_upper()
-		var room = RoomArt.new()
+		var room = Room07.new() if id == "07" else RoomArt.new()
 		room.name = "Room_" + id
 		add_child(room)
 		room.configure(source, plan)
