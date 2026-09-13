@@ -1,0 +1,22 @@
+{
+  "command": [
+    "C:\\Users\\Administrator\\.gemini\\antigravity\\bin\\godot.exe",
+    "--path",
+    "C:\\Users\\Administrator\\.gemini\\antigravity\\scratch\\goblin-viewer",
+    "--rendering-method",
+    "forward_plus",
+    "--audio-driver",
+    "Dummy",
+    "--resolution",
+    "1600x900",
+    "--position",
+    "1800,40",
+    "--script",
+    "res://Rootbound_Sanctum/Art_Dungeon/Carved07/test_room.gd",
+    "--"
+  ],
+  "exit_code": 0,
+  "seconds": 8.683363400003145,
+  "stdout": "Godot Engine v4.3.stable.official.77dcf97d8 - https://godotengine.org\nVulkan 1.3.289 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce GTX 1660 SUPER\n\nROOM_ART_READY 07 Heartwood recovery fountain {\"batches\":21,\"block_instances\":474,\"voxel_triangles\":75392}\nROOM_ART_READY 00 Original connected route corridors {\"batches\":151,\"block_instances\":1134,\"voxel_triangles\":264812}\nCARVED07_VIEWER_READY phase=after\nCARVED07_ACCEPTANCE {\"camera_views\":8,\"controls_checked\":true,\"failures\":[],\"mesh_nodes\":98,\"oblique_normals\":0,\"passed\":true,\"route_samples\":133,\"socket_depth\":0.360000610351563,\"triangles\":611866,\"vessel_mouth_depth\":0.299999892711639,\"visual_geometry_collision_tested\":true}\n",
+  "stderr": ""
+}

@@ -1,0 +1,86 @@
+[
+	{
+		"id": "01",
+		"oblique_normals": 0,
+		"triangles": 148760,
+		"visible_meshes": 83
+	},
+	{
+		"id": "02",
+		"oblique_normals": 0,
+		"triangles": 339106,
+		"visible_meshes": 77
+	},
+	{
+		"id": "03",
+		"oblique_normals": 0,
+		"triangles": 428864,
+		"visible_meshes": 110
+	},
+	{
+		"id": "04",
+		"oblique_normals": 0,
+		"triangles": 321502,
+		"visible_meshes": 90
+	},
+	{
+		"id": "05",
+		"oblique_normals": 0,
+		"triangles": 241032,
+		"visible_meshes": 75
+	},
+	{
+		"id": "06",
+		"oblique_normals": 0,
+		"triangles": 238950,
+		"visible_meshes": 93
+	},
+	{
+		"id": "07",
+		"oblique_normals": 0,
+		"triangles": 645978,
+		"visible_meshes": 118
+	},
+	{
+		"id": "08",
+		"oblique_normals": 0,
+		"triangles": 305816,
+		"visible_meshes": 109
+	},
+	{
+		"id": "09",
+		"oblique_normals": 0,
+		"triangles": 302930,
+		"visible_meshes": 76
+	},
+	{
+		"id": "10",
+		"oblique_normals": 0,
+		"triangles": 211698,
+		"visible_meshes": 69
+	},
+	{
+		"id": "11",
+		"oblique_normals": 0,
+		"triangles": 290964,
+		"visible_meshes": 92
+	},
+	{
+		"id": "12",
+		"oblique_normals": 0,
+		"triangles": 649528,
+		"visible_meshes": 132
+	},
+	{
+		"id": "13",
+		"oblique_normals": 0,
+		"triangles": 210678,
+		"visible_meshes": 62
+	},
+	{
+		"id": "14",
+		"oblique_normals": 0,
+		"triangles": 173352,
+		"visible_meshes": 61
+	}
+]

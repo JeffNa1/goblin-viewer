@@ -1,0 +1,22 @@
+{
+  "inspected_after_views": [
+    "shoulder",
+    "eye_level",
+    "carving",
+    "fountain",
+    "vessels",
+    "portal",
+    "overview",
+    "corridor"
+  ],
+  "comparison_sheets_inspected": [
+    "carving",
+    "corridor",
+    "eye_level",
+    "vessels"
+  ],
+  "contact_sheet_inspected": "Review/All_Views.png",
+  "native_launcher_capture_inspected": true,
+  "assessment": "Guardian reliefs, hollow vessels, fine cubic stone trim and root growth are visible. Existing empty traversal space is retained. Raster steps remain apparent on curved walls at close range; this is not smooth geometry. Art approval is pending.",
+  "scope": "Room 07 prototype only; no claim of final whole-dungeon performance or gameplay."
+}

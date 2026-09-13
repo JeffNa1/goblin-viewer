@@ -1,0 +1,13 @@
+{
+	"camera_views": 8,
+	"controls_checked": true,
+	"failures": [],
+	"mesh_nodes": 98,
+	"oblique_normals": 0,
+	"passed": true,
+	"route_samples": 133,
+	"socket_depth": 0.360000610351563,
+	"triangles": 611866,
+	"vessel_mouth_depth": 0.299999892711639,
+	"visual_geometry_collision_tested": true
+}

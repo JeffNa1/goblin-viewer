@@ -1,0 +1,154 @@
+[
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 0,
+		"seconds": 0.018491,
+		"stage": "screen_visible",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 5.56,
+		"seconds": 1.570842,
+		"stage": "loaded_floor",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 11.11,
+		"seconds": 1.584779,
+		"stage": "loaded_lighting",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 16.67,
+		"seconds": 1.897654,
+		"stage": "loaded_01",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 22.22,
+		"seconds": 2.175381,
+		"stage": "loaded_02",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 27.78,
+		"seconds": 2.645971,
+		"stage": "loaded_03",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 33.33,
+		"seconds": 2.990254,
+		"stage": "loaded_04",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 38.89,
+		"seconds": 3.223247,
+		"stage": "loaded_05",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 44.44,
+		"seconds": 3.528294,
+		"stage": "loaded_06",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 50,
+		"seconds": 3.91838,
+		"stage": "loaded_07",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 55.56,
+		"seconds": 4.264194,
+		"stage": "loaded_08",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 61.11,
+		"seconds": 4.540239,
+		"stage": "loaded_09",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 66.67,
+		"seconds": 4.700244,
+		"stage": "loaded_10",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 72.22,
+		"seconds": 5.001172,
+		"stage": "loaded_11",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 77.78,
+		"seconds": 5.240399,
+		"stage": "loaded_12",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 83.33,
+		"seconds": 5.312786,
+		"stage": "loaded_13",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 88.89,
+		"seconds": 5.411179,
+		"stage": "loaded_14",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 94.44,
+		"seconds": 5.691877,
+		"stage": "loaded_passages",
+		"world_visible": false
+	},
+	{
+		"built": false,
+		"overlay_visible": true,
+		"progress": 100,
+		"seconds": 6.009765,
+		"stage": "ready",
+		"world_visible": true
+	}
+]

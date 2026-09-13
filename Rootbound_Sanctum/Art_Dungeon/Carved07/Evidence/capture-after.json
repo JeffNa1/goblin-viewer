@@ -1,0 +1,22 @@
+{
+  "command": [
+    "C:\\Users\\Administrator\\.gemini\\antigravity\\bin\\godot.exe",
+    "--path",
+    "C:\\Users\\Administrator\\.gemini\\antigravity\\scratch\\goblin-viewer",
+    "--rendering-method",
+    "forward_plus",
+    "--audio-driver",
+    "Dummy",
+    "--resolution",
+    "1600x900",
+    "--position",
+    "1800,40",
+    "--script",
+    "res://Rootbound_Sanctum/Art_Dungeon/Carved07/capture.gd",
+    "--"
+  ],
+  "exit_code": 0,
+  "seconds": 10.139779099998123,
+  "stdout": "Godot Engine v4.3.stable.official.77dcf97d8 - https://godotengine.org\nVulkan 1.3.289 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce GTX 1660 SUPER\n\nROOM_ART_READY 07 Heartwood recovery fountain {\"batches\":24,\"block_instances\":490,\"voxel_triangles\":75392}\nROOM_ART_READY 00 Original connected route corridors {\"batches\":151,\"block_instances\":1134,\"voxel_triangles\":264812}\nCARVED07_VIEWER_READY phase=after\nCAPTURE after shoulder 1600x900\nCAPTURE after eye_level 1600x900\nCAPTURE after carving 1600x900\nCAPTURE after fountain 1600x900\nCAPTURE after vessels 1600x900\nCAPTURE after portal 1600x900\nCAPTURE after overview 1600x900\nCAPTURE after corridor 1600x900\n",
+  "stderr": ""
+}

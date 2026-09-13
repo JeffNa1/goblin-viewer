@@ -1,0 +1,67 @@
+[
+	{
+		"carved_depth": 0.329999923706055,
+		"floor_tiles": 286,
+		"id": "01"
+	},
+	{
+		"carved_depth": 0.329999923706055,
+		"floor_tiles": 503,
+		"id": "02"
+	},
+	{
+		"carved_depth": 0.329999923706055,
+		"floor_tiles": 1283,
+		"id": "03"
+	},
+	{
+		"carved_depth": 0.329998016357422,
+		"floor_tiles": 666,
+		"id": "04"
+	},
+	{
+		"carved_depth": 0.329998016357422,
+		"floor_tiles": 350,
+		"id": "05"
+	},
+	{
+		"carved_depth": 0.329998016357422,
+		"floor_tiles": 530,
+		"id": "06"
+	},
+	{
+		"carved_depth": 0.329998016357422,
+		"floor_tiles": 648,
+		"id": "08"
+	},
+	{
+		"carved_depth": 0.329998016357422,
+		"floor_tiles": 686,
+		"id": "09"
+	},
+	{
+		"carved_depth": 0.329998016357422,
+		"floor_tiles": 267,
+		"id": "10"
+	},
+	{
+		"carved_depth": 0.329999923706055,
+		"floor_tiles": 663,
+		"id": "11"
+	},
+	{
+		"carved_depth": 0.329998016357422,
+		"floor_tiles": 1363,
+		"id": "12"
+	},
+	{
+		"carved_depth": 0.329998016357422,
+		"floor_tiles": 231,
+		"id": "13"
+	},
+	{
+		"carved_depth": 0.329998016357422,
+		"floor_tiles": 168,
+		"id": "14"
+	}
+]

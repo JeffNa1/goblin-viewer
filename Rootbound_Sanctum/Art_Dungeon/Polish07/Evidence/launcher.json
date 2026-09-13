@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "command": [
+    "cmd.exe",
+    "/d",
+    "/c",
+    "C:\\Users\\Administrator\\.gemini\\antigravity\\scratch\\goblin-viewer\\Rootbound_Sanctum\\Art_Dungeon\\Polish07\\Open_Room07.bat",
+    "--quit-after",
+    "120"
+  ],
+  "exit_code": 0,
+  "stdout": "Godot Engine v4.3.stable.official.77dcf97d8 - https://godotengine.org\nVulkan 1.3.289 - Forward+ - Using Device #0: NVIDIA - NVIDIA GeForce GTX 1660 SUPER\n\nROOM_ART_READY 01 Lantern dock and carved river skiff {\"batches\":30,\"block_instances\":797,\"voxel_triangles\":38996}\nROOM_ART_READY 02 Bronze sluice wheel and raised watergate {\"batches\":32,\"block_instances\":1076,\"voxel_triangles\":84592}\nROOM_ART_READY 03 Ancient root island and branching heraldry {\"batches\":59,\"block_instances\":2255,\"voxel_triangles\":153992}\nROOM_ART_READY 04 Double bunks, weapon racks and faded company banners {\"batches\":37,\"block_instances\":1293,\"voxel_triangles\":94968}\nROOM_ART_READY 05 Open ember furnace, anvils and trading counter {\"batches\":31,\"block_instances\":1066,\"voxel_triangles\":62892}\nROOM_ART_READY 06 Hunter effigies and a broken garden colonnade {\"batches\":40,\"block_instances\":1299,\"voxel_triangles\":93932}\nROOM_ART_READY 07 Heartwood recovery fountain {\"batches\":20,\"block_instances\":469,\"sculpted_batches\":173,\"sculpted_triangles\":146154,\"voxel_triangles\":75392}\nROOM_ART_READY 08 Flooded crescent library and eroded book galleries {\"batches\":39,\"block_instances\":1753,\"voxel_triangles\":97012}\nROOM_ART_READY 09 Twin blood obelisks and an unobstructed ritual circle {\"batches\":37,\"block_instances\":1225,\"voxel_triangles\":78976}\nROOM_ART_READY 10 Sealed bronze reliquary beneath a gilded apse {\"batches\":22,\"block_instances\":802,\"voxel_triangles\":50732}\nROOM_ART_READY 11 Ancient pipe organ, hanging choir lights and a clear nave {\"batches\":44,\"block_instances\":1287,\"voxel_triangles\":107752}\nROOM_ART_READY 12 Giant spore canopies over an open boss arena {\"batches\":81,\"block_instances\":2332,\"voxel_triangles\":241788}\nROOM_ART_READY 13 Hidden reliquary and overgrown crypt niches {\"batches\":26,\"block_instances\":755,\"voxel_triangles\":48544}\nROOM_ART_READY 14 Dogleg ascent with a luminous upper threshold {\"batches\":21,\"block_instances\":492,\"voxel_triangles\":49960}\nROOM_ART_READY 00 Original connected route corridors {\"batches\":151,\"block_instances\":1134,\"voxel_triangles\":264812}\nDUNGEON_ART_READY rooms=14 links=15\nROOM_07_REVIEW_OPEN room=07 adapter=NVIDIA GeForce GTX 1660 SUPER\n",
+  "stderr": ""
+}

@@ -1,0 +1,5 @@
+{
+  "output": "F.\r\n======================================================================\r\nFAIL: test_carve_removes_volume_not_a_dark_overlay (__main__.CarvingTests.test_carve_removes_volume_not_a_dark_overlay)\r\n----------------------------------------------------------------------\r\nTraceback (most recent call last):\r\n  File \"C:\\Users\\Administrator\\.gemini\\antigravity\\scratch\\goblin-viewer\\Rootbound_Sanctum\\Art_Dungeon\\Carved07\\test_voxels.py\", line 27, in test_carve_removes_volume_not_a_dark_overlay\r\n    self.assertTrue(hasattr(Volume, 'paint'), 'Subtractive voxel sculpting is missing')\r\nAssertionError: False is not true : Subtractive voxel sculpting is missing\r\n\r\n----------------------------------------------------------------------\r\nRan 2 tests in 0.084s\r\n\r\nFAILED (failures=1)",
+  "exit_code": 1,
+  "error": null
+}

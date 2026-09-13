@@ -1,0 +1,13 @@
+{
+  "backup_commit": "1d029766cef2442914a96cc9c3f7f49cf61ef9dd",
+  "map_files_checked": 509,
+  "exact_bytes": 324,
+  "line_endings_only_count": 185,
+  "unexpected_map_content_changes": [],
+  "restore_scope": "Rootbound_Sanctum/ only",
+  "non_map_files_changed_concurrently": [
+    "scripts/skeleton_warrior.gd"
+  ],
+  "index_unchanged": true,
+  "head_unchanged": true
+}

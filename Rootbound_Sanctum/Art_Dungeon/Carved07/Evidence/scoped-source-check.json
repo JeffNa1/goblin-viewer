@@ -1,0 +1,17 @@
+{
+  "files": [
+    "build_art.py",
+    "capture.gd",
+    "check_dungeon.gd",
+    "check_sample.gd",
+    "make_review.py",
+    "Open_Carved07.bat",
+    "room_07.gd",
+    "test_room.gd",
+    "test_voxels.py",
+    "viewer.gd",
+    "viewer.tscn",
+    "voxels.py"
+  ],
+  "issues": []
+}

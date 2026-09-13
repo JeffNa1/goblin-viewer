@@ -1,0 +1,74 @@
+[
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"basis": "[X: (0.935677, 0, -0.352858), Y: (0.021633, 0.998119, 0.057366), Z: (0.352194, -0.061309, 0.933917)]",
+		"camera": "(-3.201799, 1.704, -22.99793)",
+		"fov": 68,
+		"height": 900,
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Polish07/Renders/after/shoulder.png",
+		"phase": "after",
+		"room": "07",
+		"view": "shoulder",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"basis": "[X: (0.675725, 0, -0.737154), Y: (0.065401, 0.996056, 0.059951), Z: (0.734247, -0.088722, 0.67306)]",
+		"camera": "(-1.44, 1.704, -28.32)",
+		"fov": 68,
+		"height": 900,
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Polish07/Renders/after/eye_level.png",
+		"phase": "after",
+		"room": "07",
+		"view": "eye_level",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"basis": "[X: (0.701211, 0, -0.712954), Y: (-0.549162, 0.637726, -0.540117), Z: (0.454669, 0.770263, 0.447181)]",
+		"camera": "(18.3, 45, -4.200001)",
+		"fov": 68,
+		"height": 900,
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Polish07/Renders/after/overview.png",
+		"phase": "after",
+		"room": "07",
+		"view": "overview",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"basis": "[X: (0.901667, 0, -0.432432), Y: (0.031744, 0.997302, 0.066189), Z: (0.431265, -0.073407, 0.899234)]",
+		"camera": "(-0.5, 2.6, -34.08)",
+		"fov": 58,
+		"height": 900,
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Polish07/Renders/after/carving.png",
+		"phase": "after",
+		"room": "07",
+		"view": "carving",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"basis": "[X: (0.675724, 0, -0.737154), Y: (0.111896, 0.988412, 0.102571), Z: (0.728612, -0.151794, 0.667894)]",
+		"camera": "(-3.6, 1.65, -29.98)",
+		"fov": 68,
+		"height": 900,
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Polish07/Renders/after/fountain.png",
+		"phase": "after",
+		"room": "07",
+		"view": "fountain",
+		"width": 1600
+	},
+	{
+		"adapter": "NVIDIA GeForce GTX 1660 SUPER",
+		"basis": "[X: (0.999964, 0, -0.008436), Y: (0.000124, 0.999892, 0.014687), Z: (0.008436, -0.014688, 0.999857)]",
+		"camera": "(-7.03, 1.704, -12.13)",
+		"fov": 68,
+		"height": 900,
+		"path": "res://Rootbound_Sanctum/Art_Dungeon/Polish07/Renders/after/corridor.png",
+		"phase": "after",
+		"room": "07",
+		"view": "corridor",
+		"width": 1600
+	}
+]

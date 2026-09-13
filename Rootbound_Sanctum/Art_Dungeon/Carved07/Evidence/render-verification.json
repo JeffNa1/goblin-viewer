@@ -1,0 +1,61 @@
+{
+  "room": "07",
+  "views": 8,
+  "captures": 16,
+  "dimensions": [
+    1600,
+    900
+  ],
+  "all_camera_pairs_match": true,
+  "unique_images": 16,
+  "comparisons": [
+    {
+      "view": "shoulder",
+      "matching_camera": true,
+      "before_sha256": "a649b2268e8864330cd22555dfcc0dafbb4e71d2cf583f1a934521482a9b992f",
+      "after_sha256": "14aad4fbf31aab89695f2fec5ed5e86ceab20240078a5c40e2d62422ef26ac0c"
+    },
+    {
+      "view": "eye_level",
+      "matching_camera": true,
+      "before_sha256": "1e322137151ef0712f1b05caa65d4eacb5fc3db7d9882a0861fb71c03f71eeea",
+      "after_sha256": "dc57c2f4d26c4e6d15da8aa46b9a8a1dbb4dfca11a250f0a77ac0b8333de3bc3"
+    },
+    {
+      "view": "carving",
+      "matching_camera": true,
+      "before_sha256": "f151ba68634daa1684399de889cd04bddb7d9dc7bcfbcf1e84722a4d5a9cc245",
+      "after_sha256": "7183c5fcafb7f58e3a02a1cfea3051837062055d8db2df52443337d4263cd985"
+    },
+    {
+      "view": "fountain",
+      "matching_camera": true,
+      "before_sha256": "817b37940d9372d496c9bdbd04ed7e2bf814acffbd459f4f2ae30744fb2a0c4f",
+      "after_sha256": "14827dac8263132bb7501474ea278ee56f5a8ef8442073f68ea224c7e7784f09"
+    },
+    {
+      "view": "vessels",
+      "matching_camera": true,
+      "before_sha256": "c3c283ff3611ad94de9156aac0aa94b2c29d791ea695f6efd7ba15cb21457474",
+      "after_sha256": "4147702f82d94a5b930997ba339667e61d4e21040a092ebd5d1ff674dbd47c1f"
+    },
+    {
+      "view": "portal",
+      "matching_camera": true,
+      "before_sha256": "ba9ddc25a80fdae79d5f8bb7cc5e349322c5bc3aa5ee5da5f38b1f15f30ed145",
+      "after_sha256": "73752bfad56a1dfa0a7b7d4c413862bcfe27e7e82b8657dfff0106b1a61e8700"
+    },
+    {
+      "view": "overview",
+      "matching_camera": true,
+      "before_sha256": "32e13c249a57b4bd028c3c6de559dc74414d26c48a494cd44edfd7e1f15d94a6",
+      "after_sha256": "972d2ab12ebf51fe987cc31a5039f336909bbbcf5ce830213f129413b8639bd0"
+    },
+    {
+      "view": "corridor",
+      "matching_camera": true,
+      "before_sha256": "71590aec0055c88b03c996216b6361c6f1a1e9ae3f04dd97ffcd8d7fc2461ff6",
+      "after_sha256": "bc0deea2ab99e02f2453b9804387d41b2f6605b618e348c1d827cadff28e9f60"
+    }
+  ]
+}

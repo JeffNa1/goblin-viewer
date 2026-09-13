@@ -1,0 +1,14 @@
+{
+  "rooms": 14,
+  "views": 57,
+  "unique_images": 57,
+  "room_sheets": 14,
+  "dimensions": [
+    1600,
+    900
+  ],
+  "startup_captures": [
+    "loading_middle.png",
+    "loading_start.png"
+  ]
+}

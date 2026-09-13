@@ -1,0 +1,65 @@
+{
+	"camera_views": 6,
+	"categories": {
+		"Bronze": {
+			"depth_levels": 564,
+			"oblique_normals": 10976,
+			"vertices": 12200
+		},
+		"Carving": {
+			"depth_levels": 843,
+			"oblique_normals": 15556,
+			"vertices": 17784
+		},
+		"Flame": {
+			"depth_levels": 337,
+			"oblique_normals": 7672,
+			"vertices": 8556
+		},
+		"Foliage": {
+			"depth_levels": 3861,
+			"oblique_normals": 20649,
+			"vertices": 21024
+		},
+		"Fountain": {
+			"depth_levels": 66,
+			"oblique_normals": 1304,
+			"vertices": 1792
+		},
+		"Jade": {
+			"depth_levels": 47,
+			"oblique_normals": 274,
+			"vertices": 342
+		},
+		"Roots": {
+			"depth_levels": 4526,
+			"oblique_normals": 29659,
+			"vertices": 30408
+		},
+		"Stonework": {
+			"depth_levels": 5195,
+			"oblique_normals": 143744,
+			"vertices": 172736
+		},
+		"Vessels": {
+			"depth_levels": 501,
+			"oblique_normals": 8832,
+			"vertices": 10452
+		},
+		"Water": {
+			"depth_levels": 301,
+			"oblique_normals": 3168,
+			"vertices": 3200
+		},
+		"Weathering": {
+			"depth_levels": 1066,
+			"oblique_normals": 5769,
+			"vertices": 5880
+		}
+	},
+	"failures": [],
+	"passed": true,
+	"route_samples": 133,
+	"sculpted_triangles": 146154,
+	"visual_collision_checked": true
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "file": "res://Rootbound_Sanctum/Art_Dungeon/CarvedAll/Assets/01.scn",
+    "id": "01",
+    "landmark": "Lantern dock and carved river skiff"
+  },
+  {
+    "file": "res://Rootbound_Sanctum/Art_Dungeon/CarvedAll/Assets/02.scn",
+    "id": "02",
+    "landmark": "Bronze sluice wheel and raised watergate"
+  },
+  {
+    "file": "res://Rootbound_Sanctum/Art_Dungeon/CarvedAll/Assets/03.scn",
+    "id": "03",
+    "landmark": "Ancient root island and branching heraldry"
+  },
+  {
+    "file": "res://Rootbound_Sanctum/Art_Dungeon/CarvedAll/Assets/04.scn",
+    "id": "04",
+    "landmark": "Double bunks, weapon racks and faded company banners"
+  },
+  {
+    "file": "res://Rootbound_Sanctum/Art_Dungeon/CarvedAll/Assets/05.scn",
+    "id": "05",
+    "landmark": "Open ember furnace, anvils and trading counter"
+  },
+  {
+    "file": "res://Rootbound_Sanctum/Art_Dungeon/CarvedAll/Assets/06.scn",
+    "id": "06",
+    "landmark": "Hunter effigies and a broken garden colonnade"
+  },
+  {
+    "file": "res://Rootbound_Sanctum/Art_Dungeon/CarvedAll/Assets/07.scn",
+    "id": "07",
+    "landmark": "Heartwood recovery fountain"
+  },
+  {
+    "file": "res://Rootbound_Sanctum/Art_Dungeon/CarvedAll/Assets/08.scn",
+    "id": "08",
+    "landmark": "Flooded crescent library and eroded book galleries"
+  },
+  {
+    "file": "res://Rootbound_Sanctum/Art_Dungeon/CarvedAll/Assets/09.scn",
+    "id": "09",
+    "landmark": "Twin blood obelisks and an unobstructed ritual circle"
+  },
+  {
+    "file": "res://Rootbound_Sanctum/Art_Dungeon/CarvedAll/Assets/10.scn",
+    "id": "10",
+    "landmark": "Sealed bronze reliquary beneath a gilded apse"
+  },
+  {
+    "file": "res://Rootbound_Sanctum/Art_Dungeon/CarvedAll/Assets/11.scn",
+    "id": "11",
+    "landmark": "Ancient pipe organ, hanging choir lights and a clear nave"
+  },
+  {
+    "file": "res://Rootbound_Sanctum/Art_Dungeon/CarvedAll/Assets/12.scn",
+    "id": "12",
+    "landmark": "Giant spore canopies over an open boss arena"
+  },
+  {
+    "file": "res://Rootbound_Sanctum/Art_Dungeon/CarvedAll/Assets/13.scn",
+    "id": "13",
+    "landmark": "Hidden reliquary and overgrown crypt niches"
+  },
+  {
+    "file": "res://Rootbound_Sanctum/Art_Dungeon/CarvedAll/Assets/14.scn",
+    "id": "14",
+    "landmark": "Dogleg ascent with a luminous upper threshold"
+  }
+]

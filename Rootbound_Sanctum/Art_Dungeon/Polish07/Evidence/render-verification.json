@@ -1,0 +1,137 @@
+{
+  "capture_count": 12,
+  "before_count": 6,
+  "after_count": 6,
+  "matched_camera_pairs": 6,
+  "unchanged_other_room_ids": [
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "08",
+    "09",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14"
+  ],
+  "unchanged_other_room_count": 13,
+  "protected_file_count": 20,
+  "concurrent_changed": [
+    "scripts/skeleton_warrior.gd",
+    "tools/capture_skeleton_warrior.gd"
+  ],
+  "captures": [
+    {
+      "phase": "before",
+      "view": "shoulder",
+      "size": [
+        1600,
+        900
+      ],
+      "sha256": "0bc70c93c9703e7f59e79b675d5ad27ec8071bf926efe0758304080386fc9b0a"
+    },
+    {
+      "phase": "after",
+      "view": "shoulder",
+      "size": [
+        1600,
+        900
+      ],
+      "sha256": "9a2197529a318c3d0ee43da44bc580bd4aac18645e6ad58a3b5349ec5acc8f92"
+    },
+    {
+      "phase": "before",
+      "view": "eye_level",
+      "size": [
+        1600,
+        900
+      ],
+      "sha256": "fc494f8b76b85500d367a4c693ab45abbf9139c696624eb4e64f99323d83a782"
+    },
+    {
+      "phase": "after",
+      "view": "eye_level",
+      "size": [
+        1600,
+        900
+      ],
+      "sha256": "575bd5c127aa408c61937e4126bcb8b3c636ceb9dccee3bffcbb03ebacb80bb6"
+    },
+    {
+      "phase": "before",
+      "view": "overview",
+      "size": [
+        1600,
+        900
+      ],
+      "sha256": "b0b6ed3b1ff4b20abbe841ed91f163e7a22dfccaa3cb5d2ac816f2554ee8c32f"
+    },
+    {
+      "phase": "after",
+      "view": "overview",
+      "size": [
+        1600,
+        900
+      ],
+      "sha256": "67051dd4aa6def52594e82fbdc432a145d0671937a7a2a634517aca02a5d5da8"
+    },
+    {
+      "phase": "before",
+      "view": "carving",
+      "size": [
+        1600,
+        900
+      ],
+      "sha256": "4cc209131a411f1cb9c8f49e7b48cf3247ea0c5feb27ddce187bc039cc76a3cc"
+    },
+    {
+      "phase": "after",
+      "view": "carving",
+      "size": [
+        1600,
+        900
+      ],
+      "sha256": "9fe35571e1f4fd0435a63db00919ec8778bee09ebebc6dcc131fad79d21a49c0"
+    },
+    {
+      "phase": "before",
+      "view": "fountain",
+      "size": [
+        1600,
+        900
+      ],
+      "sha256": "99be0c9a10db11fc6f96ba5427dcbf9baee1a8264760cb4cb6eb0f493734f08e"
+    },
+    {
+      "phase": "after",
+      "view": "fountain",
+      "size": [
+        1600,
+        900
+      ],
+      "sha256": "7b3ef19f69a2de9c268e282d3d8d15b449001ae7e4baf8433b5f4f364957d7a1"
+    },
+    {
+      "phase": "before",
+      "view": "corridor",
+      "size": [
+        1600,
+        900
+      ],
+      "sha256": "1e89250e677055c9140b4b21999089f51a2a2ef76659eb8b0bd32863ed11568b"
+    },
+    {
+      "phase": "after",
+      "view": "corridor",
+      "size": [
+        1600,
+        900
+      ],
+      "sha256": "e9a8f946d9ebe0704dd06a7e76d90fc5597a48edab32d6650fc8f3a218dd9f91"
+    }
+  ]
+}

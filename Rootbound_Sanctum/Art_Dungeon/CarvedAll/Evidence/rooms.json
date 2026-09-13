@@ -1,0 +1,421 @@
+[
+	{
+		"floor_cells": 4796,
+		"geometry": {
+			"authored_triangles": 64346,
+			"batches": 30,
+			"block_instances": 797,
+			"voxel_triangles": 38996
+		},
+		"id": "01",
+		"landmark": "Lantern dock and carved river skiff",
+		"name": "Boat Landing",
+		"views": [
+			{
+				"camera": "(-0.902823, 1.704, 81.66493)",
+				"view": "shoulder"
+			},
+			{
+				"camera": "(-4.56, 1.704, 79.44)",
+				"view": "eye_level"
+			},
+			{
+				"camera": "(30.6, 46.8, 96.24)",
+				"view": "overview"
+			},
+			{
+				"camera": "(-4.56, 1.704, 79.44)",
+				"view": "detail"
+			}
+		]
+	},
+	{
+		"floor_cells": 8660,
+		"geometry": {
+			"authored_triangles": 211162,
+			"batches": 32,
+			"block_instances": 1076,
+			"voxel_triangles": 84592
+		},
+		"id": "02",
+		"landmark": "Bronze sluice wheel and raised watergate",
+		"name": "Sluice Gate",
+		"views": [
+			{
+				"camera": "(2.617777, 1.704, 58.00233)",
+				"view": "shoulder"
+			},
+			{
+				"camera": "(4.559999, 1.704, 53.52)",
+				"view": "eye_level"
+			},
+			{
+				"camera": "(39.45, 53.1, 77.28)",
+				"view": "overview"
+			},
+			{
+				"camera": "(4.559999, 1.704, 53.52)",
+				"view": "detail"
+			}
+		]
+	},
+	{
+		"floor_cells": 18502,
+		"geometry": {
+			"authored_triangles": 249732,
+			"batches": 59,
+			"block_instances": 2255,
+			"voxel_triangles": 153992
+		},
+		"id": "03",
+		"landmark": "Ancient root island and branching heraldry",
+		"name": "Root Court",
+		"views": [
+			{
+				"camera": "(-0.560042, 1.704, 30.5428)",
+				"view": "shoulder"
+			},
+			{
+				"camera": "(3.6, 1.704, 25.92)",
+				"view": "eye_level"
+			},
+			{
+				"camera": "(33.48, 61.2, 56.16)",
+				"view": "overview"
+			},
+			{
+				"camera": "(3.6, 1.704, 25.92)",
+				"view": "detail"
+			}
+		]
+	},
+	{
+		"floor_cells": 11262,
+		"geometry": {
+			"authored_triangles": 177444,
+			"batches": 37,
+			"block_instances": 1293,
+			"voxel_triangles": 94968
+		},
+		"id": "04",
+		"landmark": "Double bunks, weapon racks and faded company banners",
+		"name": "Barracks",
+		"views": [
+			{
+				"camera": "(-49.9326, 1.704, 24.70723)",
+				"view": "shoulder"
+			},
+			{
+				"camera": "(-49.2, 1.704, 20.4)",
+				"view": "eye_level"
+			},
+			{
+				"camera": "(-17.31, 49.5, 48.12)",
+				"view": "overview"
+			},
+			{
+				"camera": "(-49.2, 1.704, 20.4)",
+				"view": "detail"
+			}
+		]
+	},
+	{
+		"floor_cells": 6161,
+		"geometry": {
+			"authored_triangles": 123508,
+			"batches": 31,
+			"block_instances": 1066,
+			"voxel_triangles": 62892
+		},
+		"id": "05",
+		"landmark": "Open ember furnace, anvils and trading counter",
+		"name": "Ember Smithy",
+		"views": [
+			{
+				"camera": "(-44.44389, 1.704, -2.482482)",
+				"view": "shoulder"
+			},
+			{
+				"camera": "(-49.92, 1.704, -2.4)",
+				"view": "eye_level"
+			},
+			{
+				"camera": "(-20.76, 39.6, 9.36)",
+				"view": "overview"
+			},
+			{
+				"camera": "(-49.92, 1.704, -2.4)",
+				"view": "detail"
+			}
+		]
+	},
+	{
+		"floor_cells": 8711,
+		"geometry": {
+			"authored_triangles": 109670,
+			"batches": 40,
+			"block_instances": 1299,
+			"voxel_triangles": 93932
+		},
+		"id": "06",
+		"landmark": "Hunter effigies and a broken garden colonnade",
+		"name": "Hunter Cloister",
+		"views": [
+			{
+				"camera": "(-51.51171, 1.704, -33.02768)",
+				"view": "shoulder"
+			},
+			{
+				"camera": "(-49.68, 1.704, -37.44)",
+				"view": "eye_level"
+			},
+			{
+				"camera": "(-22.89, 40.5, -12.6)",
+				"view": "overview"
+			},
+			{
+				"camera": "(-49.68, 1.704, -37.44)",
+				"view": "detail"
+			}
+		]
+	},
+	{
+		"floor_cells": 8086,
+		"geometry": {
+			"batches": 21,
+			"block_instances": 474,
+			"voxel_triangles": 75392
+		},
+		"id": "07",
+		"landmark": "Heartwood recovery fountain",
+		"name": "Quiet Sanctuary",
+		"views": [
+			{
+				"camera": "(-3.201799, 1.704, -22.99793)",
+				"view": "shoulder"
+			},
+			{
+				"camera": "(-1.44, 1.704, -28.32)",
+				"view": "eye_level"
+			},
+			{
+				"camera": "(18.3, 45, -4.200001)",
+				"view": "overview"
+			},
+			{
+				"camera": "(-1.44, 1.704, -28.32)",
+				"view": "detail"
+			}
+		]
+	},
+	{
+		"floor_cells": 11145,
+		"geometry": {
+			"authored_triangles": 166540,
+			"batches": 39,
+			"block_instances": 1753,
+			"voxel_triangles": 97012
+		},
+		"id": "08",
+		"landmark": "Flooded crescent library and eroded book galleries",
+		"name": "Flooded Archive",
+		"views": [
+			{
+				"camera": "(37.26915, 1.704, 32.97351)",
+				"view": "shoulder"
+			},
+			{
+				"camera": "(50.16, 1.704, 34.08)",
+				"view": "eye_level"
+			},
+			{
+				"camera": "(72.96, 51.3, 60.18)",
+				"view": "overview"
+			},
+			{
+				"camera": "(50.16, 1.704, 34.08)",
+				"view": "detail"
+			}
+		]
+	},
+	{
+		"floor_cells": 8312,
+		"geometry": {
+			"authored_triangles": 176538,
+			"batches": 37,
+			"block_instances": 1225,
+			"voxel_triangles": 78976
+		},
+		"id": "09",
+		"landmark": "Twin blood obelisks and an unobstructed ritual circle",
+		"name": "Blood Vault",
+		"views": [
+			{
+				"camera": "(48.54178, 1.704, -7.031991)",
+				"view": "shoulder"
+			},
+			{
+				"camera": "(52.56, 1.704, -9.84)",
+				"view": "eye_level"
+			},
+			{
+				"camera": "(66.93, 42.3, 11.1)",
+				"view": "overview"
+			},
+			{
+				"camera": "(52.56, 1.704, -9.84)",
+				"view": "detail"
+			}
+		]
+	},
+	{
+		"floor_cells": 4767,
+		"geometry": {
+			"authored_triangles": 99990,
+			"batches": 22,
+			"block_instances": 802,
+			"voxel_triangles": 50732
+		},
+		"id": "10",
+		"landmark": "Sealed bronze reliquary beneath a gilded apse",
+		"name": "Sealed Spoils",
+		"views": [
+			{
+				"camera": "(46.60854, 1.704, -36.30593)",
+				"view": "shoulder"
+			},
+			{
+				"camera": "(47.28, 1.704, -40.56)",
+				"view": "eye_level"
+			},
+			{
+				"camera": "(62.88, 36, -26.7)",
+				"view": "overview"
+			},
+			{
+				"camera": "(47.28, 1.704, -40.56)",
+				"view": "detail"
+			}
+		]
+	},
+	{
+		"floor_cells": 11632,
+		"geometry": {
+			"authored_triangles": 150772,
+			"batches": 44,
+			"block_instances": 1287,
+			"voxel_triangles": 107752
+		},
+		"id": "11",
+		"landmark": "Ancient pipe organ, hanging choir lights and a clear nave",
+		"name": "Choir Hall",
+		"views": [
+			{
+				"camera": "(-5.8379, 1.704, -59.69799)",
+				"view": "shoulder"
+			},
+			{
+				"camera": "(-2.64, 1.704, -64.32)",
+				"view": "eye_level"
+			},
+			{
+				"camera": "(28.2, 61.2, -33.36)",
+				"view": "overview"
+			},
+			{
+				"camera": "(-2.64, 1.704, -64.32)",
+				"view": "detail"
+			}
+		]
+	},
+	{
+		"floor_cells": 21538,
+		"geometry": {
+			"authored_triangles": 494992,
+			"batches": 81,
+			"block_instances": 2332,
+			"voxel_triangles": 241788
+		},
+		"id": "12",
+		"landmark": "Giant spore canopies over an open boss arena",
+		"name": "Spore Grotto",
+		"views": [
+			{
+				"camera": "(31.01471, 1.704, -84.55269)",
+				"view": "shoulder"
+			},
+			{
+				"camera": "(36.96, 1.704, -87.36)",
+				"view": "eye_level"
+			},
+			{
+				"camera": "(67.8, 90, -58.44)",
+				"view": "overview"
+			},
+			{
+				"camera": "(36.96, 1.704, -87.36)",
+				"view": "detail"
+			}
+		]
+	},
+	{
+		"floor_cells": 4026,
+		"geometry": {
+			"authored_triangles": 107624,
+			"batches": 26,
+			"block_instances": 755,
+			"voxel_triangles": 48544
+		},
+		"id": "13",
+		"landmark": "Hidden reliquary and overgrown crypt niches",
+		"name": "Hidden Cache",
+		"views": [
+			{
+				"camera": "(-51.86641, 1.704, 61.83737)",
+				"view": "shoulder"
+			},
+			{
+				"camera": "(-48.72, 1.704, 60)",
+				"view": "eye_level"
+			},
+			{
+				"camera": "(-34.38, 27, 73.38)",
+				"view": "overview"
+			},
+			{
+				"camera": "(-48.72, 1.704, 60)",
+				"view": "detail"
+			}
+		]
+	},
+	{
+		"floor_cells": 3273,
+		"geometry": {
+			"authored_triangles": 73166,
+			"batches": 21,
+			"block_instances": 492,
+			"voxel_triangles": 49960
+		},
+		"id": "14",
+		"landmark": "Dogleg ascent with a luminous upper threshold",
+		"name": "Ascent",
+		"views": [
+			{
+				"camera": "(50.8498, 1.704, -66.6705)",
+				"view": "shoulder"
+			},
+			{
+				"camera": "(54.96, 1.704, -64.32)",
+				"view": "eye_level"
+			},
+			{
+				"camera": "(64.5, 27, -45.54)",
+				"view": "overview"
+			},
+			{
+				"camera": "(54.96, 1.704, -64.32)",
+				"view": "detail"
+			}
+		]
+	}
+]

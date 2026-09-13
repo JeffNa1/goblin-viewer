@@ -1,0 +1,1002 @@
+[
+	{
+		"color": "(0.749, 0.8745, 0.8471, 1)",
+		"energy": 0.949999988079071,
+		"position": "(0, 0, 0)",
+		"rotation": "(-0.977384, -0.663225, 0)",
+		"shadows": true,
+		"type": "DirectionalLight3D"
+	},
+	{
+		"color": "(0.6784, 0.7882, 0.7098, 1)",
+		"energy": 0.800000011920929,
+		"position": "(-5, 6, 1)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7373, 0.4392, 1)",
+		"energy": 2,
+		"position": "(-9.44, 2.9, -15.78)",
+		"rotation": "(0, 0, 0)",
+		"shadows": true,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7373, 0.4392, 1)",
+		"energy": 2,
+		"position": "(-9.44, 2.9, -11.78)",
+		"rotation": "(0, 0, 0)",
+		"shadows": true,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 2.40000009536743,
+		"position": "(-10.3, 1.9, -38.08)",
+		"rotation": "(0, 0, 0)",
+		"shadows": true,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7373, 0.4392, 1)",
+		"energy": 2,
+		"position": "(-4.96, 2.9, -15.78)",
+		"rotation": "(0, 0, 0)",
+		"shadows": true,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7373, 0.4392, 1)",
+		"energy": 2,
+		"position": "(-4.96, 2.9, -11.78)",
+		"rotation": "(0, 0, 0)",
+		"shadows": true,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 2.40000009536743,
+		"position": "(-4.1, 1.9, -38.08)",
+		"rotation": "(0, 0, 0)",
+		"shadows": true,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(0.4157, 0.8784, 0.7686, 1)",
+		"energy": 1.79999995231628,
+		"position": "(-6.9, 3, -32.2)",
+		"rotation": "(0, 0, 0)",
+		"shadows": true,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 2.40000009536743,
+		"position": "(-16.6, 1.9, -34.78)",
+		"rotation": "(0, 0, 0)",
+		"shadows": true,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 2.40000009536743,
+		"position": "(-16.6, 1.9, -21.38)",
+		"rotation": "(0, 0, 0)",
+		"shadows": true,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 2.40000009536743,
+		"position": "(2.2, 1.9, -34.78)",
+		"rotation": "(0, 0, 0)",
+		"shadows": true,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 2.40000009536743,
+		"position": "(2.2, 1.9, -21.38)",
+		"rotation": "(0, 0, 0)",
+		"shadows": true,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(1.9, 2.7, 71.1)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-1.9, 2.7, 71.1)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(2.2, 2.7, 70.9)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(2.2, 2.7, 67.1)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(6.6, 2.7, 70.9)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(6.6, 2.7, 67.1)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(11, 2.7, 70.9)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(11, 2.7, 67.1)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(15.1, 2.7, 66.6)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(11.3, 2.7, 66.6)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(5.5, 2.7, 40.5)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(1.7, 2.7, 40.5)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(1.2, 2.7, 36.5)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(1.2, 2.7, 40.3)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(0.7, 2.7, 36.3)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-3.1, 2.7, 36.3)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-23.28, 2.7, 16.7)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-23.28, 2.7, 20.5)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-26.86, 2.7, 21.3)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-23.06, 2.7, 21.3)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-26.88, 2.7, 22.1)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-26.88, 2.7, 25.9)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-40.1, 2.7, 5.7)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-43.9, 2.7, 5.7)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-40.2, 2.7, 5.5)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-40.2, 2.7, 1.7)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-36.5, 2.7, 1.5)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-40.3, 2.7, 1.5)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-43.7, 2.7, -19.95)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-47.5, 2.7, -19.95)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-43.7, 2.7, -25.05)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-47.5, 2.7, -25.05)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-30, 2.7, -37.1)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-30, 2.7, -40.9)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-29.5, 2.7, -36.6)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-25.7, 2.7, -36.6)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-29.5, 2.7, -31.8)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-25.7, 2.7, -31.8)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-24.9, 2.7, -27.5)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-24.9, 2.7, -31.3)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(21.3, 2.7, 20.5)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(21.3, 2.7, 16.7)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(25.5, 2.7, 20.5)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(25.5, 2.7, 16.7)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(46.3, 2.7, 3.9)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(42.5, 2.7, 3.9)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(43.5, 2.7, -0.1)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(43.5, 2.7, 3.7)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(44.5, 2.7, -0.6)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(40.7, 2.7, -0.6)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(44.5, 2.7, -28.5)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(40.7, 2.7, -28.5)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(42.9, 2.7, -28.7)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(42.9, 2.7, -32.5)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(45.1, 2.7, -32.4)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(41.3, 2.7, -32.4)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(28.05, 2.7, -42.7)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(28.05, 2.7, -38.9)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(22.95, 2.7, -42.7)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(22.95, 2.7, -38.9)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(17.65569, 2.7, -39.85197)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(20.94431, 2.7, -37.94803)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(15.45569, 2.7, -36.05197)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(18.74431, 2.7, -34.14803)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(13.25569, 2.7, -32.25197)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(16.54431, 2.7, -30.34803)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(10.8, 2.7, -31.3)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(10.8, 2.7, -27.5)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-9.099999, 2.7, -15)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-5.3, 2.7, -15)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-7.999412, 2.7, -9.350294)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-4.600588, 2.7, -11.04971)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-6.199411, 2.7, -5.750295)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-2.800588, 2.7, -7.449706)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-5.5, 2.7, -2.85)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-1.7, 2.7, -2.85)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-5.5, 2.7, 1.05)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-1.7, 2.7, 1.05)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-5.3, 2.7, -42.9)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-9.099999, 2.7, -42.9)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-6.9, 2.7, -43.1)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-6.9, 2.7, -46.9)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-4.7, 2.7, -47.1)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-8.5, 2.7, -47.1)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-4.7, 2.7, -77.1)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-8.5, 2.7, -77.1)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-4.05, 2.7, -76.7)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-4.05, 2.7, -80.5)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(1.05, 2.7, -76.7)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(1.05, 2.7, -80.5)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(5.5, 2.7, -80.82)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(1.7, 2.7, -80.82)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(28.7, 2.7, -78.78)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(32.5, 2.7, -78.78)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(32.925, 2.7, -74.66)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(32.925, 2.7, -78.46)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(37.575, 2.7, -74.66)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(37.575, 2.7, -78.46)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(42.225, 2.7, -74.66)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(42.225, 2.7, -78.46)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(46.875, 2.7, -74.66)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(46.875, 2.7, -78.46)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(47.3, 2.7, -73.98)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(51.1, 2.7, -73.98)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-46.9, 2.7, 36)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-43.1, 2.7, 36)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-46.5, 2.7, 37.1)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-46.5, 2.7, 40.9)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-49.9, 2.7, 40.65)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-46.1, 2.7, 40.65)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-49.9, 2.7, 43.95)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	},
+	{
+		"color": "(1, 0.7686, 0.5059, 1)",
+		"energy": 0.899999976158142,
+		"position": "(-46.1, 2.7, 43.95)",
+		"rotation": "(0, 0, 0)",
+		"shadows": false,
+		"type": "OmniLight3D"
+	}
+]

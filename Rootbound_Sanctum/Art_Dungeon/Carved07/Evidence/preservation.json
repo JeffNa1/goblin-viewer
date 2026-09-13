@@ -1,0 +1,28 @@
+{
+  "checked_files": 203,
+  "unchanged_files": 195,
+  "changed": [
+    "scripts/goblin.gd",
+    "scripts/goblin_archer.gd",
+    "scripts/goblin_chieftain.gd",
+    "scripts/goblin_rogue.gd",
+    "scripts/goblin_shaman.gd",
+    "scripts/skeleton_warrior.gd",
+    "scripts/viewer.gd",
+    "data/stance_config.json"
+  ],
+  "missing": [],
+  "scope": "Original map, source, evidence, character paths and project configuration captured before this pass.",
+  "concurrent_character_changes": [
+    "scripts/goblin.gd",
+    "scripts/goblin_archer.gd",
+    "scripts/goblin_chieftain.gd",
+    "scripts/goblin_rogue.gd",
+    "scripts/goblin_shaman.gd",
+    "scripts/skeleton_warrior.gd",
+    "scripts/viewer.gd",
+    "data/stance_config.json"
+  ],
+  "unexpected_changes": [],
+  "immutable_map_art_preserved": true
+}

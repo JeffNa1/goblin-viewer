@@ -1,0 +1,11 @@
+{
+  "checked": 22,
+  "immutable_checked": 20,
+  "immutable_changed": [],
+  "concurrent_changed": [
+    "scripts/skeleton_warrior.gd",
+    "tools/capture_skeleton_warrior.gd"
+  ],
+  "passed": true,
+  "scope": "Passed means immutable map/art dependencies match. Concurrent character files are reported separately, not claimed unchanged."
+}
