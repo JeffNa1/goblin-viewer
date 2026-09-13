@@ -56,6 +56,10 @@ var current_pose: Dictionary = {}
 var ground_hips_y: float = 0.64
 var default_stance_configs: Dictionary = {}
 var stance_configs: Dictionary = {}
+var is_in_editor: bool = false
+
+func set_editor_mode(val: bool) -> void:
+	is_in_editor = val
 
 # Stun Stars & Weapon Trail
 const StunStarsScript = preload("res://scripts/stun_stars.gd")
@@ -188,28 +192,58 @@ func serialize_stances() -> Dictionary:
 	return out
 
 func save_stance_config() -> bool:
-	var path = "res://data/stance_config.json"
-	var all_cfg: Dictionary = {}
-	if FileAccess.file_exists(path):
-		var f_read = FileAccess.open(path, FileAccess.READ)
-		if f_read:
-			var txt = f_read.get_as_text()
-			f_read.close()
+	var master_cfg: Dictionary = {}
+	
+	# 1. Read existing from res://data/stance_config.json if available
+	var res_path = "res://data/stance_config.json"
+	if FileAccess.file_exists(res_path):
+		var f_res = FileAccess.open(res_path, FileAccess.READ)
+		if f_res:
+			var txt = f_res.get_as_text()
+			f_res.close()
 			var json = JSON.new()
 			if json.parse(txt) == OK and json.data is Dictionary:
-				all_cfg = json.data
-	all_cfg["skeleton"] = serialize_stances()
-	var f_write = FileAccess.open(path, FileAccess.WRITE)
-	if f_write:
-		f_write.store_string(JSON.stringify(all_cfg, "\t"))
-		f_write.close()
-		return true
-	return false
+				master_cfg = json.data
+				
+	# 2. Merge user://stance_config.json if available
+	var user_path = "user://stance_config.json"
+	if FileAccess.file_exists(user_path):
+		var f_u = FileAccess.open(user_path, FileAccess.READ)
+		if f_u:
+			var txt_u = f_u.get_as_text()
+			f_u.close()
+			var json_u = JSON.new()
+			if json_u.parse(txt_u) == OK and json_u.data is Dictionary:
+				for k in json_u.data:
+					master_cfg[k] = json_u.data[k]
+					
+	# 3. Update current monster's configuration
+	master_cfg["skeleton"] = serialize_stances()
+	
+	# 4. Save to user:// (always writable)
+	var f_out_user = FileAccess.open(user_path, FileAccess.WRITE)
+	if f_out_user:
+		f_out_user.store_string(JSON.stringify(master_cfg, "\t"))
+		f_out_user.close()
+		
+	# 5. Save to res:// (dev environment)
+	var f_out_res = FileAccess.open(res_path, FileAccess.WRITE)
+	if f_out_res:
+		f_out_res.store_string(JSON.stringify(master_cfg, "\t"))
+		f_out_res.close()
+		
+	return true
 
 func load_stance_config() -> void:
-	var path = "res://data/stance_config.json"
-	if FileAccess.file_exists(path):
-		var f = FileAccess.open(path, FileAccess.READ)
+	for k in default_stance_configs:
+		stance_configs[k] = default_stance_configs[k].duplicate()
+		
+	var sk_cfg: Dictionary = {}
+	
+	# 1. Check res://data/stance_config.json
+	var res_path = "res://data/stance_config.json"
+	if FileAccess.file_exists(res_path):
+		var f = FileAccess.open(res_path, FileAccess.READ)
 		if f:
 			var txt = f.get_as_text()
 			f.close()
@@ -217,13 +251,29 @@ func load_stance_config() -> void:
 			if json.parse(txt) == OK and json.data is Dictionary:
 				var d: Dictionary = json.data
 				if d.has("skeleton") and d["skeleton"] is Dictionary:
-					var sk_cfg = d["skeleton"]
-					if sk_cfg.has("ground_hips_y"):
-						ground_hips_y = float(sk_cfg["ground_hips_y"])
-					for s_key in sk_cfg:
-						if s_key == "ground_hips_y": continue
-						if sk_cfg[s_key] is Dictionary:
-							stance_configs[s_key] = _deserialize_stance(sk_cfg[s_key])
+					sk_cfg = d["skeleton"].duplicate()
+					
+	# 2. Check user://stance_config.json for overrides
+	var user_path = "user://stance_config.json"
+	if FileAccess.file_exists(user_path):
+		var f_u = FileAccess.open(user_path, FileAccess.READ)
+		if f_u:
+			var txt_u = f_u.get_as_text()
+			f_u.close()
+			var json_u = JSON.new()
+			if json_u.parse(txt_u) == OK and json_u.data is Dictionary:
+				var d_u: Dictionary = json_u.data
+				if d_u.has("skeleton") and d_u["skeleton"] is Dictionary:
+					for k in d_u["skeleton"]:
+						sk_cfg[k] = d_u["skeleton"][k]
+						
+	if sk_cfg.has("ground_hips_y"):
+		ground_hips_y = float(sk_cfg["ground_hips_y"])
+		
+	for s_key in sk_cfg:
+		if s_key == "ground_hips_y": continue
+		if sk_cfg[s_key] is Dictionary:
+			stance_configs[s_key] = _deserialize_stance(sk_cfg[s_key])
 
 func _serialize_stance(s: Dictionary) -> Dictionary:
 	var out: Dictionary = {}
@@ -239,16 +289,45 @@ func _deserialize_stance(d: Dictionary) -> Dictionary:
 			out[k] = Vector3(float(d[k][0]), float(d[k][1]), float(d[k][2]))
 	return out
 
-func set_live_bone_transform(s_name: String, prop: String, val: Vector3) -> void:
+func update_live_stance(s_name: String, prop: String, val: Variant) -> void:
 	if not stance_configs.has(s_name):
-		stance_configs[s_name] = {}
+		stance_configs[s_name] = default_stance_configs.get(s_name, {}).duplicate()
 	stance_configs[s_name][prop] = val
-	current_pose = _compute_pose(current_anim, anim_time)
+	
+	if s_name in ["ready", "high_guard", "low_drag"]:
+		current_stance = s_name
+	if is_in_editor and current_anim != s_name:
+		current_anim = s_name
+		
+	var eval_time = anim_time if current_anim in ["idle", "walk", "run", "stunned", "ready", "high_guard", "low_drag"] else (0.50 if is_in_editor else action_time)
+	current_pose = _compute_pose(current_anim, eval_time)
 	_apply_pose(current_pose)
+
+func reset_stance_to_default(s_name: String) -> void:
+	if default_stance_configs.has(s_name):
+		stance_configs[s_name] = default_stance_configs[s_name].duplicate()
+		if current_stance == s_name or current_anim == s_name:
+			var eval_time = anim_time if current_anim in ["idle", "walk", "run", "stunned", "ready", "high_guard", "low_drag"] else (0.50 if is_in_editor else action_time)
+			current_pose = _compute_pose(current_anim, eval_time)
+			_apply_pose(current_pose)
+
+func copy_weapon_from_idle(target_anim: String) -> void:
+	var ready_cfg = stance_configs.get("ready", default_stance_configs.get("ready", {}))
+	if not stance_configs.has(target_anim):
+		stance_configs[target_anim] = default_stance_configs.get(target_anim, {}).duplicate()
+	if ready_cfg.has("sword_rot"):
+		stance_configs[target_anim]["sword_rot"] = ready_cfg["sword_rot"]
+	var eval_time = anim_time if current_anim in ["idle", "walk", "run", "stunned", "ready", "high_guard", "low_drag"] else (0.50 if is_in_editor else action_time)
+	current_pose = _compute_pose(current_anim, eval_time)
+	_apply_pose(current_pose)
+
+func set_live_bone_transform(s_name: String, prop: String, val: Vector3) -> void:
+	update_live_stance(s_name, prop, val)
 
 func set_live_ground_hips_y(val: float) -> void:
 	ground_hips_y = val
-	current_pose = _compute_pose(current_anim, anim_time)
+	var eval_time = anim_time if current_anim in ["idle", "walk", "run", "stunned", "ready", "high_guard", "low_drag"] else (0.50 if is_in_editor else action_time)
+	current_pose = _compute_pose(current_anim, eval_time)
 	_apply_pose(current_pose)
 
 func _process(delta: float) -> void:
@@ -256,28 +335,32 @@ func _process(delta: float) -> void:
 	anim_time += delta
 	
 	if current_anim in ["slash", "thrust", "block", "hurt"]:
-		action_time += delta
-		var max_dur = SLASH_DURATION
-		if current_anim == "thrust": max_dur = THRUST_DURATION
-		elif current_anim == "block": max_dur = BLOCK_DURATION
-		elif current_anim == "hurt": max_dur = HURT_DURATION
-		
-		# Manage weapon trail during attack swings
-		if weapon_trail:
-			if current_anim == "slash":
-				weapon_trail.is_emitting = (action_time >= 0.25 and action_time <= 0.75)
-			elif current_anim == "thrust":
-				weapon_trail.is_emitting = (action_time >= 0.30 and action_time <= 0.80)
-			else:
-				weapon_trail.is_emitting = false
-				
-		if action_time >= max_dur:
-			play_anim(base_anim)
-			return
+		if not is_in_editor:
+			action_time += delta
+			var max_dur = SLASH_DURATION
+			if current_anim == "thrust": max_dur = THRUST_DURATION
+			elif current_anim == "block": max_dur = BLOCK_DURATION
+			elif current_anim == "hurt": max_dur = HURT_DURATION
+			
+			# Manage weapon trail during attack swings
+			if weapon_trail:
+				if current_anim == "slash":
+					weapon_trail.is_emitting = (action_time >= 0.25 and action_time <= 0.75)
+				elif current_anim == "thrust":
+					weapon_trail.is_emitting = (action_time >= 0.30 and action_time <= 0.80)
+				else:
+					weapon_trail.is_emitting = false
+					
+			if action_time >= max_dur:
+				play_anim(base_anim)
+				return
+		else:
+			action_time = 0.50 # Hold apex pose in editor
 
-	var target_pose = _compute_pose(current_anim, anim_time if current_anim in ["idle", "walk", "run", "stunned"] else action_time)
+	var eval_t = anim_time if current_anim in ["idle", "walk", "run", "stunned", "ready", "high_guard", "low_drag"] else (0.50 if is_in_editor else action_time)
+	var target_pose = _compute_pose(current_anim, eval_t)
 	
-	if is_blending:
+	if is_blending and not is_in_editor:
 		blend_timer += delta
 		var f = clamp(blend_timer / BLEND_DURATION, 0.0, 1.0)
 		var s = smoothstep(0.0, 1.0, f)
@@ -290,16 +373,27 @@ func _process(delta: float) -> void:
 	_apply_pose(current_pose)
 
 func _compute_pose(anim_name: String, time_val: float) -> Dictionary:
+	var p: Dictionary = {}
 	match anim_name:
-		"idle": return _compute_idle(time_val)
-		"walk": return _compute_walk(time_val)
-		"run": return _compute_run(time_val)
-		"slash": return _compute_slash(time_val)
-		"thrust": return _compute_thrust(time_val)
-		"block": return _compute_block(time_val)
-		"hurt": return _compute_hurt(time_val)
-		"stunned": return _compute_stunned(time_val)
-	return _compute_idle(time_val)
+		"ready", "high_guard", "low_drag":
+			current_stance = anim_name
+			p = _compute_idle(time_val)
+		"idle": p = _compute_idle(time_val)
+		"walk": p = _compute_walk(time_val)
+		"run": p = _compute_run(time_val)
+		"slash": p = _compute_slash(time_val)
+		"thrust": p = _compute_thrust(time_val)
+		"block": p = _compute_block(time_val)
+		"hurt": p = _compute_hurt(time_val)
+		"stunned": p = _compute_stunned(time_val)
+		_: p = _compute_idle(time_val)
+		
+	if is_in_editor and stance_configs.has(anim_name):
+		var cfg = stance_configs[anim_name]
+		for k in ["right_arm_rot", "right_forearm_rot", "sword_rot", "left_arm_rot", "left_forearm_rot", "shield_rot", "torso_rot", "head_rot"]:
+			if cfg.has(k):
+				p[k] = cfg[k]
+	return p
 
 # --- ANIMATION DEFINITIONS ---
 

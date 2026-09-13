@@ -54,6 +54,7 @@ var current_pose: Dictionary = {}
 
 var ground_hips_y: float = 0.598
 var current_stance: String = "shoulder"
+var is_in_editor: bool = false
 var default_stance_configs: Dictionary = {}
 var stance_configs: Dictionary = {}
 
@@ -308,16 +309,18 @@ func _init_default_stances() -> void:
 	}
 
 func load_stance_config() -> void:
+	if default_stance_configs.is_empty() and has_method("_init_default_stances"):
+		_init_default_stances()
 	stance_configs = {}
 	for k in default_stance_configs:
 		stance_configs[k] = default_stance_configs[k].duplicate()
 		
-	var path = "res://data/stance_config.json"
-	if not FileAccess.file_exists(path):
-		path = "user://stance_config.json"
-		
-	if FileAccess.file_exists(path):
-		var f = FileAccess.open(path, FileAccess.READ)
+	var c_cfg: Dictionary = {}
+	
+	# 1. Check res://data/stance_config.json
+	var res_path = "res://data/stance_config.json"
+	if FileAccess.file_exists(res_path):
+		var f = FileAccess.open(res_path, FileAccess.READ)
 		if f:
 			var txt = f.get_as_text()
 			f.close()
@@ -325,22 +328,47 @@ func load_stance_config() -> void:
 			if json.parse(txt) == OK and json.data is Dictionary:
 				var d: Dictionary = json.data
 				if d.has("mace_ogre") and d["mace_ogre"] is Dictionary:
-					d = d["mace_ogre"]
+					c_cfg = d["mace_ogre"].duplicate()
 				elif d.has("chieftain") and d["chieftain"] is Dictionary:
-					d = d["chieftain"]
-				if d.has("ground_hips_y"):
-					ground_hips_y = float(d["ground_hips_y"])
-				for s_key in d:
-					if d[s_key] is Dictionary:
-						if not stance_configs.has(s_key):
-							stance_configs[s_key] = {}
-						var s_dict = d[s_key]
-						for prop in ["right_arm_rot", "right_forearm_rot", "warhammer_rot", "left_arm_rot", "left_forearm_rot", "torso_rot", "head_rot"]:
-							if s_dict.has(prop) and s_dict[prop] is Array and s_dict[prop].size() == 3:
-								stance_configs[s_key][prop] = Vector3(float(s_dict[prop][0]), float(s_dict[prop][1]), float(s_dict[prop][2]))
+					c_cfg = d["chieftain"].duplicate()
+					
+	# 2. Check user://stance_config.json for overrides
+	var user_path = "user://stance_config.json"
+	if FileAccess.file_exists(user_path):
+		var f_u = FileAccess.open(user_path, FileAccess.READ)
+		if f_u:
+			var txt_u = f_u.get_as_text()
+			f_u.close()
+			var json_u = JSON.new()
+			if json_u.parse(txt_u) == OK and json_u.data is Dictionary:
+				var d_u: Dictionary = json_u.data
+				var ogre_dict: Dictionary = {}
+				if d_u.has("mace_ogre") and d_u["mace_ogre"] is Dictionary:
+					ogre_dict = d_u["mace_ogre"]
+				elif d_u.has("chieftain") and d_u["chieftain"] is Dictionary:
+					ogre_dict = d_u["chieftain"]
+				for k in ogre_dict:
+					c_cfg[k] = ogre_dict[k]
+					
+	if c_cfg.has("ground_hips_y"):
+		ground_hips_y = float(c_cfg["ground_hips_y"])
+		
+	for s_key in c_cfg:
+		if s_key == "ground_hips_y":
+			continue
+		if c_cfg[s_key] is Dictionary:
+			if not stance_configs.has(s_key):
+				stance_configs[s_key] = {}
+			var s_dict = c_cfg[s_key]
+			for prop in ["right_arm_rot", "right_forearm_rot", "warhammer_rot", "left_arm_rot", "left_forearm_rot", "torso_rot", "head_rot"]:
+				if s_dict.has(prop) and s_dict[prop] is Array and s_dict[prop].size() == 3:
+					stance_configs[s_key][prop] = Vector3(float(s_dict[prop][0]), float(s_dict[prop][1]), float(s_dict[prop][2]))
 
 func get_stance_definitions() -> Array:
 	return [
+		{"id": "shoulder", "name": "Vác Đại Chùy", "shortcut": "[ Q ]"},
+		{"id": "ground", "name": "Chống Chùy Đất", "shortcut": "[ W ]"},
+		{"id": "guard", "name": "Thủ Trọng Lực", "shortcut": "[ E ]"},
 		{"id": "idle", "name": "Uy Vũ", "shortcut": "[ 1 ]"},
 		{"id": "walk", "name": "Bước Nặng", "shortcut": "[ 2 ]"},
 		{"id": "cleave", "name": "Thiết Quẹt", "shortcut": "[ 3 ]"},
@@ -348,11 +376,16 @@ func get_stance_definitions() -> Array:
 		{"id": "whirlwind", "name": "Bão Chùy 360°", "shortcut": "[ 5 ]"},
 		{"id": "roar", "name": "Gầm Thét", "shortcut": "[ 6 ]"},
 		{"id": "stagger", "name": "Bị Parry", "shortcut": "[ 7 ]"},
-		{"id": "stunned", "name": "Choáng", "shortcut": "[ 8 ]"},
-		{"id": "shoulder", "name": "Vác Đại Chùy", "shortcut": "[ Q ]"},
-		{"id": "ground", "name": "Chống Chùy Đất", "shortcut": "[ W ]"},
-		{"id": "guard", "name": "Thủ Trọng Lực", "shortcut": "[ E ]"}
+		{"id": "stunned", "name": "Choáng", "shortcut": "[ 8 ]"}
 	]
+
+func set_editor_mode(val: bool) -> void:
+	is_in_editor = val
+	if is_in_editor:
+		is_blending = false
+		_stop_all_weapon_trails()
+	current_pose = _compute_pose(current_anim, anim_time)
+	_apply_pose(current_pose)
 
 func get_weapon_info() -> Dictionary:
 	return {
@@ -370,6 +403,11 @@ func copy_weapon_from_idle(target_anim: String) -> void:
 		dst["warhammer_rot"] = src["warhammer_rot"]
 
 func serialize_stances() -> Dictionary:
+	if default_stance_configs.is_empty() and has_method("_init_default_stances"):
+		_init_default_stances()
+	if stance_configs.is_empty():
+		for k in default_stance_configs:
+			stance_configs[k] = default_stance_configs[k].duplicate()
 	var out: Dictionary = {
 		"ground_hips_y": ground_hips_y
 	}
@@ -378,27 +416,47 @@ func serialize_stances() -> Dictionary:
 	return out
 
 func save_stance_config() -> bool:
-	var path = "res://data/stance_config.json"
-	var all_cfg: Dictionary = {}
-	if FileAccess.file_exists(path):
-		var f_in = FileAccess.open(path, FileAccess.READ)
+	var master_cfg: Dictionary = {}
+	
+	# 1. Read existing from res://data/stance_config.json if available
+	var res_path = "res://data/stance_config.json"
+	if FileAccess.file_exists(res_path):
+		var f_in = FileAccess.open(res_path, FileAccess.READ)
 		if f_in:
 			var json = JSON.new()
 			if json.parse(f_in.get_as_text()) == OK and json.data is Dictionary:
-				all_cfg = json.data
+				master_cfg = json.data
 			f_in.close()
+			
+	# 2. Merge user://stance_config.json if available
+	var user_path = "user://stance_config.json"
+	if FileAccess.file_exists(user_path):
+		var f_u = FileAccess.open(user_path, FileAccess.READ)
+		if f_u:
+			var txt_u = f_u.get_as_text()
+			f_u.close()
+			var json_u = JSON.new()
+			if json_u.parse(txt_u) == OK and json_u.data is Dictionary:
+				for k in json_u.data:
+					master_cfg[k] = json_u.data[k]
+					
+	# 3. Update chieftain & mace_ogre
 	var stances_serialized = serialize_stances()
-	all_cfg["chieftain"] = stances_serialized
-	all_cfg["mace_ogre"] = stances_serialized
+	master_cfg["chieftain"] = stances_serialized
+	master_cfg["mace_ogre"] = stances_serialized
 	
-	var f = FileAccess.open(path, FileAccess.WRITE)
-	if f:
-		f.store_string(JSON.stringify(all_cfg, "\t"))
-		f.close()
-	var f2 = FileAccess.open("user://stance_config.json", FileAccess.WRITE)
-	if f2:
-		f2.store_string(JSON.stringify(all_cfg, "\t"))
-		f2.close()
+	# 4. Save to user:// (guaranteed writable)
+	var f_out_user = FileAccess.open(user_path, FileAccess.WRITE)
+	if f_out_user:
+		f_out_user.store_string(JSON.stringify(master_cfg, "\t"))
+		f_out_user.close()
+		
+	# 5. Save to res:// (dev environment)
+	var f_out_res = FileAccess.open(res_path, FileAccess.WRITE)
+	if f_out_res:
+		f_out_res.store_string(JSON.stringify(master_cfg, "\t"))
+		f_out_res.close()
+		
 	return true
 
 func _serialize_stance(s: Dictionary) -> Dictionary:
@@ -425,6 +483,8 @@ func update_live_stance(s_name: String, prop: String, val: Variant) -> void:
 	if not stance_configs.has(s_name):
 		stance_configs[s_name] = {}
 	stance_configs[s_name][prop] = val
+	if s_name in ["shoulder", "ground", "guard"]:
+		current_stance = s_name
 	current_pose = _compute_pose(current_anim, anim_time)
 	_apply_pose(current_pose)
 
@@ -534,37 +594,21 @@ func _process(delta: float) -> void:
 	var dt = delta * anim_speed
 	anim_time += dt
 	
-	if current_anim == "cleave":
-		action_time += dt
-		if action_time >= CLEAVE_DURATION:
-			_stop_all_weapon_trails()
-			current_anim = base_anim
-			action_time = 0.0
-			_start_blend()
-			emit_signal("anim_changed", current_anim)
-	elif current_anim == "roar":
-		action_time += dt
-		if action_time >= ROAR_DURATION:
-			current_anim = base_anim
-			action_time = 0.0
-			_start_blend()
-			emit_signal("anim_changed", current_anim)
-	elif current_anim == "earthshaker":
-		action_time += dt
-		if action_time >= EARTHSHAKER_DURATION:
-			_stop_all_weapon_trails()
-			current_anim = base_anim
-			action_time = 0.0
-			_start_blend()
-			emit_signal("anim_changed", current_anim)
-	elif current_anim in ["stagger", "parry"]:
-		action_time += dt
-		if action_time >= PARRY_DURATION:
-			_stop_all_weapon_trails()
-			current_anim = base_anim
-			action_time = 0.0
-			_start_blend()
-			emit_signal("anim_changed", current_anim)
+	if current_anim in ["cleave", "roar", "earthshaker", "stagger", "parry"]:
+		if not is_in_editor:
+			action_time += dt
+			var max_dur = CLEAVE_DURATION
+			if current_anim == "roar": max_dur = ROAR_DURATION
+			elif current_anim == "earthshaker": max_dur = EARTHSHAKER_DURATION
+			elif current_anim in ["stagger", "parry"]: max_dur = PARRY_DURATION
+			if action_time >= max_dur:
+				_stop_all_weapon_trails()
+				current_anim = base_anim
+				action_time = 0.0
+				_start_blend()
+				emit_signal("anim_changed", current_anim)
+		else:
+			action_time = 0.45 # Hold apex pose in editor
 			
 	if stun_stars:
 		stun_stars.set_active(current_anim == "stunned")
@@ -573,7 +617,7 @@ func _process(delta: float) -> void:
 	_update_attack_trails(cur_t)
 	var target_pose = _compute_pose(current_anim, cur_t)
 	
-	if is_blending:
+	if is_blending and not is_in_editor:
 		blend_timer += dt
 		var factor = clampf(blend_timer / BLEND_DURATION, 0.0, 1.0)
 		var smooth_f = smoothstep(0.0, 1.0, factor)
@@ -675,24 +719,34 @@ func _update_cape_physics(delta: float) -> void:
 	cape.rotation_degrees = cape_current_rot
 
 func _compute_pose(anim: String, time_val: float) -> Dictionary:
+	var p: Dictionary = {}
 	match anim:
 		"idle":
 			match current_stance:
-				"shoulder": return _compute_shoulder(time_val)
-				"ground": return _compute_ground(time_val)
-				"guard": return _compute_guard(time_val)
-				_: return _compute_shoulder(time_val)
-		"shoulder": return _compute_shoulder(time_val)
-		"ground": return _compute_ground(time_val)
-		"guard": return _compute_guard(time_val)
-		"walk": return _compute_walk(time_val)
-		"cleave": return _compute_cleave(time_val)
-		"roar": return _compute_roar(time_val)
-		"earthshaker": return _compute_earthshaker(time_val)
-		"whirlwind": return _compute_whirlwind(time_val)
-		"stagger", "parry": return _compute_parry(time_val)
-		"stunned": return _compute_stunned(time_val)
-		_: return _compute_shoulder(time_val)
+				"shoulder": p = _compute_shoulder(time_val)
+				"ground": p = _compute_ground(time_val)
+				"guard": p = _compute_guard(time_val)
+				_: p = _compute_shoulder(time_val)
+		"shoulder": p = _compute_shoulder(time_val)
+		"ground": p = _compute_ground(time_val)
+		"guard": p = _compute_guard(time_val)
+		"walk": p = _compute_walk(time_val)
+		"cleave": p = _compute_cleave(time_val)
+		"roar": p = _compute_roar(time_val)
+		"earthshaker": p = _compute_earthshaker(time_val)
+		"whirlwind": p = _compute_whirlwind(time_val)
+		"stagger", "parry": p = _compute_parry(time_val)
+		"stunned": p = _compute_stunned(time_val)
+		_: p = _compute_shoulder(time_val)
+
+	if is_in_editor and stance_configs.has(anim):
+		var cfg = stance_configs[anim]
+		for k in ["right_arm_rot", "right_forearm_rot", "warhammer_rot", "left_arm_rot", "left_forearm_rot", "torso_rot", "head_rot"]:
+			if cfg.has(k):
+				p[k] = cfg[k]
+		p["hips_pos"] = Vector3(p.get("hips_pos", Vector3.ZERO).x, ground_hips_y, p.get("hips_pos", Vector3.ZERO).z)
+
+	return p
 
 # --- 1. SHOULDER (Vác Đại Búa Trên Vai) ---
 func _compute_shoulder(time_val: float) -> Dictionary:
@@ -700,7 +754,8 @@ func _compute_shoulder(time_val: float) -> Dictionary:
 	var t = time_val * 1.6
 	var heave = sin(t)
 	var sway = sin(t * 0.5)
-	var cfg = stance_configs.get("shoulder", default_stance_configs.get("shoulder", {}))
+	var st_key = "idle" if (current_anim == "idle" and stance_configs.has("idle")) else (current_stance if stance_configs.has(current_stance) else "shoulder")
+	var cfg = stance_configs.get(st_key, default_stance_configs.get(st_key, default_stance_configs.get("shoulder", {})))
 	
 	# Solid grounded pelvis: no vertical breathing bob on hips so feet stay 100% on ground floor
 	p["hips_pos"] = Vector3(sway * 0.008, ground_hips_y, 0.0)
@@ -1359,6 +1414,8 @@ func _blend_poses(a: Dictionary, b: Dictionary, f: float) -> Dictionary:
 	return out
 
 func _apply_pose(p: Dictionary) -> void:
+	if not is_inside_tree() or not hips:
+		return
 	if p.has("hips_pos"): hips.position = p["hips_pos"]
 	if p.has("hips_rot"): hips.rotation_degrees = p["hips_rot"]
 	if p.has("torso_rot"): torso.rotation_degrees = p["torso_rot"]

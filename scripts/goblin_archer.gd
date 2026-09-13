@@ -57,6 +57,7 @@ var current_pose: Dictionary = {}
 
 var ground_hips_y: float = 0.618
 var current_stance: String = "aim"
+var is_in_editor: bool = false
 var default_stance_configs: Dictionary = {}
 var stance_configs: Dictionary = {}
 
@@ -161,20 +162,31 @@ func _init_default_stances() -> void:
 			"left_forearm_rot": Vector3(-18.0, 0.0, 0.0),
 			"torso_rot": Vector3(10.0, 0.0, 4.0),
 			"head_rot": Vector3(-6.0, 0.0, 0.0)
+		},
+		"backstep": {
+			"right_arm_rot": Vector3(-45.0, -44.0, 20.0),
+			"right_forearm_rot": Vector3(-95.0, 0.0, 0.0),
+			"bow_rot": Vector3(89.0, 80.0, 36.0),
+			"left_arm_rot": Vector3(-51.0, 5.0, -20.0),
+			"left_forearm_rot": Vector3(-45.0, 0.0, 0.0),
+			"torso_rot": Vector3(14.0, 0.0, 0.0),
+			"head_rot": Vector3(-8.0, 0.0, 0.0)
 		}
 	}
 
 func load_stance_config() -> void:
+	if default_stance_configs.is_empty() and has_method("_init_default_stances"):
+		_init_default_stances()
 	stance_configs = {}
 	for k in default_stance_configs:
 		stance_configs[k] = default_stance_configs[k].duplicate()
 		
-	var path = "res://data/stance_config.json"
-	if not FileAccess.file_exists(path):
-		path = "user://stance_config.json"
-		
-	if FileAccess.file_exists(path):
-		var f = FileAccess.open(path, FileAccess.READ)
+	var a_cfg: Dictionary = {}
+	
+	# 1. Check res://data/stance_config.json
+	var res_path = "res://data/stance_config.json"
+	if FileAccess.file_exists(res_path):
+		var f = FileAccess.open(res_path, FileAccess.READ)
 		if f:
 			var txt = f.get_as_text()
 			f.close()
@@ -182,31 +194,55 @@ func load_stance_config() -> void:
 			if json.parse(txt) == OK and json.data is Dictionary:
 				var d: Dictionary = json.data
 				if d.has("archer") and d["archer"] is Dictionary:
-					d = d["archer"]
-				if d.has("ground_hips_y"):
-					ground_hips_y = float(d["ground_hips_y"])
-				for s_key in d:
-					if s_key == "ground_hips_y":
-						continue
-					if d[s_key] is Dictionary:
-						var s_dict = d[s_key]
-						if not stance_configs.has(s_key):
-							stance_configs[s_key] = {}
-						for prop in ["right_arm_rot", "right_forearm_rot", "bow_rot", "left_arm_rot", "left_forearm_rot", "torso_rot", "head_rot"]:
-							if s_dict.has(prop) and s_dict[prop] is Array and s_dict[prop].size() == 3:
-								stance_configs[s_key][prop] = Vector3(float(s_dict[prop][0]), float(s_dict[prop][1]), float(s_dict[prop][2]))
+					a_cfg = d["archer"].duplicate()
+					
+	# 2. Check user://stance_config.json for overrides
+	var user_path = "user://stance_config.json"
+	if FileAccess.file_exists(user_path):
+		var f_u = FileAccess.open(user_path, FileAccess.READ)
+		if f_u:
+			var txt_u = f_u.get_as_text()
+			f_u.close()
+			var json_u = JSON.new()
+			if json_u.parse(txt_u) == OK and json_u.data is Dictionary:
+				var d_u: Dictionary = json_u.data
+				if d_u.has("archer") and d_u["archer"] is Dictionary:
+					for k in d_u["archer"]:
+						a_cfg[k] = d_u["archer"][k]
+						
+	if a_cfg.has("ground_hips_y"):
+		ground_hips_y = float(a_cfg["ground_hips_y"])
+		
+	for s_key in a_cfg:
+		if s_key == "ground_hips_y":
+			continue
+		if a_cfg[s_key] is Dictionary:
+			var s_dict = a_cfg[s_key]
+			if not stance_configs.has(s_key):
+				stance_configs[s_key] = {}
+			for prop in ["right_arm_rot", "right_forearm_rot", "bow_rot", "left_arm_rot", "left_forearm_rot", "torso_rot", "head_rot"]:
+				if s_dict.has(prop) and s_dict[prop] is Array and s_dict[prop].size() == 3:
+					stance_configs[s_key][prop] = Vector3(float(s_dict[prop][0]), float(s_dict[prop][1]), float(s_dict[prop][2]))
 
 func get_stance_definitions() -> Array:
 	return [
-		{"id": "idle", "name": "Idle", "shortcut": "[ 1 ]"},
-		{"id": "ready", "name": "Ready", "shortcut": "[ 2 ]"},
-		{"id": "walk", "name": "Walk", "shortcut": "[ 3 ]"},
-		{"id": "run", "name": "Run", "shortcut": "[ 4 ]"},
-		{"id": "aim", "name": "Aim", "shortcut": "[ 5 ]"},
-		{"id": "shoot", "name": "Bắn", "shortcut": "[ 6 ]"},
-		{"id": "hurt", "name": "Trúng Đòn", "shortcut": "[ 7 ]"},
-		{"id": "stunned", "name": "Choáng", "shortcut": "[ 8 ]"}
+		{"id": "ready", "name": "Sẵn Sàng", "shortcut": "[ Q ]"},
+		{"id": "aim", "name": "Ngắm Bắn", "shortcut": "[ W ]"},
+		{"id": "idle", "name": "Nghỉ", "shortcut": "[ E ]"},
+		{"id": "walk", "name": "Di Chuyển", "shortcut": "[ 1 ]"},
+		{"id": "run", "name": "Chạy Nhanh", "shortcut": "[ 2 ]"},
+		{"id": "shoot", "name": "Bắn Cung", "shortcut": "[ 3 ]"},
+		{"id": "backstep", "name": "Lùi Bước", "shortcut": "[ 4 ]"},
+		{"id": "hurt", "name": "Trúng Đòn", "shortcut": "[ 5 ]"},
+		{"id": "stunned", "name": "Choáng", "shortcut": "[ 6 ]"}
 	]
+
+func set_editor_mode(val: bool) -> void:
+	is_in_editor = val
+	if is_in_editor:
+		is_blending = false
+	current_pose = _compute_pose(current_anim, anim_time)
+	_apply_pose(current_pose)
 
 func get_weapon_info() -> Dictionary:
 	return {
@@ -215,6 +251,11 @@ func get_weapon_info() -> Dictionary:
 	}
 
 func serialize_stances() -> Dictionary:
+	if default_stance_configs.is_empty() and has_method("_init_default_stances"):
+		_init_default_stances()
+	if stance_configs.is_empty():
+		for k in default_stance_configs:
+			stance_configs[k] = default_stance_configs[k].duplicate()
 	var out: Dictionary = {
 		"ground_hips_y": ground_hips_y
 	}
@@ -223,25 +264,45 @@ func serialize_stances() -> Dictionary:
 	return out
 
 func save_stance_config() -> bool:
-	var path = "res://data/stance_config.json"
-	var all_cfg: Dictionary = {}
-	if FileAccess.file_exists(path):
-		var f_in = FileAccess.open(path, FileAccess.READ)
+	var master_cfg: Dictionary = {}
+	
+	# 1. Read existing from res://data/stance_config.json if available
+	var res_path = "res://data/stance_config.json"
+	if FileAccess.file_exists(res_path):
+		var f_in = FileAccess.open(res_path, FileAccess.READ)
 		if f_in:
 			var json = JSON.new()
 			if json.parse(f_in.get_as_text()) == OK and json.data is Dictionary:
-				all_cfg = json.data
+				master_cfg = json.data
 			f_in.close()
-	all_cfg["archer"] = serialize_stances()
+			
+	# 2. Merge user://stance_config.json if available
+	var user_path = "user://stance_config.json"
+	if FileAccess.file_exists(user_path):
+		var f_u = FileAccess.open(user_path, FileAccess.READ)
+		if f_u:
+			var txt_u = f_u.get_as_text()
+			f_u.close()
+			var json_u = JSON.new()
+			if json_u.parse(txt_u) == OK and json_u.data is Dictionary:
+				for k in json_u.data:
+					master_cfg[k] = json_u.data[k]
+					
+	# 3. Save archer stances
+	master_cfg["archer"] = serialize_stances()
 	
-	var f = FileAccess.open(path, FileAccess.WRITE)
-	if f:
-		f.store_string(JSON.stringify(all_cfg, "\t"))
-		f.close()
-	var f2 = FileAccess.open("user://stance_config.json", FileAccess.WRITE)
-	if f2:
-		f2.store_string(JSON.stringify(all_cfg, "\t"))
-		f2.close()
+	# 4. Save to user:// (guaranteed writable)
+	var f_out_user = FileAccess.open(user_path, FileAccess.WRITE)
+	if f_out_user:
+		f_out_user.store_string(JSON.stringify(master_cfg, "\t"))
+		f_out_user.close()
+		
+	# 5. Save to res:// (dev environment)
+	var f_out_res = FileAccess.open(res_path, FileAccess.WRITE)
+	if f_out_res:
+		f_out_res.store_string(JSON.stringify(master_cfg, "\t"))
+		f_out_res.close()
+		
 	return true
 
 func _serialize_stance(s: Dictionary) -> Dictionary:
@@ -277,6 +338,8 @@ func update_live_stance(s_name: String, prop: String, val: Variant) -> void:
 	if not stance_configs.has(s_name):
 		stance_configs[s_name] = {}
 	stance_configs[s_name][prop] = val
+	if s_name in ["ready", "aim", "idle"]:
+		current_stance = s_name
 	current_pose = _compute_pose(current_anim, anim_time)
 	_apply_pose(current_pose)
 
@@ -421,41 +484,43 @@ func _process(delta: float) -> void:
 	var dt = delta * anim_speed
 	anim_time += dt
 	
-	if current_anim == "shoot":
-		action_time += dt
-		_update_shooting_fx(action_time, dt)
-		if action_time >= SHOOT_DURATION:
-			blend_from_anim = current_anim
-			blend_to_anim = "aim"
-			current_anim = "aim"
-			action_time = 0.0
-			_start_blend()
-			emit_signal("anim_changed", current_anim)
-	elif current_anim == "backstep":
-		action_time += dt
-		if action_time >= BACKSTEP_DURATION:
-			blend_from_anim = current_anim
-			blend_to_anim = base_anim
-			current_anim = base_anim
-			action_time = 0.0
-			_start_blend()
-			emit_signal("anim_changed", current_anim)
-	elif current_anim == "hurt":
-		action_time += dt
-		if action_time >= HURT_DURATION:
-			blend_from_anim = current_anim
-			blend_to_anim = base_anim
-			current_anim = base_anim
-			action_time = 0.0
-			_start_blend()
-			emit_signal("anim_changed", current_anim)
+	if current_anim in ["shoot", "backstep", "hurt"]:
+		if not is_in_editor:
+			action_time += dt
+			if current_anim == "shoot":
+				_update_shooting_fx(action_time, dt)
+				if action_time >= SHOOT_DURATION:
+					blend_from_anim = current_anim
+					blend_to_anim = "aim"
+					current_anim = "aim"
+					action_time = 0.0
+					_start_blend()
+					emit_signal("anim_changed", current_anim)
+			elif current_anim == "backstep":
+				if action_time >= BACKSTEP_DURATION:
+					blend_from_anim = current_anim
+					blend_to_anim = base_anim
+					current_anim = base_anim
+					action_time = 0.0
+					_start_blend()
+					emit_signal("anim_changed", current_anim)
+			elif current_anim == "hurt":
+				if action_time >= HURT_DURATION:
+					blend_from_anim = current_anim
+					blend_to_anim = base_anim
+					current_anim = base_anim
+					action_time = 0.0
+					_start_blend()
+					emit_signal("anim_changed", current_anim)
+		else:
+			action_time = 0.45 # Hold apex pose in editor
 			
 	if stun_stars:
 		stun_stars.set_active(current_anim == "stunned")
 		
 	var target_pose = _compute_pose(current_anim, anim_time)
 	
-	if is_blending:
+	if is_blending and not is_in_editor:
 		blend_timer += dt
 		var factor = clampf(blend_timer / current_blend_duration, 0.0, 1.0)
 		var smooth_f = smoothstep(0.0, 1.0, factor)
@@ -487,17 +552,27 @@ func _update_shooting_fx(t_shot: float, _dt: float) -> void:
 		arrow.visible = true
 
 func _compute_pose(anim: String, time_val: float) -> Dictionary:
+	var p: Dictionary = {}
 	match anim:
-		"idle": return _compute_idle(time_val)
-		"ready": return _compute_ready(time_val)
-		"walk": return _compute_walk(time_val)
-		"run": return _compute_run(time_val)
-		"aim": return _compute_aim(time_val)
-		"shoot": return _compute_shoot(action_time)
-		"backstep": return _compute_backstep(action_time)
-		"hurt": return _compute_hurt(action_time)
-		"stunned": return _compute_stunned(time_val)
-		_: return _compute_idle(time_val)
+		"idle": p = _compute_idle(time_val)
+		"ready": p = _compute_ready(time_val)
+		"walk": p = _compute_walk(time_val)
+		"run": p = _compute_run(time_val)
+		"aim": p = _compute_aim(time_val)
+		"shoot": p = _compute_shoot(action_time)
+		"backstep": p = _compute_backstep(action_time)
+		"hurt": p = _compute_hurt(action_time)
+		"stunned": p = _compute_stunned(time_val)
+		_: p = _compute_idle(time_val)
+
+	if is_in_editor and stance_configs.has(anim):
+		var cfg = stance_configs[anim]
+		for k in ["right_arm_rot", "right_forearm_rot", "bow_rot", "left_arm_rot", "left_forearm_rot", "torso_rot", "head_rot"]:
+			if cfg.has(k):
+				p[k] = cfg[k]
+		p["hips_pos"] = Vector3(p.get("hips_pos", Vector3.ZERO).x, ground_hips_y, p.get("hips_pos", Vector3.ZERO).z)
+
+	return p
 
 # ==============================================================================
 # 1. IDLE: Cầm Thân Gỗ Cung Buông Thẳng Bên Hông Trái, Thả Lỏng Tự Nhiên
@@ -974,6 +1049,8 @@ func _blend_poses(a: Dictionary, b: Dictionary, f: float) -> Dictionary:
 	return out
 
 func _apply_pose(p: Dictionary) -> void:
+	if not is_inside_tree() or not hips:
+		return
 	if p.has("hips_pos"): hips.position = p["hips_pos"]
 	if p.has("hips_rot"): hips.rotation_degrees = p["hips_rot"]
 	if p.has("torso_rot"): torso.rotation_degrees = p["torso_rot"]

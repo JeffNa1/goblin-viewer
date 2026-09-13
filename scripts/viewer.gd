@@ -330,6 +330,12 @@ func switch_monster(m_type: String) -> void:
 	sub_group_stances.visible = true
 	_update_stance_ui()
 	
+	for m in [m_warrior, m_archer, m_shaman, m_rogue, m_chieftain, m_skeleton]:
+		if m and m != current_monster_node and m.has_method("set_editor_mode"):
+			m.set_editor_mode(false)
+	if editor_panel.visible and current_monster_node and current_monster_node.has_method("set_editor_mode"):
+		current_monster_node.set_editor_mode(true)
+	
 	if editor_panel.visible:
 		if current_monster_node and "current_stance" in current_monster_node:
 			editor_target_stance = current_monster_node.current_stance
@@ -479,6 +485,8 @@ func toggle_help() -> void:
 
 func toggle_editor() -> void:
 	editor_panel.visible = not editor_panel.visible
+	if current_monster_node and current_monster_node.has_method("set_editor_mode"):
+		current_monster_node.set_editor_mode(editor_panel.visible)
 	if editor_panel.visible and current_monster_node:
 		if "current_anim" in current_monster_node and current_monster_node.current_anim != "":
 			editor_target_stance = current_monster_node.current_anim
@@ -487,7 +495,11 @@ func toggle_editor() -> void:
 		sync_editor_from_monster()
 
 func _setup_stance_editor() -> void:
-	btn_close_ed.pressed.connect(func(): editor_panel.visible = false)
+	btn_close_ed.pressed.connect(func(): 
+		editor_panel.visible = false
+		if current_monster_node and current_monster_node.has_method("set_editor_mode"):
+			current_monster_node.set_editor_mode(false)
+	)
 	btn_save_permanent.pressed.connect(_on_save_permanent_pressed)
 	btn_copy_idle.pressed.connect(_on_copy_idle_pressed)
 	btn_reset_stance.pressed.connect(_on_reset_stance_pressed)
@@ -505,10 +517,10 @@ func _setup_stance_editor() -> void:
 func _switch_editor_tab(st_name: String) -> void:
 	editor_target_stance = st_name
 	if current_monster_node:
+		if current_monster_node.has_method("set_stance") and st_name in ["low", "guard", "shoulder", "aim", "ready", "dual_guard", "reverse", "forward", "ground", "high_guard", "low_drag", "ward", "idle"]:
+			current_monster_node.set_stance(st_name)
 		if current_monster_node.has_method("play_anim"):
 			current_monster_node.play_anim(st_name)
-		if current_monster_node.has_method("set_stance") and st_name in ["low", "guard", "shoulder", "aim", "ready", "dual_guard", "reverse", "ground", "high_guard", "low_drag"]:
-			current_monster_node.set_stance(st_name)
 	_update_stance_ui()
 	_update_ui_state()
 	sync_editor_from_monster()
@@ -653,11 +665,20 @@ func _on_editor_slider_changed(_val: float) -> void:
 
 func _on_save_permanent_pressed() -> void:
 	if current_monster_node and current_monster_node.has_method("save_stance_config"):
-		current_monster_node.save_stance_config()
-	lbl_toast.visible = true
-	lbl_toast.text = "✓ Đã chốt và lưu vĩnh viễn tư thế cho %s!" % active_monster_type.capitalize()
-	await get_tree().create_timer(2.5).timeout
-	lbl_toast.visible = false
+		var ok = current_monster_node.save_stance_config()
+		if ok:
+			for m in [m_warrior, m_archer, m_shaman, m_rogue, m_chieftain, m_skeleton]:
+				if m and m != current_monster_node and m.has_method("load_stance_config"):
+					m.load_stance_config()
+			lbl_toast.visible = true
+			lbl_toast.text = "💾 ĐÃ LƯU VĨNH VIỄN TƯ THẾ CHO %s THÀNH CÔNG!" % active_monster_type.to_upper()
+			await get_tree().create_timer(2.5).timeout
+			lbl_toast.visible = false
+		else:
+			lbl_toast.visible = true
+			lbl_toast.text = "⚠️ Lỗi khi ghi file cấu hình cho %s!" % active_monster_type.to_upper()
+			await get_tree().create_timer(2.5).timeout
+			lbl_toast.visible = false
 
 func _on_copy_idle_pressed() -> void:
 	if current_monster_node and current_monster_node.has_method("copy_weapon_from_idle"):
